@@ -7,7 +7,7 @@ import { SortableField } from "./sortable-field";
 import { useDroppable } from "@dnd-kit/core";
 
 const FormBuilderCanvas = ({ overId }: { overId: string | null }) => {
-  const { fields, removeField } = useFormStore();
+  const { fields, removeField, selectField } = useFormStore();
   const { setNodeRef, isOver } = useDroppable({ id: "canvas" });
 
   return (
@@ -32,6 +32,7 @@ const FormBuilderCanvas = ({ overId }: { overId: string | null }) => {
                 <SortableField
                   key={field.id}
                   field={field}
+                  onSelect={selectField}
                   onRemove={removeField}
                 />
               </>

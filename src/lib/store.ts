@@ -9,6 +9,8 @@ export type Field = {
 
 interface FormState {
   fields: Field[];
+  selectedFieldId: string | null;
+  selectField: (id: string | null) => void;
   addField: (field: Field) => void;
   moveField: (fromIndex: number, toIndex: number) => void;
   removeField: (id: string) => void;
@@ -16,6 +18,8 @@ interface FormState {
 
 export const useFormStore = create<FormState>((set) => ({
   fields: [],
+  selectedFieldId: null,
+  selectField: (id) => set({ selectedFieldId: id }),
   addField: (field) => set((state) => ({ fields: [...state.fields, field] })),
   moveField: (from, to) =>
     set((state) => {
