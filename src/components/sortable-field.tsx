@@ -7,16 +7,12 @@ import { GripVertical, Trash } from "lucide-react";
 
 type SortableFieldProps = {
   field: Field;
-  onSelect: (id: string) => void;
-  onRemove: (id: string) => void;
 };
 
 export const SortableField = ({
   field,
-  onSelect,
-  onRemove,
 }: SortableFieldProps) => {
-  const { selectedFieldId } = useFormStore();
+  const { selectedFieldId, selectField, removeField } = useFormStore();
   const isSelected = selectedFieldId === field.id;
 
   const {
@@ -40,10 +36,10 @@ export const SortableField = ({
       style={style}
       {...attributes}
       className={`rounded p-4 bg-white relative border ${
-        isSelected ? "border-blue-500" : "border-gray-200"
+        isSelected ? "border-blue-500" : "border-transparent"
       }`}
       onClick={() => {
-        onSelect(field.id);
+        selectField(field.id);
       }}
     >
       <div className="flex gap-2 items-center">
@@ -72,7 +68,7 @@ export const SortableField = ({
         className="absolute top-2 right-2 cursor-pointer text-gray-500 hover:text-black"
         onClick={(e) => {
           e.stopPropagation();
-          onRemove(field.id);
+          removeField(field.id);
         }}
       >
         <Trash />
