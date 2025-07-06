@@ -42,13 +42,15 @@ export const SortableField = ({ field, onRemove }: SortableFieldProps) => {
           <GripVertical className=" text-gray-500 hover:text-black" />
         </div>
         <div className="flex-1">
-          <label className="block font-medium mb-1">{field.label}</label>
+          <label className="block font-medium mb-1" htmlFor={field.id}>
+            {field.label}
+          </label>
           {/* Render input based on field.type */}
           <input
+            id={field.id}
             type="text"
             className="border rounded px-2 py-1 w-full"
             placeholder="Field preview"
-            disabled
           />
         </div>
       </div>
