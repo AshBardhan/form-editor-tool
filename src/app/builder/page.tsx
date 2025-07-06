@@ -6,6 +6,7 @@ import { DndContext, DragEndEvent, pointerWithin } from "@dnd-kit/core";
 import { useFormStore } from "@/lib/store";
 import { nanoid } from "nanoid";
 import { useState } from "react";
+import { FieldEditor } from "@/components/field-editor";
 
 export default function Home() {
   const [overId, setOverId] = useState<string | null>(null);
@@ -71,12 +72,15 @@ export default function Home() {
       }}
     >
       <div className="flex h-screen">
-        <aside className="w-64 bg-gray-100 border-r border-black/5">
+        <aside className="w-72 bg-gray-400 border-r border-black/5">
           <Sidebar />
         </aside>
-        <main className="flex-1 px-8 overflow-auto">
+        <main className="flex-1 px-8 bg-gray-100 overflow-auto">
           <FormBuilderCanvas overId={overId} />
         </main>
+        <aside className="w-72 bg-gray-400 border-l border-black/5">
+          <FieldEditor />
+        </aside>
       </div>
     </DndContext>
   );
