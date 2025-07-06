@@ -2,50 +2,80 @@
 
 import { FormBuilderCanvas } from "@/components/canvas";
 import { Sidebar } from "@/components/sidebar";
-import { DndContext, DragEndEvent } from "@dnd-kit/core";
+import { DndContext, DragEndEvent, pointerWithin } from "@dnd-kit/core";
 import { useFormStore } from "@/lib/store";
 import { nanoid } from "nanoid";
+import { useState } from "react";
 
 export default function Home() {
-  const { fields, addField, moveField } = useFormStore();
-function handleDrop(event: DragEndEvent) {
-  const { active, over } = event;
+  const [overId, setOverId] = useState<string | null>(null);
 
-  if (!over) return;
+  function handleDragEnd(event: DragEndEvent) {
+    const { active, over } = event;
+    if (!over) return;
 
-  // Reorder existing fields
-  const activeIndex = fields.findIndex(f => f.id === active.id);
-  const overIndex = fields.findIndex(f => f.id === over.id);
+    const dragged = active.data?.current;
+    if (!dragged) return;
 
-  if (activeIndex !== -1 && overIndex !== -1 && activeIndex !== overIndex) {
-    moveField(activeIndex, overIndex);
+    const { fields, moveField, addField } = useFormStore.getState();
+
+    const activeId = active.id;
+    const overId = over.id;
+
+    const activeIndex = fields.findIndex((f) => f.id === activeId);
+    const overIndex = fields.findIndex((f) => f.id === overId);
+
+    const isReorder = activeIndex !== -1 && overIndex !== -1;
+    const isInsert = activeIndex === -1 && overIndex !== -1;
+
+    // ✅ Reordering existing fields
+    if (isReorder && activeIndex !== overIndex) {
+      moveField(activeIndex, overIndex);
+      return;
+    }
+
+    // ✅ Inserting new field between existing items
+    if (isInsert) {
+      const newField = {
+        id: nanoid(),
+        type: dragged.type,
+        label: dragged.label,
+        required: false,
+      };
+
+      const updatedFields = [...fields];
+      updatedFields.splice(overIndex, 0, newField);
+
+      useFormStore.setState({ fields: updatedFields });
+      return;
+    }
+
+    // ✅ If dropped on canvas (empty), insert at end
+    if (activeIndex === -1 && overId === "canvas") {
+      addField({
+        id: nanoid(),
+        type: dragged.type,
+        label: dragged.label,
+        required: false,
+      });
+    }
   }
-
-  // If dragging from sidebar (new component), handle insertion
-  const dragged = active?.data?.current;
-  const overId = over.id;
-
-  if (!dragged || !over) return;
-
-  const isNew = activeIndex === -1;
-  if (isNew && overId === "canvas") {
-    addField({
-      id: nanoid(),
-      type: dragged.type,
-      label: dragged.label,
-      required: false,
-    });
-  }
-}
 
   return (
-    <DndContext onDragEnd={handleDrop}>
+    <DndContext
+      collisionDetection={pointerWithin}
+      onDragOver={(event) => setOverId((event.over?.id as string) ?? null)}
+      onDragEnd={(event) => {
+        handleDragEnd(event);
+        setOverId(null);
+      }}
+    >
       <div className="flex h-screen">
         <aside className="w-64 border-r border-black/5">
           <Sidebar />
-        </aside>  
+        </aside>
         <main className="flex-1 overflow-auto">
-          <FormBuilderCanvas  />
+          <FormBuilderCanvas overId={overId} />
         </main>
       </div>
     </DndContext>

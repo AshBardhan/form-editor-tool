@@ -3,7 +3,7 @@
 import { Field } from "@/lib/store";
 import { useSortable } from "@dnd-kit/sortable";
 import { CSS } from "@dnd-kit/utilities";
-import { Trash } from "lucide-react";
+import { GripVertical, Trash } from "lucide-react";
 
 type SortableFieldProps = {
   field: Field;
@@ -23,7 +23,7 @@ export const SortableField = ({ field, onRemove }: SortableFieldProps) => {
   const style = {
     transform: CSS.Transform.toString(transform),
     transition,
-    opacity: isDragging ? 0.4 : 1,
+    opacity: isDragging ? 1 : 1,
   };
 
   return (
@@ -31,7 +31,7 @@ export const SortableField = ({ field, onRemove }: SortableFieldProps) => {
       ref={setNodeRef}
       style={style}
       {...attributes}
-      className="border rounded p-4 mb-2 bg-white shadow relative"
+      className="rounded p-4 bg-whit relative"
     >
       <div className="flex gap-2 items-center">
         <div
@@ -39,7 +39,7 @@ export const SortableField = ({ field, onRemove }: SortableFieldProps) => {
           className="flex-0 cursor-grab text-gray-400"
           title="Drag to reorder"
         >
-          ⠿
+          <GripVertical className=" text-gray-500 hover:text-black" />
         </div>
         <div className="flex-1">
           <label className="block font-medium mb-1">{field.label}</label>
@@ -54,7 +54,7 @@ export const SortableField = ({ field, onRemove }: SortableFieldProps) => {
       </div>
 
       <div
-        className="absolute top-2 right-2 cursor-pointer text-gray-500 hover:text-red-500"
+        className="absolute top-2 right-2 cursor-pointer text-gray-500 hover:text-black"
         onClick={(e) => {
           onRemove(field.id);
         }}
