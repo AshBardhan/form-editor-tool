@@ -7,12 +7,14 @@ const FieldEditorSidebar = () => {
   const selected = fields.find((f) => f.id === selectedFieldId);
 
   return (
-    <div className="p-4">
-      <h2 className="text-lg font-semibold mb-4">Field Editor</h2>
+    <>
+      <div className="p-4 border-b border-b-[#2d2d2d]">
+        <h2 className="font-semibold">Field Editor</h2>
+      </div>
       {selected ? (
-        <>
+        <div className="flex flex-col gap-4 p-4">
           {selected.props.map((prop) => (
-            <div className="flex flex-col mb-2" key={prop.key}>
+            <div className="flex flex-col gap-2" key={prop.key}>
               <label htmlFor={prop.key}>{prop.label}</label>
               <input
                 id={prop.key}
@@ -33,13 +35,13 @@ const FieldEditorSidebar = () => {
               />
             </div>
           ))}
-        </>
+        </div>
       ) : (
-        <div className="bg-white p-6 rounded shadow">
-          <p className="text-gray-700">Select a field to edit its properties</p>
+        <div className="m-2 p-6 text-xs text-center rounded-md border border-[#2d2d2d] bg-[#1e1e1e]">
+          <p>Select a field to edit its properties</p>
         </div>
       )}
-    </div>
+    </>
   );
 };
 
