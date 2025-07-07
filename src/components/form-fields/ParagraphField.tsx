@@ -3,7 +3,7 @@ import { Field } from "@/types/field";
 
 export const ParagraphField = ({ field }: { field: Field }) => {
   return (
-    <div>
+    <div className="py-2">
       <p>{getPropValue(field, "text")}</p>
     </div>
   );

@@ -17,7 +17,7 @@ export const HeadingField = ({ field }: { field: Field }) => {
 
   const HeadingTag = `h${level}` as keyof JSX.IntrinsicElements;
   return (
-    <HeadingTag className={`font-bold ${headingStyles[level]}`}>
+    <HeadingTag className={`py-2 font-bold ${headingStyles[level]}`}>
       {text}
     </HeadingTag>
   );

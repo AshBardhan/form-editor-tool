@@ -48,7 +48,7 @@ export const SortableField = ({ field }: SortableFieldProps) => {
       ref={setNodeRef}
       style={style}
       {...attributes}
-      className={`rounded p-4 bg-white relative border ${
+      className={`rounded px-4 bg-white relative border ${
         isSelected ? "border-blue-500" : "border-transparent"
       }`}
       onMouseEnter={() => !isDragging && hoverField(field.id)}
