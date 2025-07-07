@@ -1,9 +1,9 @@
 "use client";
 
-import { CheckIcon, ChevronDownIcon, ChevronUpIcon } from 'lucide-react';
-import * as React from 'react';
+import { CheckIcon, ChevronDownIcon, ChevronUpIcon } from "lucide-react";
+import * as React from "react";
 
-import { cn } from '@/lib/utils';
+import { cn } from "@/lib/utils";
 
 interface SelectContextValue {
   value?: string;
@@ -53,7 +53,7 @@ function Select({
       }
       onOpenChange?.(false);
     },
-    [value, onValueChange, open, onOpenChange]
+    [value, onValueChange, open, onOpenChange],
   );
 
   const handleOpenChange = React.useCallback(
@@ -63,7 +63,7 @@ function Select({
       }
       onOpenChange?.(newOpen);
     },
-    [open, onOpenChange]
+    [open, onOpenChange],
   );
 
   return (
@@ -131,7 +131,7 @@ function SelectTrigger({
       onClick={() => context.onOpenChange(!context.open)}
       className={cn(
         "border-input data-[placeholder]:text-muted-foreground [&_svg:not([class*='text-'])]:text-muted-foreground focus-visible:border-ring focus-visible:ring-ring/50 aria-invalid:ring-destructive/20 dark:aria-invalid:ring-destructive/40 aria-invalid:border-destructive dark:bg-input/30 dark:hover:bg-input/50 flex w-fit items-center justify-between gap-2 rounded-md border bg-transparent px-3 py-2 text-sm whitespace-nowrap shadow-xs transition-[color,box-shadow] outline-none focus-visible:ring-[3px] disabled:cursor-not-allowed disabled:opacity-50 data-[size=default]:h-9 data-[size=sm]:h-8 *:data-[slot=select-value]:line-clamp-1 *:data-[slot=select-value]:flex *:data-[slot=select-value]:items-center *:data-[slot=select-value]:gap-2 [&_svg]:pointer-events-none [&_svg]:shrink-0 [&_svg:not([class*='size-'])]:size-4",
-        className
+        className,
       )}
       {...props}
     >
@@ -162,7 +162,7 @@ function SelectContent({
       className={cn(
         "bg-popover text-popover-foreground relative z-50 max-h-96 min-w-[8rem] overflow-x-hidden overflow-y-auto rounded-md border shadow-md",
         position === "popper" && "mt-1",
-        className
+        className,
       )}
       {...props}
     >
@@ -199,7 +199,7 @@ function SelectItem({ className, children, value, ...props }: SelectItemProps) {
       data-slot="select-item"
       className={cn(
         "focus:bg-accent focus:text-accent-foreground [&_svg:not([class*='text-'])]:text-muted-foreground relative flex w-full cursor-default items-center gap-2 rounded-sm py-1.5 pr-8 pl-2 text-sm outline-hidden select-none hover:bg-accent hover:text-accent-foreground [&_svg]:pointer-events-none [&_svg]:shrink-0 [&_svg:not([class*='size-'])]:size-4",
-        className
+        className,
       )}
       onClick={() => context.onValueChange?.(value)}
       {...props}
@@ -236,7 +236,7 @@ function SelectScrollUpButton({
       data-slot="select-scroll-up-button"
       className={cn(
         "flex cursor-default items-center justify-center py-1",
-        className
+        className,
       )}
       {...props}
     >
@@ -254,7 +254,7 @@ function SelectScrollDownButton({
       data-slot="select-scroll-down-button"
       className={cn(
         "flex cursor-default items-center justify-center py-1",
-        className
+        className,
       )}
       {...props}
     >

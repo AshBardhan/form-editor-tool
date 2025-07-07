@@ -1,8 +1,8 @@
 "use client";
 
-import * as React from 'react';
+import * as React from "react";
 
-import { cn } from '@/lib/utils';
+import { cn } from "@/lib/utils";
 
 interface LabelProps extends React.LabelHTMLAttributes<HTMLLabelElement> {
   className?: string;
@@ -14,7 +14,7 @@ function Label({ className, ...props }: LabelProps) {
       data-slot="label"
       className={cn(
         "text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70",
-        className
+        className,
       )}
       {...props}
     />

@@ -1,8 +1,9 @@
 import { getPropValue } from "@/lib/utils/fieldUtils";
 import { Field } from "@/types/field";
 import { Label } from "../ui/Label";
+import { Input } from "../ui/Input";
 
-export const TextareaField = ({ field }: { field: Field }) => {
+export const InputField = ({ field }: { field: Field }) => {
   return (
     <div className="flex flex-col gap-2 py-2">
       {getPropValue(field, "label") && (
@@ -10,12 +11,11 @@ export const TextareaField = ({ field }: { field: Field }) => {
           {getPropValue(field, "label")}
         </Label>
       )}
-      <textarea
+      <Input
         id={field.id}
+        type={field.type}
         placeholder={String(getPropValue(field, "placeholder"))}
-        rows={Number(getPropValue(field, "rows") || 3)}
         disabled
-        className="border rounded px-2 py-1 w-full"
       />
     </div>
   );

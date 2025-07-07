@@ -1,8 +1,8 @@
 "use client";
 
-import * as React from 'react';
+import * as React from "react";
 
-import { cn } from '@/lib/utils';
+import { cn } from "@/lib/utils";
 
 interface SwitchProps
   extends Omit<React.InputHTMLAttributes<HTMLInputElement>, "type"> {
@@ -28,7 +28,7 @@ const Switch = React.forwardRef<HTMLInputElement, SwitchProps>(
         </div>
       </label>
     );
-  }
+  },
 );
 Switch.displayName = "Switch";
 

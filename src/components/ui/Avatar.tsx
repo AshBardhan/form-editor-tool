@@ -1,8 +1,8 @@
 "use client";
 
-import * as React from 'react';
+import * as React from "react";
 
-import { cn } from '@/lib/utils';
+import { cn } from "@/lib/utils";
 
 interface AvatarProps extends React.HTMLAttributes<HTMLDivElement> {
   className?: string;
@@ -11,7 +11,7 @@ interface AvatarProps extends React.HTMLAttributes<HTMLDivElement> {
 interface AvatarImageProps extends React.ImgHTMLAttributes<HTMLImageElement> {
   className?: string;
   onLoadingStatusChange?: (
-    status: "idle" | "loading" | "loaded" | "error"
+    status: "idle" | "loading" | "loaded" | "error",
   ) => void;
 }
 
@@ -23,7 +23,7 @@ interface AvatarFallbackProps extends React.HTMLAttributes<HTMLDivElement> {
 const AvatarContext = React.createContext<{
   imageLoadingStatus: "idle" | "loading" | "loaded" | "error";
   onImageLoadingStatusChange: (
-    status: "idle" | "loading" | "loaded" | "error"
+    status: "idle" | "loading" | "loaded" | "error",
   ) => void;
 }>({
   imageLoadingStatus: "idle",
@@ -46,7 +46,7 @@ function Avatar({ className, ...props }: AvatarProps) {
         data-slot="avatar"
         className={cn(
           "relative flex size-8 shrink-0 overflow-hidden rounded-full",
-          className
+          className,
         )}
         {...props}
       />
@@ -124,7 +124,7 @@ function AvatarFallback({
       data-slot="avatar-fallback"
       className={cn(
         "bg-muted flex size-full items-center justify-center rounded-full",
-        className
+        className,
       )}
       {...props}
     >
