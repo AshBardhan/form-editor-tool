@@ -1,7 +1,7 @@
 import { Field, FieldType } from "@/types/field";
 import { nanoid } from "nanoid";
 import { create } from "zustand";
-import { getDefaultProps } from "./constants/defaultFieldProps";
+import { getDefaultProps } from "./utils/fieldUtils";
 
 interface FormState {
   fields: Field[];

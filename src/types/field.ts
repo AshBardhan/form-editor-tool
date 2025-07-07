@@ -4,6 +4,7 @@ export type FieldProp = {
   key: string;
   label: string;
   type: "string" | "number" | "boolean";
+  defaultValue?: any;
   value?: any;
 };
 
