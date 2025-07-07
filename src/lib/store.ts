@@ -1,12 +1,15 @@
-import { Field } from "@/types/field";
+import { Field, FieldType } from "@/types/field";
+import { nanoid } from "nanoid";
 import { create } from "zustand";
+import { getDefaultProps } from "./constants/defaultFieldProps";
 
 interface FormState {
   fields: Field[];
   selectedFieldId: string | null;
+  hoveredFieldId: string | null;
   selectField: (id: string | null) => void;
-  addField: (field: Field) => void;
-  insertFieldAt: (field: Field, index: number) => void;
+  hoverField: (id: string | null) => void;
+  addField: (type: FieldType, index?: number) => void;
   moveField: (fromIndex: number, toIndex: number) => void;
   updateField: (id: string, key: string, value: any) => void;
   removeField: (id: string) => void;
@@ -15,13 +18,34 @@ interface FormState {
 export const useFormStore = create<FormState>((set) => ({
   fields: [],
   selectedFieldId: null,
-  selectField: (id) => set({ selectedFieldId: id }),
-  addField: (field) => set((state) => ({ fields: [...state.fields, field] })),
-  insertFieldAt: (field: Field, index: number) => {
+  hoveredFieldId: null,
+  selectField: (id) => {
+    set((state) =>
+      state.selectedFieldId === id ? state : { selectedFieldId: id },
+    );
+  },
+  hoverField: (id) => {
+    set((state) =>
+      state.hoveredFieldId === id ? state : { hoveredFieldId: id },
+    );
+  },
+  addField: (type, index) => {
+    const id = nanoid();
+    const newField: Field = {
+      id,
+      type,
+      name: `${type}-${id}`,
+      props: getDefaultProps(type),
+    };
+
     set((state) => {
-      const updatedFields = [...state.fields];
-      updatedFields.splice(index, 0, field);
-      return { fields: updatedFields };
+      const updated = [...state.fields];
+      if (index !== undefined) {
+        updated.splice(index, 0, newField);
+      } else {
+        updated.push(newField);
+      }
+      return { fields: updated };
     });
   },
   moveField: (from, to) => {

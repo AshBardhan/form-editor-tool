@@ -58,8 +58,15 @@ const renderField = (field: Field) => {
 };
 
 export const SortableField = ({ field }: SortableFieldProps) => {
-  const { selectedFieldId, selectField, removeField } = useFormStore();
+  const {
+    selectedFieldId,
+    hoveredFieldId,
+    selectField,
+    hoverField,
+    removeField,
+  } = useFormStore();
   const isSelected = selectedFieldId === field.id;
+  const isHovered = hoveredFieldId === field.id;
 
   const {
     attributes,
@@ -84,10 +91,13 @@ export const SortableField = ({ field }: SortableFieldProps) => {
       className={`rounded p-4 bg-white relative border ${
         isSelected ? "border-blue-500" : "border-transparent"
       }`}
-      onClick={() => {
-        selectField(field.id);
-      }}
+      onMouseEnter={() => !isDragging && hoverField(field.id)}
+      onMouseLeave={() => !isDragging && hoverField(null)}
+      onClick={() => !isDragging && selectField(field.id)}
     >
+      {isHovered && (
+        <div className="absolute inset-0 bg-blue-300 opacity-30 pointer-events-none" />
+      )}
       <div className="flex gap-2 items-center">
         <div
           {...listeners}
@@ -96,7 +106,9 @@ export const SortableField = ({ field }: SortableFieldProps) => {
         >
           <GripVertical className=" text-gray-500 hover:text-black" />
         </div>
-        <div className="flex-1">{renderField(field)}</div>
+        <div className="flex-1 pointer-events-none relative">
+          {renderField(field)}
+        </div>
 
         <div
           className="flex-0 cursor-pointer text-gray-500 hover:text-black"

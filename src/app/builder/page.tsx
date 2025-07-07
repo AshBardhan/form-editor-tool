@@ -4,14 +4,12 @@ import { FormBuilderCanvas } from "@/components/FormBuilderCanvas";
 import { Sidebar } from "@/components/Sidebar";
 import { DndContext, DragEndEvent, pointerWithin } from "@dnd-kit/core";
 import { useFormStore } from "@/lib/store";
-import { nanoid } from "nanoid";
 import { useState } from "react";
 import { FieldEditor } from "@/components/FieldEditor";
-import { getDefaultProps } from "@/lib/constants/defaultFieldProps";
 
 export default function Home() {
   const [overId, setOverId] = useState<string | null>(null);
-  const { fields, moveField, insertFieldAt, addField } = useFormStore();
+  const { fields, moveField, addField } = useFormStore();
 
   function handleDragEnd(event: DragEndEvent) {
     const { active, over } = event;
@@ -27,37 +25,21 @@ export default function Home() {
     const overIndex = fields.findIndex((f) => f.id === overId);
 
     const isReorder = activeIndex !== -1 && overIndex !== -1;
-    const isInsert = activeIndex === -1 && overIndex !== -1;
+    const isInsertBetween = activeIndex === -1 && overIndex !== -1;
+    const isInsertAtEnd = activeIndex === -1 && overId === "canvas";
 
-    // Reordering existing fields
     if (isReorder && activeIndex !== overIndex) {
       moveField(activeIndex, overIndex);
       return;
     }
 
-    // Inserting new field between existing items
-    if (isInsert) {
-      const newId = nanoid();
-      const newField = {
-        id: newId,
-        type: dragged.type,
-        name: `${dragged.type}-${newId}`,
-        props: getDefaultProps(dragged.type),
-      };
-
-      insertFieldAt(newField, overIndex);
+    if (isInsertBetween) {
+      addField(dragged.type, overIndex);
       return;
     }
 
-    // If dropped on canvas (empty), insert at end
-    if (activeIndex === -1 && overId === "canvas") {
-      const newId = nanoid();
-      addField({
-        id: nanoid(),
-        type: dragged.type,
-        name: `${dragged.type}-${newId}`,
-        props: getDefaultProps(dragged.type),
-      });
+    if (isInsertAtEnd) {
+      addField(dragged.type);
     }
   }
 
@@ -74,7 +56,7 @@ export default function Home() {
         <aside className="w-72 bg-gray-400 border-r border-black/5">
           <Sidebar />
         </aside>
-        <main className="flex-1 px-8 bg-gray-100 overflow-auto">
+        <main className="flex-1 px-16 bg-gray-100 overflow-auto">
           <FormBuilderCanvas overId={overId} />
         </main>
         <aside className="w-72 bg-gray-400 border-l border-black/5">
