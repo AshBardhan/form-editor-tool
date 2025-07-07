@@ -1,12 +1,6 @@
 import { ComponentCategory } from "@/types/component";
 
-export const componentPalette = [
-  { type: "text", label: "Text Input" },
-  { type: "textarea", label: "Textbox" },
-  { type: "checkbox", label: "Checkbox" },
-];
-
-export const newComponentPalette: ComponentCategory[] = [
+export const componentPalette: ComponentCategory[] = [
   {
     category: "text-field",
     label: "Text",

@@ -14,7 +14,7 @@ const FormBuilderCanvas = ({ overId }: { overId: string | null }) => {
   return (
     <div className="space-y-4" ref={setNodeRef}>
       <Header />
-      <div className="min-h-[200px] shadow transition bg-white my-2">
+      <div className="min-h-[200px] shadow transition bg-white p-4">
         <SortableContext
           items={fields.map((f) => f.id)}
           strategy={rectSortingStrategy}

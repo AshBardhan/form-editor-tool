@@ -38,7 +38,9 @@ export const SortableField = ({ field }: SortableFieldProps) => {
   } = useSortable({ id: field.id });
 
   const style = {
-    transform: CSS.Transform.toString(transform),
+    transform: transform
+      ? CSS.Transform.toString({ ...transform, scaleX: 1, scaleY: 1 })
+      : "",
     transition,
     opacity: isDragging ? 0.8 : 1,
   };
@@ -48,7 +50,7 @@ export const SortableField = ({ field }: SortableFieldProps) => {
       ref={setNodeRef}
       style={style}
       {...attributes}
-      className={`rounded px-4 bg-white relative border ${
+      className={`rounded bg-white relative border ${
         isSelected ? "border-blue-500" : "border-transparent"
       }`}
       onMouseEnter={() => !isDragging && hoverField(field.id)}

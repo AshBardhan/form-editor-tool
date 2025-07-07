@@ -1,6 +1,6 @@
 "use client";
 
-import { newComponentPalette } from "@/lib/constants/componentPalette";
+import { componentPalette } from "@/lib/constants/componentPalette";
 import { DraggableCard } from "./DraggableCard";
 
 const ComponentSidebar = () => {
@@ -10,7 +10,7 @@ const ComponentSidebar = () => {
         <h2 className="font-semibold">Form Fields</h2>
       </div>
       <div className="px-4">
-        {newComponentPalette.map((group) => (
+        {componentPalette.map((group) => (
           <div className="mb-6" key={group.category}>
             <h3 className="text-sm font-bold">{group.label}</h3>
             <div className="space-y-2 mt-2">
