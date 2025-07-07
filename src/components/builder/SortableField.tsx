@@ -5,81 +5,15 @@ import { Field } from "@/types/field";
 import { useSortable } from "@dnd-kit/sortable";
 import { CSS } from "@dnd-kit/utilities";
 import { Copy, GripVertical, Trash } from "lucide-react";
-import { JSX } from "react";
+import { fieldRenderers } from "@/components/form-fields";
 
 interface SortableFieldProps {
   field: Field;
 }
 
-const getPropValue = (field: Field, key: string) =>
-  field.props.find((p) => p.key === key)?.value ?? "";
-
 const renderField = (field: Field) => {
-  switch (field.type) {
-    case "text":
-      return (
-        <div className="flex flex-col gap-1">
-          {getPropValue(field, "label") && (
-            <label className="block mb-1 font-medium">
-              {getPropValue(field, "label")}
-            </label>
-          )}
-          <input
-            type="text"
-            placeholder={String(getPropValue(field, "placeholder"))}
-            disabled
-            className="border rounded px-2 py-1 w-full"
-          />
-        </div>
-      );
-    case "textarea":
-      return (
-        <div className="flex flex-col gap-1">
-          {getPropValue(field, "label") && (
-            <label className="block mb-1 font-medium">
-              {getPropValue(field, "label")}
-            </label>
-          )}
-          <textarea
-            placeholder={String(getPropValue(field, "placeholder"))}
-            rows={Number(getPropValue(field, "rows") || 3)}
-            disabled
-            className="border rounded px-2 py-1 w-full"
-          />
-        </div>
-      );
-    case "checkbox":
-      return (
-        <div className="flex gap-2 items-center">
-          <input type="checkbox" disabled />
-          <label>{getPropValue(field, "label")}</label>
-        </div>
-      );
-    case "heading": {
-      const headingStyles: Record<number, string> = {
-        1: "text-3xl",
-        2: "text-2xl",
-        3: "text-xl",
-        4: "text-lg",
-        5: "text-base",
-        6: "text-sm",
-      };
-      const text = getPropValue(field, "text");
-      const level = getPropValue(field, "level") || 1;
-      const clampedLevel = Math.min(Math.max(level, 1), 6);
-
-      const HeadingTag = `h${clampedLevel}` as keyof JSX.IntrinsicElements;
-      const style = headingStyles[clampedLevel];
-
-      return <HeadingTag className={`font-bold ${style}`}>{text}</HeadingTag>;
-    }
-    case "paragraph":
-      return (
-        <div>
-          <p>{getPropValue(field, "text")}</p>
-        </div>
-      );
-  }
+  const Renderer = fieldRenderers[field.type];
+  return Renderer ? <Renderer field={field} /> : null;
 };
 
 export const SortableField = ({ field }: SortableFieldProps) => {
