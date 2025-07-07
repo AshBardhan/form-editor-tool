@@ -98,13 +98,13 @@ export default function Home() {
           ) : null}
         </DragOverlay>
         <div className="flex h-screen">
-          <aside className="w-72 flex-shrink-0 bg-[#151515] text-white border-r border-[#373737]">
+          <aside className="w-72 flex-shrink-0 bg-[#151515] text-[#fefefe] border-r border-[#373737]">
             <ComponentSidebar />
           </aside>
           <main className="flex-1 px-16 bg-gray-100 overflow-auto">
             <FormBuilderCanvas overId={overId} />
           </main>
-          <aside className="w-72 flex-shrink-0 bg-[#151515] text-white border-l border-[#373737]">
+          <aside className="w-72 flex-shrink-0 bg-[#151515] text-[#fefefe] border-l border-[#373737]">
             <FieldEditorSidebar />
           </aside>
         </div>

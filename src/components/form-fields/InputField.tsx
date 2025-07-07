@@ -14,6 +14,7 @@ export const InputField = ({ field }: { field: Field }) => {
       <Input
         id={field.id}
         type={field.type}
+        required={Boolean(getPropValue(field, "required"))}
         placeholder={String(getPropValue(field, "placeholder"))}
         disabled
       />

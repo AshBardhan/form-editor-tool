@@ -11,12 +11,15 @@ const ComponentSidebar = () => {
         <h2 className="font-semibold">Form Fields</h2>
       </div>
       {componentPalette.map((group) => (
-        <div className="p-4 border-b border-b-[#2d2d2d]" key={group.category}>
+        <div
+          className="p-4 border-b border-b-[#2d2d2d] flex flex-col gap-3"
+          key={group.category}
+        >
           <div className="flex items-center justify-between h-10">
             <h3 className="text-sm font-semibold">{group.label}</h3>
             <ChevronDown size={20} className="text-current" />
           </div>
-          <div className="space-y-2 mt-2">
+          <div className="flex flex-col gap-3">
             {group.items.map((comp) => (
               <DraggableCard key={comp.type} component={comp} />
             ))}

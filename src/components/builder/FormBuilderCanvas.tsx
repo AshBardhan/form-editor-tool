@@ -20,8 +20,8 @@ const FormBuilderCanvas = ({ overId }: { overId: string | null }) => {
           strategy={rectSortingStrategy}
         >
           {fields.length === 0 && !overId ? (
-            <div className="h-50 text-gray-500 border border-dashed flex items-center justify-center">
-              <span>Drag components here</span>
+            <div className="h-50 text-gray-500 border border-dashed flex items-center justify-center text-sm">
+              Drag components here
             </div>
           ) : (
             fields.map((field) => (

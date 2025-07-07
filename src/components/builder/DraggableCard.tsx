@@ -21,7 +21,7 @@ export function DraggableCard({ component }: { component: ComponentType }) {
       ref={setNodeRef}
       {...listeners}
       {...attributes}
-      className="p-2 mb-2 rounded-md border border-[#2d2d2d] bg-[#1e1e1e] hover:bg-[#2f2f2f] text-sm font-medium cursor-move"
+      className="px-3 py-2 rounded-md border border-[#2d2d2d] bg-[#1e1e1e] hover:bg-[#2f2f2f] text-xs font-medium cursor-move"
     >
       {component.label}
     </div>

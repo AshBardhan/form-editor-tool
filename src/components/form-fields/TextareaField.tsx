@@ -13,6 +13,7 @@ export const TextareaField = ({ field }: { field: Field }) => {
       <textarea
         id={field.id}
         placeholder={String(getPropValue(field, "placeholder"))}
+        required={Boolean(getPropValue(field, "required"))}
         rows={Number(getPropValue(field, "rows") || 3)}
         disabled
         className="border rounded px-2 py-1 w-full"
