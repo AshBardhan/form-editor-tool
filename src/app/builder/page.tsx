@@ -1,15 +1,17 @@
 "use client";
 
-import { FormBuilderCanvas } from "@/components/canvas";
-import { Sidebar } from "@/components/sidebar";
+import { FormBuilderCanvas } from "@/components/FormBuilderCanvas";
+import { Sidebar } from "@/components/Sidebar";
 import { DndContext, DragEndEvent, pointerWithin } from "@dnd-kit/core";
 import { useFormStore } from "@/lib/store";
 import { nanoid } from "nanoid";
 import { useState } from "react";
-import { FieldEditor } from "@/components/field-editor";
+import { FieldEditor } from "@/components/FieldEditor";
+import { getDefaultProps } from "@/lib/constants/defaultFieldProps";
 
 export default function Home() {
   const [overId, setOverId] = useState<string | null>(null);
+  const { fields, moveField, insertFieldAt, addField } = useFormStore();
 
   function handleDragEnd(event: DragEndEvent) {
     const { active, over } = event;
@@ -17,8 +19,6 @@ export default function Home() {
 
     const dragged = active.data?.current;
     if (!dragged) return;
-
-    const { fields, moveField, addField } = useFormStore.getState();
 
     const activeId = active.id;
     const overId = over.id;
@@ -29,35 +29,34 @@ export default function Home() {
     const isReorder = activeIndex !== -1 && overIndex !== -1;
     const isInsert = activeIndex === -1 && overIndex !== -1;
 
-    // ✅ Reordering existing fields
+    // Reordering existing fields
     if (isReorder && activeIndex !== overIndex) {
       moveField(activeIndex, overIndex);
       return;
     }
 
-    // ✅ Inserting new field between existing items
+    // Inserting new field between existing items
     if (isInsert) {
+      const newId = nanoid();
       const newField = {
-        id: nanoid(),
+        id: newId,
         type: dragged.type,
-        label: dragged.label,
-        required: false,
+        name: `${dragged.type}-${newId}`,
+        props: getDefaultProps(dragged.type),
       };
 
-      const updatedFields = [...fields];
-      updatedFields.splice(overIndex, 0, newField);
-
-      useFormStore.setState({ fields: updatedFields });
+      insertFieldAt(newField, overIndex);
       return;
     }
 
-    // ✅ If dropped on canvas (empty), insert at end
+    // If dropped on canvas (empty), insert at end
     if (activeIndex === -1 && overId === "canvas") {
+      const newId = nanoid();
       addField({
         id: nanoid(),
         type: dragged.type,
-        label: dragged.label,
-        required: false,
+        name: `${dragged.type}-${newId}`,
+        props: getDefaultProps(dragged.type),
       });
     }
   }

@@ -1,10 +1,11 @@
 "use client";
 
-import { Header } from "@/components/header";
+import { Header } from "@/components/Header";
 import { useFormStore } from "@/lib/store";
 import { SortableContext, rectSortingStrategy } from "@dnd-kit/sortable";
-import { SortableField } from "./sortable-field";
+import { SortableField } from "./SortableField";
 import { useDroppable } from "@dnd-kit/core";
+import React from "react";
 
 const FormBuilderCanvas = ({ overId }: { overId: string | null }) => {
   const { fields } = useFormStore();
@@ -24,19 +25,16 @@ const FormBuilderCanvas = ({ overId }: { overId: string | null }) => {
             <p className="text-gray-500 text-sm italic">Drag components here</p>
           ) : (
             fields.map((field) => (
-              <>
-                {/* ✅ Drop placeholder before hovered item */}
+              <React.Fragment key={field.id}>
+                {/* Drop placeholder before hovered item */}
                 {overId === field.id && (
                   <div className="h-4 bg-blue-300 opacity-30 rounded my-2 transition-all" />
                 )}
-                <SortableField
-                  key={field.id}
-                  field={field}
-                />
-              </>
+                <SortableField field={field} />
+              </React.Fragment>
             ))
           )}
-          {/* ✅ Show placeholder at end if overId is "canvas" */}
+          {/* Show placeholder at end if overId is "canvas" */}
           {overId === "canvas" && (
             <div className="h-4 bg-blue-300 opacity-30 rounded my-2" />
           )}
