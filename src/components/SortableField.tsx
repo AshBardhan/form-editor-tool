@@ -5,6 +5,7 @@ import { Field } from "@/types/field";
 import { useSortable } from "@dnd-kit/sortable";
 import { CSS } from "@dnd-kit/utilities";
 import { Copy, GripVertical, Trash } from "lucide-react";
+import { JSX } from "react";
 
 interface SortableFieldProps {
   field: Field;
@@ -52,6 +53,30 @@ const renderField = (field: Field) => {
         <div className="flex gap-2 items-center">
           <input type="checkbox" disabled />
           <label>{getPropValue(field, "label")}</label>
+        </div>
+      );
+    case "heading": {
+      const headingStyles: Record<number, string> = {
+        1: "text-3xl",
+        2: "text-2xl",
+        3: "text-xl",
+        4: "text-lg",
+        5: "text-base",
+        6: "text-sm",
+      };
+      const text = getPropValue(field, "text");
+      const level = getPropValue(field, "level") || 1;
+      const clampedLevel = Math.min(Math.max(level, 1), 6);
+
+      const HeadingTag = `h${clampedLevel}` as keyof JSX.IntrinsicElements;
+      const style = headingStyles[clampedLevel];
+
+      return <HeadingTag className={`font-bold ${style}`}>{text}</HeadingTag>;
+    }
+    case "paragraph":
+      return (
+        <div>
+          <p>{getPropValue(field, "text")}</p>
         </div>
       );
   }
@@ -112,25 +137,24 @@ export const SortableField = ({ field }: SortableFieldProps) => {
         </div>
 
         <div className="flex-0 flex gap-1">
-        <div
-          className="cursor-pointer text-gray-500 hover:text-black"
-          onClick={(e) => {
-            e.stopPropagation();
-            cloneField(field.id);
-          }}
-        >
-          <Copy />
-        </div>
-        <div
-          className="cursor-pointer text-gray-500 hover:text-black"
-          onClick={(e) => {
-            e.stopPropagation();
-            removeField(field.id);
-          }}
-        >
-          <Trash />
-        </div>
-
+          <div
+            className="cursor-pointer text-gray-500 hover:text-black"
+            onClick={(e) => {
+              e.stopPropagation();
+              cloneField(field.id);
+            }}
+          >
+            <Copy />
+          </div>
+          <div
+            className="cursor-pointer text-gray-500 hover:text-black"
+            onClick={(e) => {
+              e.stopPropagation();
+              removeField(field.id);
+            }}
+          >
+            <Trash />
+          </div>
         </div>
       </div>
     </div>

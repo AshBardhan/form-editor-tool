@@ -1,4 +1,6 @@
-export type FieldType = "text" | "textarea" | "checkbox";
+export type TextFieldType = "heading" | "paragraph";
+export type InputFieldType = "text" | "textarea" | "checkbox";
+export type FieldType = TextFieldType | InputFieldType;
 
 export type FieldProp = {
   key: string;
@@ -13,9 +15,4 @@ export type Field = {
   type: FieldType;
   name: string;
   props: FieldProp[];
-};
-
-export type ComponentType = {
-  type: FieldType;
-  label: string;
 };

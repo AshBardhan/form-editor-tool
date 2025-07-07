@@ -6,4 +6,4 @@ export function getDefaultProps(type: FieldType): FieldProp[] {
     ...prop,
     value: prop.defaultValue ?? "",
   }));
-};
+}

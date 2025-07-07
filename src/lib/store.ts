@@ -69,27 +69,27 @@ export const useFormStore = create<FormState>((set) => ({
       ),
     }));
   },
-cloneField: (id: string) => {
-  set((state) => {
-    const original = state.fields.find((f) => f.id === id);
-    if (!original) return {};
+  cloneField: (id: string) => {
+    set((state) => {
+      const original = state.fields.find((f) => f.id === id);
+      if (!original) return {};
 
-    const newId = nanoid();
-    const clonedField: Field = {
-      ...original,
-      id: newId,
-      name: `${original.type}-${newId}`,
-      props: original.props.map((p) => ({ ...p })),
-    };
+      const newId = nanoid();
+      const clonedField: Field = {
+        ...original,
+        id: newId,
+        name: `${original.type}-${newId}`,
+        props: original.props.map((p) => ({ ...p })),
+      };
 
-    const updated = [...state.fields];
-    const originalIndex = state.fields.findIndex((f) => f.id === id);
-    const insertAt = originalIndex >= 0 ? originalIndex + 1 : updated.length;
+      const updated = [...state.fields];
+      const originalIndex = state.fields.findIndex((f) => f.id === id);
+      const insertAt = originalIndex >= 0 ? originalIndex + 1 : updated.length;
 
-    updated.splice(insertAt, 0, clonedField);
+      updated.splice(insertAt, 0, clonedField);
 
-    return { fields: updated };
-  });
+      return { fields: updated };
+    });
   },
   removeField: (id) => {
     set((state) => ({

@@ -1,6 +1,6 @@
 "use client";
 
-import { ComponentType } from "@/types/field";
+import { ComponentType } from "@/types/component";
 import { useDraggable } from "@dnd-kit/core";
 
 export function DraggableCard({ component }: { component: ComponentType }) {
