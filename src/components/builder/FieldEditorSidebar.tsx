@@ -2,7 +2,7 @@
 
 import { useFormStore } from "@/lib/store";
 
-const FieldEditor = () => {
+const FieldEditorSidebar = () => {
   const { fields, selectedFieldId, updateField } = useFormStore();
   const selected = fields.find((f) => f.id === selectedFieldId);
 
@@ -43,4 +43,4 @@ const FieldEditor = () => {
   );
 };
 
-export { FieldEditor };
+export { FieldEditorSidebar };

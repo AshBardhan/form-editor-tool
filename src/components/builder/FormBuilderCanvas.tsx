@@ -14,14 +14,14 @@ const FormBuilderCanvas = ({ overId }: { overId: string | null }) => {
   return (
     <div className="space-y-4" ref={setNodeRef}>
       <Header />
-      <div className="min-h-[200px] shadow transition bg-white py-1 my-2">
+      <div className="min-h-[200px] shadow transition bg-white my-2">
         <SortableContext
           items={fields.map((f) => f.id)}
           strategy={rectSortingStrategy}
         >
           {fields.length === 0 && !overId ? (
-            <div className="h-10 text-gray-500 text-center border border-dashed">
-              Drag components here
+            <div className="h-50 text-gray-500 border border-dashed flex items-center justify-center">
+              <span>Drag components here</span>
             </div>
           ) : (
             fields.map((field) => (

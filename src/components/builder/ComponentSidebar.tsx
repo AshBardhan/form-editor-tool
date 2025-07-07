@@ -3,7 +3,7 @@
 import { newComponentPalette } from "@/lib/constants/componentPalette";
 import { DraggableCard } from "./DraggableCard";
 
-const Sidebar = () => {
+const ComponentSidebar = () => {
   return (
     <>
       <div className="flex items-center justify-between text-black p-4 border-b border-black/5 h-16">
@@ -25,4 +25,4 @@ const Sidebar = () => {
   );
 };
 
-export { Sidebar };
+export { ComponentSidebar };
