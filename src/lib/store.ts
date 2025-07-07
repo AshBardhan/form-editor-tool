@@ -12,6 +12,7 @@ interface FormState {
   addField: (type: FieldType, index?: number) => void;
   moveField: (fromIndex: number, toIndex: number) => void;
   updateField: (id: string, key: string, value: any) => void;
+  cloneField: (id: string) => void;
   removeField: (id: string) => void;
 }
 
@@ -67,6 +68,28 @@ export const useFormStore = create<FormState>((set) => ({
           : f,
       ),
     }));
+  },
+cloneField: (id: string) => {
+  set((state) => {
+    const original = state.fields.find((f) => f.id === id);
+    if (!original) return {};
+
+    const newId = nanoid();
+    const clonedField: Field = {
+      ...original,
+      id: newId,
+      name: `${original.type}-${newId}`,
+      props: original.props.map((p) => ({ ...p })),
+    };
+
+    const updated = [...state.fields];
+    const originalIndex = state.fields.findIndex((f) => f.id === id);
+    const insertAt = originalIndex >= 0 ? originalIndex + 1 : updated.length;
+
+    updated.splice(insertAt, 0, clonedField);
+
+    return { fields: updated };
+  });
   },
   removeField: (id) => {
     set((state) => ({

@@ -4,7 +4,7 @@ import { useFormStore } from "@/lib/store";
 import { Field } from "@/types/field";
 import { useSortable } from "@dnd-kit/sortable";
 import { CSS } from "@dnd-kit/utilities";
-import { GripVertical, Trash } from "lucide-react";
+import { Copy, GripVertical, Trash } from "lucide-react";
 
 interface SortableFieldProps {
   field: Field;
@@ -63,6 +63,7 @@ export const SortableField = ({ field }: SortableFieldProps) => {
     hoveredFieldId,
     selectField,
     hoverField,
+    cloneField,
     removeField,
   } = useFormStore();
   const isSelected = selectedFieldId === field.id;
@@ -110,14 +111,26 @@ export const SortableField = ({ field }: SortableFieldProps) => {
           {renderField(field)}
         </div>
 
+        <div className="flex-0 flex gap-1">
         <div
-          className="flex-0 cursor-pointer text-gray-500 hover:text-black"
+          className="cursor-pointer text-gray-500 hover:text-black"
+          onClick={(e) => {
+            e.stopPropagation();
+            cloneField(field.id);
+          }}
+        >
+          <Copy />
+        </div>
+        <div
+          className="cursor-pointer text-gray-500 hover:text-black"
           onClick={(e) => {
             e.stopPropagation();
             removeField(field.id);
           }}
         >
           <Trash />
+        </div>
+
         </div>
       </div>
     </div>
