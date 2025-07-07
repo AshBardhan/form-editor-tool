@@ -2,13 +2,24 @@
 
 import { FormBuilderCanvas } from "@/components/builder/FormBuilderCanvas";
 import { ComponentSidebar } from "@/components/builder/ComponentSidebar";
-import { DndContext, DragEndEvent, pointerWithin } from "@dnd-kit/core";
+import {
+  DndContext,
+  DragEndEvent,
+  DragOverlay,
+  pointerWithin,
+} from "@dnd-kit/core";
 import { useFormStore } from "@/lib/store";
 import { useState } from "react";
 import { FieldEditorSidebar } from "@/components/builder/FieldEditorSidebar";
+import { Field, FieldType } from "@/types/field";
+import { SortableField } from "@/components/builder/SortableField";
 
 export default function Home() {
   const [overId, setOverId] = useState<string | null>(null);
+  const [activeDragItem, setActiveDragItem] = useState<Field | null>(null);
+  const [dragSource, setDragSource] = useState<"sidebar" | "canvas" | null>(
+    null,
+  );
   const { fields, moveField, addField } = useFormStore();
 
   function handleDragEnd(event: DragEndEvent) {
@@ -43,26 +54,61 @@ export default function Home() {
     }
   }
 
-  return (
-    <DndContext
-      collisionDetection={pointerWithin}
-      onDragOver={(event) => setOverId((event.over?.id as string) ?? null)}
-      onDragEnd={(event) => {
-        handleDragEnd(event);
-        setOverId(null);
-      }}
-    >
-      <div className="flex h-screen">
-        <aside className="w-72 bg-gray-400 border-r border-black/5">
-          <ComponentSidebar />
-        </aside>
-        <main className="flex-1 px-16 bg-gray-100 overflow-auto">
-          <FormBuilderCanvas overId={overId} />
-        </main>
-        <aside className="w-72 bg-gray-400 border-l border-black/5">
-          <FieldEditorSidebar />
-        </aside>
+  function renderPreview(field: Field) {
+    return (
+      <div className="border border-dashed border-gray-400 bg-gray-100 text-sm text-gray-600 px-4 py-2 rounded">
+        {field.name}
       </div>
-    </DndContext>
+    );
+  }
+
+  return (
+    <>
+      <DndContext
+        collisionDetection={pointerWithin}
+        onDragStart={(event) => {
+          const data = event.active.data.current;
+          if (!data) return;
+
+          setActiveDragItem(data as Field);
+
+          if (data.from === "sidebar") {
+            setDragSource("sidebar");
+          } else {
+            setDragSource("canvas");
+          }
+        }}
+        onDragOver={(event) => {
+          setOverId((event.over?.id as string) ?? null);
+        }}
+        onDragEnd={(event) => {
+          handleDragEnd(event);
+          setOverId(null);
+          setActiveDragItem(null);
+          setDragSource(null);
+        }}
+      >
+        <DragOverlay>
+          {activeDragItem ? (
+            dragSource === "sidebar" ? (
+              renderPreview(activeDragItem)
+            ) : (
+              <SortableField field={activeDragItem} />
+            )
+          ) : null}
+        </DragOverlay>
+        <div className="flex h-screen">
+          <aside className="w-72 bg-gray-400 border-r border-black/5">
+            <ComponentSidebar />
+          </aside>
+          <main className="flex-1 px-16 bg-gray-100 overflow-auto">
+            <FormBuilderCanvas overId={overId} />
+          </main>
+          <aside className="w-72 bg-gray-400 border-l border-black/5">
+            <FieldEditorSidebar />
+          </aside>
+        </div>
+      </DndContext>
+    </>
   );
 }

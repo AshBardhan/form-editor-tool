@@ -6,6 +6,7 @@ import { useSortable } from "@dnd-kit/sortable";
 import { CSS } from "@dnd-kit/utilities";
 import { Copy, GripVertical, Trash } from "lucide-react";
 import { fieldRenderers } from "@/components/form-fields";
+import { CSSProperties } from "react";
 
 interface SortableFieldProps {
   field: Field;
@@ -35,14 +36,21 @@ export const SortableField = ({ field }: SortableFieldProps) => {
     transform,
     transition,
     isDragging,
-  } = useSortable({ id: field.id });
+  } = useSortable({
+    id: field.id,
+    data: {
+      ...field,
+      from: "canvas",
+    },
+  });
 
-  const style = {
+  const style: CSSProperties = {
     transform: transform
       ? CSS.Transform.toString({ ...transform, scaleX: 1, scaleY: 1 })
       : "",
     transition,
-    opacity: isDragging ? 0.8 : 1,
+    opacity: isDragging ? 0 : 1,
+    visibility: isDragging ? "hidden" : "visible",
   };
 
   return (
