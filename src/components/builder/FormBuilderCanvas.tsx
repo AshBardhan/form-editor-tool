@@ -12,7 +12,7 @@ const FormBuilderCanvas = ({ overId }: { overId: string | null }) => {
 
   return (
     <div className="flex justify-center h-full" ref={setNodeRef}>
-      <div className="min-h-[200px] w-full shadow transition flex-1 bg-white p-4 overflow-auto">
+      <div className="min-h-[200px] w-full transition flex-1 bg-white p-4 overflow-auto">
         <SortableContext
           items={form.fields.map((f) => f.id)}
           strategy={rectSortingStrategy}

@@ -4,12 +4,13 @@ import { useFormStore } from "@/lib/store";
 import { FormField } from "@/types/field";
 import { useSortable } from "@dnd-kit/sortable";
 import { CSS } from "@dnd-kit/utilities";
-import { Copy, GripVertical, Trash } from "lucide-react";
+import { Copy, GripHorizontal, GripVertical, Trash } from "lucide-react";
 import { fieldRenderers } from "@/components/form-fields";
 import { CSSProperties } from "react";
 
 interface SortableFieldProps {
   field: FormField;
+  isGhostMode?: boolean;
 }
 
 const renderField = (field: FormField) => {
@@ -17,7 +18,10 @@ const renderField = (field: FormField) => {
   return Renderer ? <Renderer field={field} /> : null;
 };
 
-export const SortableField = ({ field }: SortableFieldProps) => {
+export const SortableField = ({
+  field,
+  isGhostMode = false,
+}: SortableFieldProps) => {
   const {
     selectedFieldId,
     hoveredFieldId,
@@ -26,6 +30,7 @@ export const SortableField = ({ field }: SortableFieldProps) => {
     cloneField,
     removeField,
   } = useFormStore();
+
   const isSelected = selectedFieldId === field.id;
   const isHovered = hoveredFieldId === field.id;
 
@@ -69,41 +74,47 @@ export const SortableField = ({ field }: SortableFieldProps) => {
       {isHovered && (
         <div className="absolute inset-0 bg-blue-300 opacity-30 pointer-events-none" />
       )}
-      <div className="flex gap-2 items-center">
-        <div
-          {...listeners}
-          className={`flex-0 cursor-grab text-gray-400 ${isHovered ? "opacity-100 visible" : "opacity-0 invisible"}`}
-          title="Drag to reorder"
-        >
-          <GripVertical className=" text-gray-500 hover:text-black" />
-        </div>
-        <div className="flex-1 pointer-events-none relative">
-          {renderField(field)}
-        </div>
 
+      <div className="flex-1 pointer-events-none relative">
+        {renderField(field)}
+      </div>
+
+      {!isGhostMode && (
         <div
-          className={`flex-0 flex gap-1 transition ${isHovered ? "opacity-100 visible" : "opacity-0 invisible"}`}
+          className={`transition ${isHovered ? "opacity-100 visible" : "opacity-0 invisible"}`}
         >
           <div
-            className="cursor-pointer text-gray-500 hover:text-black"
-            onClick={(e) => {
-              e.stopPropagation();
-              cloneField(field.id);
-            }}
+            {...listeners}
+            className="absolute top-0 left-1/2 -translate-1/2 cursor-grab p-1 text-gray-500 hover:text-black"
+            title="Drag to reorder"
           >
-            <Copy />
+            <GripHorizontal size={20} />
           </div>
-          <div
-            className="cursor-pointer text-gray-500 hover:text-black"
-            onClick={(e) => {
-              e.stopPropagation();
-              removeField(field.id);
-            }}
-          >
-            <Trash />
+
+          <div className="absolute top-0 right-0 flex gap-2 p-2">
+            <div
+              role="button"
+              className="cursor-pointer text-gray-500 hover:text-black"
+              onClick={(e) => {
+                e.stopPropagation();
+                cloneField(field.id);
+              }}
+            >
+              <Copy size={14} />
+            </div>
+            <div
+              role="button"
+              className="cursor-pointer text-gray-500 hover:text-black"
+              onClick={(e) => {
+                e.stopPropagation();
+                removeField(field.id);
+              }}
+            >
+              <Trash size={14} />
+            </div>
           </div>
         </div>
-      </div>
+      )}
     </div>
   );
 };

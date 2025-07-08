@@ -93,7 +93,7 @@ export default function Home() {
             dragSource === "sidebar" ? (
               renderPreview(activeDragItem)
             ) : (
-              <SortableField field={activeDragItem} />
+              <SortableField isGhostMode={true} field={activeDragItem} />
             )
           ) : null}
         </DragOverlay>
