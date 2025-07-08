@@ -5,7 +5,7 @@ import { Label } from "@/components/ui/Label";
 import { Input } from "@/components/ui/Input";
 import { Checkbox } from "@/components/ui/Checkbox";
 
-const FieldEditorSidebar = () => {
+const FormEditorSidebar = () => {
   const { fields, selectedFieldId, updateField } = useFormStore();
   const selected = fields.find((f) => f.id === selectedFieldId);
 
@@ -85,4 +85,4 @@ const FieldEditorSidebar = () => {
   );
 };
 
-export { FieldEditorSidebar };
+export { FormEditorSidebar };

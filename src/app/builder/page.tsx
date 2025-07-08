@@ -10,7 +10,7 @@ import {
 } from "@dnd-kit/core";
 import { useFormStore } from "@/lib/store";
 import { useState } from "react";
-import { FieldEditorSidebar } from "@/components/builder/FieldEditorSidebar";
+import { FormEditorSidebar } from "@/components/builder/FormEditorSidebar";
 import { FormField } from "@/types/field";
 import { SortableField } from "@/components/builder/SortableField";
 
@@ -114,7 +114,7 @@ export default function Home() {
             <FormBuilderCanvas overId={overId} />
           </main>
           <aside className="w-72 flex-shrink-0 bg-[#151515] text-[#fefefe] border-l border-[#373737]">
-            <FieldEditorSidebar />
+            <FormEditorSidebar />
           </aside>
         </div>
       </DndContext>
