@@ -3,7 +3,11 @@ import { FormField } from "@/types/field";
 import { Checkbox } from "../ui/Checkbox";
 import { Label } from "../ui/Label";
 
-export const CheckboxField = ({ field }: { field: FormField }) => {
+interface CheckboxFieldProps {
+  field: FormField;
+}
+
+const CheckboxField = ({ field }: CheckboxFieldProps) => {
   return (
     <div className="flex gap-2 items-center py-2">
       <Checkbox id={field.id} />
@@ -13,3 +17,5 @@ export const CheckboxField = ({ field }: { field: FormField }) => {
     </div>
   );
 };
+
+export { CheckboxField };

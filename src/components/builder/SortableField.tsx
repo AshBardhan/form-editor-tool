@@ -13,11 +13,6 @@ interface SortableFieldProps {
   isGhostMode?: boolean;
 }
 
-const renderField = (field: FormField) => {
-  const Renderer = fieldRenderers[field.type];
-  return Renderer ? <Renderer field={field} /> : null;
-};
-
 export const SortableField = ({
   field,
   isGhostMode = false,
@@ -33,6 +28,11 @@ export const SortableField = ({
 
   const isSelected = selectedFieldId === field.id;
   const isHovered = hoveredFieldId === field.id;
+
+  const renderField = (field: FormField) => {
+    const Renderer = fieldRenderers[field.type];
+    return Renderer ? <Renderer field={field} /> : null;
+  };
 
   const {
     attributes,

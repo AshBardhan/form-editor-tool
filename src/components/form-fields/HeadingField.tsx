@@ -2,7 +2,11 @@ import { getPropValue } from "@/lib/utils/fieldUtils";
 import { FormField } from "@/types/field";
 import { JSX } from "react";
 
-export const HeadingField = ({ field }: { field: FormField }) => {
+interface HeadingFieldProps {
+  field: FormField;
+}
+
+const HeadingField = ({ field }: HeadingFieldProps) => {
   const text = getPropValue(field, "text");
   const level = Math.min(Math.max(getPropValue(field, "level") || 1, 1), 6);
   const headingStyles: Record<number, string> = {
@@ -19,3 +23,5 @@ export const HeadingField = ({ field }: { field: FormField }) => {
     <HeadingTag className={`py-2 ${headingStyles[level]}`}>{text}</HeadingTag>
   );
 };
+
+export { HeadingField };

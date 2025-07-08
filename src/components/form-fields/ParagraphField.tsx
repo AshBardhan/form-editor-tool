@@ -1,10 +1,16 @@
 import { getPropValue } from "@/lib/utils/fieldUtils";
 import { FormField } from "@/types/field";
 
-export const ParagraphField = ({ field }: { field: FormField }) => {
+interface ParagraphFieldProps {
+  field: FormField;
+}
+
+const ParagraphField = ({ field }: ParagraphFieldProps) => {
   return (
     <div className="py-2">
       <p>{getPropValue(field, "text")}</p>
     </div>
   );
 };
+
+export { ParagraphField };

@@ -104,7 +104,7 @@ export default function Home() {
             )
           ) : null}
         </DragOverlay>
-        <div className="flex flex-1 overflow-hidden">
+        <div className="flex flex-1 w-full overflow-hidden">
           {!isLeftCollapsed && (
             <aside className="w-72 flex-shrink-0 bg-[#151515] text-[#fefefe] border-r border-[#373737]">
               <ComponentSidebar />
