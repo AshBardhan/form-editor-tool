@@ -3,10 +3,17 @@ import { nanoid } from "nanoid";
 import { create } from "zustand";
 import { getDefaultProps } from "./utils/fieldUtils";
 
-interface FormState {
+interface FormData {
+  title: string;
+  theme: "light" | "dark";
   fields: FormField[];
+}
+
+interface FormState {
+  form: FormData;
   selectedFieldId: string | null;
   hoveredFieldId: string | null;
+  updateForm: (key: string, value: string) => void;
   selectField: (id: string | null) => void;
   hoverField: (id: string | null) => void;
   addField: (type: BaseFieldType, index?: number) => void;
@@ -17,9 +24,21 @@ interface FormState {
 }
 
 export const useFormStore = create<FormState>((set) => ({
-  fields: [],
+  form: {
+    title: "Untitled Form",
+    theme: "light",
+    fields: [],
+  },
   selectedFieldId: null,
   hoveredFieldId: null,
+  updateForm: (key, value) => {
+    set((state) => ({
+      form: {
+        ...state.form,
+        [key]: value,
+      },
+    }));
+  },
   selectField: (id) => {
     set((state) =>
       state.selectedFieldId === id ? state : { selectedFieldId: id },
@@ -40,38 +59,53 @@ export const useFormStore = create<FormState>((set) => ({
     };
 
     set((state) => {
-      const updated = [...state.fields];
+      const updated = [...state.form.fields];
       if (index !== undefined) {
         updated.splice(index, 0, newField);
       } else {
         updated.push(newField);
       }
-      return { fields: updated };
+      return {
+        form: {
+          ...state.form,
+          fields: updated,
+        },
+      };
     });
   },
   moveField: (from, to) => {
     set((state) => {
-      const updated = [...state.fields];
+      const updated = [...state.form.fields];
       const [moved] = updated.splice(from, 1);
       updated.splice(to, 0, moved);
-      return { fields: updated };
+      return {
+        form: {
+          ...state.form,
+          fields: updated,
+        },
+      };
     });
   },
   updateField: (id, key, value) => {
     set((state) => ({
-      fields: state.fields.map((f) =>
-        f.id === id
-          ? {
-              ...f,
-              props: f.props.map((p) => (p.key === key ? { ...p, value } : p)),
-            }
-          : f,
-      ),
+      form: {
+        ...state.form,
+        fields: state.form.fields.map((f) =>
+          f.id === id
+            ? {
+                ...f,
+                props: f.props.map((p) =>
+                  p.key === key ? { ...p, value } : p,
+                ),
+              }
+            : f,
+        ),
+      },
     }));
   },
   cloneField: (id: string) => {
     set((state) => {
-      const original = state.fields.find((f) => f.id === id);
+      const original = state.form.fields.find((f) => f.id === id);
       if (!original) return {};
 
       const newId = nanoid();
@@ -82,18 +116,26 @@ export const useFormStore = create<FormState>((set) => ({
         props: original.props.map((p) => ({ ...p })),
       };
 
-      const updated = [...state.fields];
-      const originalIndex = state.fields.findIndex((f) => f.id === id);
+      const updated = [...state.form.fields];
+      const originalIndex = state.form.fields.findIndex((f) => f.id === id);
       const insertAt = originalIndex >= 0 ? originalIndex + 1 : updated.length;
 
       updated.splice(insertAt, 0, clonedField);
 
-      return { fields: updated };
+      return {
+        form: {
+          ...state.form,
+          fields: updated,
+        },
+      };
     });
   },
   removeField: (id) => {
     set((state) => ({
-      fields: state.fields.filter((f) => f.id !== id),
+      form: {
+        ...state.form,
+        fields: state.form.fields.filter((f) => f.id !== id),
+      },
     }));
   },
 }));

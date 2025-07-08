@@ -20,7 +20,7 @@ export default function Home() {
   const [dragSource, setDragSource] = useState<"sidebar" | "canvas" | null>(
     null,
   );
-  const { fields, selectField, moveField, addField } = useFormStore();
+  const { form, selectField, moveField, addField } = useFormStore();
 
   function handleDragEnd(event: DragEndEvent) {
     const { active, over } = event;
@@ -32,8 +32,8 @@ export default function Home() {
     const activeId = active.id;
     const overId = over.id;
 
-    const activeIndex = fields.findIndex((f) => f.id === activeId);
-    const overIndex = fields.findIndex((f) => f.id === overId);
+    const activeIndex = form.fields.findIndex((f) => f.id === activeId);
+    const overIndex = form.fields.findIndex((f) => f.id === overId);
 
     const isReorder = activeIndex !== -1 && overIndex !== -1;
     const isInsertBetween = activeIndex === -1 && overIndex !== -1;
