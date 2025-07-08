@@ -1,11 +1,11 @@
 "use client";
 
-import { ComponentType } from "@/types/component";
-import { Field } from "@/types/field";
+import { Component } from "@/types/component";
+import { FormField } from "@/types/field";
 import { useDraggable } from "@dnd-kit/core";
 
-export function DraggableCard({ component }: { component: ComponentType }) {
-  const tempField: Field = {
+export function DraggableCard({ component }: { component: Component }) {
+  const tempField: FormField = {
     id: "preview",
     type: component.type,
     name: component.label,

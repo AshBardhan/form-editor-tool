@@ -11,12 +11,12 @@ import {
 import { useFormStore } from "@/lib/store";
 import { useState } from "react";
 import { FieldEditorSidebar } from "@/components/builder/FieldEditorSidebar";
-import { Field } from "@/types/field";
+import { FormField } from "@/types/field";
 import { SortableField } from "@/components/builder/SortableField";
 
 export default function Home() {
   const [overId, setOverId] = useState<string | null>(null);
-  const [activeDragItem, setActiveDragItem] = useState<Field | null>(null);
+  const [activeDragItem, setActiveDragItem] = useState<FormField | null>(null);
   const [dragSource, setDragSource] = useState<"sidebar" | "canvas" | null>(
     null,
   );
@@ -54,7 +54,7 @@ export default function Home() {
     }
   }
 
-  function renderPreview(field: Field) {
+  function renderPreview(field: FormField) {
     return (
       <div className="border border-dashed border-gray-400 bg-gray-100 text-sm text-gray-600 px-4 py-2 rounded">
         {field.name}
@@ -70,7 +70,7 @@ export default function Home() {
           const data = event.active.data.current;
           if (!data) return;
 
-          setActiveDragItem(data as Field);
+          setActiveDragItem(data as FormField);
 
           if (data.from === "sidebar") {
             setDragSource("sidebar");

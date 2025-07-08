@@ -1,15 +1,15 @@
-import { Field, FieldType } from "@/types/field";
+import { FormField, BaseFieldType } from "@/types/field";
 import { nanoid } from "nanoid";
 import { create } from "zustand";
 import { getDefaultProps } from "./utils/fieldUtils";
 
 interface FormState {
-  fields: Field[];
+  fields: FormField[];
   selectedFieldId: string | null;
   hoveredFieldId: string | null;
   selectField: (id: string | null) => void;
   hoverField: (id: string | null) => void;
-  addField: (type: FieldType, index?: number) => void;
+  addField: (type: BaseFieldType, index?: number) => void;
   moveField: (fromIndex: number, toIndex: number) => void;
   updateField: (id: string, key: string, value: any) => void;
   cloneField: (id: string) => void;
@@ -32,7 +32,7 @@ export const useFormStore = create<FormState>((set) => ({
   },
   addField: (type, index) => {
     const id = nanoid();
-    const newField: Field = {
+    const newField: FormField = {
       id,
       type,
       name: `${type}-${id}`,
@@ -75,7 +75,7 @@ export const useFormStore = create<FormState>((set) => ({
       if (!original) return {};
 
       const newId = nanoid();
-      const clonedField: Field = {
+      const clonedField: FormField = {
         ...original,
         id: newId,
         name: `${original.type}-${newId}`,

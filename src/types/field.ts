@@ -1,18 +1,21 @@
 export type TextFieldType = "heading" | "paragraph";
 export type InputFieldType = "text" | "textarea" | "checkbox";
-export type FieldType = TextFieldType | InputFieldType;
+export type BaseFieldType = TextFieldType | InputFieldType;
 
-export type FieldProp = {
+export interface BaseField {
+  type: BaseFieldType;
+}
+
+export interface FormFieldProp {
   key: string;
   label: string;
   type: "string" | "number" | "boolean";
   defaultValue?: any;
   value?: any;
-};
+}
 
-export type Field = {
+export interface FormField extends BaseField {
   id: string;
-  type: FieldType;
   name: string;
-  props: FieldProp[];
-};
+  props: FormFieldProp[];
+}

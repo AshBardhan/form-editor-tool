@@ -1,8 +1,8 @@
 import { getPropValue } from "@/lib/utils/fieldUtils";
-import { Field } from "@/types/field";
+import { FormField } from "@/types/field";
 import { Label } from "../ui/Label";
 
-export const TextareaField = ({ field }: { field: Field }) => {
+export const TextareaField = ({ field }: { field: FormField }) => {
   return (
     <div className="flex flex-col gap-2 py-2">
       {getPropValue(field, "label") && (

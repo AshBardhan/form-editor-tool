@@ -1,6 +1,6 @@
-import type { FieldProp, FieldType } from "@/types/field";
+import type { FormFieldProp, BaseFieldType } from "@/types/field";
 
-export const fieldPropTemplates: Record<FieldType, FieldProp[]> = {
+export const fieldPropTemplates: Record<BaseFieldType, FormFieldProp[]> = {
   heading: [
     {
       key: "text",

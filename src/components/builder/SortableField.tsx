@@ -1,7 +1,7 @@
 "use client";
 
 import { useFormStore } from "@/lib/store";
-import { Field } from "@/types/field";
+import { FormField } from "@/types/field";
 import { useSortable } from "@dnd-kit/sortable";
 import { CSS } from "@dnd-kit/utilities";
 import { Copy, GripVertical, Trash } from "lucide-react";
@@ -9,10 +9,10 @@ import { fieldRenderers } from "@/components/form-fields";
 import { CSSProperties } from "react";
 
 interface SortableFieldProps {
-  field: Field;
+  field: FormField;
 }
 
-const renderField = (field: Field) => {
+const renderField = (field: FormField) => {
   const Renderer = fieldRenderers[field.type];
   return Renderer ? <Renderer field={field} /> : null;
 };

@@ -1,12 +1,12 @@
 import { JSX } from "react";
-import { Field } from "@/types/field";
+import { FormField } from "@/types/field";
 import { HeadingField } from "./HeadingField";
 import { ParagraphField } from "./ParagraphField";
 import { InputField } from "./InputField";
 import { TextareaField } from "./TextareaField";
 import { CheckboxField } from "./CheckboxField";
 
-type FieldRenderer = (props: { field: Field }) => JSX.Element;
+type FieldRenderer = (props: { field: FormField }) => JSX.Element;
 
 export const fieldRenderers: Record<string, FieldRenderer> = {
   heading: HeadingField,

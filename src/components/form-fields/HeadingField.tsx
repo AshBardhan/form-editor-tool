@@ -1,8 +1,8 @@
 import { getPropValue } from "@/lib/utils/fieldUtils";
-import { Field } from "@/types/field";
+import { FormField } from "@/types/field";
 import { JSX } from "react";
 
-export const HeadingField = ({ field }: { field: Field }) => {
+export const HeadingField = ({ field }: { field: FormField }) => {
   const text = getPropValue(field, "text");
   const level = Math.min(Math.max(getPropValue(field, "level") || 1, 1), 6);
   const headingStyles: Record<number, string> = {
