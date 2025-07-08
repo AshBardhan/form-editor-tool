@@ -15,6 +15,7 @@ export function DraggableCard({ component }: { component: ComponentType }) {
     id: component.type,
     data: { ...tempField, from: "sidebar" },
   });
+  const Icon = component.icon;
 
   return (
     <div
@@ -22,9 +23,14 @@ export function DraggableCard({ component }: { component: ComponentType }) {
       {...listeners}
       {...attributes}
       data-slot="component-item"
-      className="px-3 py-2 rounded-md border border-[#2d2d2d] bg-[#1e1e1e] hover:bg-[#2f2f2f] text-xs font-medium cursor-move"
+      className="px-3 py-2 rounded-md border border-[#2d2d2d] bg-[#1e1e1e] hover:bg-[#2f2f2f] cursor-move flex items-center gap-2"
     >
-      {component.label}
+      {Icon && (
+        <div className="p-1 border border-[#2d2d2d] rounded inline-flex">
+          <Icon size="12" />
+        </div>
+      )}
+      <span className="text-xs font-medium">{component.label}</span>
     </div>
   );
 }
