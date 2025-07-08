@@ -1,6 +1,5 @@
 "use client";
 
-import { Header } from "@/components/Header";
 import { useFormStore } from "@/lib/store";
 import { SortableContext, rectSortingStrategy } from "@dnd-kit/sortable";
 import { SortableField } from "./SortableField";
@@ -12,15 +11,14 @@ const FormBuilderCanvas = ({ overId }: { overId: string | null }) => {
   const { setNodeRef } = useDroppable({ id: "canvas" });
 
   return (
-    <div className="space-y-4" ref={setNodeRef}>
-      <Header />
-      <div className="min-h-[200px] shadow transition bg-white p-4">
+    <div className="flex justify-center h-full" ref={setNodeRef}>
+      <div className="min-h-[200px] w-full shadow transition flex-1 bg-white p-4 overflow-auto">
         <SortableContext
           items={fields.map((f) => f.id)}
           strategy={rectSortingStrategy}
         >
           {fields.length === 0 && !overId ? (
-            <div className="h-50 text-gray-500 border border-dashed flex items-center justify-center text-sm">
+            <div className="h-full text-gray-500 border border-dashed flex items-center justify-center text-sm">
               Drag components here
             </div>
           ) : (
