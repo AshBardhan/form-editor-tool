@@ -58,6 +58,7 @@ export const SortableField = ({ field }: SortableFieldProps) => {
       ref={setNodeRef}
       style={style}
       {...attributes}
+      data-slot="field"
       className={`rounded bg-white relative border ${
         isSelected ? "border-blue-500" : "border-transparent"
       }`}

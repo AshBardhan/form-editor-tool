@@ -29,6 +29,7 @@ const ComponentSidebar = () => {
         return (
           <div
             key={group.category}
+            data-slot="component-category"
             className="border-b border-b-[#2d2d2d] p-4 flex flex-col gap-4"
           >
             <div className="flex items-center justify-between w-full">

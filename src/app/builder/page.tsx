@@ -11,7 +11,7 @@ import {
 import { useFormStore } from "@/lib/store";
 import { useState } from "react";
 import { FieldEditorSidebar } from "@/components/builder/FieldEditorSidebar";
-import { Field, FieldType } from "@/types/field";
+import { Field } from "@/types/field";
 import { SortableField } from "@/components/builder/SortableField";
 
 export default function Home() {
@@ -20,7 +20,7 @@ export default function Home() {
   const [dragSource, setDragSource] = useState<"sidebar" | "canvas" | null>(
     null,
   );
-  const { fields, moveField, addField } = useFormStore();
+  const { fields, selectField, moveField, addField } = useFormStore();
 
   function handleDragEnd(event: DragEndEvent) {
     const { active, over } = event;
@@ -97,7 +97,16 @@ export default function Home() {
             )
           ) : null}
         </DragOverlay>
-        <div className="flex h-screen">
+        <div
+          className="flex h-screen"
+          onClickCapture={(e) => {
+            // Only reset if the click is outside any field
+            const target = e.target as HTMLElement;
+            if (!target.closest("[data-slot='field']")) {
+              selectField(null);
+            }
+          }}
+        >
           <aside className="w-72 flex-shrink-0 bg-[#151515] text-[#fefefe] border-r border-[#373737]">
             <ComponentSidebar />
           </aside>
