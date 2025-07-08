@@ -49,7 +49,7 @@ const ComponentSidebar = () => {
             </div>
 
             {isOpen && (
-              <div className="flex flex-col gap-3">
+              <div className="grid grid-cols-2 gap-3">
                 {group.items.map((comp) => (
                   <React.Fragment key={comp.type}>
                     <DraggableCard component={comp} />
