@@ -1,8 +1,12 @@
 import { ComponentCategory } from "@/types/component";
 import {
-  ALargeSmall,
+  ALargeSmallIcon,
   AlignLeftIcon,
-  Heading,
+  AsteriskIcon,
+  AtSignIcon,
+  HashIcon,
+  HeadingIcon,
+  LinkIcon,
   SquareCheckBigIcon,
   TypeIcon,
 } from "lucide-react";
@@ -12,8 +16,8 @@ export const componentPalette: ComponentCategory[] = [
     category: "text-field",
     label: "Text",
     items: [
-      { type: "heading", label: "Heading", icon: Heading },
-      { type: "paragraph", label: "Paragraph", icon: ALargeSmall },
+      { type: "heading", label: "Heading", icon: HeadingIcon },
+      { type: "paragraph", label: "Paragraph", icon: ALargeSmallIcon },
     ],
   },
   {
@@ -22,10 +26,10 @@ export const componentPalette: ComponentCategory[] = [
     items: [
       { type: "text", label: "Short Text", icon: TypeIcon },
       { type: "textarea", label: "Long Text", icon: AlignLeftIcon },
-      // { type: "number", label: "Number Input" },
-      // { type: "url", label: "URL Input" },
-      // { type: "email", label: "Email Input" },
-      // { type: "password", label: "Password Input" },
+      { type: "number", label: "Number", icon: HashIcon },
+      { type: "url", label: "Web URL", icon: LinkIcon },
+      { type: "email", label: "Email", icon: AtSignIcon },
+      { type: "password", label: "Password", icon: AsteriskIcon },
       // { type: "radio", label: "Radio Group" },
       { type: "checkbox", label: "Checkbox", icon: SquareCheckBigIcon },
       // { type: "select", label: "Select Box" },

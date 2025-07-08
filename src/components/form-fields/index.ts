@@ -12,6 +12,10 @@ export const fieldRenderers: Record<string, FieldRenderer> = {
   heading: HeadingField,
   paragraph: ParagraphField,
   text: InputField,
+  number: InputField,
+  email: InputField,
+  password: InputField,
+  url: InputField,
   textarea: TextareaField,
   checkbox: CheckboxField,
 };

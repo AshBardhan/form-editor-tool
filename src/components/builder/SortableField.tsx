@@ -75,7 +75,7 @@ export const SortableField = ({
         <div className="absolute inset-0 bg-blue-300 opacity-30 pointer-events-none" />
       )}
 
-      <div className="flex-1 pointer-events-none relative">
+      <div className="pointer-events-none">
         {renderField(field)}
       </div>
 
