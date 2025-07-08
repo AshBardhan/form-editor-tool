@@ -1,4 +1,4 @@
-export const THEME_OPTIONS: Record<string, string> = {
+export const THEME_OPTIONS = {
   light: "Light",
   dark: "Dark",
 };

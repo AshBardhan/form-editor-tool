@@ -5,14 +5,23 @@ import { SortableContext, rectSortingStrategy } from "@dnd-kit/sortable";
 import { SortableField } from "./SortableField";
 import { useDroppable } from "@dnd-kit/core";
 import React from "react";
+import { Device } from "@/lib/constants/device";
 
-const FormBuilderCanvas = ({ overId }: { overId: string | null }) => {
+interface FormBuilderCanvasProps {
+  overId: string | null;
+  device: Device | null;
+}
+
+const FormBuilderCanvas = ({ overId, device }: FormBuilderCanvasProps) => {
   const { form } = useFormStore();
   const { setNodeRef } = useDroppable({ id: "canvas" });
 
   return (
     <div className="flex justify-center h-full" ref={setNodeRef}>
-      <div className="min-h-[200px] w-full transition flex-1 bg-white p-4 overflow-auto">
+      <div
+        className="min-h-[200px] w-full transition-[max-width] flex-1 bg-white p-4 overflow-auto"
+        style={{ maxWidth: device?.size }}
+      >
         <SortableContext
           items={form.fields.map((f) => f.id)}
           strategy={rectSortingStrategy}

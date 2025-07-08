@@ -13,6 +13,8 @@ import { useState } from "react";
 import { FormEditorSidebar } from "@/components/builder/FormEditorSidebar";
 import { FormField } from "@/types/field";
 import { SortableField } from "@/components/builder/SortableField";
+import { Button } from "@/components/ui/Button";
+import { DeviceList, DeviceType } from "@/lib/constants/device";
 
 export default function Home() {
   const [overId, setOverId] = useState<string | null>(null);
@@ -21,6 +23,8 @@ export default function Home() {
     null,
   );
   const { form, selectField, moveField, addField } = useFormStore();
+  const [deviceType, setDeviceType] = useState<DeviceType>(DeviceType.DESKTOP);
+  const selectedDevice = DeviceList.find((d) => d.label === deviceType) || null;
 
   function handleDragEnd(event: DragEndEvent) {
     const { active, over } = event;
@@ -102,7 +106,7 @@ export default function Home() {
             <ComponentSidebar />
           </aside>
           <main
-            className="flex-1 px-16 py-8 bg-gray-100 overflow-hidden"
+            className="flex-1 px-16 pt-16 pb-8 bg-gray-100 relative overflow-hidden"
             onClickCapture={(e) => {
               // Only reset if the click is outside any field
               const target = e.target as HTMLElement;
@@ -111,7 +115,24 @@ export default function Home() {
               }
             }}
           >
-            <FormBuilderCanvas overId={overId} />
+            <div className="absolute top-1 left-1/2 -translate-x-1/2 bg-[#151515] rounded text-white flex">
+              {DeviceList.map((device) => {
+                const Icon = device.icon;
+                return (
+                  <Button
+                    variant="ghost"
+                    title={device.label}
+                    key={device.label}
+                    onClick={() => setDeviceType(device.label)}
+                    className={`${deviceType === device.label && "bg-[#2e2e2e]"} hover:bg-[#1f1f1f]`}
+                  >
+                    <Icon size={12} />
+                  </Button>
+                );
+              })}
+            </div>
+
+            <FormBuilderCanvas device={selectedDevice} overId={overId} />
           </main>
           <aside className="w-72 flex-shrink-0 bg-[#151515] text-[#fefefe] border-l border-[#373737]">
             <FormEditorSidebar />
