@@ -72,7 +72,7 @@ export const SortableField = ({ field }: SortableFieldProps) => {
       <div className="flex gap-2 items-center">
         <div
           {...listeners}
-          className="flex-0 cursor-grab text-gray-400"
+          className={`flex-0 cursor-grab text-gray-400 ${isHovered ? "opacity-100 visible" : "opacity-0 invisible"}`}
           title="Drag to reorder"
         >
           <GripVertical className=" text-gray-500 hover:text-black" />
@@ -81,7 +81,9 @@ export const SortableField = ({ field }: SortableFieldProps) => {
           {renderField(field)}
         </div>
 
-        <div className="flex-0 flex gap-1">
+        <div
+          className={`flex-0 flex gap-1 transition ${isHovered ? "opacity-100 visible" : "opacity-0 invisible"}`}
+        >
           <div
             className="cursor-pointer text-gray-500 hover:text-black"
             onClick={(e) => {
