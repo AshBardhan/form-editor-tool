@@ -22,9 +22,12 @@ export default function Home() {
   const [dragSource, setDragSource] = useState<"sidebar" | "canvas" | null>(
     null,
   );
-  const { form, selectField, moveField, addField } = useFormStore();
+  const { form, isSidebarCollapsed, selectField, moveField, addField } =
+    useFormStore();
   const [deviceType, setDeviceType] = useState<DeviceType>(DeviceType.DESKTOP);
   const selectedDevice = DeviceList.find((d) => d.label === deviceType) || null;
+  const isLeftCollapsed = isSidebarCollapsed.left;
+  const isRightCollapsed = isSidebarCollapsed.right;
 
   function handleDragEnd(event: DragEndEvent) {
     const { active, over } = event;
@@ -102,9 +105,11 @@ export default function Home() {
           ) : null}
         </DragOverlay>
         <div className="flex flex-1 overflow-hidden">
-          <aside className="w-72 flex-shrink-0 bg-[#151515] text-[#fefefe] border-r border-[#373737]">
-            <ComponentSidebar />
-          </aside>
+          {!isLeftCollapsed && (
+            <aside className="w-72 flex-shrink-0 bg-[#151515] text-[#fefefe] border-r border-[#373737]">
+              <ComponentSidebar />
+            </aside>
+          )}
           <main
             className="flex-1 px-16 pt-16 pb-8 bg-gray-100 relative overflow-hidden"
             onClickCapture={(e) => {
@@ -134,9 +139,11 @@ export default function Home() {
 
             <FormBuilderCanvas device={selectedDevice} overId={overId} />
           </main>
-          <aside className="w-72 flex-shrink-0 bg-[#151515] text-[#fefefe] border-l border-[#373737]">
-            <FormEditorSidebar />
-          </aside>
+          {!isRightCollapsed && (
+            <aside className="w-72 flex-shrink-0 bg-[#151515] text-[#fefefe] border-l border-[#373737]">
+              <FormEditorSidebar />
+            </aside>
+          )}
         </div>
       </DndContext>
     </>

@@ -4,7 +4,7 @@ import { useFormStore } from "@/lib/store";
 import { FormField } from "@/types/field";
 import { useSortable } from "@dnd-kit/sortable";
 import { CSS } from "@dnd-kit/utilities";
-import { Copy, GripHorizontal, GripVertical, Trash } from "lucide-react";
+import { Copy, GripHorizontal, Trash } from "lucide-react";
 import { fieldRenderers } from "@/components/form-fields";
 import { CSSProperties } from "react";
 

@@ -3,7 +3,7 @@
 import { componentPalette } from "@/lib/constants/componentPalette";
 import { DraggableCard } from "./DraggableCard";
 import { ChevronDown } from "lucide-react";
-import { useState } from "react";
+import React, { useState } from "react";
 
 const ComponentSidebar = () => {
   const [expandedCategories, setExpandedCategories] = useState<{
@@ -51,7 +51,9 @@ const ComponentSidebar = () => {
             {isOpen && (
               <div className="flex flex-col gap-3">
                 {group.items.map((comp) => (
-                  <DraggableCard key={comp.type} component={comp} />
+                  <React.Fragment key={comp.type}>
+                    <DraggableCard component={comp} />
+                  </React.Fragment>
                 ))}
               </div>
             )}

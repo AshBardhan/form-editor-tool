@@ -13,6 +13,10 @@ interface FormState {
   form: FormData;
   selectedFieldId: string | null;
   hoveredFieldId: string | null;
+  isSidebarCollapsed: {
+    left: boolean;
+    right: boolean;
+  };
   updateForm: (key: string, value: string) => void;
   selectField: (id: string | null) => void;
   hoverField: (id: string | null) => void;
@@ -21,6 +25,7 @@ interface FormState {
   updateField: (id: string, key: string, value: any) => void;
   cloneField: (id: string) => void;
   removeField: (id: string) => void;
+  toggleSidebar: (side: "left" | "right") => void;
 }
 
 export const useFormStore = create<FormState>((set) => ({
@@ -28,6 +33,10 @@ export const useFormStore = create<FormState>((set) => ({
     title: "Untitled Form",
     theme: "light",
     fields: [],
+  },
+  isSidebarCollapsed: {
+    left: false,
+    right: false,
   },
   selectedFieldId: null,
   hoveredFieldId: null,
@@ -136,6 +145,14 @@ export const useFormStore = create<FormState>((set) => ({
       form: {
         ...state.form,
         fields: state.form.fields.filter((f) => f.id !== id),
+      },
+    }));
+  },
+  toggleSidebar: (side: "left" | "right") => {
+    set((state) => ({
+      isSidebarCollapsed: {
+        ...state.isSidebarCollapsed,
+        [side]: !state.isSidebarCollapsed[side],
       },
     }));
   },
