@@ -85,7 +85,7 @@ export const SortableField = ({
         >
           <div
             {...listeners}
-            className="absolute top-0 left-1/2 -translate-1/2 cursor-grab p-1 text-gray-500 hover:text-black"
+            className="absolute top-0 left-1/2 -translate-x-1/2 cursor-grab p-1 text-gray-500 hover:text-black"
             title="Drag to reorder"
           >
             <GripHorizontal size={20} />

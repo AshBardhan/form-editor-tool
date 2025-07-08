@@ -70,6 +70,7 @@ export const useFormStore = create<FormState>((set) => ({
           ...state.form,
           fields: updated,
         },
+        selectedFieldId: id,
       };
     });
   },
