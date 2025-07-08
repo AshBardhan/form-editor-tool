@@ -34,7 +34,7 @@ const FieldEditorSidebar = () => {
                     <Input
                       id={prop.key}
                       value={prop.value ?? ""}
-                      className="px-3 py-2 rounded-md border border-[#2d2d2d] bg-[#1e1e1e] focus:bg-[#2f2f2f] text-xs font-medium focus-visible:ring-0 focus-visible:!shadow-none"
+                      className="px-3 py-2 rounded-md border border-[#2d2d2d] bg-[#1e1e1e] focus:bg-[#2f2f2f] text-xs focus-visible:ring-0 focus-visible:!shadow-none"
                       onChange={(e) =>
                         updateField(selected.id, prop.key, e.target.value)
                       }
@@ -46,7 +46,7 @@ const FieldEditorSidebar = () => {
                       id={prop.key}
                       type="number"
                       value={prop.value ?? 0}
-                      className="px-3 py-2 rounded-md border border-[#2d2d2d] bg-[#1e1e1e] focus:bg-[#2f2f2f] text-xs font-medium focus-visible:ring-0 focus-visible:!shadow-none"
+                      className="px-3 py-2 rounded-md border border-[#2d2d2d] bg-[#1e1e1e] focus:bg-[#2f2f2f] text-xs focus-visible:ring-0 focus-visible:!shadow-none"
                       onChange={(e) =>
                         updateField(
                           selected.id,
