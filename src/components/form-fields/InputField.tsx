@@ -11,14 +11,11 @@ const InputField = ({ field }: InputFieldProps) => {
   return (
     <div className="flex flex-col gap-2 py-2">
       {getPropValue(field, "label") && (
-        <Label htmlFor={field.id} className="font-medium text-[#777777]">
-          {getPropValue(field, "label")}
-        </Label>
+        <Label htmlFor={field.id}>{getPropValue(field, "label")}</Label>
       )}
       <Input
         id={field.id}
         type={field.type}
-        className="border-[#bcbcbc]"
         required={Boolean(getPropValue(field, "required"))}
         placeholder={String(getPropValue(field, "placeholder"))}
       />

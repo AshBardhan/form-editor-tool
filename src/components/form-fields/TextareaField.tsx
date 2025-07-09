@@ -11,13 +11,11 @@ const TextareaField = ({ field }: TextareaFieldProps) => {
   return (
     <div className="flex flex-col gap-2 py-2">
       {getPropValue(field, "label") && (
-        <Label htmlFor={field.id} className="font-medium text-[#777777]">
-          {getPropValue(field, "label")}
-        </Label>
+        <Label htmlFor={field.id}>{getPropValue(field, "label")}</Label>
       )}
       <Textarea
         id={field.id}
-        className="border-[#bcbcbc] resize-y"
+        className="resize-y"
         value={String(getPropValue(field, "value") || "")}
         placeholder={String(getPropValue(field, "placeholder"))}
         required={Boolean(getPropValue(field, "required"))}

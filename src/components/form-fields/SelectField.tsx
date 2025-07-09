@@ -23,13 +23,9 @@ const SelectField = ({ field }: SelectFieldProps) => {
 
   return (
     <div className="flex flex-col gap-2 py-2">
-      {label && (
-        <Label htmlFor={field.id} className="font-medium text-[#777777]">
-          {label}
-        </Label>
-      )}
+      {label && <Label htmlFor={field.id}>{label}</Label>}
       <Select value={value}>
-        <SelectTrigger id={field.id} className="border-[#bcbcbc] w-full">
+        <SelectTrigger id={field.id} className="w-full">
           <SelectValue placeholder="Select an option" />
         </SelectTrigger>
         <SelectContent>

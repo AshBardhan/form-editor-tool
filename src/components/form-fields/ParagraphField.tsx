@@ -7,7 +7,7 @@ interface ParagraphFieldProps {
 
 const ParagraphField = ({ field }: ParagraphFieldProps) => {
   return (
-    <div className="py-2 text-[#4a4a4a]">
+    <div className="py-2 text-paragraph">
       <p>{getPropValue(field, "text")}</p>
     </div>
   );

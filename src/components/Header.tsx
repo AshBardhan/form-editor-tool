@@ -11,8 +11,8 @@ const Header = () => {
   const isRightCollapsed = isSidebarCollapsed.right;
 
   return (
-    <header className="flex flex-shrink-0 items-center justify-between text-white h-16 px-4 bg-[#151515] border-b border-[#2f2f2f]">
-      <div className="flex items-center gap-2">
+    <header className="flex flex-shrink-0 items-center text-white h-16 px-4 bg-[#151515] border-b border-[#2f2f2f]">
+      <div className="flex-shrink-0 w-50 flex items-center gap-2">
         <Button
           variant="ghost"
           title={`${isLeftCollapsed ? "Expand" : "Collapse"} Left Sidebar`}
@@ -30,10 +30,13 @@ const Header = () => {
           <PanelRight size={20} />
         </Button>
       </div>
-      <h1 className="font-semibold text-xl">{form.title}</h1>
-      <div className="flex items-center gap-2">
+      <h1 className="flex-1 font-semibold text-center text-xl">{form.title}</h1>
+      <div className="flex-shrink-0 w-50 flex items-center justify-end gap-2">
+        <Button variant="secondary" size="sm">
+          Preview
+        </Button>
         <Link href="/builder" className="hover:underline">
-          <Button variant="secondary" size="sm">
+          <Button variant="default" size="sm">
             Publish
           </Button>
         </Link>

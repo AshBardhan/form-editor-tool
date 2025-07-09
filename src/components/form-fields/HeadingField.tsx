@@ -20,7 +20,7 @@ const HeadingField = ({ field }: HeadingFieldProps) => {
 
   const HeadingTag = `h${level}` as keyof JSX.IntrinsicElements;
   return (
-    <HeadingTag className={`py-2 text-[#1f1f1f] ${headingStyles[level]}`}>
+    <HeadingTag className={`py-2 text-heading ${headingStyles[level]}`}>
       {text}
     </HeadingTag>
   );
