@@ -34,7 +34,7 @@ const FormBuilderCanvas = ({
   return (
     <div className="flex justify-center h-full" ref={setNodeRef}>
       <div
-        className="min-h-[200px] w-full transition-[max-width] flex-1 bg-white p-4 overflow-auto"
+        className="min-h-[200px] w-full  flex-1 bg-white dark:bg-black transition-[colors,max-width] p-4 overflow-auto"
         style={{ maxWidth: device?.size }}
       >
         <SortableContext

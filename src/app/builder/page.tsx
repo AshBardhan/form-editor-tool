@@ -112,7 +112,7 @@ export default function Home() {
             </aside>
           )}
           <main
-            className="flex-1 px-16 pt-16 pb-8 bg-gray-100 relative overflow-hidden"
+            className="flex-1 px-16 pt-16 pb-8 bg-gray-200 dark:bg-gray-500 relative overflow-hidden"
             onClickCapture={(e) => {
               // Only reset if the click is outside any field
               const target = e.target as HTMLElement;
