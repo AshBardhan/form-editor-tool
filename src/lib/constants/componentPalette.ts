@@ -8,6 +8,7 @@ import {
   HeadingIcon,
   LinkIcon,
   ListOrderedIcon,
+  SeparatorHorizontalIcon,
   SquareCheckBigIcon,
   TypeIcon,
 } from "lucide-react";
@@ -34,6 +35,13 @@ export const componentPalette: ComponentCategory[] = [
       // { type: "radio", label: "Radio Group" },
       { type: "checkbox", label: "Checkbox", icon: SquareCheckBigIcon },
       { type: "select", label: "Option", icon: ListOrderedIcon },
+    ],
+  },
+  {
+    category: "layout-field",
+    label: "Layout",
+    items: [
+      { type: "separator", label: "Separator", icon: SeparatorHorizontalIcon },
     ],
   },
   // {

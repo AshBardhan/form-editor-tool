@@ -225,4 +225,18 @@ export const fieldPropTemplates: Record<BaseFieldType, FormFieldProp[]> = {
       defaultValue: ["Option 1", "Option 2"],
     },
   ],
+  separator: [
+    {
+      key: "spacing",
+      label: "Spacing",
+      type: "number",
+      defaultValue: 20,
+    },
+    {
+      key: "divider",
+      label: "Divider",
+      type: "boolean",
+      defaultValue: false,
+    },
+  ],
 };

@@ -8,8 +8,9 @@ export type InputFieldType =
   | "textarea"
   | "checkbox"
   | "select";
+export type LayoutFieldType = "separator";
 
-export type BaseFieldType = TextFieldType | InputFieldType;
+export type BaseFieldType = TextFieldType | InputFieldType | LayoutFieldType;
 
 export interface BaseField {
   type: BaseFieldType;
