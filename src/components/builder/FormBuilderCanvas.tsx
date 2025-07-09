@@ -6,32 +6,30 @@ import {
   verticalListSortingStrategy,
 } from "@dnd-kit/sortable";
 import { SortableField } from "./SortableField";
-import { useDndMonitor, useDroppable } from "@dnd-kit/core";
-import React, { useState } from "react";
+import { useDroppable } from "@dnd-kit/core";
+import React from "react";
 import { Device } from "@/lib/constants/device";
 
 interface FormBuilderCanvasProps {
   overId: string | null;
+  activeFieldId: string | null;
+  dragSource: "sidebar" | "canvas" | null;
   device: Device | null;
 }
 
-const FormBuilderCanvas = ({ overId, device }: FormBuilderCanvasProps) => {
+const DropPlaceholderContent = () => (
+  <div className="h-10 bg-blue-300 opacity-30 border border-blue-500 transition-all" />
+);
+
+const FormBuilderCanvas = ({
+  overId,
+  activeFieldId,
+  dragSource,
+  device,
+}: FormBuilderCanvasProps) => {
   const { form } = useFormStore();
   const { setNodeRef } = useDroppable({ id: "canvas" });
-  const [activeId, setActiveId] = useState<string | null>(null);
   const isOverEnd = overId && !form.fields.some((f) => f.id === overId);
-
-  useDndMonitor({
-    onDragStart: (event) => {
-      setActiveId(event.active.id as string);
-    },
-    onDragEnd: () => {
-      setActiveId(null);
-    },
-    onDragCancel: () => {
-      setActiveId(null);
-    },
-  });
 
   return (
     <div className="flex justify-center h-full" ref={setNodeRef}>
@@ -43,25 +41,25 @@ const FormBuilderCanvas = ({ overId, device }: FormBuilderCanvasProps) => {
           items={form.fields.map((f) => f.id)}
           strategy={verticalListSortingStrategy}
         >
+          {/* Empty canvas state */}
           {form.fields.length === 0 && !overId ? (
             <div className="h-full text-gray-500 border border-dashed flex items-center justify-center text-sm">
               Drag components here
             </div>
           ) : (
             form.fields.map((field) => (
-              <React.Fragment key={field.id}>
-                {/* Drop placeholder before hovered item */}
-                {overId === field.id && overId !== activeId && (
-                  <div className="h-10 bg-blue-300 opacity-30 border border-blue-500 transition-all" />
-                )}
+              <div className="relative" key={field.id}>
+                {/* Only show custom placeholder when dragging from sidebar */}
+                {overId === field.id &&
+                  dragSource === "sidebar" &&
+                  activeFieldId !== field.id && <DropPlaceholderContent />}
                 <SortableField field={field} />
-              </React.Fragment>
+              </div>
             ))
           )}
-          {/* Show placeholder at end if overId is "canvas" */}
-          {isOverEnd && (
-            <div className="h-10 bg-blue-300 opacity-30 border border-blue-500 transition-all" />
-          )}
+
+          {/* Show custom placeholder at the end if needed */}
+          {isOverEnd && dragSource === "sidebar" && <DropPlaceholderContent />}
         </SortableContext>
       </div>
     </div>

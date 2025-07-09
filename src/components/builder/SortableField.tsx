@@ -64,6 +64,7 @@ export const SortableField = ({
       style={style}
       {...attributes}
       data-slot="field"
+      data-id={field.id}
       className={`rounded bg-white relative border ${
         isSelected ? "border-blue-500" : "border-transparent"
       }`}
@@ -72,7 +73,7 @@ export const SortableField = ({
       onClick={() => !isDragging && selectField(field.id)}
     >
       {isHovered && (
-        <div className="absolute inset-0 bg-blue-300 opacity-30 pointer-events-none" />
+        <div className="absolute inset-0 bg-blue-200 opacity-30 pointer-events-none" />
       )}
 
       <div className="pointer-events-none">{renderField(field)}</div>

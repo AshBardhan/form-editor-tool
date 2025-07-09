@@ -83,6 +83,7 @@ export default function Home() {
             setDragSource("sidebar");
           } else {
             setDragSource("canvas");
+            selectField(data.id);
           }
         }}
         onDragOver={(event) => {
@@ -137,7 +138,12 @@ export default function Home() {
               })}
             </div>
 
-            <FormBuilderCanvas device={selectedDevice} overId={overId} />
+            <FormBuilderCanvas
+              device={selectedDevice}
+              overId={overId}
+              activeFieldId={activeDragItem?.id || null}
+              dragSource={dragSource}
+            />
           </main>
           {!isRightCollapsed && (
             <aside className="w-72 flex-shrink-0 bg-[#151515] text-[#fefefe] border-l border-[#373737]">
