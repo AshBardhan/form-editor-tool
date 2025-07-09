@@ -18,6 +18,16 @@ const FormEditorSidebar = () => {
   const { form, selectedFieldId, updateField, updateForm } = useFormStore();
   const selected = form.fields.find((f) => f.id === selectedFieldId);
 
+  const onThemeChange = (value: string) => {
+    const html = document.documentElement;
+    if (value === "dark") {
+      html.classList.add("dark");
+    } else {
+      html.classList.remove("dark");
+    }
+    updateForm("theme", value);
+  };
+
   return (
     <>
       <div className="p-4 border-b border-b-[#2d2d2d]">
@@ -106,10 +116,7 @@ const FormEditorSidebar = () => {
             <Label htmlFor="form-theme" className="font-semibold">
               Theme
             </Label>
-            <Select
-              value={form.theme}
-              onValueChange={(value) => updateForm("theme", value)}
-            >
+            <Select value={form.theme} onValueChange={onThemeChange}>
               <SelectTrigger
                 id="form-theme"
                 className="px-3 py-2 w-full rounded-md border border-[#2d2d2d] bg-[#1e1e1e] focus:bg-[#2f2f2f] focus-visible:ring-0 focus-visible:!shadow-none"
