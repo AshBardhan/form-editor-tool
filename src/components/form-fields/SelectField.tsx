@@ -12,18 +12,24 @@ import {
 import React from "react";
 import { getPropValue } from "@/lib/utils/fieldUtils";
 
-export function SelectField({ field }: { field: FormField }) {
+interface SelectFieldProps {
+  field: FormField;
+}
+
+const SelectField = ({ field }: SelectFieldProps) => {
   const label = getPropValue(field, "label");
   const options = getPropValue(field, "options") ?? [];
   const value = getPropValue(field, "value") ?? "";
 
   return (
     <div className="flex flex-col gap-2 py-2">
-      <Label htmlFor={field.id} className="font-semibold">
-        {label}
-      </Label>
+      {label && (
+        <Label htmlFor={field.id} className="font-medium text-[#777777]">
+          {label}
+        </Label>
+      )}
       <Select value={value}>
-        <SelectTrigger id={field.id} className="w-full">
+        <SelectTrigger id={field.id} className="border-[#bcbcbc] w-full">
           <SelectValue placeholder="Select an option" />
         </SelectTrigger>
         <SelectContent>
@@ -36,4 +42,6 @@ export function SelectField({ field }: { field: FormField }) {
       </Select>
     </div>
   );
-}
+};
+
+export { SelectField };

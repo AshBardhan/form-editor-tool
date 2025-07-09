@@ -1,7 +1,7 @@
 import { getPropValue } from "@/lib/utils/fieldUtils";
 import { FormField } from "@/types/field";
-import { Label } from "../ui/Label";
-import { Input } from "../ui/Input";
+import { Label } from "@/components/ui/Label";
+import { Input } from "@/components/ui/Input";
 
 interface InputFieldProps {
   field: FormField;

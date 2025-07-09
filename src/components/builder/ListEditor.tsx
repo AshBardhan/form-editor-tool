@@ -1,7 +1,7 @@
 import { TrashIcon } from "lucide-react";
 import { useState } from "react";
-import { Input } from "../ui/Input";
-import { Button } from "../ui/Button";
+import { Input } from "@/components/ui/Input";
+import { Button } from "@/components/ui/Button";
 
 interface ListEditorProps {
   value: string[];
