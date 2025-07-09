@@ -6,7 +6,8 @@ export type InputFieldType =
   | "email"
   | "password"
   | "textarea"
-  | "checkbox";
+  | "checkbox"
+  | "select";
 
 export type BaseFieldType = TextFieldType | InputFieldType;
 
@@ -17,20 +18,23 @@ export interface BaseField {
 export interface FormFieldProp {
   key: string;
   label: string;
-  type: "string" | "number" | "boolean";
+  type: "string" | "number" | "boolean" | "list";
   defaultValue?: any;
   value?: any;
 
-  // For number fields
+  // Number-based fields
   min?: number;
   max?: number;
   step?: number;
 
-  // For string-based fields (text, email, password, url, etc.)
+  // String-based fields (text, email, password, url, etc.)
   minLength?: number;
   maxLength?: number;
 
-  // Optional UI/UX helpers
+  // For select fields
+  options?: string[];
+
+  // Optional UI/UX-based fields
   placeholder?: string;
   required?: boolean;
 }

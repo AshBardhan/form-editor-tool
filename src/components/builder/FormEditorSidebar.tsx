@@ -12,6 +12,7 @@ import {
   SelectValue,
 } from "@/components/ui/Select";
 import { THEME_OPTIONS } from "@/lib/constants/theme";
+import { ListEditor } from "./ListEditor";
 
 const FormEditorSidebar = () => {
   const { form, selectedFieldId, updateField, updateForm } = useFormStore();
@@ -76,6 +77,13 @@ const FormEditorSidebar = () => {
                     {prop.label}
                   </Label>
                 </div>
+              )}
+
+              {prop.type === "list" && Array.isArray(prop.value) && (
+                <ListEditor
+                  value={prop.value}
+                  onChange={(val) => updateField(selected.id, prop.key, val)}
+                />
               )}
             </div>
           ))}

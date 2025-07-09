@@ -205,4 +205,24 @@ export const fieldPropTemplates: Record<BaseFieldType, FormFieldProp[]> = {
       defaultValue: false,
     },
   ],
+  select: [
+    {
+      key: "label",
+      label: "Label",
+      type: "string",
+      defaultValue: "Select Label",
+    },
+    {
+      key: "required",
+      label: "Required",
+      type: "boolean",
+      defaultValue: false,
+    },
+    {
+      key: "options",
+      label: "Options",
+      type: "list",
+      defaultValue: ["Option 1", "Option 2"],
+    },
+  ],
 };
