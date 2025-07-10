@@ -110,12 +110,15 @@ const FormEditorSidebar = () => {
                   }
                 >
                   <SelectTrigger className="w-full focus-visible:ring-0 focus-visible:!shadow-none">
-                    <SelectValue>{prop.value}</SelectValue>
+                    <SelectValue>
+                      {prop.options?.find((opt) => opt.value === prop.value)
+                        ?.label ?? prop.value}
+                    </SelectValue>
                   </SelectTrigger>
                   <SelectContent>
                     {prop.options?.map((option) => (
-                      <SelectItem key={option} value={option}>
-                        {option}
+                      <SelectItem key={option.value} value={option.value}>
+                        {option.label}
                       </SelectItem>
                     ))}
                   </SelectContent>

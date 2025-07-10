@@ -33,7 +33,7 @@ export interface FormFieldProp {
   maxLength?: number;
 
   // For select fields
-  options?: string[];
+  options?: { value: string; label: string }[];
 
   // Optional UI/UX-based fields
   placeholder?: string;

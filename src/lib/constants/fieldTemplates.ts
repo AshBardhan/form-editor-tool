@@ -256,15 +256,22 @@ export const fieldPropTemplates: Record<BaseFieldType, FormFieldProp[]> = {
       key: "level",
       label: "Level",
       type: "select",
-      options: ["Primary", "Secondary"],
-      defaultValue: "Primary",
+      options: [
+        { value: "primary", label: "Primary" },
+        { value: "secondary", label: "Secondary" },
+      ],
+      defaultValue: "primary",
     },
     {
       key: "position",
       label: "Position",
       type: "select",
-      options: ["Left", "Center", "Right"],
-      defaultValue: "Right",
+      options: [
+        { value: "left", label: "Left" },
+        { value: "center", label: "Center" },
+        { value: "right", label: "Right" },
+      ],
+      defaultValue: "right",
     },
   ],
 };

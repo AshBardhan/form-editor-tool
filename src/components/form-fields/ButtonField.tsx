@@ -8,20 +8,20 @@ interface ButtonFieldProps {
 }
 
 const BUTTON_VARIANT_MAP: Record<string, "default" | "secondary"> = {
-  Primary: "default",
-  Secondary: "secondary",
+  primary: "default",
+  secondary: "secondary",
 };
 
 const POSITION_CLASS_MAP: Record<string, string> = {
-  Left: "justify-start",
-  Center: "justify-center",
-  Right: "justify-end",
+  left: "justify-start",
+  center: "justify-center",
+  right: "justify-end",
 };
 
 const ButtonField = ({ field }: ButtonFieldProps) => {
   const title = getPropValue(field, "title") ?? "Button";
-  const levelRaw = getPropValue(field, "level") ?? "Primary";
-  const positionRaw = getPropValue(field, "position") ?? "Left";
+  const levelRaw = getPropValue(field, "level") ?? "primary";
+  const positionRaw = getPropValue(field, "position") ?? "left";
 
   const level = BUTTON_VARIANT_MAP[levelRaw] || "default";
   const alignmentClass = POSITION_CLASS_MAP[positionRaw] || "justify-start";

@@ -17,7 +17,7 @@ export function getDefaultProps(type: BaseFieldType): FormFieldProp[] {
         value = prop.defaultValue ?? false;
         break;
       case "select":
-        value = prop.options ? prop.options[0] : prop.defaultValue;
+        value = prop.options?.[0]?.value ?? prop.defaultValue;
         break;
       case "list":
         value = Array.isArray(prop.defaultValue) ? [...prop.defaultValue] : [];
