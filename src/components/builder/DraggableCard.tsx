@@ -27,7 +27,7 @@ const DraggableCard = ({ component }: DraggableCardProps) => {
       {...listeners}
       {...attributes}
       data-slot="component-item"
-      className="px-3 py-2 rounded-md border border-[#2d2d2d] bg-[#1e1e1e] hover:bg-[#2f2f2f] cursor-move flex items-center gap-2"
+      className="p-2 rounded-md border border-[#2d2d2d] bg-[#1e1e1e] hover:bg-[#2f2f2f] cursor-move flex items-center gap-2"
     >
       {Icon && (
         <div className="p-1 border border-[#2d2d2d] rounded inline-flex">

@@ -27,7 +27,7 @@ export const componentPalette: ComponentCategory[] = [
   },
   {
     category: "control-field",
-    label: "Mediua and Control",
+    label: "Media and Control",
     items: [{ type: "button", label: "Button", icon: MousePointerClickIcon }],
   },
   {

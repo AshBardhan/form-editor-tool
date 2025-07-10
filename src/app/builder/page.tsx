@@ -1,7 +1,7 @@
 "use client";
 
 import { FormBuilderCanvas } from "@/components/builder/FormBuilderCanvas";
-import { ComponentSidebar } from "@/components/builder/ComponentSidebar";
+import { FormComponentSidebar } from "@/components/builder/FormComponentSidebar";
 import {
   DndContext,
   DragEndEvent,
@@ -10,7 +10,7 @@ import {
 } from "@dnd-kit/core";
 import { useFormStore } from "@/lib/store";
 import { useState } from "react";
-import { FormEditorSidebar } from "@/components/builder/FormEditorSidebar";
+import { FormConfigurationSidebar } from "@/components/builder/FormConfigurationSidebar";
 import { FormField } from "@/types/field";
 import { SortableField } from "@/components/builder/SortableField";
 import { Button } from "@/components/ui/Button";
@@ -108,7 +108,7 @@ export default function Home() {
         <div className="flex flex-1 w-full overflow-hidden">
           {!isLeftCollapsed && (
             <aside className="w-72 flex-shrink-0 bg-[#151515] text-[#fefefe] border-r border-[#373737]">
-              <ComponentSidebar />
+              <FormComponentSidebar />
             </aside>
           )}
           <main
@@ -147,7 +147,7 @@ export default function Home() {
           </main>
           {!isRightCollapsed && (
             <aside className="w-72 flex-shrink-0 bg-[#151515] text-[#fefefe] border-l border-[#373737]">
-              <FormEditorSidebar />
+              <FormConfigurationSidebar />
             </aside>
           )}
         </div>

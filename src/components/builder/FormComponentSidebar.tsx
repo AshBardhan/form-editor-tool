@@ -2,10 +2,10 @@
 
 import { componentPalette } from "@/lib/constants/componentPalette";
 import { DraggableCard } from "./DraggableCard";
-import { ChevronDown } from "lucide-react";
+import { ChevronDown, ComponentIcon } from "lucide-react";
 import React, { useState } from "react";
 
-const ComponentSidebar = () => {
+const FormComponentSidebar = () => {
   const [expandedCategories, setExpandedCategories] = useState<{
     [category: string]: boolean;
   }>({});
@@ -20,7 +20,10 @@ const ComponentSidebar = () => {
   return (
     <>
       <div className="p-4 border-b border-b-[#2d2d2d]">
-        <h2 className="font-semibold">Form Fields</h2>
+        <h2 className="font-semibold flex items-center gap-2">
+          <ComponentIcon size={20} />
+          Form Components
+        </h2>
       </div>
 
       {componentPalette.map((group) => {
@@ -64,4 +67,4 @@ const ComponentSidebar = () => {
   );
 };
 
-export { ComponentSidebar };
+export { FormComponentSidebar };

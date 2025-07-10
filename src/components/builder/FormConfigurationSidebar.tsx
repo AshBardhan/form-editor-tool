@@ -17,7 +17,7 @@ import { Textarea } from "@/components/ui/Textarea";
 import { getField } from "@/lib/utils/fieldUtils";
 import { ScrollTextIcon } from "lucide-react";
 
-const FormEditorSidebar = () => {
+const FormConfigurationSidebar = () => {
   const { form, selectedFieldId, updateField, updateForm } = useFormStore();
   const selected = form.fields.find((f) => f.id === selectedFieldId);
   const selectedMeta = selected ? getField(selected.type) : null;
@@ -38,7 +38,7 @@ const FormEditorSidebar = () => {
       <div className="p-4 border-b border-b-[#2d2d2d]">
         <h2 className="font-semibold flex items-center gap-2">
           {Icon && <Icon size={20} />}
-          {selected ? `${selectedMeta?.label} Field` : "Form"} Editor
+          {selected ? `${selectedMeta?.label}` : "Form"} Configuration
         </h2>
       </div>
       {selected ? (
@@ -183,4 +183,4 @@ const FormEditorSidebar = () => {
   );
 };
 
-export { FormEditorSidebar };
+export { FormConfigurationSidebar };
