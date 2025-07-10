@@ -94,11 +94,16 @@ interface SelectValueProps extends React.HTMLAttributes<HTMLSpanElement> {
   placeholder?: string;
 }
 
-function SelectValue({ placeholder, className, ...props }: SelectValueProps) {
+function SelectValue({
+  placeholder,
+  className,
+  children,
+  ...props
+}: SelectValueProps) {
   const context = React.useContext(SelectContext);
   if (!context) throw new Error("SelectValue must be used within Select");
 
-  const displayValue = context.value || placeholder;
+  const displayValue = children ?? context.value ?? placeholder;
 
   return (
     <span data-slot="select-value" className={className} {...props}>

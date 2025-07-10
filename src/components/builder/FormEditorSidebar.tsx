@@ -121,7 +121,9 @@ const FormEditorSidebar = () => {
                 id="form-theme"
                 className="px-3 py-2 w-full rounded-md border border-[#2d2d2d] bg-[#1e1e1e] focus:bg-[#2f2f2f] focus-visible:ring-0 focus-visible:!shadow-none"
               >
-                <SelectValue placeholder="Select theme" />
+                <SelectValue placeholder="Select theme">
+                  {THEME_OPTIONS[form.theme]}
+                </SelectValue>
               </SelectTrigger>
               <SelectContent>
                 {Object.entries(THEME_OPTIONS).map(([value, label]) => (
