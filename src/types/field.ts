@@ -19,7 +19,7 @@ export interface BaseField {
 export interface FormFieldProp {
   key: string;
   label: string;
-  type: "string" | "number" | "boolean" | "list";
+  type: "string" | "long-string" | "number" | "boolean" | "list";
   defaultValue?: any;
   value?: any;
 

@@ -19,7 +19,7 @@ export const fieldPropTemplates: Record<BaseFieldType, FormFieldProp[]> = {
     {
       key: "text",
       label: "Text",
-      type: "string",
+      type: "long-string",
       defaultValue: "Paragraph text",
     },
   ],
@@ -217,6 +217,12 @@ export const fieldPropTemplates: Record<BaseFieldType, FormFieldProp[]> = {
       label: "Required",
       type: "boolean",
       defaultValue: false,
+    },
+    {
+      key: "placeholder",
+      label: "Placeholder",
+      type: "string",
+      defaultValue: "Select an option",
     },
     {
       key: "options",

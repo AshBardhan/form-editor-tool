@@ -1,3 +1,5 @@
+"use client";
+
 import { TrashIcon } from "lucide-react";
 import { useState } from "react";
 import { Input } from "@/components/ui/Input";
@@ -45,12 +47,13 @@ export const ListEditor = ({ value, onChange }: ListEditorProps) => {
             type="text"
             value={option}
             onChange={(e) => updateOption(i, e.target.value)}
-            className="pl-3 pr-8 py-2 rounded-md border border-[#2d2d2d] bg-[#1e1e1e] focus:bg-[#2f2f2f] focus-visible:ring-0 focus-visible:!shadow-none"
+            className="pl-3 pr-8 py-2 focus-visible:ring-0 focus-visible:!shadow-none"
           />
           <Button
             type="button"
+            variant="destructive"
             onClick={() => removeOption(i)}
-            className="absolute right-0 top-1/2 -translate-y-1/2"
+            className="absolute right-0 top-1/2 -translate-y-1/2 rounded-l-none"
             disabled={value.length <= 2}
           >
             <TrashIcon size={12} />
@@ -63,7 +66,7 @@ export const ListEditor = ({ value, onChange }: ListEditorProps) => {
         value={newOption}
         onChange={(e) => setNewOption(e.target.value)}
         onKeyDown={handleKeyDown}
-        className="px-3 py-2 rounded-md border border-[#2d2d2d] bg-[#1e1e1e] focus:bg-[#2f2f2f] focus-visible:ring-0 focus-visible:!shadow-none"
+        className="focus-visible:ring-0 focus-visible:!shadow-none"
       />
     </div>
   );

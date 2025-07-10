@@ -20,13 +20,14 @@ const SelectField = ({ field }: SelectFieldProps) => {
   const label = getPropValue(field, "label");
   const options = getPropValue(field, "options") ?? [];
   const value = getPropValue(field, "value") ?? "";
+  const placeholder = getPropValue(field, "placeholder") ?? "";
 
   return (
     <div className="flex flex-col gap-2 py-2">
       {label && <Label htmlFor={field.id}>{label}</Label>}
       <Select value={value}>
         <SelectTrigger id={field.id} className="w-full">
-          <SelectValue placeholder="Select an option" />
+          <SelectValue placeholder={placeholder} />
         </SelectTrigger>
         <SelectContent>
           {options.map((opt: string, idx: number) => (

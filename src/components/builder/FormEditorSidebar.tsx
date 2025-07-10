@@ -13,6 +13,7 @@ import {
 } from "@/components/ui/Select";
 import { THEME_OPTIONS } from "@/lib/constants/theme";
 import { ListEditor } from "./ListEditor";
+import { Textarea } from "@/components/ui/Textarea";
 
 const FormEditorSidebar = () => {
   const { form, selectedFieldId, updateField, updateForm } = useFormStore();
@@ -34,7 +35,7 @@ const FormEditorSidebar = () => {
         <h2 className="font-semibold">{selected ? "Field" : "Form"} Editor</h2>
       </div>
       {selected ? (
-        <div className="p-4 flex flex-col gap-4">
+        <div className="p-4 flex flex-col gap-4 dark">
           {selected.props.map((prop) => (
             <div
               className="flex flex-col gap-2 focus-within:!shadow-none"
@@ -51,7 +52,20 @@ const FormEditorSidebar = () => {
                 <Input
                   id={prop.key}
                   value={prop.value ?? ""}
-                  className="px-3 py-2 rounded-md border border-[#2d2d2d] bg-[#1e1e1e] focus:bg-[#2f2f2f] focus-visible:ring-0 focus-visible:!shadow-none"
+                  className="focus-visible:ring-0 focus-visible:!shadow-none"
+                  onChange={(e) =>
+                    updateField(selected.id, prop.key, e.target.value)
+                  }
+                />
+              )}
+
+              {prop.type === "long-string" && (
+                <Textarea
+                  id={prop.key}
+                  value={prop.value ?? ""}
+                  rows={10}
+                  placeholder="Enter a long text"
+                  className="resize-y focus-visible:ring-0 focus-visible:!shadow-none"
                   onChange={(e) =>
                     updateField(selected.id, prop.key, e.target.value)
                   }
@@ -63,7 +77,7 @@ const FormEditorSidebar = () => {
                   id={prop.key}
                   type="number"
                   value={prop.value ?? 0}
-                  className="px-3 py-2 rounded-md border border-[#2d2d2d] bg-[#1e1e1e] focus:bg-[#2f2f2f] focus-visible:ring-0 focus-visible:!shadow-none"
+                  className="focus-visible:ring-0 focus-visible:!shadow-none"
                   onChange={(e) =>
                     updateField(
                       selected.id,
@@ -99,7 +113,7 @@ const FormEditorSidebar = () => {
           ))}
         </div>
       ) : (
-        <div className="p-4 flex flex-col gap-4">
+        <div className="p-4 flex flex-col gap-4 dark">
           <div className="flex flex-col gap-2">
             <Label htmlFor="form-title" className="font-semibold">
               Title
@@ -107,7 +121,7 @@ const FormEditorSidebar = () => {
             <Input
               id="form-title"
               value={form.title}
-              className="px-3 py-2 rounded-md border border-[#2d2d2d] bg-[#1e1e1e] focus:bg-[#2f2f2f] focus-visible:ring-0 focus-visible:!shadow-none"
+              className="focus-visible:ring-0 focus-visible:!shadow-none"
               onChange={(e) => updateForm("title", e.target.value)}
             />
           </div>
@@ -119,7 +133,7 @@ const FormEditorSidebar = () => {
             <Select value={form.theme} onValueChange={onThemeChange}>
               <SelectTrigger
                 id="form-theme"
-                className="px-3 py-2 w-full rounded-md border border-[#2d2d2d] bg-[#1e1e1e] focus:bg-[#2f2f2f] focus-visible:ring-0 focus-visible:!shadow-none"
+                className="w-full focus-visible:ring-0 focus-visible:!shadow-none"
               >
                 <SelectValue placeholder="Select theme">
                   {THEME_OPTIONS[form.theme]}
