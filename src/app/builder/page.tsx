@@ -121,7 +121,7 @@ export default function Home() {
               }
             }}
           >
-            <div className="absolute top-1 left-1/2 -translate-x-1/2 bg-[#151515] rounded text-white flex">
+            <div className="absolute top-1 left-1/2 -translate-x-1/2 bg-[#151515] rounded overflow-hidden text-white flex">
               {DeviceList.map((device) => {
                 const Icon = device.icon;
                 return (
@@ -130,7 +130,7 @@ export default function Home() {
                     title={device.label}
                     key={device.label}
                     onClick={() => setDeviceType(device.label)}
-                    className={`${deviceType === device.label && "bg-[#2e2e2e]"} hover:bg-[#1f1f1f]`}
+                    className={`${deviceType === device.label && "bg-[#2e2e2e]"} hover:bg-[#1f1f1f] rounded-none`}
                   >
                     <Icon size={12} />
                   </Button>

@@ -18,7 +18,7 @@ interface FormBuilderCanvasProps {
 }
 
 const DropPlaceholderContent = () => (
-  <div className="h-10 bg-blue-300 opacity-30 border border-blue-500 transition-all" />
+  <div className="h-10 bg-blue-300 dark:bg-gray-50 opacity-30 border border-blue-500 dark:border-gray-300 transition-all" />
 );
 
 const FormBuilderCanvas = ({
@@ -43,7 +43,7 @@ const FormBuilderCanvas = ({
         >
           {/* Empty canvas state */}
           {form.fields.length === 0 && !overId ? (
-            <div className="h-full text-gray-500 border border-dashed flex items-center justify-center text-sm">
+            <div className="h-full text-gray-500 border dark:text-white border-dashed flex items-center justify-center text-sm">
               Drag components here
             </div>
           ) : (

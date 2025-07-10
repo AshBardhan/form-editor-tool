@@ -66,14 +66,14 @@ export const SortableField = ({
       data-slot="field"
       data-id={field.id}
       className={`rounded relative border ${
-        isSelected ? "border-blue-500" : "border-transparent"
+        isSelected ? "border-blue-500 dark:border-gray-300" : "border-transparent"
       }`}
       onMouseEnter={() => !isDragging && hoverField(field.id)}
       onMouseLeave={() => !isDragging && hoverField(null)}
       onClick={() => !isDragging && selectField(field.id)}
     >
       {isHovered && (
-        <div className="absolute inset-0 bg-blue-200 opacity-30 pointer-events-none" />
+        <div className="absolute inset-0 bg-blue-200 dark:bg-white opacity-30 pointer-events-none" />
       )}
 
       <div className="pointer-events-none">{renderField(field)}</div>
@@ -84,7 +84,7 @@ export const SortableField = ({
         >
           <div
             {...listeners}
-            className="absolute top-0 left-1/2 -translate-x-1/2 cursor-grab p-1 text-gray-500 hover:text-black"
+            className="absolute top-0 left-1/2 -translate-x-1/2 cursor-grab p-1 text-gray-500 dark:text-gray-100 hover:text-black dark:hover:text-white"
             title="Drag to reorder"
           >
             <GripHorizontal size={20} />
@@ -93,7 +93,7 @@ export const SortableField = ({
           <div className="absolute top-0 right-0 flex gap-2 p-2">
             <div
               role="button"
-              className="cursor-pointer text-gray-500 hover:text-black"
+              className="cursor-pointer text-gray-500 dark:text-gray-300 hover:text-black dark:hover:text-white"
               onClick={(e) => {
                 e.stopPropagation();
                 cloneField(field.id);
@@ -103,7 +103,7 @@ export const SortableField = ({
             </div>
             <div
               role="button"
-              className="cursor-pointer text-gray-500 hover:text-black"
+              className="cursor-pointer text-gray-500 dark:text-gray-300 hover:text-black dark:hover:text-white"
               onClick={(e) => {
                 e.stopPropagation();
                 removeField(field.id);
