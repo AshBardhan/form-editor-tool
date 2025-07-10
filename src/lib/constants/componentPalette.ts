@@ -7,7 +7,7 @@ import {
   HashIcon,
   HeadingIcon,
   LinkIcon,
-  ListOrderedIcon,
+  SquareChevronDownIcon,
   MousePointerClickIcon,
   UnfoldVerticalIcon,
   SquareCheckBigIcon,
@@ -41,7 +41,7 @@ export const componentPalette: ComponentCategory[] = [
       { type: "password", label: "Password", icon: AsteriskIcon },
       // { type: "radio", label: "Radio Group" },
       { type: "checkbox", label: "Checkbox", icon: SquareCheckBigIcon },
-      { type: "select", label: "Option", icon: ListOrderedIcon },
+      { type: "select", label: "Select", icon: SquareChevronDownIcon },
     ],
   },
 ];
