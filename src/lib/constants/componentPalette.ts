@@ -9,7 +9,7 @@ import {
   LinkIcon,
   ListOrderedIcon,
   MousePointerClickIcon,
-  SeparatorHorizontalIcon,
+  UnfoldVerticalIcon,
   SquareCheckBigIcon,
   TypeIcon,
 } from "lucide-react";
@@ -21,7 +21,7 @@ export const componentPalette: ComponentCategory[] = [
     items: [
       { type: "heading", label: "Heading", icon: HeadingIcon },
       { type: "paragraph", label: "Paragraph", icon: ALargeSmallIcon },
-      { type: "separator", label: "Separator", icon: SeparatorHorizontalIcon },
+      { type: "separator", label: "Separator", icon: UnfoldVerticalIcon },
     ],
   },
   {
