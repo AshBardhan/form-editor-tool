@@ -1,8 +1,7 @@
 import { getPropValue } from "@/lib/utils/fieldUtils";
 import { FormField } from "@/types/field";
-import { RadioGroup, RadioGroupItem } from "../ui/RadioGroup";
-import React from "react";
-import { Label } from "../ui/Label";
+import { RadioGroup, RadioGroupItem } from "@/components/ui/RadioGroup";
+import { Label } from "@/components/ui/Label";
 
 interface RadioFieldProps {
   field: FormField;
