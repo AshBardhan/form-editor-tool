@@ -8,6 +8,7 @@ import { CheckboxField } from "./CheckboxField";
 import { SelectField } from "./SelectField";
 import { SeparatorField } from "./SeparatorField";
 import { ButtonField } from "./ButtonField";
+import { RadioField } from "./RadioField";
 
 type FieldRenderer = (props: { field: FormField }) => JSX.Element;
 
@@ -22,6 +23,7 @@ export const fieldRenderers: Record<BaseFieldType, FieldRenderer> = {
   textarea: TextareaField,
   checkbox: CheckboxField,
   select: SelectField,
+  radio: RadioField,
   separator: SeparatorField,
   button: ButtonField,
 };

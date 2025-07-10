@@ -12,6 +12,7 @@ import {
   UnfoldVerticalIcon,
   SquareCheckBigIcon,
   TypeIcon,
+  CircleCheckBigIcon,
 } from "lucide-react";
 
 export const componentPalette: ComponentCategory[] = [
@@ -39,7 +40,7 @@ export const componentPalette: ComponentCategory[] = [
       { type: "url", label: "Web URL", icon: LinkIcon },
       { type: "email", label: "Email", icon: AtSignIcon },
       { type: "password", label: "Password", icon: AsteriskIcon },
-      // { type: "radio", label: "Radio Group" },
+      { type: "radio", label: "Radio", icon: CircleCheckBigIcon },
       { type: "checkbox", label: "Checkbox", icon: SquareCheckBigIcon },
       { type: "select", label: "Select", icon: SquareChevronDownIcon },
     ],

@@ -6,6 +6,7 @@ export type InputFieldType =
   | "email"
   | "password"
   | "textarea"
+  | "radio"
   | "checkbox"
   | "select";
 export type MediaFieldType = "button";

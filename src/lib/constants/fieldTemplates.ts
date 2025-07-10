@@ -205,6 +205,24 @@ export const fieldPropTemplates: Record<BaseFieldType, FormFieldProp[]> = {
       defaultValue: false,
     },
   ],
+  radio: [
+    {
+      key: "alignment",
+      label: "Alignment",
+      type: "select",
+      options: [
+        { value: "vertical", label: "Vertical" },
+        { value: "horizontal", label: "Horizontal" },
+      ],
+      defaultValue: "vertical",
+    },
+    {
+      key: "options",
+      label: "Options",
+      type: "list",
+      defaultValue: ["Radio Label 1", "Radio Label 2"],
+    },
+  ],
   select: [
     {
       key: "label",
