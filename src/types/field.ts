@@ -1,4 +1,4 @@
-export type TextFieldType = "heading" | "paragraph";
+export type TextFieldType = "heading" | "paragraph" | "separator";
 export type InputFieldType =
   | "text"
   | "number"
@@ -8,9 +8,9 @@ export type InputFieldType =
   | "textarea"
   | "checkbox"
   | "select";
-export type LayoutFieldType = "separator";
+export type MediaFieldType = "button";
 
-export type BaseFieldType = TextFieldType | InputFieldType | LayoutFieldType;
+export type BaseFieldType = TextFieldType | InputFieldType | MediaFieldType;
 
 export interface BaseField {
   type: BaseFieldType;
@@ -19,7 +19,7 @@ export interface BaseField {
 export interface FormFieldProp {
   key: string;
   label: string;
-  type: "string" | "long-string" | "number" | "boolean" | "list";
+  type: "string" | "long-string" | "number" | "boolean" | "list" | "select";
   defaultValue?: any;
   value?: any;
 

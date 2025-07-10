@@ -8,6 +8,7 @@ import {
   HeadingIcon,
   LinkIcon,
   ListOrderedIcon,
+  MousePointerClickIcon,
   SeparatorHorizontalIcon,
   SquareCheckBigIcon,
   TypeIcon,
@@ -20,7 +21,13 @@ export const componentPalette: ComponentCategory[] = [
     items: [
       { type: "heading", label: "Heading", icon: HeadingIcon },
       { type: "paragraph", label: "Paragraph", icon: ALargeSmallIcon },
+      { type: "separator", label: "Separator", icon: SeparatorHorizontalIcon },
     ],
+  },
+  {
+    category: "control-field",
+    label: "Mediua and Control",
+    items: [{ type: "button", label: "Button", icon: MousePointerClickIcon }],
   },
   {
     category: "input-field",
@@ -37,19 +44,4 @@ export const componentPalette: ComponentCategory[] = [
       { type: "select", label: "Option", icon: ListOrderedIcon },
     ],
   },
-  {
-    category: "layout-field",
-    label: "Layout",
-    items: [
-      { type: "separator", label: "Separator", icon: SeparatorHorizontalIcon },
-    ],
-  },
-  // {
-  //   category: "action-field",
-  //   label: "Control & Action",
-  //   items: [
-  //     { type: "button_primary", label: "Primary Button" },
-  //     { type: "button_secondary", label: "Secondary Button" },
-  //   ],
-  // },
 ];

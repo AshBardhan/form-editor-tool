@@ -102,6 +102,25 @@ const FormEditorSidebar = () => {
                   </Label>
                 </div>
               )}
+              {prop.type === "select" && (
+                <Select
+                  value={prop.value}
+                  onValueChange={(val) =>
+                    updateField(selected.id, prop.key, val)
+                  }
+                >
+                  <SelectTrigger className="w-full focus-visible:ring-0 focus-visible:!shadow-none">
+                    <SelectValue>{prop.value}</SelectValue>
+                  </SelectTrigger>
+                  <SelectContent>
+                    {prop.options?.map((option) => (
+                      <SelectItem key={option} value={option}>
+                        {option}
+                      </SelectItem>
+                    ))}
+                  </SelectContent>
+                </Select>
+              )}
 
               {prop.type === "list" && Array.isArray(prop.value) && (
                 <ListEditor

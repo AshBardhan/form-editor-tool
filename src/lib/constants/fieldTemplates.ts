@@ -245,4 +245,26 @@ export const fieldPropTemplates: Record<BaseFieldType, FormFieldProp[]> = {
       defaultValue: false,
     },
   ],
+  button: [
+    {
+      key: "title",
+      label: "Title",
+      type: "string",
+      defaultValue: "Buttton",
+    },
+    {
+      key: "level",
+      label: "Level",
+      type: "select",
+      options: ["Primary", "Secondary"],
+      defaultValue: "Primary",
+    },
+    {
+      key: "position",
+      label: "Position",
+      type: "select",
+      options: ["Left", "Center", "Right"],
+      defaultValue: "Right",
+    },
+  ],
 };

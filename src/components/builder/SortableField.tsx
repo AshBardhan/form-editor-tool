@@ -66,7 +66,9 @@ export const SortableField = ({
       data-slot="field"
       data-id={field.id}
       className={`rounded relative border ${
-        isSelected ? "border-blue-500 dark:border-gray-300" : "border-transparent"
+        isSelected
+          ? "border-blue-500 dark:border-gray-300"
+          : "border-transparent"
       }`}
       onMouseEnter={() => !isDragging && hoverField(field.id)}
       onMouseLeave={() => !isDragging && hoverField(null)}
