@@ -14,10 +14,14 @@ import {
 import { THEME_OPTIONS } from "@/lib/constants/theme";
 import { ListEditor } from "./ListEditor";
 import { Textarea } from "@/components/ui/Textarea";
+import { getField } from "@/lib/utils/fieldUtils";
+import { ScrollTextIcon } from "lucide-react";
 
 const FormEditorSidebar = () => {
   const { form, selectedFieldId, updateField, updateForm } = useFormStore();
   const selected = form.fields.find((f) => f.id === selectedFieldId);
+  const selectedMeta = selected ? getField(selected.type) : null;
+  const Icon = selectedMeta?.icon ?? ScrollTextIcon;
 
   const onThemeChange = (value: string) => {
     const html = document.documentElement;
@@ -32,7 +36,10 @@ const FormEditorSidebar = () => {
   return (
     <>
       <div className="p-4 border-b border-b-[#2d2d2d]">
-        <h2 className="font-semibold">{selected ? "Field" : "Form"} Editor</h2>
+        <h2 className="font-semibold flex items-center gap-2">
+          {Icon && <Icon size={20} />}
+          {selected ? `${selectedMeta?.label} Field` : "Form"} Editor
+        </h2>
       </div>
       {selected ? (
         <div className="p-4 flex flex-col gap-4 dark">
