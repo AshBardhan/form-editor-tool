@@ -5,7 +5,7 @@ import { Button } from "@/components/ui/Button";
 import { PanelLeft, PanelRight } from "lucide-react";
 import { useFormStore } from "@/lib/store";
 
-const Header = () => {
+const FormBuilderHeader = () => {
   const { form, isSidebarCollapsed, toggleSidebar } = useFormStore();
   const isLeftCollapsed = isSidebarCollapsed.left;
   const isRightCollapsed = isSidebarCollapsed.right;
@@ -45,4 +45,4 @@ const Header = () => {
   );
 };
 
-export { Header };
+export { FormBuilderHeader };

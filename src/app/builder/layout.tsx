@@ -1,4 +1,4 @@
-import { Header } from "@/components/Header";
+import { FormBuilderHeader } from "@/components/builder/FormBuilderHeader";
 
 export default function BuilderLayout({
   children,
@@ -7,7 +7,7 @@ export default function BuilderLayout({
 }>) {
   return (
     <div className="flex flex-col h-screen">
-      <Header />
+      <FormBuilderHeader />
       {children}
     </div>
   );
