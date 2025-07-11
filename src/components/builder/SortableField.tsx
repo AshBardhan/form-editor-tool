@@ -4,7 +4,7 @@ import { useFormStore } from "@/lib/store";
 import { FormField } from "@/types/field";
 import { useSortable } from "@dnd-kit/sortable";
 import { CSS } from "@dnd-kit/utilities";
-import { Copy, GripHorizontal, Trash } from "lucide-react";
+import { CopyIcon, SeparatorHorizontalIcon, TrashIcon } from "lucide-react";
 import { fieldRenderers } from "@/components/form-fields";
 import { CSSProperties } from "react";
 
@@ -28,6 +28,9 @@ export const SortableField = ({
 
   const isSelected = selectedFieldId === field.id;
   const isHovered = hoveredFieldId === field.id;
+
+  const { fieldErrors } = useFormStore();
+  const isInvalid = fieldErrors[field.id]?.length > 0;
 
   const renderField = (field: FormField) => {
     const Renderer = fieldRenderers[field.type];
@@ -65,10 +68,12 @@ export const SortableField = ({
       {...attributes}
       data-slot="field"
       data-id={field.id}
-      className={`rounded relative border ${
-        isSelected
-          ? "border-blue-500 dark:border-gray-300"
-          : "border-transparent"
+      className={`rounded relative border transition ${
+        isInvalid
+          ? "border-destructive min-h-10 bg-destructive/5"
+          : isSelected
+            ? "border-blue-500 dark:border-gray-300"
+            : "border-transparent"
       }`}
       onMouseEnter={() => !isDragging && hoverField(field.id)}
       onMouseLeave={() => !isDragging && hoverField(null)}
@@ -78,7 +83,9 @@ export const SortableField = ({
         <div className="absolute inset-0 bg-blue-200 dark:bg-white opacity-30 pointer-events-none" />
       )}
 
-      <div className="pointer-events-none">{renderField(field)}</div>
+      <div className={`pointer-events-none ${isHovered ? "opacity-40" : ""}`}>
+        {renderField(field)}
+      </div>
 
       {!isGhostMode && (
         <div
@@ -86,23 +93,26 @@ export const SortableField = ({
         >
           <div
             {...listeners}
-            className="absolute top-0 left-1/2 -translate-x-1/2 cursor-grab p-1 text-gray-500 dark:text-gray-100 hover:text-black dark:hover:text-white"
-            title="Drag to reorder"
+            className="absolute top-1/2 left-1/2 -translate-1/2 cursor-grab p-1 text-gray-500 dark:text-gray-100 hover:text-black dark:hover:text-white"
+            title="Rearrange Field"
           >
-            <GripHorizontal size={20} />
+            <SeparatorHorizontalIcon size={24} />
           </div>
 
-          <div className="absolute top-0 right-0 flex gap-2 p-2">
-            <div
-              role="button"
-              className="cursor-pointer text-gray-500 dark:text-gray-300 hover:text-black dark:hover:text-white"
-              onClick={(e) => {
-                e.stopPropagation();
-                cloneField(field.id);
-              }}
-            >
-              <Copy size={14} />
-            </div>
+          <div className="absolute top-1/2 -translate-y-1/2 right-0 flex gap-2 p-2">
+            {!isInvalid && (
+              <div
+                role="button"
+                className="cursor-pointer text-gray-500 dark:text-gray-300 hover:text-black dark:hover:text-white"
+                onClick={(e) => {
+                  e.stopPropagation();
+                  cloneField(field.id);
+                }}
+                title="Duplicate Field"
+              >
+                <CopyIcon size={16} />
+              </div>
+            )}
             <div
               role="button"
               className="cursor-pointer text-gray-500 dark:text-gray-300 hover:text-black dark:hover:text-white"
@@ -110,8 +120,9 @@ export const SortableField = ({
                 e.stopPropagation();
                 removeField(field.id);
               }}
+              title="Delete Field"
             >
-              <Trash size={14} />
+              <TrashIcon size={16} />
             </div>
           </div>
         </div>

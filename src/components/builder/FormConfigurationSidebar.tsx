@@ -20,7 +20,14 @@ import { useEffect, useState } from "react";
 import z from "zod";
 
 const FormConfigurationSidebar = () => {
-  const { form, selectedFieldId, updateField, updateForm } = useFormStore();
+  const {
+    form,
+    selectedFieldId,
+    updateField,
+    updateForm,
+    setFieldErrors,
+    clearFieldErrors,
+  } = useFormStore();
   const selected = form.fields.find((f) => f.id === selectedFieldId);
   const selectedMeta = selected ? getField(selected.type) : null;
   const Icon = selectedMeta?.icon ?? ScrollTextIcon;
@@ -56,10 +63,12 @@ const FormConfigurationSidebar = () => {
         string,
         string[]
       >;
-      console.log(fieldErrors);
       setErrors(fieldErrors);
+      const combined = Object.entries(fieldErrors).flatMap(([_, msgs]) => msgs);
+      setFieldErrors(selected.id, combined);
     } else {
       setErrors({});
+      clearFieldErrors(selected.id);
     }
   };
 
