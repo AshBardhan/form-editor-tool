@@ -11,7 +11,10 @@ const SeparatorField = ({ field }: SeparatorFieldProps) => {
   const divider = Boolean(getPropValue(field, "divider"));
 
   return (
-    <div className="mx-6" style={{ paddingTop: spacing, paddingBottom: spacing }}>
+    <div
+      className="mx-6"
+      style={{ paddingTop: spacing, paddingBottom: spacing }}
+    >
       {divider && <Separator />}
     </div>
   );

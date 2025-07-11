@@ -15,6 +15,8 @@ import { FormField } from "@/types/field";
 import { SortableField } from "@/components/builder/SortableField";
 import { Button } from "@/components/ui/Button";
 import { DeviceList, DeviceType } from "@/lib/constants/device";
+import { Sidebar } from "@/components/layout/Sidebar";
+import { MainContent } from "@/components/layout/MainContent";
 
 export default function Home() {
   const [overId, setOverId] = useState<string | null>(null);
@@ -105,23 +107,23 @@ export default function Home() {
             )
           ) : null}
         </DragOverlay>
-        <div className="flex flex-1 w-full overflow-hidden">
-          {!isLeftCollapsed && (
-            <aside className="w-72 flex-shrink-0 bg-[#151515] text-[#fefefe] border-r border-[#373737]">
-              <FormComponentSidebar />
-            </aside>
-          )}
-          <main
-            className="flex-1 px-16 pt-16 pb-8 bg-gray-200 dark:bg-gray-500 relative overflow-hidden"
+
+        {!isLeftCollapsed && (
+          <Sidebar>
+            <FormComponentSidebar />
+          </Sidebar>
+        )}
+        <MainContent>
+          <div
+            className="py-12 px-8 h-full overflow-y-auto"
             onClickCapture={(e) => {
-              // Only reset if the click is outside any field
               const target = e.target as HTMLElement;
               if (!target.closest("[data-slot='field']")) {
                 selectField(null);
               }
             }}
           >
-            <div className="absolute top-1 left-1/2 -translate-x-1/2 bg-[#151515] rounded overflow-hidden text-white flex">
+            <div className="absolute z-[1] top-1 left-1/2 -translate-x-1/2 bg-[#151515] rounded overflow-hidden text-white flex">
               {DeviceList.map((device) => {
                 const Icon = device.icon;
                 return (
@@ -144,13 +146,13 @@ export default function Home() {
               activeFieldId={activeDragItem?.id || null}
               dragSource={dragSource}
             />
-          </main>
-          {!isRightCollapsed && (
-            <aside className="w-72 flex-shrink-0 bg-[#151515] text-[#fefefe] border-l border-[#373737]">
-              <FormConfigurationSidebar />
-            </aside>
-          )}
-        </div>
+          </div>
+        </MainContent>
+        {!isRightCollapsed && (
+          <Sidebar position="right">
+            <FormConfigurationSidebar />
+          </Sidebar>
+        )}
       </DndContext>
     </>
   );

@@ -32,9 +32,9 @@ const FormBuilderCanvas = ({
   const isOverEnd = overId && !form.fields.some((f) => f.id === overId);
 
   return (
-    <div className="flex justify-center h-full" ref={setNodeRef}>
+    <div className="flex justify-center" ref={setNodeRef}>
       <div
-        className="min-h-[200px] w-full  flex-1 bg-white dark:bg-black transition-[colors,max-width] overflow-auto"
+        className="min-h-[200px] w-full flex-1 bg-white dark:bg-black transition-[colors,max-width]"
         style={{ maxWidth: device?.size }}
       >
         <SortableContext

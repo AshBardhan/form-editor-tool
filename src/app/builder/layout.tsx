@@ -1,4 +1,6 @@
 import { FormBuilderHeader } from "@/components/builder/FormBuilderHeader";
+import { Header } from "@/components/layout/Header";
+import { PageContent } from "@/components/layout/PageContent";
 
 export default function BuilderLayout({
   children,
@@ -6,9 +8,11 @@ export default function BuilderLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <div className="flex flex-col h-screen">
-      <FormBuilderHeader />
-      {children}
+    <div className="page-container">
+      <Header>
+        <FormBuilderHeader />
+      </Header>
+      <PageContent>{children}</PageContent>
     </div>
   );
 }

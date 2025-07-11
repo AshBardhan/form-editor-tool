@@ -11,7 +11,7 @@ const FormBuilderHeader = () => {
   const isRightCollapsed = isSidebarCollapsed.right;
 
   return (
-    <header className="flex flex-shrink-0 items-center text-white h-16 px-4 bg-[#151515] border-b border-[#2f2f2f]">
+    <>
       <div className="flex-shrink-0 w-50 flex items-center gap-2">
         <Button
           variant="ghost"
@@ -41,7 +41,7 @@ const FormBuilderHeader = () => {
           </Button>
         </Link>
       </div>
-    </header>
+    </>
   );
 };
 

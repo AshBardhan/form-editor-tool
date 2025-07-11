@@ -83,9 +83,7 @@ export const SortableField = ({
         <div className="absolute inset-0 bg-blue-200/30 dark:bg-white/30 pointer-events-none" />
       )}
 
-      <div className="pointer-events-none">
-        {renderField(field)}
-      </div>
+      <div className="pointer-events-none">{renderField(field)}</div>
 
       {!isGhostMode && (
         <div
