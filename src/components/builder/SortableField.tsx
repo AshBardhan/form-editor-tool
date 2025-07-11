@@ -5,7 +5,7 @@ import { FormField } from "@/types/field";
 import { useSortable } from "@dnd-kit/sortable";
 import { CSS } from "@dnd-kit/utilities";
 import { CopyIcon, SeparatorHorizontalIcon, TrashIcon } from "lucide-react";
-import { fieldRenderers } from "@/components/form-fields";
+import { fieldRenderers } from "@/components/form-field";
 import { CSSProperties } from "react";
 
 interface SortableFieldProps {
