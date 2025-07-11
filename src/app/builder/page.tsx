@@ -13,10 +13,10 @@ import { useState } from "react";
 import { FormConfigurationSidebar } from "@/components/builder/FormConfigurationSidebar";
 import { FormField } from "@/types/field";
 import { SortableField } from "@/components/builder/SortableField";
-import { Button } from "@/components/ui/Button";
-import { DeviceList, DeviceType } from "@/lib/constants/device";
+import { DeviceType } from "@/lib/constants/device";
 import { Sidebar } from "@/components/layout/Sidebar";
 import { MainContent } from "@/components/layout/MainContent";
+import { DeviceSelector } from "@/components/builder/DeviceSelector";
 
 export default function Home() {
   const [overId, setOverId] = useState<string | null>(null);
@@ -27,7 +27,6 @@ export default function Home() {
   const { form, isSidebarCollapsed, selectField, moveField, addField } =
     useFormStore();
   const [deviceType, setDeviceType] = useState<DeviceType>(DeviceType.DESKTOP);
-  const selectedDevice = DeviceList.find((d) => d.label === deviceType) || null;
   const isLeftCollapsed = isSidebarCollapsed.left;
   const isRightCollapsed = isSidebarCollapsed.right;
 
@@ -123,25 +122,13 @@ export default function Home() {
               }
             }}
           >
-            <div className="absolute z-[1] top-1 left-1/2 -translate-x-1/2 bg-[#151515] rounded overflow-hidden text-white flex">
-              {DeviceList.map((device) => {
-                const Icon = device.icon;
-                return (
-                  <Button
-                    variant="ghost"
-                    title={device.label}
-                    key={device.label}
-                    onClick={() => setDeviceType(device.label)}
-                    className={`${deviceType === device.label && "bg-[#2e2e2e]"} hover:bg-[#1f1f1f] rounded-none`}
-                  >
-                    <Icon size={12} />
-                  </Button>
-                );
-              })}
-            </div>
+            <DeviceSelector
+              currentDevice={deviceType}
+              onDeviceChange={setDeviceType}
+            />
 
             <FormBuilderCanvas
-              device={selectedDevice}
+              currentDevice={deviceType}
               overId={overId}
               activeFieldId={activeDragItem?.id || null}
               dragSource={dragSource}

@@ -8,13 +8,13 @@ import {
 import { SortableField } from "./SortableField";
 import { useDroppable } from "@dnd-kit/core";
 import React from "react";
-import { Device } from "@/lib/constants/device";
+import { DeviceList, DeviceType } from "@/lib/constants/device";
 
 interface FormBuilderCanvasProps {
   overId: string | null;
   activeFieldId: string | null;
   dragSource: "sidebar" | "canvas" | null;
-  device: Device | null;
+  currentDevice: DeviceType;
 }
 
 const DropPlaceholderContent = () => (
@@ -25,17 +25,20 @@ const FormBuilderCanvas = ({
   overId,
   activeFieldId,
   dragSource,
-  device,
+  currentDevice,
 }: FormBuilderCanvasProps) => {
   const { form } = useFormStore();
   const { setNodeRef } = useDroppable({ id: "canvas" });
   const isOverEnd = overId && !form.fields.some((f) => f.id === overId);
+  const currentDeviceMeta = DeviceList.find(
+    (device) => device.label === currentDevice,
+  );
 
   return (
     <div className="flex justify-center" ref={setNodeRef}>
       <div
-        className="min-h-[200px] w-full flex-1 bg-white dark:bg-black transition-[colors,max-width]"
-        style={{ maxWidth: device?.size }}
+        className="min-h-[75vh] w-full flex-1 bg-white dark:bg-black transition-[colors,max-width]"
+        style={{ maxWidth: currentDeviceMeta?.size }}
       >
         <SortableContext
           items={form.fields.map((f) => f.id)}

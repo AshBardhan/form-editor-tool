@@ -1,0 +1,35 @@
+"use client";
+
+import { DeviceList, DeviceType } from "@/lib/constants/device";
+import { Button } from "../ui/Button";
+
+interface DeviceSelectorProps {
+  currentDevice: DeviceType;
+  onDeviceChange: (newDeviceName: DeviceType) => void;
+}
+
+const DeviceSelector = ({
+  currentDevice,
+  onDeviceChange,
+}: DeviceSelectorProps) => {
+  return (
+    <div className="absolute z-[1] top-1 left-1/2 -translate-x-1/2 bg-[#151515] rounded overflow-hidden text-white flex">
+      {DeviceList.map((device) => {
+        const Icon = device.icon;
+        return (
+          <Button
+            variant="ghost"
+            title={device.label}
+            key={device.label}
+            onClick={() => onDeviceChange(device.label)}
+            className={`${currentDevice === device.label && "bg-[#2e2e2e]"} hover:bg-[#1f1f1f] rounded-none`}
+          >
+            <Icon size={12} />
+          </Button>
+        );
+      })}
+    </div>
+  );
+};
+
+export { DeviceSelector };
