@@ -68,7 +68,7 @@ export const SortableField = ({
       {...attributes}
       data-slot="field"
       data-id={field.id}
-      className={`rounded relative border transition ${
+      className={`relative border transition ${
         isInvalid
           ? "border-destructive min-h-10 bg-destructive/5"
           : isSelected
@@ -80,10 +80,10 @@ export const SortableField = ({
       onClick={() => !isDragging && selectField(field.id)}
     >
       {isHovered && (
-        <div className="absolute inset-0 bg-blue-200 dark:bg-white opacity-30 pointer-events-none" />
+        <div className="absolute inset-0 bg-blue-200/30 dark:bg-white/30 pointer-events-none" />
       )}
 
-      <div className={`pointer-events-none ${isHovered ? "opacity-40" : ""}`}>
+      <div className={`pointer-events-none`}>
         {renderField(field)}
       </div>
 
@@ -93,7 +93,7 @@ export const SortableField = ({
         >
           <div
             {...listeners}
-            className="absolute top-1/2 left-1/2 -translate-1/2 cursor-grab p-1 text-gray-500 dark:text-gray-100 hover:text-black dark:hover:text-white"
+            className="absolute inset-0 cursor-grab text-gray-500 dark:text-gray-100 hover:text-black dark:hover:text-white flex items-center justify-center"
             title="Rearrange Field"
           >
             <SeparatorHorizontalIcon size={24} />
