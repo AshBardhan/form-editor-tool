@@ -83,7 +83,7 @@ export const SortableField = ({
         <div className="absolute inset-0 bg-blue-200/30 dark:bg-white/30 pointer-events-none" />
       )}
 
-      <div className={`pointer-events-none`}>
+      <div className="pointer-events-none">
         {renderField(field)}
       </div>
 
@@ -99,23 +99,23 @@ export const SortableField = ({
             <SeparatorHorizontalIcon size={24} />
           </div>
 
-          <div className="absolute top-1/2 -translate-y-1/2 right-0 flex gap-2 p-2">
+          <div className="absolute top-1/2 -translate-y-1/2 right-4 flex gap-1">
             {!isInvalid && (
               <div
                 role="button"
-                className="cursor-pointer text-gray-500 dark:text-gray-300 hover:text-black dark:hover:text-white"
+                className="cursor-pointer rounded-full p-1.5 text-gray-500 dark:text-gray-300 hover:text-black dark:hover:text-white hover:bg-black/10 dark:hover:bg-white/10"
                 onClick={(e) => {
                   e.stopPropagation();
                   cloneField(field.id);
                 }}
                 title="Duplicate Field"
               >
-                <CopyIcon size={16} />
+                <CopyIcon size={14} />
               </div>
             )}
             <div
               role="button"
-              className="cursor-pointer text-gray-500 dark:text-gray-300 hover:text-black dark:hover:text-white"
+              className="cursor-pointer rounded-full p-1.5 text-gray-500 dark:text-gray-300 hover:text-black dark:hover:text-white hover:bg-black/10 dark:hover:bg-white/10"
               onClick={(e) => {
                 e.stopPropagation();
                 removeField(field.id);
