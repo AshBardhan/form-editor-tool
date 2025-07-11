@@ -16,12 +16,17 @@ import { ListEditor } from "./ListEditor";
 import { Textarea } from "@/components/ui/Textarea";
 import { getField } from "@/lib/utils/fieldUtils";
 import { ScrollTextIcon } from "lucide-react";
+import { useEffect, useState } from "react";
+import z from "zod";
 
 const FormConfigurationSidebar = () => {
   const { form, selectedFieldId, updateField, updateForm } = useFormStore();
   const selected = form.fields.find((f) => f.id === selectedFieldId);
   const selectedMeta = selected ? getField(selected.type) : null;
   const Icon = selectedMeta?.icon ?? ScrollTextIcon;
+  const schema = selectedMeta?.schema;
+
+  const [errors, setErrors] = useState<Record<string, string[]>>({});
 
   const onThemeChange = (value: string) => {
     const html = document.documentElement;
@@ -32,6 +37,38 @@ const FormConfigurationSidebar = () => {
     }
     updateForm("theme", value);
   };
+
+  const validateProps = () => {
+    if (!selected || !schema) return;
+
+    const rawData = selected.props.reduce(
+      (acc, prop) => {
+        acc[prop.key] = prop.value;
+        return acc;
+      },
+      {} as Record<string, any>,
+    );
+
+    const result = schema.safeParse(rawData);
+
+    if (!result.success) {
+      const fieldErrors = z.flattenError(result.error).fieldErrors as Record<
+        string,
+        string[]
+      >;
+      console.log(fieldErrors);
+      setErrors(fieldErrors);
+    } else {
+      setErrors({});
+    }
+  };
+
+  const hasErrorProp = (propKey: string) =>
+    errors && errors[propKey] && errors[propKey].length;
+
+  useEffect(() => {
+    validateProps();
+  }, [selected?.props]);
 
   return (
     <>
@@ -59,7 +96,7 @@ const FormConfigurationSidebar = () => {
                 <Input
                   id={prop.key}
                   value={prop.value ?? ""}
-                  className="focus-visible:ring-0 focus-visible:!shadow-none"
+                  className={`focus-visible:ring-0 focus-visible:!shadow-none ${hasErrorProp(prop.key) ? "!border-destructive" : ""}`}
                   onChange={(e) =>
                     updateField(selected.id, prop.key, e.target.value)
                   }
@@ -72,7 +109,7 @@ const FormConfigurationSidebar = () => {
                   value={prop.value ?? ""}
                   rows={10}
                   placeholder="Enter a long text"
-                  className="resize-y focus-visible:ring-0 focus-visible:!shadow-none"
+                  className={`resize-y focus-visible:ring-0 focus-visible:!shadow-none ${hasErrorProp(prop.key) ? "!border-destructive" : ""}`}
                   onChange={(e) =>
                     updateField(selected.id, prop.key, e.target.value)
                   }
@@ -84,7 +121,7 @@ const FormConfigurationSidebar = () => {
                   id={prop.key}
                   type="number"
                   value={prop.value ?? 0}
-                  className="focus-visible:ring-0 focus-visible:!shadow-none"
+                  className={`focus-visible:ring-0 focus-visible:!shadow-none ${hasErrorProp(prop.key) ? "!border-destructive" : ""}`}
                   onChange={(e) =>
                     updateField(
                       selected.id,
@@ -138,6 +175,12 @@ const FormConfigurationSidebar = () => {
                   onChange={(val) => updateField(selected.id, prop.key, val)}
                 />
               )}
+              {hasErrorProp(prop.key) > 0 &&
+                errors[prop.key].map((error, idx) => (
+                  <div key={idx} className="text-xs text-destructive">
+                    {error}
+                  </div>
+                ))}
             </div>
           ))}
         </div>

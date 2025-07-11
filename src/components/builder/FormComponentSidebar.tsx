@@ -75,9 +75,7 @@ const FormComponentSidebar = () => {
               ))}
             </div>
           ) : (
-            <div className="text-sm text-center pt-4">
-              No components found
-            </div>
+            <div className="text-sm text-center pt-4">No components found</div>
           )}
         </div>
       ) : (

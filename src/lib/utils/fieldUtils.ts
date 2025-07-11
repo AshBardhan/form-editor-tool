@@ -1,6 +1,7 @@
 import { FormField, FormFieldProp, BaseFieldType } from "@/types/field";
 import { fieldPropTemplates } from "@/lib/constants/fieldTemplates";
 import { componentPalette } from "../constants/componentPalette";
+import { fieldSchemas } from "../fieldSchema";
 
 export function getDefaultProps(type: BaseFieldType): FormFieldProp[] {
   return fieldPropTemplates[type].map((prop) => {
@@ -41,6 +42,11 @@ export function getPropValue(field: FormField, key: string) {
 export function getField(type: BaseFieldType) {
   for (const group of componentPalette) {
     const item = group.items.find((f) => f.type === type);
-    if (item) return item;
+    if (item) {
+      return {
+        ...item,
+        schema: fieldSchemas[type] ?? null,
+      };
+    }
   }
 }

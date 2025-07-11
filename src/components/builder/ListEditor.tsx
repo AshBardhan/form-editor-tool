@@ -47,7 +47,7 @@ export const ListEditor = ({ value, onChange }: ListEditorProps) => {
             type="text"
             value={option}
             onChange={(e) => updateOption(i, e.target.value)}
-            className="pl-3 pr-8 py-2 focus-visible:ring-0 focus-visible:!shadow-none"
+            className={`pr-8 py-2 focus-visible:ring-0 focus-visible:!shadow-none ${option.length === 0 && "!border-destructive"}`}
           />
           <Button
             type="button"
