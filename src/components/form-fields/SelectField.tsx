@@ -23,7 +23,7 @@ const SelectField = ({ field }: SelectFieldProps) => {
   const placeholder = getPropValue(field, "placeholder") ?? "";
 
   return (
-    <div className="flex flex-col gap-2 py-2">
+    <div className="flex flex-col gap-2 px-6 py-2">
       {label && <Label htmlFor={field.id}>{label}</Label>}
       <Select value={value}>
         <SelectTrigger id={field.id} className="w-full">

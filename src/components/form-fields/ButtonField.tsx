@@ -27,7 +27,7 @@ const ButtonField = ({ field }: ButtonFieldProps) => {
   const alignmentClass = POSITION_CLASS_MAP[positionRaw] || "justify-start";
 
   return (
-    <div className={cn("flex py-2", alignmentClass)}>
+    <div className={cn("flex px-6 py-2", alignmentClass)}>
       <Button variant={level}>{title}</Button>
     </div>
   );

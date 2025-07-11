@@ -9,7 +9,7 @@ interface TextareaFieldProps {
 
 const TextareaField = ({ field }: TextareaFieldProps) => {
   return (
-    <div className="flex flex-col gap-2 py-2">
+    <div className="flex flex-col gap-2 px-6 py-2">
       {getPropValue(field, "label") && (
         <Label htmlFor={field.id}>{getPropValue(field, "label")}</Label>
       )}
