@@ -10,7 +10,7 @@ interface CheckboxFieldProps {
 const CheckboxField = ({ field }: CheckboxFieldProps) => {
   return (
     <div className="flex gap-2 items-center py-2">
-      <Checkbox id={field.id} className="size-5" />
+      <Checkbox readOnly id={field.id} />
       <Label htmlFor={field.id}>{getPropValue(field, "label")}</Label>
     </div>
   );

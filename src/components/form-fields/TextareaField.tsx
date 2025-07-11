@@ -16,6 +16,7 @@ const TextareaField = ({ field }: TextareaFieldProps) => {
       <Textarea
         id={field.id}
         className="resize-y"
+        readOnly
         value={String(getPropValue(field, "value") || "")}
         placeholder={String(getPropValue(field, "placeholder"))}
         required={Boolean(getPropValue(field, "required"))}

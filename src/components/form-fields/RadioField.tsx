@@ -18,9 +18,10 @@ const RadioField = ({ field }: RadioFieldProps) => {
       className="py-2"
     >
       {options.map((option: string) => (
-        <div key={option} className="flex items-center gap-2 ">
+        <div key={option} className="flex items-center gap-2">
           <RadioGroupItem
             value={option}
+            readOnly
             id={`${field.id}-${option}`}
           ></RadioGroupItem>
           <Label htmlFor={`${field.id}-${option}`}>{option}</Label>

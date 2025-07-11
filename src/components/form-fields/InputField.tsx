@@ -16,6 +16,7 @@ const InputField = ({ field }: InputFieldProps) => {
       <Input
         id={field.id}
         type={field.type}
+        readOnly
         required={Boolean(getPropValue(field, "required"))}
         placeholder={String(getPropValue(field, "placeholder"))}
       />
