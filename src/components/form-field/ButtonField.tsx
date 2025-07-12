@@ -1,7 +1,7 @@
 import { FormField } from "@/types/field";
 import { Button } from "@/components/ui/Button";
 import { getPropValue } from "@/lib/utils/fieldUtils";
-import { cn } from "@/lib/utils";
+import { cn } from "@/lib/utils/styleUtils";
 import { JSX } from "react";
 
 interface ButtonFieldProps {
