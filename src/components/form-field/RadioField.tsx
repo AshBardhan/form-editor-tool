@@ -15,7 +15,7 @@ const RadioField = ({ field }: RadioFieldProps) => {
     <RadioGroup
       name={`radio-${field.id}`}
       alignment={alignment}
-      className="px-6 py-2"
+      className="form-field"
     >
       {options.map((option: string) => (
         <div key={option} className="flex items-center gap-2">
