@@ -3,7 +3,6 @@
 import { useFormStore } from "@/lib/store";
 import { Label } from "@/components/ui/Label";
 import { Input } from "@/components/ui/Input";
-import { Checkbox } from "@/components/ui/Checkbox";
 import {
   Select,
   SelectContent,
@@ -12,12 +11,15 @@ import {
   SelectValue,
 } from "@/components/ui/Select";
 import { THEME_OPTIONS } from "@/lib/constants/theme";
-import { ListEditor } from "./ListEditor";
-import { Textarea } from "@/components/ui/Textarea";
 import { getField } from "@/lib/utils/fieldUtils";
 import { ScrollTextIcon } from "lucide-react";
 import { JSX, useEffect, useState } from "react";
 import z from "zod";
+import { InputPropEditor } from "@/components/field-prop/InputPropEditor";
+import { TextareaPropEditor } from "@/components/field-prop/TextareaPropEditor";
+import { CheckboxPropEditor } from "@/components/field-prop/CheckboxPropEditor";
+import { SelectPropEditor } from "@/components/field-prop/SelectPropEditor";
+import { ListPropEditor } from "@/components/field-prop/ListPropEditor";
 
 /**
  * Form Configuration Sidebar
@@ -112,108 +114,88 @@ const FormConfigurationSidebar = (): JSX.Element => {
         <>
           {/* Field Configuration Section */}
           <div className="p-4 flex flex-col gap-4 dark">
-            {selected.props.map((prop) => (
+            {selected.props.map((prop, index) => (
               <div
                 className="flex flex-col gap-2 focus-within:!shadow-none"
                 key={prop.key}
               >
+                {/* Field Property Label */}
                 {prop.type !== "boolean" && (
                   <Label htmlFor={prop.key} className="font-semibold">
                     {prop.label}
                   </Label>
                 )}
 
-                {/* Text input rendering */}
+                {/* Field Property Text Input (Regular and Long String types) */}
                 {prop.type === "string" && (
-                  <Input
+                  <InputPropEditor
                     id={prop.key}
                     value={prop.value ?? ""}
                     className={`focus-visible:ring-0 focus-visible:!shadow-none ${hasErrorProp(prop.key) ? "!border-destructive" : ""}`}
-                    onChange={(e) =>
-                      updateField(selected.id, prop.key, e.target.value)
+                    onChange={(value) =>
+                      updateField(selected.id, prop.key, value)
                     }
                   />
                 )}
 
                 {prop.type === "long-string" && (
-                  <Textarea
+                  <TextareaPropEditor
                     id={prop.key}
                     value={prop.value ?? ""}
-                    rows={10}
-                    placeholder="Enter a long text"
                     className={`resize-y focus-visible:ring-0 focus-visible:!shadow-none ${hasErrorProp(prop.key) ? "!border-destructive" : ""}`}
-                    onChange={(e) =>
-                      updateField(selected.id, prop.key, e.target.value)
+                    onChange={(value) =>
+                      updateField(selected.id, prop.key, value)
                     }
                   />
                 )}
 
-                {/* Number input rendering */}
+                {/* Field Property Number Input */}
                 {prop.type === "number" && (
-                  <Input
-                    id={prop.key}
+                  <InputPropEditor
                     type="number"
+                    id={prop.key}
                     value={prop.value ?? 0}
                     className={`focus-visible:ring-0 focus-visible:!shadow-none ${hasErrorProp(prop.key) ? "!border-destructive" : ""}`}
-                    onChange={(e) =>
-                      updateField(
-                        selected.id,
-                        prop.key,
-                        parseInt(e.target.value || "0", 10),
-                      )
+                    onChange={(value) =>
+                      updateField(selected.id, prop.key, value)
                     }
                   />
                 )}
 
-                {/* Checkbox rendering */}
+                {/* Field Property Checkbox */}
                 {prop.type === "boolean" && (
-                  <div className="flex items-center gap-2 mt-1">
-                    <Checkbox
-                      id={prop.key}
-                      checked={Boolean(prop.value)}
-                      onChange={(e) =>
-                        updateField(selected.id, prop.key, e.target.checked)
-                      }
-                    />
-                    <Label htmlFor={prop.key} className="text-sm">
-                      {prop.label}
-                    </Label>
-                  </div>
-                )}
-
-                {/* Selectbox rendering */}
-                {prop.type === "select" && (
-                  <Select
-                    value={prop.value}
-                    onValueChange={(val) =>
-                      updateField(selected.id, prop.key, val)
+                  <CheckboxPropEditor
+                    id={prop.key}
+                    label={prop.label}
+                    value={Boolean(prop.value)}
+                    onChange={(value) =>
+                      updateField(selected.id, prop.key, value)
                     }
-                  >
-                    <SelectTrigger className="w-full focus-visible:ring-0 focus-visible:!shadow-none">
-                      <SelectValue>
-                        {prop.options?.find((opt) => opt.value === prop.value)
-                          ?.label ?? prop.value}
-                      </SelectValue>
-                    </SelectTrigger>
-                    <SelectContent>
-                      {prop.options?.map((option) => (
-                        <SelectItem key={option.value} value={option.value}>
-                          {option.label}
-                        </SelectItem>
-                      ))}
-                    </SelectContent>
-                  </Select>
+                  />
                 )}
 
-                {/* Listbox rendering */}
+                {/* Field Property Selectbox */}
+                {prop.type === "select" && (
+                  <SelectPropEditor
+                    id={prop.key}
+                    value={prop.value}
+                    options={prop.options ?? []}
+                    onChange={(value) =>
+                      updateField(selected.id, prop.key, value)
+                    }
+                  />
+                )}
+
+                {/* Field Property Listbox */}
                 {prop.type === "list" && Array.isArray(prop.value) && (
-                  <ListEditor
+                  <ListPropEditor
+                    id={prop.key}
                     value={prop.value}
                     onChange={(val) => updateField(selected.id, prop.key, val)}
                   />
                 )}
 
-                {/* Field Prop Validation Error Messages */}
+                {/* Field Property Validation Error Messages */}
                 {hasErrorProp(prop.key) > 0 &&
                   errors[prop.key].map((error, idx) => (
                     <div key={idx} className="text-xs text-destructive">

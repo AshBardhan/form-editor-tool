@@ -21,7 +21,7 @@ interface SortableFieldProps {
  * @param {SortableFieldProps} props - The props for the component.
  * @returns {JSX.Element} The rendered component.
  */
-export const SortableField = ({
+const SortableField = ({
   field,
   isGhostMode = false,
 }: SortableFieldProps): JSX.Element => {
@@ -149,3 +149,5 @@ export const SortableField = ({
     </div>
   );
 };
+
+export { SortableField };

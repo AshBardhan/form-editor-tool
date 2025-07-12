@@ -5,12 +5,13 @@ import { useState } from "react";
 import { Input } from "@/components/ui/Input";
 import { Button } from "@/components/ui/Button";
 
-interface ListEditorProps {
+interface ListPropEditorProps {
+  id: string;
   value: string[];
   onChange: (val: string[]) => void;
 }
 
-export const ListEditor = ({ value, onChange }: ListEditorProps) => {
+const ListPropEditor = ({ id, value, onChange }: ListPropEditorProps) => {
   const [newOption, setNewOption] = useState("");
 
   const addOption = () => {
@@ -40,7 +41,7 @@ export const ListEditor = ({ value, onChange }: ListEditorProps) => {
   };
 
   return (
-    <div className="flex flex-col gap-2">
+    <div id={id} className="flex flex-col gap-2">
       {value.map((option, i) => (
         <div key={i} className="relative">
           <Input
@@ -71,3 +72,5 @@ export const ListEditor = ({ value, onChange }: ListEditorProps) => {
     </div>
   );
 };
+
+export { ListPropEditor };

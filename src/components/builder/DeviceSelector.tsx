@@ -1,7 +1,7 @@
 "use client";
 
 import { DeviceList, DeviceType } from "@/lib/constants/device";
-import { Button } from "../ui/Button";
+import { Button } from "@/components/ui/Button";
 import { JSX } from "react";
 
 interface DeviceSelectorProps {
