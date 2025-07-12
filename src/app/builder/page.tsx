@@ -9,7 +9,7 @@ import {
   pointerWithin,
 } from "@dnd-kit/core";
 import { useFormStore } from "@/lib/store";
-import { useState } from "react";
+import { JSX, useState } from "react";
 import { FormConfigurationSidebar } from "@/components/builder/FormConfigurationSidebar";
 import { FormField } from "@/types/field";
 import { DeviceType } from "@/lib/constants/device";
@@ -18,7 +18,14 @@ import { MainContent } from "@/components/layout/MainContent";
 import { DeviceSelector } from "@/components/builder/DeviceSelector";
 import { DroppableFieldPreview } from "@/components/builder/DroppableFieldPreview";
 
-export default function Home() {
+/**
+ * Builder Page
+ * - Provides drag-and-drop and configuration for form fields
+ * - Device selection for different screen sizes
+ *
+ * @returns {JSX.Element} The rendered component.
+ */
+export default function Home(): JSX.Element {
   const [overId, setOverId] = useState<string | null>(null);
   const [activeDragItem, setActiveDragItem] = useState<FormField | null>(null);
   const [dragSource, setDragSource] = useState<"sidebar" | "canvas" | null>(
@@ -30,6 +37,12 @@ export default function Home() {
   const isLeftCollapsed = isSidebarCollapsed.left;
   const isRightCollapsed = isSidebarCollapsed.right;
 
+  /**
+   * Handles the end of a drag event.
+   * Determines the appropriate action based on the drag source and target.
+   *
+   * @param {DragEndEvent} event - The drag end event.
+   */
   function handleDragEnd(event: DragEndEvent) {
     const { active, over } = event;
     if (!over) return;
@@ -64,6 +77,7 @@ export default function Home() {
 
   return (
     <>
+      {/* Drag Context Container */}
       <DndContext
         collisionDetection={pointerWithin}
         onDragStart={(event) => {
@@ -89,17 +103,21 @@ export default function Home() {
           setDragSource(null);
         }}
       >
+        {/* Drag Placeholder Overlay */}
         <DragOverlay>
           {activeDragItem ? (
             <DroppableFieldPreview field={activeDragItem} source={dragSource} />
           ) : null}
         </DragOverlay>
 
+        {/* Left Form Component Sidebar */}
         {!isLeftCollapsed && (
           <Sidebar>
             <FormComponentSidebar />
           </Sidebar>
         )}
+
+        {/* Main Content Area with Canvas and Device Selector */}
         <MainContent>
           <div
             className="py-12 px-8 h-full overflow-y-auto"
@@ -123,6 +141,8 @@ export default function Home() {
             />
           </div>
         </MainContent>
+
+        {/* Right Form/Field Configuration Sidebar */}
         {!isRightCollapsed && (
           <Sidebar position="right">
             <FormConfigurationSidebar />

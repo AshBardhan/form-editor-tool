@@ -2,16 +2,24 @@
 
 import { DeviceList, DeviceType } from "@/lib/constants/device";
 import { Button } from "../ui/Button";
+import { JSX } from "react";
 
 interface DeviceSelectorProps {
   currentDevice: DeviceType;
   onDeviceChange: (newDeviceName: DeviceType) => void;
 }
 
+/**
+ * Device Selector
+ * - Displays a list of devices to choose the desired viewport for Form Builder Canvas.
+ *
+ * @param {DeviceSelectorProps} props - The props for the component.
+ * @returns {JSX.Element} The rendered component.
+ */
 const DeviceSelector = ({
   currentDevice,
   onDeviceChange,
-}: DeviceSelectorProps) => {
+}: DeviceSelectorProps): JSX.Element => {
   return (
     <div className="absolute z-[1] top-1 left-1/2 -translate-x-1/2 bg-[#151515] rounded overflow-hidden text-white flex">
       {DeviceList.map((device) => {

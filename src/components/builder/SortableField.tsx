@@ -6,17 +6,25 @@ import { useSortable } from "@dnd-kit/sortable";
 import { CSS } from "@dnd-kit/utilities";
 import { CopyIcon, SeparatorHorizontalIcon, TrashIcon } from "lucide-react";
 import { fieldRenderers } from "@/components/form-field";
-import { CSSProperties } from "react";
+import { CSSProperties, JSX } from "react";
 
 interface SortableFieldProps {
   field: FormField;
   isGhostMode?: boolean;
 }
 
+/**
+ * Sortable Field
+ * - Renders a form field that can be sorted via drag-and-drop.
+ * - Provides functionality for selecting, hovering, cloning, and removing fields.
+ *
+ * @param {SortableFieldProps} props - The props for the component.
+ * @returns {JSX.Element} The rendered component.
+ */
 export const SortableField = ({
   field,
   isGhostMode = false,
-}: SortableFieldProps) => {
+}: SortableFieldProps): JSX.Element => {
   const {
     selectedFieldId,
     hoveredFieldId,
@@ -32,7 +40,13 @@ export const SortableField = ({
   const { fieldErrors } = useFormStore();
   const isInvalid = fieldErrors[field.id]?.length > 0;
 
-  const renderField = (field: FormField) => {
+  /**
+   * Renders the field using the appropriate renderer based on its type.
+   *
+   * @param {FormField} field - The field to render.
+   * @returns {JSX.Element | null} The rendered field or null if no renderer is found.
+   */
+  const renderField = (field: FormField): JSX.Element | null => {
     const Renderer = fieldRenderers[field.type];
     return Renderer ? <Renderer field={field} /> : null;
   };
@@ -52,6 +66,9 @@ export const SortableField = ({
     },
   });
 
+  /**
+   * Style for Draggable Element
+   */
   const style: CSSProperties = {
     transform: transform
       ? CSS.Transform.toString({ ...transform, scaleX: 1, scaleY: 1 })
@@ -85,10 +102,12 @@ export const SortableField = ({
 
       <div className="pointer-events-none">{renderField(field)}</div>
 
+      {/*Form Field Action Items */}
       {!isGhostMode && (
         <div
           className={`transition ${isHovered ? "opacity-100 visible" : "opacity-0 invisible"}`}
         >
+          {/* Drag Handle */}
           <div
             {...listeners}
             className="absolute inset-0 cursor-grab text-gray-500 dark:text-gray-100 hover:text-black dark:hover:text-white flex items-center justify-center"
@@ -98,6 +117,7 @@ export const SortableField = ({
           </div>
 
           <div className="absolute top-1/2 -translate-y-1/2 right-4 flex gap-1">
+            {/* Clone Field Bitton */}
             {!isInvalid && (
               <div
                 role="button"
@@ -111,6 +131,7 @@ export const SortableField = ({
                 <CopyIcon size={14} />
               </div>
             )}
+            {/* Remove Field Button */}
             <div
               role="button"
               className="cursor-pointer rounded-full p-1.5 text-gray-500 dark:text-gray-300 hover:text-black dark:hover:text-white hover:bg-black/10 dark:hover:bg-white/10"

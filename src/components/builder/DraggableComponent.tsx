@@ -3,12 +3,21 @@
 import { Component } from "@/types/component";
 import { FormField } from "@/types/field";
 import { useDraggable } from "@dnd-kit/core";
+import { JSX } from "react";
 
 interface DraggableComponentProps {
   component: Component;
 }
 
-const DraggableComponent = ({ component }: DraggableComponentProps) => {
+/**
+ * Draggable Component
+ *
+ * @param {DraggableComponentProps} props - The props for the component.
+ * @returns {JSX.Element} The rendered component.
+ */
+const DraggableComponent = ({
+  component,
+}: DraggableComponentProps): JSX.Element => {
   const tempField: FormField = {
     id: "preview",
     type: component.type,

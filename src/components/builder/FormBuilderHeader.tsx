@@ -4,14 +4,23 @@ import Link from "next/link";
 import { Button } from "@/components/ui/Button";
 import { PanelLeft, PanelRight } from "lucide-react";
 import { useFormStore } from "@/lib/store";
+import { JSX } from "react";
 
-const FormBuilderHeader = () => {
+/**
+ * Form Builder Header
+ * - Controls the toggling of left/right sidebars
+ * - Render buttons for previewing and publishing the form.
+ *
+ * @returns {JSX.Element} The rendered component.
+ */
+const FormBuilderHeader = (): JSX.Element => {
   const { form, isSidebarCollapsed, toggleSidebar } = useFormStore();
   const isLeftCollapsed = isSidebarCollapsed.left;
   const isRightCollapsed = isSidebarCollapsed.right;
 
   return (
     <>
+      {/* Toggle collapse/expand Sidebar Control */}
       <div className="flex-shrink-0 w-50 flex items-center gap-2">
         <Button
           variant="ghost"
@@ -30,7 +39,9 @@ const FormBuilderHeader = () => {
           <PanelRight size={20} />
         </Button>
       </div>
+      {/* Form Title */}
       <h1 className="flex-1 font-semibold text-center text-xl">{form.title}</h1>
+      {/* Action Buttons - Just for display purpose. Not functional yet... */}
       <div className="flex-shrink-0 w-50 flex items-center justify-end gap-2">
         <Button variant="secondary" size="sm">
           Preview

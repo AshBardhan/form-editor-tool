@@ -2,13 +2,24 @@
 
 import { FormField } from "@/types/field";
 import { SortableField } from "./SortableField";
+import { JSX } from "react";
 
 interface DroppableFieldPreviewProps {
   field: FormField;
   source: "sidebar" | "canvas" | null;
 }
 
-const DroppableFieldPreview = ({ field, source }: DroppableFieldPreviewProps) => {
+/**
+ * Droppable Field Preview
+ * - Displays a Drag Image Placeholder whether coming from the Component Sidebar or Form Canvas.
+ *
+ * @param {DroppableFieldPreviewProps} props - The props for the component.
+ * @returns {JSX.Element | null} The rendered component or null.
+ */
+const DroppableFieldPreview = ({
+  field,
+  source,
+}: DroppableFieldPreviewProps): JSX.Element | null => {
   return (
     <>
       {field ? (
