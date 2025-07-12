@@ -12,11 +12,11 @@ import { useFormStore } from "@/lib/store";
 import { useState } from "react";
 import { FormConfigurationSidebar } from "@/components/builder/FormConfigurationSidebar";
 import { FormField } from "@/types/field";
-import { SortableField } from "@/components/builder/SortableField";
 import { DeviceType } from "@/lib/constants/device";
 import { Sidebar } from "@/components/layout/Sidebar";
 import { MainContent } from "@/components/layout/MainContent";
 import { DeviceSelector } from "@/components/builder/DeviceSelector";
+import { DroppableFieldPreview } from "@/components/builder/DroppableFieldPreview";
 
 export default function Home() {
   const [overId, setOverId] = useState<string | null>(null);
@@ -62,14 +62,6 @@ export default function Home() {
     }
   }
 
-  function renderPreview(field: FormField) {
-    return (
-      <div className="border border-dashed border-gray-400 bg-gray-100 text-sm text-gray-600 px-4 py-2 rounded">
-        {field.name}
-      </div>
-    );
-  }
-
   return (
     <>
       <DndContext
@@ -99,11 +91,7 @@ export default function Home() {
       >
         <DragOverlay>
           {activeDragItem ? (
-            dragSource === "sidebar" ? (
-              renderPreview(activeDragItem)
-            ) : (
-              <SortableField isGhostMode={true} field={activeDragItem} />
-            )
+            <DroppableFieldPreview field={activeDragItem} source={dragSource} />
           ) : null}
         </DragOverlay>
 

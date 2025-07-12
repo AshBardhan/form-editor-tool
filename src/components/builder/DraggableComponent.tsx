@@ -4,11 +4,11 @@ import { Component } from "@/types/component";
 import { FormField } from "@/types/field";
 import { useDraggable } from "@dnd-kit/core";
 
-interface DraggableCardProps {
+interface DraggableComponentProps {
   component: Component;
 }
 
-const DraggableCard = ({ component }: DraggableCardProps) => {
+const DraggableComponent = ({ component }: DraggableComponentProps) => {
   const tempField: FormField = {
     id: "preview",
     type: component.type,
@@ -39,4 +39,4 @@ const DraggableCard = ({ component }: DraggableCardProps) => {
   );
 };
 
-export { DraggableCard };
+export { DraggableComponent };

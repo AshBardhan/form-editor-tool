@@ -1,7 +1,7 @@
 "use client";
 
 import { componentPalette } from "@/lib/constants/componentPalette";
-import { DraggableCard } from "./DraggableCard";
+import { DraggableComponent } from "./DraggableComponent";
 import { ChevronDown, ComponentIcon, SearchIcon } from "lucide-react";
 import React, { useState, useMemo } from "react";
 import { Input } from "@/components/ui/Input";
@@ -71,7 +71,7 @@ const FormComponentSidebar = () => {
           {filteredComponents.length > 0 ? (
             <div className="grid grid-cols-2 gap-3">
               {filteredComponents.map((comp) => (
-                <DraggableCard key={comp.type} component={comp} />
+                <DraggableComponent key={comp.type} component={comp} />
               ))}
             </div>
           ) : (
@@ -105,7 +105,7 @@ const FormComponentSidebar = () => {
               {isOpen && (
                 <div className="grid grid-cols-2 gap-3">
                   {group.items.map((comp) => (
-                    <DraggableCard key={comp.type} component={comp} />
+                    <DraggableComponent key={comp.type} component={comp} />
                   ))}
                 </div>
               )}
