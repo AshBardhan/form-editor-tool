@@ -3,11 +3,15 @@ import { fieldPropTemplates } from "@/lib/constants/fieldTemplates";
 import { componentPalette } from "../constants/componentPalette";
 import { fieldSchemas } from "../fieldSchema";
 
+/**
+ * Retrieves the default properties for a given field type.
+ * @param {BaseFieldType} type - The type of the field.
+ * @returns {FormFieldProp[]} An array of default properties for the field.
+ */
 export function getDefaultProps(type: BaseFieldType): FormFieldProp[] {
   return fieldPropTemplates[type].map((prop) => {
     let value;
 
-    // Ensure value is initialized properly based on type
     switch (prop.type) {
       case "string":
         value = prop.defaultValue ?? "";
@@ -35,10 +39,21 @@ export function getDefaultProps(type: BaseFieldType): FormFieldProp[] {
   });
 }
 
+/**
+ * Retrieves the value of a specific property from a form field.
+ * @param {FormField} field - The form field object.
+ * @param {string} key - The key of the property to retrieve.
+ * @returns {any} The value of the specified property, or an empty string if not found.
+ */
 export function getPropValue(field: FormField, key: string) {
   return field.props.find((p) => p.key === key)?.value ?? "";
 }
 
+/**
+ * Retrieves a field definition from the component palette by type.
+ * @param {BaseFieldType} type - The type of the field to retrieve.
+ * @returns {Object | undefined} The field definition including its schema, or undefined if not found.
+ */
 export function getField(type: BaseFieldType) {
   for (const group of componentPalette) {
     const item = group.items.find((f) => f.type === type);

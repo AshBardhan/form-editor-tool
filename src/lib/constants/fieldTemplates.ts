@@ -1,5 +1,9 @@
 import type { FormFieldProp, BaseFieldType } from "@/types/field";
 
+/**
+ * A record of field property templates for different base field types.
+ * Each entry contains an array of form field properties with default values.
+ */
 export const fieldPropTemplates: Record<BaseFieldType, FormFieldProp[]> = {
   heading: [
     {

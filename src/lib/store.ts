@@ -3,12 +3,18 @@ import { nanoid } from "nanoid";
 import { create } from "zustand";
 import { getDefaultProps } from "./utils/fieldUtils";
 
+/**
+ * Interface representing the Form data structure.
+ */
 interface FormData {
   title: string;
   theme: "light" | "dark";
   fields: FormField[];
 }
 
+/**
+ * Interface representing the Form state and actions.
+ */
 interface FormState {
   form: FormData;
   selectedFieldId: string | null;
@@ -31,6 +37,9 @@ interface FormState {
   toggleSidebar: (side: "left" | "right") => void;
 }
 
+/**
+ * Zustand store for managing the Form state and actions.
+ */
 export const useFormStore = create<FormState>((set) => ({
   form: {
     title: "Untitled Form",

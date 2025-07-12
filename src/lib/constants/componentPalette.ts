@@ -15,6 +15,9 @@ import {
   CircleCheckBigIcon,
 } from "lucide-react";
 
+/**
+ * A list of component categories, each containing a label and items with type, label, and icon.
+ */
 export const componentPalette: ComponentCategory[] = [
   {
     category: "text-field",

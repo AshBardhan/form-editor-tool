@@ -1,13 +1,22 @@
 import { z } from "zod";
 
+/**
+ * Creates a Zod schema for a required string with a custom label.
+ * @param {string} [label="This field"] - The label for the field.
+ * @returns {z.ZodString} A Zod schema for a required string.
+ */
 const requiredString = (label = "This field") =>
   z.string().min(1, `${label} is required`);
 
+/** Zod schemas for primitive data types. */
 const optionalString = z.string().optional();
 const optionalNumber = z.number().optional();
 const nonNegativeNumber = z.number().min(0);
 const nonNegativeOptionalNumber = nonNegativeNumber.optional();
 
+/**
+ * A collection of Zod schemas for different field types.
+ */
 export const fieldSchemas: Record<string, z.ZodSchema> = {
   heading: z.object({
     text: requiredString("Heading text"),
