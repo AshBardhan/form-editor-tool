@@ -2,12 +2,20 @@ import { getPropValue } from "@/lib/utils/fieldUtils";
 import { FormField } from "@/types/field";
 import { Label } from "@/components/ui/Label";
 import { Textarea } from "@/components/ui/Textarea";
+import { JSX } from "react";
 
 interface TextareaFieldProps {
   field: FormField;
 }
 
-const TextareaField = ({ field }: TextareaFieldProps) => {
+/**
+ * Textarea Field
+ * - Displays a textarea element with an optional label
+ *
+ * @param {TextareaFieldProps} props - The props for the component.
+ * @returns {JSX.Element} The rendered component.
+ */
+const TextareaField = ({ field }: TextareaFieldProps): JSX.Element => {
   return (
     <div className="form-field flex flex-col gap-2">
       {getPropValue(field, "label") && (

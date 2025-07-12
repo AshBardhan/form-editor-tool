@@ -2,12 +2,20 @@ import { getPropValue } from "@/lib/utils/fieldUtils";
 import { FormField } from "@/types/field";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/RadioGroup";
 import { Label } from "@/components/ui/Label";
+import { JSX } from "react";
 
 interface RadioFieldProps {
   field: FormField;
 }
 
-const RadioField = ({ field }: RadioFieldProps) => {
+/**
+ * Radio Field
+ * - Displays a group of radio buttons with labels
+ *
+ * @param {RadioFieldProps} props - The props for the component.
+ * @returns {JSX.Element} The rendered component.
+ */
+const RadioField = ({ field }: RadioFieldProps): JSX.Element => {
   const alignment = getPropValue(field, "alignment") ?? "vertical";
   const options = getPropValue(field, "options") ?? [];
 

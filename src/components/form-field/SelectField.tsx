@@ -9,14 +9,21 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/Select";
-import React from "react";
+import { JSX } from "react";
 import { getPropValue } from "@/lib/utils/fieldUtils";
 
 interface SelectFieldProps {
   field: FormField;
 }
 
-const SelectField = ({ field }: SelectFieldProps) => {
+/**
+ * Select Field
+ * - Displays a select element with options and a label
+ *
+ * @param {SelectFieldProps} props - The props for the component.
+ * @returns {JSX.Element} The rendered component.
+ */
+const SelectField = ({ field }: SelectFieldProps): JSX.Element => {
   const label = getPropValue(field, "label");
   const options = getPropValue(field, "options") ?? [];
   const value = getPropValue(field, "value") ?? "";

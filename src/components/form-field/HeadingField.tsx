@@ -6,9 +6,20 @@ interface HeadingFieldProps {
   field: FormField;
 }
 
-const HeadingField = ({ field }: HeadingFieldProps) => {
+/**
+ * Heading Field component
+ * - Displays a heading element with a level and text
+ *
+ * @param {HeadingFieldProps} props - The props for the component.
+ * @returns {JSX.Element} The rendered component.
+ */
+const HeadingField = ({ field }: HeadingFieldProps): JSX.Element => {
   const text = getPropValue(field, "text");
   const level = Math.min(Math.max(getPropValue(field, "level") || 1, 1), 6);
+
+  /**
+   * Styles for different heading levels.
+   */
   const headingStyles: Record<number, string> = {
     1: "text-3xl font-bold",
     2: "text-2xl font-bold",

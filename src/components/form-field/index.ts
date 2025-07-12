@@ -10,8 +10,19 @@ import { SeparatorField } from "./SeparatorField";
 import { ButtonField } from "./ButtonField";
 import { RadioField } from "./RadioField";
 
+/**
+ * Type definition for a field renderer function.
+ * @typedef {Function} FieldRenderer
+ * @param {Object} props - The properties for the field renderer.
+ * @param {FormField} props.field - The form field data.
+ * @returns {JSX.Element} The rendered field component.
+ */
 type FieldRenderer = (props: { field: FormField }) => JSX.Element;
 
+/**
+ * A mapping of base field types to their corresponding renderer components.
+ * @type {Record<BaseFieldType, FieldRenderer>}
+ */
 export const fieldRenderers: Record<BaseFieldType, FieldRenderer> = {
   heading: HeadingField,
   paragraph: ParagraphField,

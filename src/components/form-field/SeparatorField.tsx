@@ -1,12 +1,20 @@
 import { getPropValue } from "@/lib/utils/fieldUtils";
 import { FormField } from "@/types/field";
 import { Separator } from "@/components/ui/Separator";
+import { JSX } from "react";
 
 interface SeparatorFieldProps {
   field: FormField;
 }
 
-const SeparatorField = ({ field }: SeparatorFieldProps) => {
+/**
+ * Separator Field
+ * - Displays a separator with optional spacing and a divider
+ *
+ * @param {SeparatorFieldProps} props - The props for the component.
+ * @returns {JSX.Element} The rendered component.
+ */
+const SeparatorField = ({ field }: SeparatorFieldProps): JSX.Element => {
   const spacing = Number(getPropValue(field, "spacing") ?? 20);
   const divider = Boolean(getPropValue(field, "divider"));
 
