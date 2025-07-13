@@ -11,12 +11,13 @@ import {
 import { useFormStore } from "@/lib/store";
 import { JSX, useState } from "react";
 import { FormConfigurationSidebar } from "@/components/builder/FormConfigurationSidebar";
+import { Component } from "@/types/component";
 import { FormField } from "@/types/field";
 import { DeviceType } from "@/lib/constants/device";
 import { Sidebar } from "@/components/layout/Sidebar";
 import { MainContent } from "@/components/layout/MainContent";
 import { DeviceSelector } from "@/components/builder/DeviceSelector";
-import { DroppableFieldPreview } from "@/components/builder/DroppableFieldPreview";
+import { DroppableItemPreview } from "@/components/builder/DroppableItemPreview";
 
 /**
  * Builder Page
@@ -27,7 +28,7 @@ import { DroppableFieldPreview } from "@/components/builder/DroppableFieldPrevie
  */
 export default function Home(): JSX.Element {
   const [overId, setOverId] = useState<string | null>(null);
-  const [activeDragItem, setActiveDragItem] = useState<FormField | null>(null);
+  const [activeDragItem, setActiveDragItem] = useState<FormField | Component | null>(null);
   const [dragSource, setDragSource] = useState<"sidebar" | "canvas" | null>(
     null,
   );
@@ -84,7 +85,7 @@ export default function Home(): JSX.Element {
           const data = event.active.data.current;
           if (!data) return;
 
-          setActiveDragItem(data as FormField);
+          setActiveDragItem(data as FormField | Component);
 
           if (data.from === "sidebar") {
             setDragSource("sidebar");
@@ -106,7 +107,7 @@ export default function Home(): JSX.Element {
         {/* Drag Placeholder Overlay */}
         <DragOverlay>
           {activeDragItem ? (
-            <DroppableFieldPreview field={activeDragItem} source={dragSource} />
+            <DroppableItemPreview item={activeDragItem} source={dragSource} />
           ) : null}
         </DragOverlay>
 
@@ -136,7 +137,7 @@ export default function Home(): JSX.Element {
             <FormBuilderCanvas
               currentDevice={deviceType}
               overId={overId}
-              activeFieldId={activeDragItem?.id || null}
+              activeFieldId={(activeDragItem as FormField)?.id || null}
               dragSource={dragSource}
             />
           </div>

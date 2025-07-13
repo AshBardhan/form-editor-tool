@@ -65,11 +65,11 @@ export function getPropValue(
 export function getField(type: BaseFieldType) {
   for (const group of componentPalette) {
     const item = group.items.find((f) => f.type === type);
-    if (item) {
-      return {
-        ...item,
-        schema: fieldSchemas[type] ?? null,
-      };
-    }
+    return item
+      ? {
+          ...item,
+          schema: fieldSchemas[type] ?? null,
+        }
+      : null;
   }
 }

@@ -124,7 +124,10 @@ const FormConfigurationSidebar = (): JSX.Element => {
                 >
                   {/* Field Property Label */}
                   {prop.type !== "boolean" && (
-                    <Label htmlFor={selectedFieldPropKey} className="font-semibold">
+                    <Label
+                      htmlFor={selectedFieldPropKey}
+                      className="font-semibold"
+                    >
                       {prop.label}
                     </Label>
                   )}
