@@ -115,97 +115,102 @@ const FormConfigurationSidebar = (): JSX.Element => {
         <>
           {/* Field Configuration Section */}
           <div className="p-4 flex flex-col gap-4 dark">
-            {selected.props.map((prop) => (
-              <div
-                className="flex flex-col gap-2 focus-within:!shadow-none"
-                key={prop.key}
-              >
-                {/* Field Property Label */}
-                {prop.type !== "boolean" && (
-                  <Label htmlFor={prop.key} className="font-semibold">
-                    {prop.label}
-                  </Label>
-                )}
+            {selected.props.map((prop) => {
+              const selectedFieldPropKey = `${selected.id}-${prop.key}`;
+              return (
+                <div
+                  className="flex flex-col gap-2 focus-within:!shadow-none"
+                  key={selectedFieldPropKey}
+                >
+                  {/* Field Property Label */}
+                  {prop.type !== "boolean" && (
+                    <Label htmlFor={selectedFieldPropKey} className="font-semibold">
+                      {prop.label}
+                    </Label>
+                  )}
 
-                {/* Field Property Text Input (Regular and Long String types) */}
-                {prop.type === "string" && typeof prop.value === "string" && (
-                  <InputPropEditor
-                    id={prop.key}
-                    value={prop.value ?? ""}
-                    className={`focus-visible:ring-0 focus-visible:!shadow-none ${hasErrorProp(prop.key) ? "!border-destructive" : ""}`}
-                    onChange={(value) =>
-                      updateField(selected.id, prop.key, value)
-                    }
-                  />
-                )}
-
-                {prop.type === "long-string" &&
-                  typeof prop.value === "string" && (
-                    <TextareaPropEditor
-                      id={prop.key}
+                  {/* Field Property Text Input (Regular and Long String types) */}
+                  {prop.type === "string" && typeof prop.value === "string" && (
+                    <InputPropEditor
+                      id={selectedFieldPropKey}
                       value={prop.value ?? ""}
-                      className={`resize-y focus-visible:ring-0 focus-visible:!shadow-none ${hasErrorProp(prop.key) ? "!border-destructive" : ""}`}
+                      className={`focus-visible:ring-0 focus-visible:!shadow-none ${hasErrorProp(prop.key) ? "!border-destructive" : ""}`}
                       onChange={(value) =>
                         updateField(selected.id, prop.key, value)
                       }
                     />
                   )}
 
-                {/* Field Property Number Input */}
-                {prop.type === "number" && typeof prop.value === "number" && (
-                  <InputPropEditor
-                    type="number"
-                    id={prop.key}
-                    value={prop.value ?? 0}
-                    className={`focus-visible:ring-0 focus-visible:!shadow-none ${hasErrorProp(prop.key) ? "!border-destructive" : ""}`}
-                    onChange={(value) =>
-                      updateField(selected.id, prop.key, value)
-                    }
-                  />
-                )}
+                  {prop.type === "long-string" &&
+                    typeof prop.value === "string" && (
+                      <TextareaPropEditor
+                        id={selectedFieldPropKey}
+                        value={prop.value ?? ""}
+                        className={`resize-y focus-visible:ring-0 focus-visible:!shadow-none ${hasErrorProp(prop.key) ? "!border-destructive" : ""}`}
+                        onChange={(value) =>
+                          updateField(selected.id, prop.key, value)
+                        }
+                      />
+                    )}
 
-                {/* Field Property Checkbox */}
-                {prop.type === "boolean" && (
-                  <CheckboxPropEditor
-                    id={prop.key}
-                    label={prop.label}
-                    value={Boolean(prop.value)}
-                    onChange={(value) =>
-                      updateField(selected.id, prop.key, value)
-                    }
-                  />
-                )}
+                  {/* Field Property Number Input */}
+                  {prop.type === "number" && typeof prop.value === "number" && (
+                    <InputPropEditor
+                      type="number"
+                      id={selectedFieldPropKey}
+                      value={prop.value ?? 0}
+                      className={`focus-visible:ring-0 focus-visible:!shadow-none ${hasErrorProp(prop.key) ? "!border-destructive" : ""}`}
+                      onChange={(value) =>
+                        updateField(selected.id, prop.key, value)
+                      }
+                    />
+                  )}
 
-                {/* Field Property Selectbox */}
-                {prop.type === "select" && typeof prop.value === "string" && (
-                  <SelectPropEditor
-                    id={prop.key}
-                    value={prop.value}
-                    options={prop.options ?? []}
-                    onChange={(value) =>
-                      updateField(selected.id, prop.key, value)
-                    }
-                  />
-                )}
+                  {/* Field Property Checkbox */}
+                  {prop.type === "boolean" && (
+                    <CheckboxPropEditor
+                      id={selectedFieldPropKey}
+                      label={prop.label}
+                      value={Boolean(prop.value)}
+                      onChange={(value) =>
+                        updateField(selected.id, prop.key, value)
+                      }
+                    />
+                  )}
 
-                {/* Field Property Listbox */}
-                {prop.type === "list" && Array.isArray(prop.value) && (
-                  <ListPropEditor
-                    id={prop.key}
-                    value={prop.value}
-                    onChange={(val) => updateField(selected.id, prop.key, val)}
-                  />
-                )}
+                  {/* Field Property Selectbox */}
+                  {prop.type === "select" && typeof prop.value === "string" && (
+                    <SelectPropEditor
+                      id={selectedFieldPropKey}
+                      value={prop.value}
+                      options={prop.options ?? []}
+                      onChange={(value) =>
+                        updateField(selected.id, prop.key, value)
+                      }
+                    />
+                  )}
 
-                {/* Field Property Validation Error Messages */}
-                {hasErrorProp(prop.key) > 0 &&
-                  errors[prop.key].map((error, idx) => (
-                    <div key={idx} className="text-xs text-destructive">
-                      {error}
-                    </div>
-                  ))}
-              </div>
-            ))}
+                  {/* Field Property Listbox */}
+                  {prop.type === "list" && Array.isArray(prop.value) && (
+                    <ListPropEditor
+                      id={selectedFieldPropKey}
+                      value={prop.value}
+                      onChange={(val) =>
+                        updateField(selected.id, prop.key, val)
+                      }
+                    />
+                  )}
+
+                  {/* Field Property Validation Error Messages */}
+                  {hasErrorProp(prop.key) > 0 &&
+                    errors[prop.key].map((error, idx) => (
+                      <div key={idx} className="text-xs text-destructive">
+                        {error}
+                      </div>
+                    ))}
+                </div>
+              );
+            })}
           </div>
         </>
       ) : (

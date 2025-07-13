@@ -1,7 +1,7 @@
 "use client";
 
 import { TrashIcon } from "lucide-react";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Input } from "@/components/ui/Input";
 import { Button } from "@/components/ui/Button";
 
@@ -46,6 +46,10 @@ const ListPropEditor = ({ id, value, onChange }: ListPropEditorProps) => {
       addOption();
     }
   };
+
+  useEffect(() => {
+    setNewOption("");
+  }, [id]);
 
   return (
     <div id={id} className="flex flex-col gap-2">
