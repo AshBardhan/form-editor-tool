@@ -8,6 +8,14 @@ interface InputPropEditorProps {
   onChange: (val: string | number) => void;
 }
 
+/**
+ * Input Prop Editor
+ * - Displays an input field with a label, optional class name and change handler
+
+ * 
+ * @param {InputPropEditorProps} props - The props for the component.
+ * @returns {JSX.Element} The rendered component.
+ */
 const InputPropEditor = ({
   type = "text",
   id,

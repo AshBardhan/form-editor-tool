@@ -8,6 +8,13 @@ interface CheckboxPropEditorProps {
   onChange: (val: boolean) => void;
 }
 
+/**
+ * Checkbox Prop Editor
+ * - Displays a checkbox and a label with a change handler
+ *
+ * @param {CheckboxPropEditorProps} props - The props for the component.
+ * @returns {JSX.Element} The rendered component.
+ */
 const CheckboxPropEditor = ({
   id,
   label,

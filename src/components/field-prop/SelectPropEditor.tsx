@@ -13,6 +13,13 @@ interface SelectPropEditorProps {
   onChange: (val: string) => void;
 }
 
+/**
+ * Select Prop Editor
+ * - Displays a select input with given options and value with a change handler.
+ *
+ * @param {SelectPropEditorProps} props - The props for the component.
+ * @returns {JSX.Element} The rendered component.
+ */
 const SelectPropEditor = ({
   id,
   value,

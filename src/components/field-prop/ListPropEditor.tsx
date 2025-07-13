@@ -11,6 +11,13 @@ interface ListPropEditorProps {
   onChange: (val: string[]) => void;
 }
 
+/**
+ * List Editor
+ * - Displays a list of input box for editing options.
+ *
+ * @param {ListPropEditorProps} props - The props for the component.
+ * @returns {JSX.Element} The rendered  component.
+ */
 const ListPropEditor = ({ id, value, onChange }: ListPropEditorProps) => {
   const [newOption, setNewOption] = useState("");
 

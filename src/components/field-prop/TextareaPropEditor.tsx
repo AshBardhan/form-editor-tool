@@ -7,6 +7,13 @@ interface TextareaPropEditorProps {
   onChange: (val: string) => void;
 }
 
+/**
+ * Textarea Prop Editor
+ * - Displays a textarea input field with an optional class name and change handler
+ *
+ * @param {TextareaPropEditorProps} props - The props for the component.
+ * @returns {JSX.Element} The rendered component.
+ */
 const TextareaPropEditor = ({
   id,
   value,
