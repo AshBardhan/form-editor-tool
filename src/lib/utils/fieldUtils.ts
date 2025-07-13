@@ -63,13 +63,7 @@ export function getPropValue(
  * @returns {Object | undefined} The field definition including its schema, or undefined if not found.
  */
 export function getField(type: BaseFieldType) {
-  for (const group of componentPalette) {
-    const item = group.items.find((f) => f.type === type);
-    return item
-      ? {
-          ...item,
-          schema: fieldSchemas[type] ?? null,
-        }
-      : null;
-  }
+  const groups = componentPalette.flatMap((group) => group.items);
+  const item = groups.find((f) => f.type === type);
+  return item ? { ...item, schema: fieldSchemas[type] ?? null } : null;
 }
