@@ -17,12 +17,19 @@ export interface BaseField {
   type: BaseFieldType;
 }
 
+export type BaseFormFieldValueType =
+  | string
+  | number
+  | boolean
+  | string[]
+  | undefined;
+
 export interface FormFieldProp {
   key: string;
   label: string;
   type: "string" | "long-string" | "number" | "boolean" | "list" | "select";
-  defaultValue?: any;
-  value?: any;
+  defaultValue?: BaseFormFieldValueType;
+  value?: BaseFormFieldValueType;
 
   // Number-based fields
   min?: number;

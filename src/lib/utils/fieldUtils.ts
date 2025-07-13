@@ -1,4 +1,4 @@
-import { FormField, FormFieldProp, BaseFieldType } from "@/types/field";
+import { FormField, FormFieldProp, BaseFieldType, BaseFormFieldValueType } from "@/types/field";
 import { fieldPropTemplates } from "@/lib/constants/fieldTemplates";
 import { componentPalette } from "@/lib/constants/componentPalette";
 import { fieldSchemas } from "@/lib/fieldSchema";
@@ -45,7 +45,7 @@ export function getDefaultProps(type: BaseFieldType): FormFieldProp[] {
  * @param {string} key - The key of the property to retrieve.
  * @returns {any} The value of the specified property, or an empty string if not found.
  */
-export function getPropValue(field: FormField, key: string) {
+export function getPropValue(field: FormField, key: string): BaseFormFieldValueType {
   return field.props.find((p) => p.key === key)?.value ?? "";
 }
 

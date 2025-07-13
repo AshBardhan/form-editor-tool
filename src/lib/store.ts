@@ -1,4 +1,4 @@
-import { FormField, BaseFieldType } from "@/types/field";
+import { FormField, BaseFieldType, BaseFormFieldValueType } from "@/types/field";
 import { nanoid } from "nanoid";
 import { create } from "zustand";
 import { getDefaultProps } from "./utils/fieldUtils";
@@ -29,7 +29,7 @@ interface FormState {
   hoverField: (id: string | null) => void;
   addField: (type: BaseFieldType, index?: number) => void;
   moveField: (fromIndex: number, toIndex: number) => void;
-  updateField: (id: string, key: string, value: any) => void;
+  updateField: (id: string, key: string, value: BaseFormFieldValueType) => void;
   cloneField: (id: string) => void;
   removeField: (id: string) => void;
   setFieldErrors: (fieldId: string, errors: string[]) => void;

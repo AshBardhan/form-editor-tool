@@ -25,9 +25,9 @@ interface SelectFieldProps {
  */
 const SelectField = ({ field }: SelectFieldProps): JSX.Element => {
   const label = getPropValue(field, "label");
-  const options = getPropValue(field, "options") ?? [];
-  const value = getPropValue(field, "value") ?? "";
-  const placeholder = getPropValue(field, "placeholder") ?? "";
+  const options = (getPropValue(field, "options") ?? []) as string[];
+  const value = (getPropValue(field, "value") ?? "") as string;
+  const placeholder = (getPropValue(field, "placeholder") ?? "") as string;
 
   return (
     <div className="form-field flex flex-col gap-2">

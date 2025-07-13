@@ -20,6 +20,7 @@ import { TextareaPropEditor } from "@/components/field-prop/TextareaPropEditor";
 import { CheckboxPropEditor } from "@/components/field-prop/CheckboxPropEditor";
 import { SelectPropEditor } from "@/components/field-prop/SelectPropEditor";
 import { ListPropEditor } from "@/components/field-prop/ListPropEditor";
+import { BaseFormFieldValueType } from "@/types/field";
 
 /**
  * Form Configuration Sidebar
@@ -70,7 +71,7 @@ const FormConfigurationSidebar = (): JSX.Element => {
         acc[prop.key] = prop.value;
         return acc;
       },
-      {} as Record<string, any>,
+      {} as Record<string, BaseFormFieldValueType>,
     );
 
     const result = schema.safeParse(rawData);
@@ -81,7 +82,7 @@ const FormConfigurationSidebar = (): JSX.Element => {
         string[]
       >;
       setErrors(fieldErrors);
-      const combined = Object.entries(fieldErrors).flatMap(([_, msgs]) => msgs);
+      const combined = Object.entries(fieldErrors).flatMap(([, msgs]) => msgs);
       setFieldErrors(selected.id, combined);
     } else {
       setErrors({});
@@ -114,7 +115,7 @@ const FormConfigurationSidebar = (): JSX.Element => {
         <>
           {/* Field Configuration Section */}
           <div className="p-4 flex flex-col gap-4 dark">
-            {selected.props.map((prop, index) => (
+            {selected.props.map((prop) => (
               <div
                 className="flex flex-col gap-2 focus-within:!shadow-none"
                 key={prop.key}
@@ -127,7 +128,7 @@ const FormConfigurationSidebar = (): JSX.Element => {
                 )}
 
                 {/* Field Property Text Input (Regular and Long String types) */}
-                {prop.type === "string" && (
+                {prop.type === "string" && typeof prop.value === "string" && (
                   <InputPropEditor
                     id={prop.key}
                     value={prop.value ?? ""}
@@ -138,19 +139,20 @@ const FormConfigurationSidebar = (): JSX.Element => {
                   />
                 )}
 
-                {prop.type === "long-string" && (
-                  <TextareaPropEditor
-                    id={prop.key}
-                    value={prop.value ?? ""}
-                    className={`resize-y focus-visible:ring-0 focus-visible:!shadow-none ${hasErrorProp(prop.key) ? "!border-destructive" : ""}`}
-                    onChange={(value) =>
-                      updateField(selected.id, prop.key, value)
-                    }
-                  />
-                )}
+                {prop.type === "long-string" &&
+                  typeof prop.value === "string" && (
+                    <TextareaPropEditor
+                      id={prop.key}
+                      value={prop.value ?? ""}
+                      className={`resize-y focus-visible:ring-0 focus-visible:!shadow-none ${hasErrorProp(prop.key) ? "!border-destructive" : ""}`}
+                      onChange={(value) =>
+                        updateField(selected.id, prop.key, value)
+                      }
+                    />
+                  )}
 
                 {/* Field Property Number Input */}
-                {prop.type === "number" && (
+                {prop.type === "number" && typeof prop.value === "number" && (
                   <InputPropEditor
                     type="number"
                     id={prop.key}
@@ -175,7 +177,7 @@ const FormConfigurationSidebar = (): JSX.Element => {
                 )}
 
                 {/* Field Property Selectbox */}
-                {prop.type === "select" && (
+                {prop.type === "select" && typeof prop.value === "string" && (
                   <SelectPropEditor
                     id={prop.key}
                     value={prop.value}

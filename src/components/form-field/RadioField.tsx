@@ -16,8 +16,8 @@ interface RadioFieldProps {
  * @returns {JSX.Element} The rendered component.
  */
 const RadioField = ({ field }: RadioFieldProps): JSX.Element => {
-  const alignment = getPropValue(field, "alignment") ?? "vertical";
-  const options = getPropValue(field, "options") ?? [];
+  const alignment = (getPropValue(field, "alignment") ?? "vertical") as "horizontal" | "vertical";
+  const options = (getPropValue(field, "options") ?? []) as string[];
 
   return (
     <RadioGroup
