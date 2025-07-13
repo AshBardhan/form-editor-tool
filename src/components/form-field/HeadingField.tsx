@@ -15,7 +15,10 @@ interface HeadingFieldProps {
  */
 const HeadingField = ({ field }: HeadingFieldProps): JSX.Element => {
   const text = getPropValue(field, "text");
-  const level = Math.min(Math.max(getPropValue(field, "level") as number || 1, 1), 6);
+  const level = Math.min(
+    Math.max((getPropValue(field, "level") as number) || 1, 1),
+    6,
+  );
 
   /**
    * Styles for different heading levels.

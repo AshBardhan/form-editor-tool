@@ -11,7 +11,9 @@ const requiredString = (label = "This field") =>
 /** Zod schemas for primitive data types. */
 const optionalString = z.string().optional();
 const optionalNumber = z.number().optional();
-const nonNegativeNumber = z.number().min(0, "A non-negative number is required");
+const nonNegativeNumber = z
+  .number()
+  .min(0, "A non-negative number is required");
 const nonNegativeOptionalNumber = nonNegativeNumber.optional();
 
 /**

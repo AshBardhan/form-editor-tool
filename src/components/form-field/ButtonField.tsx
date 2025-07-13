@@ -38,7 +38,8 @@ const ButtonField = ({ field }: ButtonFieldProps): JSX.Element => {
   const positionRaw = getPropValue(field, "position") ?? "left";
 
   const level = BUTTON_VARIANT_MAP[levelRaw as string as string] || "default";
-  const alignmentClass = POSITION_CLASS_MAP[positionRaw as string as string] || "justify-start";
+  const alignmentClass =
+    POSITION_CLASS_MAP[positionRaw as string as string] || "justify-start";
 
   return (
     <div className={cn("form-field flex", alignmentClass)}>

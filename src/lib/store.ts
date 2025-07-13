@@ -1,4 +1,8 @@
-import { FormField, BaseFieldType, BaseFormFieldValueType } from "@/types/field";
+import {
+  FormField,
+  BaseFieldType,
+  BaseFormFieldValueType,
+} from "@/types/field";
 import { nanoid } from "nanoid";
 import { create } from "zustand";
 import { getDefaultProps } from "./utils/fieldUtils";
