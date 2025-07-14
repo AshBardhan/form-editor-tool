@@ -9,10 +9,11 @@ import { SortableField } from "./SortableField";
 import { useDroppable } from "@dnd-kit/core";
 import { JSX } from "react";
 import { DeviceList, DeviceType } from "@/lib/constants/device";
+import { FormField } from "@/types/field";
 
 interface FormBuilderCanvasProps {
   overId: string | null;
-  activeFieldId: string | null;
+  activeDragItem: FormField | null;
   dragSource: "sidebar" | "canvas" | null;
   currentDevice: DeviceType;
 }
@@ -34,7 +35,7 @@ const DropPlaceholderContent = (): JSX.Element => (
  */
 const FormBuilderCanvas = ({
   overId,
-  activeFieldId,
+  activeDragItem,
   dragSource,
   currentDevice,
 }: FormBuilderCanvasProps): JSX.Element => {
@@ -68,7 +69,9 @@ const FormBuilderCanvas = ({
                   {/* Drop placeholder in the middle of the list */}
                   {overId === field.id &&
                     dragSource === "sidebar" &&
-                    activeFieldId !== field.id && <DropPlaceholderContent />}
+                    activeDragItem?.id !== field.id && (
+                      <DropPlaceholderContent />
+                    )}
                   <SortableField field={field} />
                 </div>
               ))}

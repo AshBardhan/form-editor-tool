@@ -83,18 +83,45 @@ const SortableField = ({
       ref={setNodeRef}
       style={style}
       {...attributes}
+      {...listeners}
+      tabIndex={0}
+      role="button"
       data-slot="field"
       data-id={field.id}
-      className={`relative border transition ${
+      className={`relative border transition outline-none focus:ring-2 focus:ring-blue-400 dark:focus:ring-gray-200   ${
         isInvalid
           ? "border-destructive min-h-10 bg-destructive/5"
           : isSelected
             ? "border-blue-500 dark:border-gray-300"
             : "border-transparent"
       }`}
-      onMouseEnter={() => !isDragging && hoverField(field.id)}
-      onMouseLeave={() => !isDragging && hoverField(null)}
-      onClick={() => !isDragging && selectField(field.id)}
+      onMouseEnter={() => {
+        if (!isDragging) {
+          hoverField(field.id);
+        }
+      }}
+      onMouseLeave={() => {
+        if (!isDragging) {
+          hoverField(null);
+        }
+      }}
+      onClick={() => {
+        if (!isDragging) {
+          selectField(field.id);
+        }
+      }}
+      onKeyDown={(e) => {
+        listeners?.onKeyDown?.(e);
+
+        if (!isDragging) {
+          if (e.key === "Enter" || e.key === " ") {
+            hoverField(field.id);
+            selectField(field.id);
+          } else if (e.key === "Tab") {
+            hoverField(field.id);
+          }
+        }
+      }}
     >
       {isHovered && (
         <div className="absolute inset-0 bg-blue-200/30 dark:bg-white/30 pointer-events-none" />
@@ -109,9 +136,9 @@ const SortableField = ({
         >
           {/* Drag Handle */}
           <div
-            {...listeners}
+            aria-label="Reorder field"
             className="absolute inset-0 cursor-grab text-gray-500 dark:text-gray-100 hover:text-black dark:hover:text-white flex items-center justify-center"
-            title="Rearrange Field"
+            title="Reorder Field"
           >
             <SeparatorHorizontalIcon size={24} />
           </div>

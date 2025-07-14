@@ -22,6 +22,7 @@ import { Sidebar } from "@/components/layout/Sidebar";
 import { MainContent } from "@/components/layout/MainContent";
 import { DeviceSelector } from "@/components/builder/DeviceSelector";
 import { DroppableItemPreview } from "@/components/builder/DroppableItemPreview";
+import { hybridKeyboardCoordinates } from "@/lib/hybridKeyboardCoordinates";
 
 /**
  * Builder Page
@@ -33,11 +34,8 @@ import { DroppableItemPreview } from "@/components/builder/DroppableItemPreview"
 export default function Home(): JSX.Element {
   const [overId, setOverId] = useState<string | null>(null);
   const [activeDragItem, setActiveDragItem] = useState<FormField | Component | null>(null);
-  const [dragSource, setDragSource] = useState<"sidebar" | "canvas" | null>(
-    null,
-  );
-  const { form, isSidebarCollapsed, selectField, moveField, addField } =
-    useFormStore();
+  const [dragSource, setDragSource] = useState<"sidebar" | "canvas" | null>(null);
+  const { form, isSidebarCollapsed, selectField, moveField, addField } = useFormStore();
   const [deviceType, setDeviceType] = useState<DeviceType>(DeviceType.DESKTOP);
   const isLeftCollapsed = isSidebarCollapsed.left;
   const isRightCollapsed = isSidebarCollapsed.right;
@@ -80,7 +78,12 @@ export default function Home(): JSX.Element {
     }
   }
 
-  const sensors = useSensors(useSensor(MouseSensor), useSensor(KeyboardSensor));
+  const sensors = useSensors(
+    useSensor(MouseSensor),
+    useSensor(KeyboardSensor, {
+      coordinateGetter: hybridKeyboardCoordinates,
+    }),
+  );
 
   return (
     <>
@@ -144,7 +147,7 @@ export default function Home(): JSX.Element {
             <FormBuilderCanvas
               currentDevice={deviceType}
               overId={overId}
-              activeFieldId={(activeDragItem as FormField)?.id || null}
+              activeDragItem={activeDragItem as FormField}
               dragSource={dragSource}
             />
           </div>
