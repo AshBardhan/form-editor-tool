@@ -33,6 +33,8 @@ const DraggableComponent = ({
       ref={setNodeRef}
       {...listeners}
       {...attributes}
+      tabIndex={0}
+      role="button"
       data-slot="component-item"
       className="p-2 rounded-md border border-[#2d2d2d] bg-[#1e1e1e] hover:bg-[#2f2f2f] text-white cursor-move flex items-center gap-2"
     >

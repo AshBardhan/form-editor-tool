@@ -6,7 +6,11 @@ import {
   DndContext,
   DragEndEvent,
   DragOverlay,
-  pointerWithin,
+  KeyboardSensor,
+  MouseSensor,
+  rectIntersection,
+  useSensor,
+  useSensors,
 } from "@dnd-kit/core";
 import { useFormStore } from "@/lib/store";
 import { JSX, useState } from "react";
@@ -76,11 +80,14 @@ export default function Home(): JSX.Element {
     }
   }
 
+  const sensors = useSensors(useSensor(MouseSensor), useSensor(KeyboardSensor));
+
   return (
     <>
       {/* Drag Context Container */}
       <DndContext
-        collisionDetection={pointerWithin}
+        sensors={sensors}
+        collisionDetection={rectIntersection}
         onDragStart={(event) => {
           const data = event.active.data.current;
           if (!data) return;
