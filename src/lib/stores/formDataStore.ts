@@ -7,23 +7,16 @@ import { nanoid } from "nanoid";
 import { create } from "zustand";
 import { getDefaultProps } from "@/lib/utils/fieldUtils";
 
-/**
- * Interface representing the Form data structure.
- */
 interface FormData {
   title: string;
   theme: "light" | "dark";
   fields: FormField[];
 }
 
-/**
- * Interface representing the Form data state and actions.
- * This store handles the core form data and field operations.
- */
 interface FormDataState {
   form: FormData;
   updateForm: (key: string, value: string) => void;
-  addField: (type: BaseFieldType, index?: number) => void;
+  addField: (type: BaseFieldType, index?: number) => string;
   moveField: (fromIndex: number, toIndex: number) => void;
   updateField: (id: string, key: string, value: BaseFormFieldValueType) => void;
   cloneField: (id: string) => void;
@@ -32,7 +25,6 @@ interface FormDataState {
 
 /**
  * Zustand store for managing the Form data and field operations.
- * This store is separated to minimize re-renders when only form data changes.
  */
 export const useFormDataStore = create<FormDataState>((set) => ({
   form: {
@@ -40,7 +32,6 @@ export const useFormDataStore = create<FormDataState>((set) => ({
     theme: "light",
     fields: [],
   },
-
   updateForm: (key, value) => {
     set((state) => ({
       form: {
@@ -49,7 +40,6 @@ export const useFormDataStore = create<FormDataState>((set) => ({
       },
     }));
   },
-
   addField: (type, index) => {
     const id = nanoid();
     const newField: FormField = {
@@ -73,8 +63,9 @@ export const useFormDataStore = create<FormDataState>((set) => ({
         },
       };
     });
-  },
 
+    return id;
+  },
   moveField: (from, to) => {
     set((state) => {
       const updated = [...state.form.fields];
@@ -88,7 +79,6 @@ export const useFormDataStore = create<FormDataState>((set) => ({
       };
     });
   },
-
   updateField: (id, key, value) => {
     set((state) => ({
       form: {
@@ -106,7 +96,6 @@ export const useFormDataStore = create<FormDataState>((set) => ({
       },
     }));
   },
-
   cloneField: (id: string) => {
     set((state) => {
       const original = state.form.fields.find((f) => f.id === id);
@@ -134,7 +123,6 @@ export const useFormDataStore = create<FormDataState>((set) => ({
       };
     });
   },
-
   removeField: (id) => {
     set((state) => ({
       form: {

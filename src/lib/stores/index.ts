@@ -16,7 +16,3 @@
 export { useFormDataStore } from "./formDataStore";
 export { useUIStateStore } from "./UIStateStore";
 export { useFieldValidationStore } from "./fieldValidationStore";
-
-// Legacy export for backward compatibility
-// TODO: Remove this after migrating all components to use separate stores
-export { useFormStore } from "../store";

@@ -14,7 +14,6 @@ import {
   useSensor,
   useSensors,
 } from "@dnd-kit/core";
-import { useFormStore } from "@/lib/store";
 import { JSX, useState } from "react";
 import { FormConfigurationSidebar } from "./FormConfigurationSidebar";
 import { Component } from "@/types/component";
@@ -25,7 +24,7 @@ import { MainContent } from "@/components/layout/MainContent";
 import { DeviceSelector } from "./DeviceSelector";
 import { DroppableItemPreview } from "./DroppableItemPreview";
 import { hybridKeyboardCoordinates } from "@/lib/hybridKeyboardCoordinates";
-import { useUIStateStore } from "@/lib/stores";
+import { useFormDataStore, useUIStateStore } from "@/lib/stores";
 
 interface DragState {
   overId: string | null;
@@ -46,7 +45,7 @@ const FormBuilderContainer = (): JSX.Element => {
     activeItem: null,
     source: null,
   });
-  const { form, moveField, addField } = useFormStore();
+  const { form, moveField, addField } = useFormDataStore();
   const { selectField } = useUIStateStore();
   const { isSidebarCollapsed } = useUIStateStore();
   const [deviceType, setDeviceType] = useState<DeviceType>(DeviceType.DESKTOP);

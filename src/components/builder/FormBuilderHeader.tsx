@@ -3,9 +3,8 @@
 import Link from "next/link";
 import { Button } from "@/components/ui/Button";
 import { PanelLeft, PanelRight } from "lucide-react";
-import { useFormStore } from "@/lib/store";
 import { JSX } from "react";
-import { useUIStateStore } from "@/lib/stores";
+import { useFormDataStore, useUIStateStore } from "@/lib/stores";
 
 /**
  * Form Builder Header
@@ -15,7 +14,7 @@ import { useUIStateStore } from "@/lib/stores";
  * @returns {JSX.Element} The rendered component.
  */
 const FormBuilderHeader = (): JSX.Element => {
-  const { form } = useFormStore();
+  const { form } = useFormDataStore();
   const { isSidebarCollapsed, toggleSidebar } = useUIStateStore();
   const isLeftCollapsed = isSidebarCollapsed.left;
   const isRightCollapsed = isSidebarCollapsed.right;

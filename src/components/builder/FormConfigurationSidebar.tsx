@@ -1,6 +1,5 @@
 "use client";
 
-import { useFormStore } from "@/lib/store";
 import { Label } from "@/components/ui/Label";
 import { Input } from "@/components/ui/Input";
 import {
@@ -21,7 +20,11 @@ import { CheckboxPropEditor } from "@/components/field-prop/CheckboxPropEditor";
 import { SelectPropEditor } from "@/components/field-prop/SelectPropEditor";
 import { ListPropEditor } from "@/components/field-prop/ListPropEditor";
 import { BaseFormFieldValueType } from "@/types/field";
-import { useFieldValidationStore, useUIStateStore } from "@/lib/stores";
+import {
+  useFieldValidationStore,
+  useFormDataStore,
+  useUIStateStore,
+} from "@/lib/stores";
 
 /**
  * Form Configuration Sidebar
@@ -31,7 +34,7 @@ import { useFieldValidationStore, useUIStateStore } from "@/lib/stores";
  * @returns {JSX.Element} The rendered component.
  */
 const FormConfigurationSidebar = (): JSX.Element => {
-  const { form, updateField, updateForm } = useFormStore();
+  const { form, updateField, updateForm } = useFormDataStore();
   const { setFieldErrors, clearFieldErrors } = useFieldValidationStore();
   const { selectedFieldId } = useUIStateStore();
   const selected = form.fields.find((f) => f.id === selectedFieldId);

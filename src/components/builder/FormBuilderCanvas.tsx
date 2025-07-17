@@ -1,6 +1,5 @@
 "use client";
 
-import { useFormStore } from "@/lib/store";
 import {
   SortableContext,
   verticalListSortingStrategy,
@@ -10,6 +9,7 @@ import { useDroppable } from "@dnd-kit/core";
 import { JSX } from "react";
 import { DeviceList, DeviceType } from "@/lib/constants/device";
 import { FormField } from "@/types/field";
+import { useFormDataStore } from "@/lib/stores/formDataStore";
 
 interface FormBuilderCanvasProps {
   overId: string | null;
@@ -39,7 +39,7 @@ const FormBuilderCanvas = ({
   dragSource,
   currentDevice,
 }: FormBuilderCanvasProps): JSX.Element => {
-  const { form } = useFormStore();
+  const { form } = useFormDataStore();
   const { setNodeRef } = useDroppable({ id: "canvas" });
   const isOverEnd = overId && !form.fields.some((f) => f.id === overId);
   const currentDeviceMeta = DeviceList.find(

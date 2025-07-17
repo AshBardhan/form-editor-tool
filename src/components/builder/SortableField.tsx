@@ -1,6 +1,5 @@
 "use client";
 
-import { useFormStore } from "@/lib/store";
 import { FormField } from "@/types/field";
 import { useSortable } from "@dnd-kit/sortable";
 import { CSS } from "@dnd-kit/utilities";
@@ -8,7 +7,11 @@ import { CopyIcon, SeparatorHorizontalIcon, TrashIcon } from "lucide-react";
 import { fieldRenderers } from "@/components/form-field";
 import { Button } from "@/components/ui/Button";
 import { CSSProperties, JSX } from "react";
-import { useFieldValidationStore, useUIStateStore } from "@/lib/stores";
+import {
+  useFieldValidationStore,
+  useFormDataStore,
+  useUIStateStore,
+} from "@/lib/stores";
 
 interface SortableFieldProps {
   field: FormField;
@@ -27,13 +30,11 @@ const SortableField = ({
   field,
   isGhostMode = false,
 }: SortableFieldProps): JSX.Element => {
-  const { cloneField, removeField } = useFormStore();
+  const { cloneField, removeField } = useFormDataStore();
   const { selectedFieldId, hoveredFieldId, selectField, hoverField } = useUIStateStore();
-
+  const { fieldErrors, clearFieldErrors } = useFieldValidationStore();
   const isSelected = selectedFieldId === field.id;
   const isHovered = hoveredFieldId === field.id;
-
-  const { fieldErrors, clearFieldErrors } = useFieldValidationStore();
   const isInvalid = fieldErrors[field.id]?.length > 0;
 
   /**
