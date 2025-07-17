@@ -83,7 +83,6 @@ const SortableField = ({
       ref={setNodeRef}
       style={style}
       {...attributes}
-      {...listeners}
       tabIndex={0}
       role="button"
       data-slot="field"
@@ -136,6 +135,7 @@ const SortableField = ({
         >
           {/* Drag Handle */}
           <div
+            {...listeners}
             aria-label="Reorder field"
             className="absolute inset-0 cursor-grab text-gray-500 dark:text-gray-100 hover:text-black dark:hover:text-white flex items-center justify-center"
             title="Reorder Field"
@@ -143,8 +143,8 @@ const SortableField = ({
             <SeparatorHorizontalIcon size={24} />
           </div>
 
-          <div className="absolute top-1/2 -translate-y-1/2 right-4 flex gap-1">
-            {/* Clone Field Bitton */}
+          <div className="absolute top-1/2 -translate-y-1/2 right-4 flex gap-1 z-1">
+            {/* Clone Field Button */}
             {!isInvalid && (
               <div
                 role="button"
