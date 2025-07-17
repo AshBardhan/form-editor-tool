@@ -1,10 +1,6 @@
 import { create } from "zustand";
 
-/**
- * Interface representing the validation state and actions.
- * This store handles field validation errors.
- */
-interface ValidationState {
+interface FieldValidationState {
   fieldErrors: Record<string, string[]>;
   setFieldErrors: (fieldId: string, errors: string[]) => void;
   clearFieldErrors: (fieldId: string) => void;
@@ -13,9 +9,8 @@ interface ValidationState {
 
 /**
  * Zustand store for managing field validation errors.
- * This store is separated to minimize re-renders when only validation state changes.
  */
-export const useValidationStore = create<ValidationState>((set) => ({
+export const useFieldValidationStore = create<FieldValidationState>((set) => ({
   fieldErrors: {},
 
   setFieldErrors: (fieldId, errors) =>

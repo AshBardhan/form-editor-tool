@@ -8,6 +8,7 @@ import { CopyIcon, SeparatorHorizontalIcon, TrashIcon } from "lucide-react";
 import { fieldRenderers } from "@/components/form-field";
 import { Button } from "@/components/ui/Button";
 import { CSSProperties, JSX } from "react";
+import { useFieldValidationStore } from "@/lib/stores";
 
 interface SortableFieldProps {
   field: FormField;
@@ -38,7 +39,7 @@ const SortableField = ({
   const isSelected = selectedFieldId === field.id;
   const isHovered = hoveredFieldId === field.id;
 
-  const { fieldErrors } = useFormStore();
+  const { fieldErrors, clearFieldErrors } = useFieldValidationStore();
   const isInvalid = fieldErrors[field.id]?.length > 0;
 
   /**
@@ -170,6 +171,7 @@ const SortableField = ({
               onClick={(e) => {
                 e.stopPropagation();
                 removeField(field.id);
+                clearFieldErrors(field.id);
               }}
               title="Delete Field"
             >

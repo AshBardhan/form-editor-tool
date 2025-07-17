@@ -23,7 +23,6 @@ interface FormState {
   form: FormData;
   selectedFieldId: string | null;
   hoveredFieldId: string | null;
-  fieldErrors: Record<string, string[]>;
   updateForm: (key: string, value: string) => void;
   selectField: (id: string | null) => void;
   hoverField: (id: string | null) => void;
@@ -32,8 +31,6 @@ interface FormState {
   updateField: (id: string, key: string, value: BaseFormFieldValueType) => void;
   cloneField: (id: string) => void;
   removeField: (id: string) => void;
-  setFieldErrors: (fieldId: string, errors: string[]) => void;
-  clearFieldErrors: (fieldId: string) => void;
 }
 
 /**
@@ -47,7 +44,6 @@ export const useFormStore = create<FormState>((set) => ({
   },
   selectedFieldId: null,
   hoveredFieldId: null,
-  fieldErrors: {},
   updateForm: (key, value) => {
     set((state) => ({
       form: {
@@ -156,14 +152,4 @@ export const useFormStore = create<FormState>((set) => ({
       },
     }));
   },
-  setFieldErrors: (fieldId, errors) =>
-    set((state) => ({
-      fieldErrors: { ...state.fieldErrors, [fieldId]: errors },
-    })),
-  clearFieldErrors: (fieldId) =>
-    set((state) => {
-      const updated = { ...state.fieldErrors };
-      delete updated[fieldId];
-      return { fieldErrors: updated };
-    }),
 }));

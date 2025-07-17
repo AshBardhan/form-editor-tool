@@ -2,9 +2,9 @@
  * Centralized store exports for the form builder application.
  *
  * Store Architecture:
- * - FormDataStore: Manages form data and field operations (less frequent changes)
- * - UIStateStore: Manages UI state like selections and sidebar state (frequent changes)
- * - ValidationStore: Manages field validation errors (moderate frequency)
+ * - FormDataStore: Manages form data and field operations (frequent changes)
+ * - FieldValidationStore: Manages field validation errors (moderate frequency)
+ * - UIStateStore: Manages UI state like selections and sidebar state (less frequent changes)
  *
  * Benefits of separation:
  * 1. Reduces unnecessary re-renders by isolating frequently changing state
@@ -15,7 +15,7 @@
 
 export { useFormDataStore } from "./formDataStore";
 export { useUIStateStore } from "./UIStateStore";
-export { useValidationStore } from "./validationStore";
+export { useFieldValidationStore } from "./fieldValidationStore";
 
 // Legacy export for backward compatibility
 // TODO: Remove this after migrating all components to use separate stores
