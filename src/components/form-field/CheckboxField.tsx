@@ -18,7 +18,7 @@ interface CheckboxFieldProps {
 const CheckboxField = ({ field }: CheckboxFieldProps): JSX.Element => {
   return (
     <div className="form-field flex gap-2 items-center">
-      <Checkbox readOnly id={field.id} />
+      <Checkbox readOnly id={field.id} tabIndex={-1} />
       <Label htmlFor={field.id}>{getPropValue(field, "label")}</Label>
     </div>
   );

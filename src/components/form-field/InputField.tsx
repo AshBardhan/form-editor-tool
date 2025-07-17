@@ -25,6 +25,7 @@ const InputField = ({ field }: InputFieldProps): JSX.Element => {
         id={field.id}
         type={field.type}
         readOnly
+        tabIndex={-1}
         required={Boolean(getPropValue(field, "required"))}
         placeholder={String(getPropValue(field, "placeholder"))}
       />

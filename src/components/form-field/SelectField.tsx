@@ -33,7 +33,7 @@ const SelectField = ({ field }: SelectFieldProps): JSX.Element => {
     <div className="form-field flex flex-col gap-2">
       {label && <Label htmlFor={field.id}>{label}</Label>}
       <Select value={value}>
-        <SelectTrigger id={field.id} className="w-full">
+        <SelectTrigger id={field.id} className="w-full" tabIndex={-1}>
           <SelectValue placeholder={placeholder} />
         </SelectTrigger>
         <SelectContent>

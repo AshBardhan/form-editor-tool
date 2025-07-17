@@ -25,6 +25,7 @@ const TextareaField = ({ field }: TextareaFieldProps): JSX.Element => {
         id={field.id}
         className="resize-y"
         readOnly
+        tabIndex={-1}
         value={String(getPropValue(field, "value") || "")}
         placeholder={String(getPropValue(field, "placeholder"))}
         required={Boolean(getPropValue(field, "required"))}

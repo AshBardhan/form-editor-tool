@@ -32,6 +32,7 @@ const RadioField = ({ field }: RadioFieldProps): JSX.Element => {
           <RadioGroupItem
             value={option}
             readOnly
+            tabIndex={-1}
             id={`${field.id}-${option}`}
           ></RadioGroupItem>
           <Label htmlFor={`${field.id}-${option}`}>{option}</Label>
