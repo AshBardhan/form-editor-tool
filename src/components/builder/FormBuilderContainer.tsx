@@ -25,6 +25,7 @@ import { MainContent } from "@/components/layout/MainContent";
 import { DeviceSelector } from "./DeviceSelector";
 import { DroppableItemPreview } from "./DroppableItemPreview";
 import { hybridKeyboardCoordinates } from "@/lib/hybridKeyboardCoordinates";
+import { useUIStateStore } from "@/lib/stores";
 
 interface DragState {
   overId: string | null;
@@ -45,7 +46,8 @@ const FormBuilderContainer = (): JSX.Element => {
     activeItem: null,
     source: null,
   });
-  const { form, isSidebarCollapsed, selectField, moveField, addField } = useFormStore();
+  const { form, selectField, moveField, addField } = useFormStore();
+  const { isSidebarCollapsed } = useUIStateStore();
   const [deviceType, setDeviceType] = useState<DeviceType>(DeviceType.DESKTOP);
 
   /**

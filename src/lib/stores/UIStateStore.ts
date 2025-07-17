@@ -1,9 +1,5 @@
 import { create } from "zustand";
 
-/**
- * Interface representing the UI state and actions.
- * This store handles transient UI state that changes frequently.
- */
 interface UIStateStore {
   selectedFieldId: string | null;
   hoveredFieldId: string | null;
@@ -18,8 +14,7 @@ interface UIStateStore {
 
 /**
  * Zustand store for managing UI state.
- * This store is separated to minimize re-renders when only UI state changes.
- * UI state changes are frequent but don't affect form data.
+ * - Manages the selection of fields, hovering over fields, and toggling sidebars.
  */
 export const useUIStateStore = create<UIStateStore>((set) => ({
   selectedFieldId: null,

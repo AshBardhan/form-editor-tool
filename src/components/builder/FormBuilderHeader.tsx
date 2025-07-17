@@ -5,6 +5,7 @@ import { Button } from "@/components/ui/Button";
 import { PanelLeft, PanelRight } from "lucide-react";
 import { useFormStore } from "@/lib/store";
 import { JSX } from "react";
+import { useUIStateStore } from "@/lib/stores";
 
 /**
  * Form Builder Header
@@ -14,7 +15,8 @@ import { JSX } from "react";
  * @returns {JSX.Element} The rendered component.
  */
 const FormBuilderHeader = (): JSX.Element => {
-  const { form, isSidebarCollapsed, toggleSidebar } = useFormStore();
+  const { form } = useFormStore();
+  const { isSidebarCollapsed, toggleSidebar } = useUIStateStore();
   const isLeftCollapsed = isSidebarCollapsed.left;
   const isRightCollapsed = isSidebarCollapsed.right;
 
