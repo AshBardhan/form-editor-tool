@@ -4,6 +4,8 @@ import { FormBuilderCanvas } from "./FormBuilderCanvas";
 import { FormComponentSidebar } from "./FormComponentSidebar";
 import {
   DndContext,
+  DragStartEvent,
+  DragOverEvent,
   DragEndEvent,
   DragOverlay,
   KeyboardSensor,
@@ -24,6 +26,12 @@ import { DeviceSelector } from "./DeviceSelector";
 import { DroppableItemPreview } from "./DroppableItemPreview";
 import { hybridKeyboardCoordinates } from "@/lib/hybridKeyboardCoordinates";
 
+interface DragState {
+  overId: string | null;
+  activeItem: FormField | Component | null;
+  source: "sidebar" | "canvas" | null;
+}
+
 /**
  * Form Builder Container
  * - Provides drag-and-drop and configuration for form fields
@@ -32,13 +40,13 @@ import { hybridKeyboardCoordinates } from "@/lib/hybridKeyboardCoordinates";
  * @returns {JSX.Element} The rendered component.
  */
 const FormBuilderContainer = (): JSX.Element => {
-  const [overId, setOverId] = useState<string | null>(null);
-  const [activeDragItem, setActiveDragItem] = useState<FormField | Component | null>(null);
-  const [dragSource, setDragSource] = useState<"sidebar" | "canvas" | null>(null);
+  const [dragState, setDragState] = useState<DragState>({
+    overId: null,
+    activeItem: null,
+    source: null,
+  });
   const { form, isSidebarCollapsed, selectField, moveField, addField } = useFormStore();
   const [deviceType, setDeviceType] = useState<DeviceType>(DeviceType.DESKTOP);
-  const isLeftCollapsed = isSidebarCollapsed.left;
-  const isRightCollapsed = isSidebarCollapsed.right;
 
   /**
    * Handles the end of a drag event.
@@ -94,38 +102,46 @@ const FormBuilderContainer = (): JSX.Element => {
       <DndContext
         sensors={sensors}
         collisionDetection={rectIntersection}
-        onDragStart={(event) => {
+        onDragStart={(event: DragStartEvent) => {
           const data = event.active.data.current;
           if (!data) return;
 
-          setActiveDragItem(data as FormField | Component);
-
           if (data.from === "sidebar") {
-            setDragSource("sidebar");
+            selectField(null);
           } else {
-            setDragSource("canvas");
             selectField(data.id);
           }
+          setDragState({
+            ...dragState,
+            activeItem: data as FormField | Component,
+            source: data.from,
+          });
         }}
-        onDragOver={(event) => {
-          setOverId((event.over?.id as string) ?? null);
+        onDragOver={(event: DragOverEvent) => {
+          const overId = (event.over?.id as string) ?? null;
+          setDragState({ ...dragState, overId });
         }}
-        onDragEnd={(event) => {
+        onDragEnd={(event: DragEndEvent) => {
           handleDragEnd(event);
-          setOverId(null);
-          setActiveDragItem(null);
-          setDragSource(null);
+          setDragState({
+            overId: null,
+            activeItem: null,
+            source: null,
+          });
         }}
       >
         {/* Drag Placeholder Overlay */}
         <DragOverlay>
-          {activeDragItem ? (
-            <DroppableItemPreview item={activeDragItem} source={dragSource} />
-          ) : null}
+          {dragState.activeItem && (
+            <DroppableItemPreview
+              item={dragState.activeItem}
+              source={dragState.source}
+            />
+          )}
         </DragOverlay>
 
         {/* Left Form Component Sidebar */}
-        {!isLeftCollapsed && (
+        {!isSidebarCollapsed.left && (
           <Sidebar>
             <FormComponentSidebar />
           </Sidebar>
@@ -149,15 +165,15 @@ const FormBuilderContainer = (): JSX.Element => {
 
             <FormBuilderCanvas
               currentDevice={deviceType}
-              overId={overId}
-              activeDragItem={activeDragItem as FormField}
-              dragSource={dragSource}
+              overId={dragState.overId}
+              activeDragItem={dragState.activeItem as FormField}
+              dragSource={dragState.source}
             />
           </div>
         </MainContent>
 
         {/* Right Form/Field Configuration Sidebar */}
-        {!isRightCollapsed && (
+        {!isSidebarCollapsed.right && (
           <Sidebar position="right">
             <FormConfigurationSidebar />
           </Sidebar>
