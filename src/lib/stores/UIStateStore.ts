@@ -13,8 +13,7 @@ interface UIStateStore {
 }
 
 /**
- * Zustand store for managing UI state.
- * - Manages the selection of fields, hovering over fields, and toggling sidebars.
+ * Zustand store for managing UI state of field selection and sidebar visibility.
  */
 export const useUIStateStore = create<UIStateStore>((set) => ({
   selectedFieldId: null,

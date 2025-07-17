@@ -21,7 +21,7 @@ import { CheckboxPropEditor } from "@/components/field-prop/CheckboxPropEditor";
 import { SelectPropEditor } from "@/components/field-prop/SelectPropEditor";
 import { ListPropEditor } from "@/components/field-prop/ListPropEditor";
 import { BaseFormFieldValueType } from "@/types/field";
-import { useFieldValidationStore } from "@/lib/stores";
+import { useFieldValidationStore, useUIStateStore } from "@/lib/stores";
 
 /**
  * Form Configuration Sidebar
@@ -31,8 +31,9 @@ import { useFieldValidationStore } from "@/lib/stores";
  * @returns {JSX.Element} The rendered component.
  */
 const FormConfigurationSidebar = (): JSX.Element => {
-  const { form, selectedFieldId, updateField, updateForm } = useFormStore();
+  const { form, updateField, updateForm } = useFormStore();
   const { setFieldErrors, clearFieldErrors } = useFieldValidationStore();
+  const { selectedFieldId } = useUIStateStore();
   const selected = form.fields.find((f) => f.id === selectedFieldId);
   const selectedMeta = selected ? getField(selected.type) : null;
   const Icon = selectedMeta?.icon ?? ScrollTextIcon;

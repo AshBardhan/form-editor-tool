@@ -21,12 +21,8 @@ interface FormData {
  */
 interface FormState {
   form: FormData;
-  selectedFieldId: string | null;
-  hoveredFieldId: string | null;
   updateForm: (key: string, value: string) => void;
-  selectField: (id: string | null) => void;
-  hoverField: (id: string | null) => void;
-  addField: (type: BaseFieldType, index?: number) => void;
+  addField: (type: BaseFieldType, index?: number) => string;
   moveField: (fromIndex: number, toIndex: number) => void;
   updateField: (id: string, key: string, value: BaseFormFieldValueType) => void;
   cloneField: (id: string) => void;
@@ -42,8 +38,6 @@ export const useFormStore = create<FormState>((set) => ({
     theme: "light",
     fields: [],
   },
-  selectedFieldId: null,
-  hoveredFieldId: null,
   updateForm: (key, value) => {
     set((state) => ({
       form: {
@@ -51,16 +45,6 @@ export const useFormStore = create<FormState>((set) => ({
         [key]: value,
       },
     }));
-  },
-  selectField: (id) => {
-    set((state) =>
-      state.selectedFieldId === id ? state : { selectedFieldId: id },
-    );
-  },
-  hoverField: (id) => {
-    set((state) =>
-      state.hoveredFieldId === id ? state : { hoveredFieldId: id },
-    );
   },
   addField: (type, index) => {
     const id = nanoid();
@@ -83,9 +67,10 @@ export const useFormStore = create<FormState>((set) => ({
           ...state.form,
           fields: updated,
         },
-        selectedFieldId: id,
       };
     });
+
+    return id;
   },
   moveField: (from, to) => {
     set((state) => {

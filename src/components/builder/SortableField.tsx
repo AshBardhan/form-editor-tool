@@ -8,7 +8,7 @@ import { CopyIcon, SeparatorHorizontalIcon, TrashIcon } from "lucide-react";
 import { fieldRenderers } from "@/components/form-field";
 import { Button } from "@/components/ui/Button";
 import { CSSProperties, JSX } from "react";
-import { useFieldValidationStore } from "@/lib/stores";
+import { useFieldValidationStore, useUIStateStore } from "@/lib/stores";
 
 interface SortableFieldProps {
   field: FormField;
@@ -27,14 +27,8 @@ const SortableField = ({
   field,
   isGhostMode = false,
 }: SortableFieldProps): JSX.Element => {
-  const {
-    selectedFieldId,
-    hoveredFieldId,
-    selectField,
-    hoverField,
-    cloneField,
-    removeField,
-  } = useFormStore();
+  const { cloneField, removeField } = useFormStore();
+  const { selectedFieldId, hoveredFieldId, selectField, hoverField } = useUIStateStore();
 
   const isSelected = selectedFieldId === field.id;
   const isHovered = hoveredFieldId === field.id;

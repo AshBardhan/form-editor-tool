@@ -46,7 +46,8 @@ const FormBuilderContainer = (): JSX.Element => {
     activeItem: null,
     source: null,
   });
-  const { form, selectField, moveField, addField } = useFormStore();
+  const { form, moveField, addField } = useFormStore();
+  const { selectField } = useUIStateStore();
   const { isSidebarCollapsed } = useUIStateStore();
   const [deviceType, setDeviceType] = useState<DeviceType>(DeviceType.DESKTOP);
 
@@ -63,28 +64,21 @@ const FormBuilderContainer = (): JSX.Element => {
     const dragged = active.data?.current;
     if (!dragged) return;
 
-    const activeId = active.id;
-    const overId = over.id;
+    const activeIndex = form.fields.findIndex((f) => f.id === active.id);
+    const overIndex = form.fields.findIndex((f) => f.id === over.id);
+    const isExistingField = activeIndex !== -1;
 
-    const activeIndex = form.fields.findIndex((f) => f.id === activeId);
-    const overIndex = form.fields.findIndex((f) => f.id === overId);
-
-    const isReorder = activeIndex !== -1 && overIndex !== -1;
-    const isInsertBetween = activeIndex === -1 && overIndex !== -1;
-    const isInsertAtEnd = activeIndex === -1 && overId === "canvas";
-
-    if (isReorder && activeIndex !== overIndex) {
+    // Handle reordering existing fields
+    if (isExistingField && overIndex !== -1 && activeIndex !== overIndex) {
       moveField(activeIndex, overIndex);
       return;
     }
 
-    if (isInsertBetween) {
-      addField(dragged.type, overIndex);
-      return;
-    }
-
-    if (isInsertAtEnd) {
-      addField(dragged.type);
+    // Handle adding new fields (from sidebar)
+    if (!isExistingField) {
+      const insertIndex = over.id === "canvas" ? undefined : overIndex;
+      const newId = addField(dragged.type, insertIndex);
+      selectField(newId);
     }
   }
 
