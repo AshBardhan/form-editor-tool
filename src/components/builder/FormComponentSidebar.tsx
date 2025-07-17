@@ -76,6 +76,7 @@ const FormComponentSidebar = (): JSX.Element => {
         <div className="relative dark">
           <Input
             type="text"
+            name="search"
             placeholder="Search components..."
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}

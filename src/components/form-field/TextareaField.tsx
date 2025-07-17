@@ -19,10 +19,12 @@ const TextareaField = ({ field }: TextareaFieldProps): JSX.Element => {
   return (
     <div className="form-field flex flex-col gap-2">
       {getPropValue(field, "label") && (
-        <Label htmlFor={field.id}>{getPropValue(field, "label")}</Label>
+        <Label htmlFor={`textarea-${field.id}`}>
+          {getPropValue(field, "label")}
+        </Label>
       )}
       <Textarea
-        id={field.id}
+        id={`textarea-${field.id}`}
         className="resize-y"
         readOnly
         tabIndex={-1}

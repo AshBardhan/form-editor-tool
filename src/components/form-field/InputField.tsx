@@ -19,10 +19,12 @@ const InputField = ({ field }: InputFieldProps): JSX.Element => {
   return (
     <div className="form-field flex flex-col gap-2">
       {getPropValue(field, "label") && (
-        <Label htmlFor={field.id}>{getPropValue(field, "label")}</Label>
+        <Label htmlFor={`input-${field.id}`}>
+          {getPropValue(field, "label")}
+        </Label>
       )}
       <Input
-        id={field.id}
+        id={`input-${field.id}`}
         type={field.type}
         readOnly
         tabIndex={-1}
