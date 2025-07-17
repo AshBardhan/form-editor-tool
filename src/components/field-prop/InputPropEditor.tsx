@@ -11,8 +11,7 @@ interface InputPropEditorProps {
 /**
  * Input Prop Editor
  * - Displays an input field with a label, optional class name and change handler
-
- * 
+ *
  * @param {InputPropEditorProps} props - The props for the component.
  * @returns {JSX.Element} The rendered component.
  */

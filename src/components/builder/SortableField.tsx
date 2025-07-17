@@ -6,6 +6,7 @@ import { useSortable } from "@dnd-kit/sortable";
 import { CSS } from "@dnd-kit/utilities";
 import { CopyIcon, SeparatorHorizontalIcon, TrashIcon } from "lucide-react";
 import { fieldRenderers } from "@/components/form-field";
+import { Button } from "@/components/ui/Button";
 import { CSSProperties, JSX } from "react";
 
 interface SortableFieldProps {
@@ -122,10 +123,12 @@ const SortableField = ({
         }
       }}
     >
+      {/* Form Field Overlay highlighted on mouse hover and 'Tab' keyboard navigation */}
       {isHovered && (
         <div className="absolute inset-0 bg-blue-200/30 dark:bg-white/30 pointer-events-none" />
       )}
 
+      {/* Form Field Content */}
       <div className="pointer-events-none">{renderField(field)}</div>
 
       {/*Form Field Action Items */}
@@ -146,8 +149,9 @@ const SortableField = ({
           <div className="absolute top-1/2 -translate-y-1/2 right-4 flex gap-1 z-1">
             {/* Clone Field Button */}
             {!isInvalid && (
-              <div
-                role="button"
+              <Button
+                variant="ghost"
+                tabIndex={-1}
                 className="cursor-pointer rounded-full p-1.5 text-gray-500 dark:text-gray-300 hover:text-black dark:hover:text-white hover:bg-black/10 dark:hover:bg-white/10"
                 onClick={(e) => {
                   e.stopPropagation();
@@ -156,11 +160,12 @@ const SortableField = ({
                 title="Duplicate Field"
               >
                 <CopyIcon size={14} />
-              </div>
+              </Button>
             )}
             {/* Remove Field Button */}
-            <div
-              role="button"
+            <Button
+              variant="ghost"
+              tabIndex={-1}
               className="cursor-pointer rounded-full p-1.5 text-gray-500 dark:text-gray-300 hover:text-black dark:hover:text-white hover:bg-black/10 dark:hover:bg-white/10"
               onClick={(e) => {
                 e.stopPropagation();
@@ -169,7 +174,7 @@ const SortableField = ({
               title="Delete Field"
             >
               <TrashIcon size={16} />
-            </div>
+            </Button>
           </div>
         </div>
       )}

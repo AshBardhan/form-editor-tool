@@ -78,6 +78,9 @@ const FormBuilderContainer = (): JSX.Element => {
     }
   }
 
+  /**
+   * Sets up sensor configurations for mouse and keyboard interactions.
+   */
   const sensors = useSensors(
     useSensor(MouseSensor),
     useSensor(KeyboardSensor, {

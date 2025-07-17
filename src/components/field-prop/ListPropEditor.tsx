@@ -21,6 +21,7 @@ interface ListPropEditorProps {
 const ListPropEditor = ({ id, value, onChange }: ListPropEditorProps) => {
   const [newOption, setNewOption] = useState("");
 
+  /** Add a new option */
   const addOption = () => {
     const trimmed = newOption.trim();
     if (!trimmed) return;
@@ -28,18 +29,21 @@ const ListPropEditor = ({ id, value, onChange }: ListPropEditorProps) => {
     setNewOption("");
   };
 
+  /** Update an option */
   const updateOption = (index: number, newVal: string) => {
     const updated = [...value];
     updated[index] = newVal;
     onChange(updated);
   };
 
+  /** Remove an option */
   const removeOption = (index: number) => {
     const updated = [...value];
     updated.splice(index, 1);
     onChange(updated);
   };
 
+  /** Handle Enter keypress event to add a new option */
   const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
     if (e.key === "Enter") {
       e.preventDefault();
@@ -47,12 +51,14 @@ const ListPropEditor = ({ id, value, onChange }: ListPropEditorProps) => {
     }
   };
 
+  /** Reset new option input on changing form field */
   useEffect(() => {
     setNewOption("");
   }, [id]);
 
   return (
     <div id={id} className="flex flex-col gap-2">
+      {/* List of existing options input with delete button */}
       {value.map((option, i) => (
         <div key={i} className="relative">
           <Input
@@ -72,6 +78,7 @@ const ListPropEditor = ({ id, value, onChange }: ListPropEditorProps) => {
           </Button>
         </div>
       ))}
+      {/* New option input field */}
       <Input
         type="text"
         placeholder="New option"

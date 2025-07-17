@@ -99,6 +99,7 @@ const FormConfigurationSidebar = (): JSX.Element => {
   const hasErrorProp = (propKey: string) =>
     errors && errors[propKey] && errors[propKey].length;
 
+  /* Validaton check on any property change */
   useEffect(() => {
     validateProps();
   }, [selected?.props]);
