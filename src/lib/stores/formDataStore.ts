@@ -1,7 +1,11 @@
-import { FormField, BaseFieldType, BaseFormFieldValueType } from "@/types/field";
+import {
+  FormField,
+  BaseFieldType,
+  BaseFormFieldValueType,
+} from "@/types/field";
 import { nanoid } from "nanoid";
 import { create } from "zustand";
-import { getDefaultProps } from "../utils/fieldUtils";
+import { getDefaultProps } from "@/lib/utils/fieldUtils";
 
 /**
  * Interface representing the Form data structure.
@@ -30,7 +34,7 @@ interface FormDataState {
  * Zustand store for managing the Form data and field operations.
  * This store is separated to minimize re-renders when only form data changes.
  */
-export const useFormDataStore = create<FormDataState>((set, get) => ({
+export const useFormDataStore = create<FormDataState>((set) => ({
   form: {
     title: "Untitled Form",
     theme: "light",

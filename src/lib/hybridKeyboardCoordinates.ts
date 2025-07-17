@@ -1,12 +1,9 @@
-import {
-  KeyboardCoordinateGetter,
-  KeyboardCode,
-} from '@dnd-kit/core';
-import { Coordinates } from '@dnd-kit/utilities';
+import { KeyboardCoordinateGetter, KeyboardCode } from "@dnd-kit/core";
+import { Coordinates } from "@dnd-kit/utilities";
 
 export const hybridKeyboardCoordinates: KeyboardCoordinateGetter = (
   event,
-  { currentCoordinates }
+  { currentCoordinates },
 ): Coordinates | undefined => {
   const delta = 50;
 
