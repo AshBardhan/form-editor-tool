@@ -44,11 +44,11 @@
   }
 
   .page-content {
-    @apply flex flex-1 w-full overflow-hidden;
+    @apply flex flex-1 w-full relative overflow-hidden;
   }
 
   .sidebar {
-    @apply w-72 flex-shrink-0 bg-[#151515] text-[#fefefe] border border-[#373737];
+    @apply h-full overflow-y-auto flex-shrink-0 bg-[#151515] text-[#fefefe] border border-[#373737];
   }
 
   .sidebar--left {

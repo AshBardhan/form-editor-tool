@@ -1,3 +1,4 @@
+import { motion } from "motion/react";
 import { JSX } from "react";
 
 interface MainContentProps {
@@ -12,7 +13,15 @@ interface MainContentProps {
  * @returns {JSX.Element} The rendered component.
  */
 const MainContent = ({ children }: MainContentProps): JSX.Element => {
-  return <section className="main-content">{children}</section>;
+  return (
+    <motion.section
+      layout
+      transition={{ duration: 0.3, ease: "easeInOut" }}
+      className="main-content"
+    >
+      {children}
+    </motion.section>
+  );
 };
 
 export { MainContent };

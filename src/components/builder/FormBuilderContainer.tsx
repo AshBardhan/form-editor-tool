@@ -25,6 +25,7 @@ import { DeviceSelector } from "./DeviceSelector";
 import { DroppableItemPreview } from "./DroppableItemPreview";
 import { hybridKeyboardCoordinates } from "@/lib/hybridKeyboardCoordinates";
 import { useFormDataStore, useUIStateStore } from "@/lib/stores";
+import { AnimatePresence } from "motion/react";
 
 interface DragState {
   overId: string | null;
@@ -136,11 +137,13 @@ const FormBuilderContainer = (): JSX.Element => {
         </DragOverlay>
 
         {/* Left Form Component Sidebar */}
-        {!isSidebarCollapsed.left && (
-          <Sidebar>
-            <FormComponentSidebar />
-          </Sidebar>
-        )}
+        <AnimatePresence>
+          {!isSidebarCollapsed.left && (
+            <Sidebar>
+              <FormComponentSidebar />
+            </Sidebar>
+          )}
+        </AnimatePresence>
 
         {/* Main Content Area with Canvas and Device Selector */}
         <MainContent>
@@ -168,11 +171,13 @@ const FormBuilderContainer = (): JSX.Element => {
         </MainContent>
 
         {/* Right Form/Field Configuration Sidebar */}
-        {!isSidebarCollapsed.right && (
-          <Sidebar position="right">
-            <FormConfigurationSidebar />
-          </Sidebar>
-        )}
+        <AnimatePresence>
+          {!isSidebarCollapsed.right && (
+            <Sidebar position="right">
+              <FormConfigurationSidebar />
+            </Sidebar>
+          )}
+        </AnimatePresence>
       </DndContext>
     </>
   );
