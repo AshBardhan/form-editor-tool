@@ -14,8 +14,11 @@ import { useFormDataStore, useUIStateStore } from "@/lib/stores";
  * @returns {JSX.Element} The rendered component.
  */
 const FormBuilderHeader = (): JSX.Element => {
-  const { form } = useFormDataStore();
-  const { isSidebarCollapsed, toggleSidebar } = useUIStateStore();
+  const form = useFormDataStore((state) => state.form);
+  const isSidebarCollapsed = useUIStateStore(
+    (state) => state.isSidebarCollapsed,
+  );
+  const toggleSidebar = useUIStateStore((state) => state.toggleSidebar);
   const isLeftCollapsed = isSidebarCollapsed.left;
   const isRightCollapsed = isSidebarCollapsed.right;
 

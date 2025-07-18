@@ -24,7 +24,8 @@
 .DS_Store
 *.pem
 .vscode
-output/
+output
+.zencoder
 
 # debug
 npm-debug.log*

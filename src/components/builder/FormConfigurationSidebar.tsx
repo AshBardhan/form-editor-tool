@@ -34,9 +34,16 @@ import {
  * @returns {JSX.Element} The rendered component.
  */
 const FormConfigurationSidebar = (): JSX.Element => {
-  const { form, updateField, updateForm } = useFormDataStore();
-  const { setFieldErrors, clearFieldErrors } = useFieldValidationStore();
-  const { selectedFieldId } = useUIStateStore();
+  const form = useFormDataStore((state) => state.form);
+  const updateField = useFormDataStore((state) => state.updateField);
+  const updateForm = useFormDataStore((state) => state.updateForm);
+  const setFieldErrors = useFieldValidationStore(
+    (state) => state.setFieldErrors,
+  );
+  const clearFieldErrors = useFieldValidationStore(
+    (state) => state.clearFieldErrors,
+  );
+  const selectedFieldId = useUIStateStore((state) => state.selectedFieldId);
   const selected = form.fields.find((f) => f.id === selectedFieldId);
   const selectedMeta = selected ? getField(selected.type) : null;
   const Icon = selectedMeta?.icon ?? ScrollTextIcon;

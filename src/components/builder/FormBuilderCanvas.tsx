@@ -39,7 +39,7 @@ const FormBuilderCanvas = ({
   dragSource,
   currentDevice,
 }: FormBuilderCanvasProps): JSX.Element => {
-  const { form } = useFormDataStore();
+  const form = useFormDataStore((state) => state.form);
   const { setNodeRef } = useDroppable({ id: "canvas" });
   const isOverEnd = overId && !form.fields.some((f) => f.id === overId);
   const currentDeviceMeta = DeviceList.find(
@@ -49,7 +49,7 @@ const FormBuilderCanvas = ({
   return (
     <div className="flex justify-center" ref={setNodeRef}>
       <div
-        className="min-h-[75vh] w-full flex-1 bg-white dark:bg-black transition-[colors, max-width]"
+        className="min-h-[75vh] w-full flex-1 bg-white dark:bg-black transition-[colors,max-width]"
         style={{ maxWidth: currentDeviceMeta?.size }}
       >
         <SortableContext

@@ -30,9 +30,17 @@ const SortableField = ({
   field,
   isGhostMode = false,
 }: SortableFieldProps): JSX.Element => {
-  const { cloneField, removeField } = useFormDataStore();
-  const { selectedFieldId, hoveredFieldId, selectField, hoverField } = useUIStateStore();
-  const { fieldErrors, clearFieldErrors } = useFieldValidationStore();
+  const cloneField = useFormDataStore((state) => state.cloneField);
+  const removeField = useFormDataStore((state) => state.removeField);
+  const selectedFieldId = useUIStateStore((state) => state.selectedFieldId);
+  const hoveredFieldId = useUIStateStore((state) => state.hoveredFieldId);
+  const selectField = useUIStateStore((state) => state.selectField);
+  const hoverField = useUIStateStore((state) => state.hoverField);
+  const fieldErrors = useFieldValidationStore((state) => state.fieldErrors);
+  const clearFieldErrors = useFieldValidationStore(
+    (state) => state.clearFieldErrors,
+  );
+
   const isSelected = selectedFieldId === field.id;
   const isHovered = hoveredFieldId === field.id;
   const isInvalid = fieldErrors[field.id]?.length > 0;

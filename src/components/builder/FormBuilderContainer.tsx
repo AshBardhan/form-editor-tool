@@ -46,9 +46,13 @@ const FormBuilderContainer = (): JSX.Element => {
     activeItem: null,
     source: null,
   });
-  const { form, moveField, addField } = useFormDataStore();
-  const { selectField } = useUIStateStore();
-  const { isSidebarCollapsed } = useUIStateStore();
+  const form = useFormDataStore((state) => state.form);
+  const moveField = useFormDataStore((state) => state.moveField);
+  const addField = useFormDataStore((state) => state.addField);
+  const selectField = useUIStateStore((state) => state.selectField);
+  const isSidebarCollapsed = useUIStateStore(
+    (state) => state.isSidebarCollapsed,
+  );
   const [deviceType, setDeviceType] = useState<DeviceType>(DeviceType.DESKTOP);
 
   /**
