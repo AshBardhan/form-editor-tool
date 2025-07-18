@@ -22,7 +22,7 @@ interface FormBuilderCanvasProps {
  * Drop Placeholder Content
  */
 const DropPlaceholderContent = (): JSX.Element => (
-  <div className="h-10 bg-blue-200/50 dark:bg-white/50 border border-dashed border-blue-500 dark:border-gray-300 transition-all" />
+  <div className="h-10 bg-blue-200/50 dark:bg-white/50 border border-dashed border-blue-500 dark:border-gray-300 transition-colors" />
 );
 
 /**
@@ -49,7 +49,7 @@ const FormBuilderCanvas = ({
   return (
     <div className="flex justify-center" ref={setNodeRef}>
       <div
-        className="min-h-[75vh] w-full flex-1 bg-white dark:bg-black transition-[colors,max-width]"
+        className="min-h-[75vh] w-full flex-1 bg-white dark:bg-black transition-[colors, max-width]"
         style={{ maxWidth: currentDeviceMeta?.size }}
       >
         <SortableContext
@@ -58,7 +58,7 @@ const FormBuilderCanvas = ({
         >
           {/* Empty canvas state */}
           {form.fields.length === 0 && !overId ? (
-            <div className="h-full text-gray-500 border dark:text-white border-dashed flex items-center justify-center text-sm">
+            <div className="h-full text-gray-500 border dark:text-white transition-colors border-dashed flex items-center justify-center text-sm">
               Drag components here
             </div>
           ) : (

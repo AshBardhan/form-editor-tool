@@ -121,7 +121,7 @@ const SortableField = ({
     >
       {/* Form Field Overlay highlighted on mouse hover and 'Tab' keyboard navigation */}
       {isHovered && (
-        <div className="absolute inset-0 bg-blue-200/30 dark:bg-white/30 pointer-events-none" />
+        <div className="absolute inset-0 bg-blue-200/30 dark:bg-white/30 transition-colors pointer-events-none" />
       )}
 
       {/* Form Field Content */}
@@ -136,7 +136,7 @@ const SortableField = ({
           <div
             {...listeners}
             aria-label="Reorder field"
-            className="absolute inset-0 cursor-grab text-gray-500 dark:text-gray-100 hover:text-black dark:hover:text-white flex items-center justify-center"
+            className="absolute inset-0 cursor-grab text-gray-500 dark:text-gray-100 hover:text-black dark:hover:text-white transition-colors flex items-center justify-center"
             title="Reorder Field"
           >
             <SeparatorHorizontalIcon size={24} />
@@ -148,7 +148,7 @@ const SortableField = ({
               <Button
                 variant="ghost"
                 tabIndex={-1}
-                className="cursor-pointer rounded-full p-1.5 text-gray-500 dark:text-gray-300 hover:text-black dark:hover:text-white hover:bg-black/10 dark:hover:bg-white/10"
+                className="cursor-pointer rounded-full p-1.5 text-gray-500 dark:text-gray-300 hover:text-black dark:hover:text-white hover:bg-black/10 dark:hover:bg-white/10 transition-colors"
                 onClick={(e) => {
                   e.stopPropagation();
                   cloneField(field.id);
@@ -162,7 +162,7 @@ const SortableField = ({
             <Button
               variant="ghost"
               tabIndex={-1}
-              className="cursor-pointer rounded-full p-1.5 text-gray-500 dark:text-gray-300 hover:text-black dark:hover:text-white hover:bg-black/10 dark:hover:bg-white/10"
+              className="cursor-pointer rounded-full p-1.5 text-gray-500 dark:text-gray-300 hover:text-black dark:hover:text-white hover:bg-black/10 dark:hover:bg-white/10 transition-colors"
               onClick={(e) => {
                 e.stopPropagation();
                 removeField(field.id);
