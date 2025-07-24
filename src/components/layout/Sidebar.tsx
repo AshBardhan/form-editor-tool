@@ -1,5 +1,5 @@
 import { JSX } from "react";
-import { AnimatePresence, motion, Variants } from "framer-motion";
+import { AnimatePresence, motion, Variants } from "motion/react";
 
 const slidingTime = 0.2;
 const contentVisibilityTime = 0.2;

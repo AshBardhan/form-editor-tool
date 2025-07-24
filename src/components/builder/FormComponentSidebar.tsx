@@ -3,7 +3,7 @@
 import { componentPalette } from "@/lib/constants/componentPalette";
 import { DraggableComponent } from "./DraggableComponent";
 import { ChevronDown, ComponentIcon, SearchIcon } from "lucide-react";
-import { useState, useMemo, JSX } from "react";
+import { useState, useMemo, useCallback, useEffect, JSX } from "react";
 import { Input } from "@/components/ui/Input";
 import { Component } from "@/types/component";
 
@@ -26,12 +26,12 @@ const FormComponentSidebar = (): JSX.Element => {
    *
    * @param {string} category - The category to toggle.
    */
-  const toggleCategory = (category: string) => {
+  const toggleCategory = useCallback((category: string) => {
     setExpandedCategories((prev) => ({
       ...prev,
       [category]: !prev[category],
     }));
-  };
+  }, []);
 
   /**
    * Filters components based on the search query.
@@ -61,6 +61,17 @@ const FormComponentSidebar = (): JSX.Element => {
 
     return matchedItems;
   }, [searchQuery]);
+
+  /**
+   * Sets default categories as expanded when the component mounts.
+   */
+  useEffect(() => {
+    const defaults: Record<string, boolean> = {};
+    for (const group of componentPalette) {
+      defaults[group.category] = true;
+    }
+    setExpandedCategories(defaults);
+  }, []);
 
   const isSearching = searchQuery.trim().length > 0;
 
@@ -103,7 +114,7 @@ const FormComponentSidebar = (): JSX.Element => {
         <>
           {/* Grouped Components */}
           {componentPalette.map((group) => {
-            const isOpen = expandedCategories[group.category] ?? true;
+            const isOpen = expandedCategories[group.category];
 
             return (
               <div

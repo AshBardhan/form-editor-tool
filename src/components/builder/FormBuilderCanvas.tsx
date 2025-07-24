@@ -21,8 +21,17 @@ interface FormBuilderCanvasProps {
 /**
  * Drop Placeholder Content
  */
-const DropPlaceholderContent = (): JSX.Element => (
+const DropPlaceholder = (): JSX.Element => (
   <div className="h-10 bg-blue-200/50 dark:bg-white/50 border border-dashed border-blue-500 dark:border-gray-300 transition-colors" />
+);
+
+/**
+ * Drop Zero State Content
+ */
+const DropZeroState = (): JSX.Element => (
+  <div className="h-full text-gray-500 border dark:text-white transition-colors border-dashed flex items-center justify-center text-sm">
+    Drop components here
+  </div>
 );
 
 /**
@@ -58,9 +67,7 @@ const FormBuilderCanvas = ({
         >
           {/* Empty canvas state */}
           {form.fields.length === 0 && !overId ? (
-            <div className="h-full text-gray-500 border dark:text-white transition-colors border-dashed flex items-center justify-center text-sm">
-              Drag components here
-            </div>
+            <DropZeroState />
           ) : (
             <>
               {/* Form canvas state with dropped and configured fields */}
@@ -69,9 +76,7 @@ const FormBuilderCanvas = ({
                   {/* Drop placeholder in the middle of the list */}
                   {overId === field.id &&
                     dragSource === "sidebar" &&
-                    activeDragItem?.id !== field.id && (
-                      <DropPlaceholderContent />
-                    )}
+                    activeDragItem?.id !== field.id && <DropPlaceholder />}
                   <SortableField field={field} />
                 </div>
               ))}
@@ -79,7 +84,7 @@ const FormBuilderCanvas = ({
           )}
 
           {/* Drop placeholder at end of list */}
-          {isOverEnd && dragSource === "sidebar" && <DropPlaceholderContent />}
+          {isOverEnd && dragSource === "sidebar" && <DropPlaceholder />}
         </SortableContext>
       </div>
     </div>
