@@ -6,6 +6,8 @@ import { ChevronDown, ComponentIcon, SearchIcon } from "lucide-react";
 import { useState, useMemo, useCallback, useEffect, JSX } from "react";
 import { Input } from "@/components/ui/Input";
 import { Component } from "@/types/component";
+import { AnimatePresence, motion } from "motion/react";
+import { collapsibleContentVariants } from "@/lib/constants/styles";
 
 /**
  * Form Component Sidebar
@@ -135,13 +137,22 @@ const FormComponentSidebar = (): JSX.Element => {
                     />
                   </div>
                 </div>
-                {isOpen && (
-                  <div className="grid grid-cols-2 gap-3">
-                    {group.items.map((comp) => (
-                      <DraggableComponent key={comp.type} component={comp} />
-                    ))}
-                  </div>
-                )}
+                <AnimatePresence initial={false}>
+                  {isOpen && (
+                    <motion.div
+                      key="category-content"
+                      initial="hidden"
+                      animate="visible"
+                      exit="exit"
+                      variants={collapsibleContentVariants}
+                      className="overflow-hidden grid grid-cols-2 gap-3"
+                    >
+                      {group.items.map((comp) => (
+                        <DraggableComponent key={comp.type} component={comp} />
+                      ))}
+                    </motion.div>
+                  )}
+                </AnimatePresence>
               </div>
             );
           })}

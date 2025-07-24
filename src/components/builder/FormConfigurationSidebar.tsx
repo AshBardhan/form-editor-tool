@@ -25,6 +25,8 @@ import {
   useFormDataStore,
   useUIStateStore,
 } from "@/lib/stores";
+import { AnimatePresence, motion } from "motion/react";
+import { visibleContentVariants } from "@/lib/constants/styles";
 
 /**
  * Form Configuration Sidebar
@@ -111,160 +113,171 @@ const FormConfigurationSidebar = (): JSX.Element => {
   }, [selected?.props]);
 
   return (
-    <>
-      <div className="p-4 border-b border-b-[#2d2d2d]">
-        <h2 className="font-semibold flex items-center gap-2">
-          {Icon && <Icon size={20} />}
-          {selected ? `${selectedMeta?.label}` : "Form"} Configuration
-        </h2>
-      </div>
-      {selected ? (
-        <>
-          {/* Field Configuration Section */}
-          <div className="p-4 flex flex-col gap-4 dark">
-            {selected.props.map((prop) => {
-              const selectedFieldPropKey = `${selected.id}-${prop.key}`;
-              return (
-                <div
-                  className="flex flex-col gap-2 focus-within:!shadow-none"
-                  key={selectedFieldPropKey}
-                >
-                  {/* Field Property Label */}
-                  {prop.type !== "boolean" && (
-                    <Label
-                      htmlFor={selectedFieldPropKey}
-                      className="font-semibold"
-                    >
-                      {prop.label}
-                    </Label>
-                  )}
+    <AnimatePresence mode="wait">
+      <motion.div
+        key={selected?.id ? `field-config-${selected.id}` : "form-config"}
+        initial="hidden"
+        animate="visible"
+        exit="exit"
+        variants={visibleContentVariants}
+      >
+        <div className="p-4 border-b border-b-[#2d2d2d]">
+          <h2 className="font-semibold flex items-center gap-2">
+            {Icon && <Icon size={20} />}
+            {selected ? selectedMeta?.label : "Form"} Configuration
+          </h2>
+        </div>
+        {selected ? (
+          <>
+            {/* Field Configuration Panel */}
+            <div className="p-4 flex flex-col gap-4 dark">
+              {selected.props.map((prop) => {
+                const selectedFieldPropKey = `${selected.id}-${prop.key}`;
+                return (
+                  <div
+                    className="flex flex-col gap-2 focus-within:!shadow-none"
+                    key={selectedFieldPropKey}
+                  >
+                    {/* Field Property Label */}
+                    {prop.type !== "boolean" && (
+                      <Label
+                        htmlFor={selectedFieldPropKey}
+                        className="font-semibold"
+                      >
+                        {prop.label}
+                      </Label>
+                    )}
 
-                  {/* Field Property Text Input (Regular and Long String types) */}
-                  {prop.type === "string" && typeof prop.value === "string" && (
-                    <InputPropEditor
-                      id={selectedFieldPropKey}
-                      value={prop.value ?? ""}
-                      className={`focus-visible:ring-0 focus-visible:!shadow-none ${hasErrorProp(prop.key) ? "!border-destructive" : ""}`}
-                      onChange={(value) =>
-                        updateField(selected.id, prop.key, value)
-                      }
-                    />
-                  )}
+                    {/* Field Property Text Input (Regular and Long String types) */}
+                    {prop.type === "string" &&
+                      typeof prop.value === "string" && (
+                        <InputPropEditor
+                          id={selectedFieldPropKey}
+                          value={prop.value ?? ""}
+                          className={`focus-visible:ring-0 focus-visible:!shadow-none ${hasErrorProp(prop.key) ? "!border-destructive" : ""}`}
+                          onChange={(value) =>
+                            updateField(selected.id, prop.key, value)
+                          }
+                        />
+                      )}
 
-                  {prop.type === "long-string" &&
-                    typeof prop.value === "string" && (
-                      <TextareaPropEditor
+                    {prop.type === "long-string" &&
+                      typeof prop.value === "string" && (
+                        <TextareaPropEditor
+                          id={selectedFieldPropKey}
+                          value={prop.value ?? ""}
+                          className={`resize-y focus-visible:ring-0 focus-visible:!shadow-none ${hasErrorProp(prop.key) ? "!border-destructive" : ""}`}
+                          onChange={(value) =>
+                            updateField(selected.id, prop.key, value)
+                          }
+                        />
+                      )}
+
+                    {/* Field Property Number Input */}
+                    {prop.type === "number" &&
+                      typeof prop.value === "number" && (
+                        <InputPropEditor
+                          type="number"
+                          id={selectedFieldPropKey}
+                          value={prop.value ?? 0}
+                          className={`focus-visible:ring-0 focus-visible:!shadow-none ${hasErrorProp(prop.key) ? "!border-destructive" : ""}`}
+                          onChange={(value) =>
+                            updateField(selected.id, prop.key, value)
+                          }
+                        />
+                      )}
+
+                    {/* Field Property Checkbox */}
+                    {prop.type === "boolean" && (
+                      <CheckboxPropEditor
                         id={selectedFieldPropKey}
-                        value={prop.value ?? ""}
-                        className={`resize-y focus-visible:ring-0 focus-visible:!shadow-none ${hasErrorProp(prop.key) ? "!border-destructive" : ""}`}
+                        label={prop.label}
+                        value={Boolean(prop.value)}
                         onChange={(value) =>
                           updateField(selected.id, prop.key, value)
                         }
                       />
                     )}
 
-                  {/* Field Property Number Input */}
-                  {prop.type === "number" && typeof prop.value === "number" && (
-                    <InputPropEditor
-                      type="number"
-                      id={selectedFieldPropKey}
-                      value={prop.value ?? 0}
-                      className={`focus-visible:ring-0 focus-visible:!shadow-none ${hasErrorProp(prop.key) ? "!border-destructive" : ""}`}
-                      onChange={(value) =>
-                        updateField(selected.id, prop.key, value)
-                      }
-                    />
-                  )}
+                    {/* Field Property Selectbox */}
+                    {prop.type === "select" &&
+                      typeof prop.value === "string" && (
+                        <SelectPropEditor
+                          id={selectedFieldPropKey}
+                          value={prop.value}
+                          options={prop.options ?? []}
+                          onChange={(value) =>
+                            updateField(selected.id, prop.key, value)
+                          }
+                        />
+                      )}
 
-                  {/* Field Property Checkbox */}
-                  {prop.type === "boolean" && (
-                    <CheckboxPropEditor
-                      id={selectedFieldPropKey}
-                      label={prop.label}
-                      value={Boolean(prop.value)}
-                      onChange={(value) =>
-                        updateField(selected.id, prop.key, value)
-                      }
-                    />
-                  )}
+                    {/* Field Property Listbox */}
+                    {prop.type === "list" && Array.isArray(prop.value) && (
+                      <ListPropEditor
+                        id={selectedFieldPropKey}
+                        value={prop.value}
+                        onChange={(val) =>
+                          updateField(selected.id, prop.key, val)
+                        }
+                      />
+                    )}
 
-                  {/* Field Property Selectbox */}
-                  {prop.type === "select" && typeof prop.value === "string" && (
-                    <SelectPropEditor
-                      id={selectedFieldPropKey}
-                      value={prop.value}
-                      options={prop.options ?? []}
-                      onChange={(value) =>
-                        updateField(selected.id, prop.key, value)
-                      }
-                    />
-                  )}
+                    {/* Field Property Validation Error Messages */}
+                    {hasErrorProp(prop.key) > 0 &&
+                      errors[prop.key].map((error, idx) => (
+                        <div key={idx} className="text-xs text-destructive">
+                          {error}
+                        </div>
+                      ))}
+                  </div>
+                );
+              })}
+            </div>
+          </>
+        ) : (
+          <>
+            {/* Form Configuration Panel */}
+            <div className="p-4 flex flex-col gap-4 dark">
+              <div className="flex flex-col gap-2">
+                <Label htmlFor="form-title" className="font-semibold">
+                  Title
+                </Label>
+                <Input
+                  id="form-title"
+                  value={form.title}
+                  className="focus-visible:ring-0 focus-visible:!shadow-none"
+                  onChange={(e) => updateForm("title", e.target.value)}
+                />
+              </div>
 
-                  {/* Field Property Listbox */}
-                  {prop.type === "list" && Array.isArray(prop.value) && (
-                    <ListPropEditor
-                      id={selectedFieldPropKey}
-                      value={prop.value}
-                      onChange={(val) =>
-                        updateField(selected.id, prop.key, val)
-                      }
-                    />
-                  )}
-
-                  {/* Field Property Validation Error Messages */}
-                  {hasErrorProp(prop.key) > 0 &&
-                    errors[prop.key].map((error, idx) => (
-                      <div key={idx} className="text-xs text-destructive">
-                        {error}
-                      </div>
+              <div className="flex flex-col gap-2">
+                <Label htmlFor="form-theme" className="font-semibold">
+                  Theme
+                </Label>
+                <Select value={form.theme} onValueChange={onThemeChange}>
+                  <SelectTrigger
+                    id="form-theme"
+                    className="w-full focus-visible:ring-0 focus-visible:!shadow-none"
+                  >
+                    <SelectValue placeholder="Select theme">
+                      {THEME_OPTIONS[form.theme]}
+                    </SelectValue>
+                  </SelectTrigger>
+                  <SelectContent>
+                    {Object.entries(THEME_OPTIONS).map(([value, label]) => (
+                      <SelectItem key={value} value={value}>
+                        {label}
+                      </SelectItem>
                     ))}
-                </div>
-              );
-            })}
-          </div>
-        </>
-      ) : (
-        <>
-          {/* Form Configuration Section */}
-          <div className="p-4 flex flex-col gap-4 dark">
-            <div className="flex flex-col gap-2">
-              <Label htmlFor="form-title" className="font-semibold">
-                Title
-              </Label>
-              <Input
-                id="form-title"
-                value={form.title}
-                className="focus-visible:ring-0 focus-visible:!shadow-none"
-                onChange={(e) => updateForm("title", e.target.value)}
-              />
+                  </SelectContent>
+                </Select>
+              </div>
             </div>
-
-            <div className="flex flex-col gap-2">
-              <Label htmlFor="form-theme" className="font-semibold">
-                Theme
-              </Label>
-              <Select value={form.theme} onValueChange={onThemeChange}>
-                <SelectTrigger
-                  id="form-theme"
-                  className="w-full focus-visible:ring-0 focus-visible:!shadow-none"
-                >
-                  <SelectValue placeholder="Select theme">
-                    {THEME_OPTIONS[form.theme]}
-                  </SelectValue>
-                </SelectTrigger>
-                <SelectContent>
-                  {Object.entries(THEME_OPTIONS).map(([value, label]) => (
-                    <SelectItem key={value} value={value}>
-                      {label}
-                    </SelectItem>
-                  ))}
-                </SelectContent>
-              </Select>
-            </div>
-          </div>
-        </>
-      )}
-    </>
+          </>
+        )}
+      </motion.div>
+    </AnimatePresence>
   );
 };
 

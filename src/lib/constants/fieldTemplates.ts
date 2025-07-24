@@ -102,7 +102,7 @@ export const fieldPropTemplates: Record<BaseFieldType, FormFieldProp[]> = {
       key: "placeholder",
       label: "Placeholder",
       type: "string",
-      defaultValue: "https://example.com",
+      defaultValue: "john@doe.com",
     },
     {
       key: "required",
