@@ -1,5 +1,6 @@
 "use client";
 
+import { cn } from "@/lib/utils/styleUtils";
 import { Component } from "@/types/component";
 import { useDraggable } from "@dnd-kit/core";
 import { JSX } from "react";
@@ -36,7 +37,13 @@ const DraggableComponent = ({
       tabIndex={0}
       role="button"
       data-slot="component-item"
-      className="p-2 rounded-md border border-[#2d2d2d] bg-[#1e1e1e] hover:bg-[#2f2f2f] text-white cursor-move flex items-center gap-2"
+      className={cn(
+        "p-2 rounded-md flex items-center gap-2 cursor-move",
+        "border border-[#2d2d2d] bg-[#1e1e1e] text-white",
+        "hover:bg-[#0f0f0f]",
+        "focus-visible:border-white focus-visible:bg-[#0f0f0f] focus-visible:!shadow-none focus-visible:!outline-none",
+        "transition-all",
+      )}
     >
       {Icon && (
         <div className="p-1 border border-[#2d2d2d] rounded inline-flex">

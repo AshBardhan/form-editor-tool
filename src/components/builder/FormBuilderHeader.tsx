@@ -1,10 +1,10 @@
 "use client";
 
-import Link from "next/link";
 import { Button } from "@/components/ui/Button";
 import { PanelLeft, PanelRight } from "lucide-react";
 import { JSX } from "react";
 import { useFormDataStore, useUIStateStore } from "@/lib/stores";
+import { cn } from "@/lib/utils/styleUtils";
 
 /**
  * Form Builder Header
@@ -30,7 +30,10 @@ const FormBuilderHeader = (): JSX.Element => {
           variant="ghost"
           title={`${isLeftCollapsed ? "Expand" : "Collapse"} Left Sidebar`}
           onClick={() => toggleSidebar("left")}
-          className={`${!isLeftCollapsed && "bg-[#2e2e2e]"} hover:bg-[#1f1f1f]`}
+          className={cn(
+            !isLeftCollapsed && "bg-[#2e2e2e]",
+            "hover:bg-[#1f1f1f]",
+          )}
         >
           <PanelLeft size={20} />
         </Button>
@@ -38,7 +41,10 @@ const FormBuilderHeader = (): JSX.Element => {
           variant="ghost"
           title={`${isRightCollapsed ? "Expand" : "Collapse"} Right Sidebar`}
           onClick={() => toggleSidebar("right")}
-          className={`${!isRightCollapsed && "bg-[#2e2e2e]"} hover:bg-[#1f1f1f]`}
+          className={cn(
+            !isRightCollapsed && "bg-[#2e2e2e]",
+            "hover:bg-[#1f1f1f]",
+          )}
         >
           <PanelRight size={20} />
         </Button>
@@ -50,11 +56,9 @@ const FormBuilderHeader = (): JSX.Element => {
         <Button variant="secondary" size="sm">
           Preview
         </Button>
-        <Link href="/builder" className="hover:underline">
-          <Button variant="default" size="sm">
-            Publish
-          </Button>
-        </Link>
+        <Button variant="default" size="sm">
+          Publish
+        </Button>
       </div>
     </>
   );

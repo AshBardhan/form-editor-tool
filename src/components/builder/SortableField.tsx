@@ -12,6 +12,7 @@ import {
   useFormDataStore,
   useUIStateStore,
 } from "@/lib/stores";
+import { cn } from "@/lib/utils/styleUtils";
 
 interface SortableFieldProps {
   field: FormField;
@@ -92,13 +93,13 @@ const SortableField = ({
       role="button"
       data-slot="field"
       data-id={field.id}
-      className={`relative border transition outline-none focus:ring-2 focus:ring-blue-400 dark:focus:ring-gray-200   ${
-        isInvalid
-          ? "border-destructive min-h-10 bg-destructive/5"
-          : isSelected
-            ? "border-blue-500 dark:border-gray-300"
-            : "border-transparent"
-      }`}
+      className={cn(
+        "relative border transition outline-none focus:ring-2 focus:ring-blue-400 dark:focus:ring-gray-200 border-transparent",
+        {
+          "border-destructive min-h-10 bg-destructive/5": isInvalid,
+          "border-blue-500 dark:border-gray-300": isSelected && !isInvalid,
+        },
+      )}
       onMouseEnter={() => {
         if (!isDragging) {
           hoverField(field.id);
@@ -138,7 +139,10 @@ const SortableField = ({
       {/*Form Field Action Items */}
       {!isGhostMode && (
         <div
-          className={`transition ${isHovered ? "opacity-100 visible" : "opacity-0 invisible"}`}
+          className={cn(
+            "transition opacity-0 invisible",
+            isHovered && "opacity-100 visible",
+          )}
         >
           {/* Drag Handle */}
           <div

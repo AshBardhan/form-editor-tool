@@ -8,6 +8,7 @@ import { Input } from "@/components/ui/Input";
 import { Component } from "@/types/component";
 import { AnimatePresence, motion } from "motion/react";
 import { collapsibleContentVariants } from "@/lib/constants/styles";
+import { cn } from "@/lib/utils/styleUtils";
 
 /**
  * Form Component Sidebar
@@ -133,7 +134,10 @@ const FormComponentSidebar = (): JSX.Element => {
                   >
                     <ChevronDown
                       size={20}
-                      className={`transition-transform ${isOpen ? "rotate-0" : "rotate-180"}`}
+                      className={cn(
+                        "transition-transform rotate-180",
+                        isOpen && "rotate-0",
+                      )}
                     />
                   </div>
                 </div>

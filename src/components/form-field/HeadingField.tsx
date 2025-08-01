@@ -1,4 +1,5 @@
 import { getPropValue } from "@/lib/utils/fieldUtils";
+import { cn } from "@/lib/utils/styleUtils";
 import { FormField } from "@/types/field";
 import { JSX } from "react";
 
@@ -35,7 +36,10 @@ const HeadingField = ({ field }: HeadingFieldProps): JSX.Element => {
   const HeadingTag = `h${level}` as keyof JSX.IntrinsicElements;
   return (
     <HeadingTag
-      className={`form-field text-heading dark:text-white transition-colors ${headingStyles[level]}`}
+      className={cn(
+        "form-field text-heading dark:text-white transition-colors",
+        headingStyles[level],
+      )}
     >
       {text}
     </HeadingTag>

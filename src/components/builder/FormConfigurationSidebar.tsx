@@ -27,6 +27,7 @@ import {
 } from "@/lib/stores";
 import { AnimatePresence, motion } from "motion/react";
 import { visibleContentVariants } from "@/lib/constants/styles";
+import { cn } from "@/lib/utils/styleUtils";
 
 /**
  * Form Configuration Sidebar
@@ -154,7 +155,10 @@ const FormConfigurationSidebar = (): JSX.Element => {
                         <InputPropEditor
                           id={selectedFieldPropKey}
                           value={prop.value ?? ""}
-                          className={`focus-visible:ring-0 focus-visible:!shadow-none ${hasErrorProp(prop.key) ? "!border-destructive" : ""}`}
+                          className={cn(
+                            "focus-visible:ring-0 focus-visible:!shadow-none",
+                            hasErrorProp(prop.key) && "!border-destructive",
+                          )}
                           onChange={(value) =>
                             updateField(selected.id, prop.key, value)
                           }
@@ -166,7 +170,10 @@ const FormConfigurationSidebar = (): JSX.Element => {
                         <TextareaPropEditor
                           id={selectedFieldPropKey}
                           value={prop.value ?? ""}
-                          className={`resize-y focus-visible:ring-0 focus-visible:!shadow-none ${hasErrorProp(prop.key) ? "!border-destructive" : ""}`}
+                          className={cn(
+                            "resize-y focus-visible:ring-0 focus-visible:!shadow-none",
+                            hasErrorProp(prop.key) && "!border-destructive",
+                          )}
                           onChange={(value) =>
                             updateField(selected.id, prop.key, value)
                           }
@@ -180,7 +187,10 @@ const FormConfigurationSidebar = (): JSX.Element => {
                           type="number"
                           id={selectedFieldPropKey}
                           value={prop.value ?? 0}
-                          className={`focus-visible:ring-0 focus-visible:!shadow-none ${hasErrorProp(prop.key) ? "!border-destructive" : ""}`}
+                          className={cn(
+                            "focus-visible:ring-0 focus-visible:!shadow-none",
+                            hasErrorProp(prop.key) && "!border-destructive",
+                          )}
                           onChange={(value) =>
                             updateField(selected.id, prop.key, value)
                           }

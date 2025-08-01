@@ -1,6 +1,7 @@
 import { JSX } from "react";
 import { AnimatePresence, motion } from "motion/react";
 import { sidebarStyleVariants } from "@/lib/constants/styles";
+import { cn } from "@/lib/utils/styleUtils";
 
 interface SidebarProps {
   position?: "left" | "right";
@@ -26,7 +27,7 @@ const Sidebar = ({
       animate="visible"
       exit="exit"
       variants={sidebarStyleVariants.parent}
-      className={`sidebar sidebar--${position}`}
+      className={cn("sidebar", `sidebar--${position}`)}
     >
       <AnimatePresence propagate>
         <motion.div

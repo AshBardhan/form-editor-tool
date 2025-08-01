@@ -4,6 +4,7 @@ import { TrashIcon } from "lucide-react";
 import { useEffect, useState } from "react";
 import { Input } from "@/components/ui/Input";
 import { Button } from "@/components/ui/Button";
+import { cn } from "@/lib/utils/styleUtils";
 
 interface ListPropEditorProps {
   id: string;
@@ -65,7 +66,10 @@ const ListPropEditor = ({ id, value, onChange }: ListPropEditorProps) => {
             type="text"
             value={option}
             onChange={(e) => updateOption(i, e.target.value)}
-            className={`pr-8 py-2 focus-visible:ring-0 focus-visible:!shadow-none ${option.length === 0 && "!border-destructive"}`}
+            className={cn(
+              "pr-8 py-2 focus-visible:ring-0 focus-visible:!shadow-none",
+              option.length === 0 && "!border-destructive",
+            )}
           />
           <Button
             type="button"
