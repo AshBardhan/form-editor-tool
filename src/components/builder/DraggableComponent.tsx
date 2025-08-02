@@ -3,7 +3,7 @@
 import { cn } from "@/lib/utils/styleUtils";
 import { Component } from "@/types/component";
 import { useDraggable } from "@dnd-kit/core";
-import { JSX } from "react";
+import { JSX, memo } from "react";
 
 interface DraggableComponentProps {
   component: Component;
@@ -15,17 +15,12 @@ interface DraggableComponentProps {
  * @param {DraggableComponentProps} props - The props for the component.
  * @returns {JSX.Element} The rendered component.
  */
-const DraggableComponent = ({
+const DraggableComponent = memo(function DraggableComponent({
   component,
-}: DraggableComponentProps): JSX.Element => {
-  const componentMetadata: Component = {
-    type: component.type,
-    label: component.label,
-    icon: component.icon,
-  };
+}: DraggableComponentProps): JSX.Element {
   const { attributes, listeners, setNodeRef } = useDraggable({
     id: component.type,
-    data: { ...componentMetadata, from: "sidebar" },
+    data: { ...component, from: "sidebar" },
   });
   const Icon = component.icon;
 
@@ -53,6 +48,6 @@ const DraggableComponent = ({
       <span className="text-xs font-medium">{component.label}</span>
     </div>
   );
-};
+});
 
 export { DraggableComponent };
