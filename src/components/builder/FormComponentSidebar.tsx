@@ -3,7 +3,7 @@
 import { componentPalette } from "@/lib/constants/componentPalette";
 import { DraggableComponent } from "./DraggableComponent";
 import { ChevronDown, ComponentIcon, SearchIcon } from "lucide-react";
-import { useState, useMemo, useCallback, useEffect, JSX } from "react";
+import { useState, useMemo, useCallback, useEffect, JSX, memo } from "react";
 import { Input } from "@/components/ui/Input";
 import { Component } from "@/types/component";
 import { AnimatePresence, motion } from "motion/react";
@@ -17,7 +17,7 @@ import { cn } from "@/lib/utils/styleUtils";
  *
  * @returns {JSX.Element} The rendered component.
  */
-const FormComponentSidebar = (): JSX.Element => {
+const FormComponentSidebar = memo(function FormComponentSidebar(): JSX.Element {
   const [expandedCategories, setExpandedCategories] = useState<{
     [category: string]: boolean;
   }>({});
@@ -164,6 +164,6 @@ const FormComponentSidebar = (): JSX.Element => {
       )}
     </>
   );
-};
+});
 
 export { FormComponentSidebar };
