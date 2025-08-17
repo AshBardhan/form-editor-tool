@@ -41,6 +41,7 @@ interface DragState {
  * @returns {JSX.Element} The rendered component.
  */
 const FormBuilderContainer = (): JSX.Element => {
+  const [loading, setLoading] = useState(true);
   const [dragState, setDragState] = useState<DragState>({
     overId: null,
     activeItem: null,
@@ -98,11 +99,17 @@ const FormBuilderContainer = (): JSX.Element => {
 
   useEffect(() => {
     (async () => {
+      setLoading(true);
       const response = await fetch("/api/user");
       const data = await response.json();
       console.log(data);
+      setLoading(false);
     })();
   }, []);
+
+  if (loading) {
+    return <p>Loading</p>;
+  }
 
   return (
     <>
