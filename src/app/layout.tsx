@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import "./globals.css";
+import { MswProvider } from "@/components/MswProvider";
 
 export const metadata: Metadata = {
   title: "FormKit - A Visual DnD Form Builder",
@@ -13,7 +14,9 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en" suppressHydrationWarning>
-      <body suppressHydrationWarning>{children}</body>
+      <body suppressHydrationWarning>
+        <MswProvider>{children}</MswProvider>
+      </body>
     </html>
   );
 }

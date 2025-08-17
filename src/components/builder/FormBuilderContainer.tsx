@@ -14,7 +14,7 @@ import {
   useSensor,
   useSensors,
 } from "@dnd-kit/core";
-import { JSX, useState } from "react";
+import { JSX, useEffect, useState } from "react";
 import { FormConfigurationSidebar } from "./FormConfigurationSidebar";
 import { Component } from "@/types/component";
 import { FormField } from "@/types/field";
@@ -95,6 +95,14 @@ const FormBuilderContainer = (): JSX.Element => {
       coordinateGetter: hybridKeyboardCoordinates,
     }),
   );
+
+  useEffect(() => {
+    (async () => {
+      const response = await fetch("/api/user");
+      const data = await response.json();
+      console.log(data);
+    })();
+  }, []);
 
   return (
     <>
