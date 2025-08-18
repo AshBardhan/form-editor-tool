@@ -3,7 +3,7 @@ import "./globals.css";
 
 export const metadata: Metadata = {
   title: "FormKit - A Visual DnD Form Builder",
-  description: "A visual drag and drop form builder createed in Next.js",
+  description: "A visual drag and drop form builder created in Next.js",
 };
 
 export default function RootLayout({
