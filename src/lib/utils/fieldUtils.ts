@@ -18,23 +18,20 @@ export function getDefaultProps(type: BaseFieldType): FormFieldProp[] {
     let value;
 
     switch (prop.type) {
-      case "string":
-        value = prop.defaultValue ?? "";
-        break;
       case "number":
-        value = prop.defaultValue ?? 0;
+        value = prop.value ?? prop.defaultValue ?? 0;
         break;
       case "boolean":
-        value = prop.defaultValue ?? false;
+        value = prop.value ?? prop.defaultValue ?? false;
         break;
       case "select":
-        value = prop.options?.[0]?.value ?? prop.defaultValue;
+        value = prop.value ?? prop.defaultValue ?? prop.options?.[0]?.value ?? "";
         break;
       case "list":
-        value = Array.isArray(prop.defaultValue) ? [...prop.defaultValue] : [];
+        value = prop.value ?? prop.defaultValue ?? [];
         break;
       default:
-        value = prop.defaultValue ?? "";
+        value = prop.value ?? prop.defaultValue ?? "";
     }
 
     return {

@@ -293,7 +293,7 @@ export const fieldPropTemplates: Record<BaseFieldType, FormFieldProp[]> = {
         { value: "center", label: "Center" },
         { value: "right", label: "Right" },
       ],
-      defaultValue: "right",
+      defaultValue: "left",
     },
   ],
 };
