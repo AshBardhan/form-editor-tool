@@ -1,4 +1,4 @@
-import type { FormFieldProp, BaseFieldType } from "@/types/field";
+import type { FormFieldProp, BaseFieldType } from "@/types/form-field";
 
 /**
  * A record of field property templates for different base field types.

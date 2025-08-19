@@ -2,16 +2,11 @@ import {
   FormField,
   BaseFieldType,
   BaseFormFieldValueType,
-} from "@/types/field";
+  FormData,
+} from "@/types/form-field";
 import { nanoid } from "nanoid";
 import { create } from "zustand";
 import { getDefaultProps } from "@/lib/utils/fieldUtils";
-
-interface FormData {
-  title: string;
-  theme: "light" | "dark";
-  fields: FormField[];
-}
 
 interface FormDataState {
   form: FormData;

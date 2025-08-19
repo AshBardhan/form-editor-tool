@@ -1,5 +1,5 @@
 import { JSX } from "react";
-import { BaseFieldType, FormField } from "@/types/field";
+import { BaseFieldType, FormField } from "@/types/form-field";
 import { HeadingField } from "./HeadingField";
 import { ParagraphField } from "./ParagraphField";
 import { InputField } from "./InputField";
