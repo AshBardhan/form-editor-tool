@@ -1,6 +1,6 @@
 "use client";
 
-import { FormField } from "@/types/field";
+import { FormField } from "@/types/form-field";
 import { useSortable } from "@dnd-kit/sortable";
 import { CSS } from "@dnd-kit/utilities";
 import { CopyIcon, SeparatorHorizontalIcon, TrashIcon } from "lucide-react";

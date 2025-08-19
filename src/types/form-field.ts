@@ -53,3 +53,9 @@ export interface FormField extends BaseField {
   name: string;
   props: FormFieldProp[];
 }
+
+export interface FormData {
+  title: string;
+  theme: "light" | "dark";
+  fields: FormField[];
+}

@@ -17,7 +17,7 @@ import {
 import { JSX, useState } from "react";
 import { FormConfigurationSidebar } from "./FormConfigurationSidebar";
 import { Component } from "@/types/component";
-import { FormField } from "@/types/field";
+import { FormField } from "@/types/form-field";
 import { DeviceType } from "@/lib/constants/device";
 import { Sidebar } from "@/components/layout/Sidebar";
 import { MainContent } from "@/components/layout/MainContent";

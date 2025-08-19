@@ -1,5 +1,5 @@
 import { getPropValue } from "@/lib/utils/fieldUtils";
-import { FormField } from "@/types/field";
+import { FormField } from "@/types/form-field";
 import { JSX } from "react";
 
 interface ParagraphFieldProps {
