@@ -1,7 +1,7 @@
 import {
   FormField,
-  BaseFieldType,
-  BaseFormFieldValueType,
+  FormFieldType,
+  FormFieldValueType,
   FormData,
 } from "@/types/form-field";
 import { nanoid } from "nanoid";
@@ -11,9 +11,9 @@ import { getDefaultProps } from "@/lib/utils/fieldUtils";
 interface FormDataState {
   form: FormData;
   updateForm: (key: string, value: string) => void;
-  addField: (type: BaseFieldType, index?: number) => string;
+  addField: (type: FormFieldType, index?: number) => string;
   moveField: (fromIndex: number, toIndex: number) => void;
-  updateField: (id: string, key: string, value: BaseFormFieldValueType) => void;
+  updateField: (id: string, key: string, value: FormFieldValueType) => void;
   cloneField: (id: string) => void;
   removeField: (id: string) => void;
 }

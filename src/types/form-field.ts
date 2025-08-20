@@ -11,13 +11,9 @@ export type InputFieldType =
   | "select";
 export type MediaFieldType = "button";
 
-export type BaseFieldType = TextFieldType | InputFieldType | MediaFieldType;
+export type FormFieldType = TextFieldType | InputFieldType | MediaFieldType;
 
-export interface BaseField {
-  type: BaseFieldType;
-}
-
-export type BaseFormFieldValueType =
+export type FormFieldValueType =
   | string
   | number
   | boolean
@@ -28,8 +24,8 @@ export interface FormFieldProp {
   key: string;
   label: string;
   type: "string" | "long-string" | "number" | "boolean" | "list" | "select";
-  defaultValue?: BaseFormFieldValueType;
-  value?: BaseFormFieldValueType;
+  defaultValue?: FormFieldValueType;
+  value?: FormFieldValueType;
 
   // Number-based fields
   min?: number;
@@ -48,7 +44,8 @@ export interface FormFieldProp {
   required?: boolean;
 }
 
-export interface FormField extends BaseField {
+export interface FormField {
+  type: FormFieldType;
   id: string;
   name: string;
   props: FormFieldProp[];

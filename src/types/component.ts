@@ -1,7 +1,8 @@
-import { BaseField } from "./form-field";
+import { FormFieldType } from "./form-field";
 import { LucideIcon } from "lucide-react";
 
-export interface Component extends BaseField {
+export interface Component {
+  type: FormFieldType;
   label: string;
   icon?: LucideIcon;
 }

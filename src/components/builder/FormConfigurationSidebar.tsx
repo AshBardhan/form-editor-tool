@@ -19,7 +19,7 @@ import { TextareaPropEditor } from "@/components/field-prop/TextareaPropEditor";
 import { CheckboxPropEditor } from "@/components/field-prop/CheckboxPropEditor";
 import { SelectPropEditor } from "@/components/field-prop/SelectPropEditor";
 import { ListPropEditor } from "@/components/field-prop/ListPropEditor";
-import { BaseFormFieldValueType } from "@/types/form-field";
+import { FormFieldValueType } from "@/types/form-field";
 import {
   useFieldValidationStore,
   useFormDataStore,
@@ -80,7 +80,7 @@ const FormConfigurationSidebar = memo(
 
       const rawData = Object.fromEntries(
         selected.props.map((prop) => [prop.key, prop.value]),
-      ) as Record<string, BaseFormFieldValueType>;
+      ) as Record<string, FormFieldValueType>;
 
       const result = schema.safeParse(rawData);
 
