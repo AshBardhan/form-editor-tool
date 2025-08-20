@@ -54,6 +54,7 @@ const FormBuilderContainer = ({
     source: null,
   });
   const form = useFormDataStore((state) => state.form);
+  const setForm = useFormDataStore((state) => state.setForm);
   const moveField = useFormDataStore((state) => state.moveField);
   const addField = useFormDataStore((state) => state.addField);
   const selectField = useUIStateStore((state) => state.selectField);
@@ -107,9 +108,9 @@ const FormBuilderContainer = ({
     if (id === undefined) return;
     (async () => {
       setLoading(true);
-      const response = await fetch("/api/user");
+      const response = await fetch("/api/form");
       const data = await response.json();
-      console.log(data);
+      setForm(data);
       setLoading(false);
     })();
   }, []);

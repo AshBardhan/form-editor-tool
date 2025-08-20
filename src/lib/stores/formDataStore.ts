@@ -10,6 +10,7 @@ import { getDefaultProps } from "@/lib/utils/fieldUtils";
 
 interface FormDataState {
   form: FormData;
+  setForm: (form: FormData) => void;
   updateForm: (key: string, value: string) => void;
   addField: (type: FormFieldType, index?: number) => string;
   moveField: (fromIndex: number, toIndex: number) => void;
@@ -27,6 +28,7 @@ export const useFormDataStore = create<FormDataState>((set) => ({
     theme: "light",
     fields: [],
   },
+  setForm: (form) => set({ form }),
   updateForm: (key, value) => {
     set((state) => ({
       form: {

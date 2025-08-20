@@ -2,7 +2,7 @@ import { sampleForm } from "@/data/sample-form-data";
 import { http, HttpResponse } from "msw";
 
 export const handlers = [
-  http.get("*/api/user", () => {
+  http.get("*/api/form", () => {
     return HttpResponse.json(sampleForm);
   }),
 ];
