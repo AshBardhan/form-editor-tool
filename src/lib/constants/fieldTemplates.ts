@@ -1,22 +1,25 @@
-import type { FormFieldProp, FormFieldType } from "@/types/form-field";
+import type { FormFieldPropTemplate, FormFieldType } from "@/types/form-field";
 
 /**
  * A record of field property templates for different base field types.
  * Each entry contains an array of form field properties with default values.
  */
-export const fieldPropTemplates: Record<FormFieldType, FormFieldProp[]> = {
+export const fieldPropTemplates: Record<
+  FormFieldType,
+  FormFieldPropTemplate[]
+> = {
   heading: [
     {
       key: "text",
       label: "Text",
       type: "string",
-      defaultValue: "Heading Text",
+      value: "Heading Text",
     },
     {
       key: "level",
       label: "Heading Level",
       type: "number",
-      defaultValue: 1,
+      value: 1,
     },
   ],
   paragraph: [
@@ -24,7 +27,7 @@ export const fieldPropTemplates: Record<FormFieldType, FormFieldProp[]> = {
       key: "text",
       label: "Text",
       type: "long-string",
-      defaultValue: "Paragraph text",
+      value: "Paragraph text",
     },
   ],
   text: [
@@ -32,25 +35,25 @@ export const fieldPropTemplates: Record<FormFieldType, FormFieldProp[]> = {
       key: "label",
       label: "Label",
       type: "string",
-      defaultValue: "Text Field",
+      value: "Text Field",
     },
     {
       key: "placeholder",
       label: "Placeholder",
       type: "string",
-      defaultValue: "Enter text",
+      value: "Enter text",
     },
     {
       key: "maxLength",
       label: "Max Length",
       type: "number",
-      defaultValue: 50,
+      value: 50,
     },
     {
       key: "required",
       label: "Required",
       type: "boolean",
-      defaultValue: false,
+      value: false,
     },
   ],
   number: [
@@ -58,37 +61,37 @@ export const fieldPropTemplates: Record<FormFieldType, FormFieldProp[]> = {
       key: "label",
       label: "Label",
       type: "string",
-      defaultValue: "Number Field",
+      value: "Number Field",
     },
     {
       key: "placeholder",
       label: "Placeholder",
       type: "string",
-      defaultValue: "Enter number",
+      value: "Enter number",
     },
     {
       key: "min",
       label: "Minimum",
       type: "number",
-      defaultValue: 0,
+      value: 0,
     },
     {
       key: "max",
       label: "Maximum",
       type: "number",
-      defaultValue: 100,
+      value: 100,
     },
     {
       key: "step",
       label: "Step",
       type: "number",
-      defaultValue: 1,
+      value: 1,
     },
     {
       key: "required",
       label: "Required",
       type: "boolean",
-      defaultValue: false,
+      value: false,
     },
   ],
   email: [
@@ -96,19 +99,19 @@ export const fieldPropTemplates: Record<FormFieldType, FormFieldProp[]> = {
       key: "label",
       label: "Label",
       type: "string",
-      defaultValue: "Email Field",
+      value: "Email Field",
     },
     {
       key: "placeholder",
       label: "Placeholder",
       type: "string",
-      defaultValue: "john@doe.com",
+      value: "john@doe.com",
     },
     {
       key: "required",
       label: "Required",
       type: "boolean",
-      defaultValue: false,
+      value: false,
     },
   ],
   password: [
@@ -116,31 +119,31 @@ export const fieldPropTemplates: Record<FormFieldType, FormFieldProp[]> = {
       key: "label",
       label: "Label",
       type: "string",
-      defaultValue: "Password Field",
+      value: "Password Field",
     },
     {
       key: "placeholder",
       label: "Placeholder",
       type: "string",
-      defaultValue: "Enter password",
+      value: "Enter password",
     },
     {
       key: "minLength",
       label: "Minimum Length",
       type: "number",
-      defaultValue: 6,
+      value: 6,
     },
     {
       key: "maxLength",
       label: "Maximum Length",
       type: "number",
-      defaultValue: 32,
+      value: 32,
     },
     {
       key: "required",
       label: "Required",
       type: "boolean",
-      defaultValue: true,
+      value: true,
     },
   ],
   url: [
@@ -148,19 +151,19 @@ export const fieldPropTemplates: Record<FormFieldType, FormFieldProp[]> = {
       key: "label",
       label: "Label",
       type: "string",
-      defaultValue: "URL Field",
+      value: "URL Field",
     },
     {
       key: "placeholder",
       label: "Placeholder",
       type: "string",
-      defaultValue: "https://example.com",
+      value: "https://example.com",
     },
     {
       key: "required",
       label: "Required",
       type: "boolean",
-      defaultValue: false,
+      value: false,
     },
   ],
   textarea: [
@@ -168,31 +171,31 @@ export const fieldPropTemplates: Record<FormFieldType, FormFieldProp[]> = {
       key: "label",
       label: "Label",
       type: "string",
-      defaultValue: "Textarea Field",
+      value: "Textarea Field",
     },
     {
       key: "placeholder",
       label: "Placeholder",
       type: "string",
-      defaultValue: "Write a big text",
+      value: "Write a big text",
     },
     {
       key: "rows",
       label: "Rows",
       type: "number",
-      defaultValue: 3,
+      value: 3,
     },
     {
       key: "maxLength",
       label: "Max Length",
       type: "number",
-      defaultValue: 300,
+      value: 300,
     },
     {
       key: "required",
       label: "Required",
       type: "boolean",
-      defaultValue: false,
+      value: false,
     },
   ],
   checkbox: [
@@ -200,13 +203,13 @@ export const fieldPropTemplates: Record<FormFieldType, FormFieldProp[]> = {
       key: "label",
       label: "Label",
       type: "string",
-      defaultValue: "Checkbox Label",
+      value: "Checkbox Label",
     },
     {
       key: "required",
       label: "Required",
       type: "boolean",
-      defaultValue: false,
+      value: false,
     },
   ],
   radio: [
@@ -218,13 +221,13 @@ export const fieldPropTemplates: Record<FormFieldType, FormFieldProp[]> = {
         { value: "vertical", label: "Vertical" },
         { value: "horizontal", label: "Horizontal" },
       ],
-      defaultValue: "vertical",
+      value: "vertical",
     },
     {
       key: "options",
       label: "Options",
       type: "list",
-      defaultValue: ["Radio Label 1", "Radio Label 2"],
+      value: ["Radio Label 1", "Radio Label 2"],
     },
   ],
   select: [
@@ -232,25 +235,25 @@ export const fieldPropTemplates: Record<FormFieldType, FormFieldProp[]> = {
       key: "label",
       label: "Label",
       type: "string",
-      defaultValue: "Select Label",
+      value: "Select Label",
     },
     {
       key: "required",
       label: "Required",
       type: "boolean",
-      defaultValue: false,
+      value: false,
     },
     {
       key: "placeholder",
       label: "Placeholder",
       type: "string",
-      defaultValue: "Select an option",
+      value: "Select an option",
     },
     {
       key: "options",
       label: "Options",
       type: "list",
-      defaultValue: ["Option 1", "Option 2"],
+      value: ["Option 1", "Option 2"],
     },
   ],
   separator: [
@@ -258,13 +261,13 @@ export const fieldPropTemplates: Record<FormFieldType, FormFieldProp[]> = {
       key: "spacing",
       label: "Spacing",
       type: "number",
-      defaultValue: 20,
+      value: 20,
     },
     {
       key: "divider",
       label: "Divider",
       type: "boolean",
-      defaultValue: false,
+      value: false,
     },
   ],
   button: [
@@ -272,7 +275,7 @@ export const fieldPropTemplates: Record<FormFieldType, FormFieldProp[]> = {
       key: "title",
       label: "Title",
       type: "string",
-      defaultValue: "Buttton",
+      value: "Buttton",
     },
     {
       key: "level",
@@ -282,7 +285,7 @@ export const fieldPropTemplates: Record<FormFieldType, FormFieldProp[]> = {
         { value: "primary", label: "Primary" },
         { value: "secondary", label: "Secondary" },
       ],
-      defaultValue: "primary",
+      value: "primary",
     },
     {
       key: "position",
@@ -293,7 +296,7 @@ export const fieldPropTemplates: Record<FormFieldType, FormFieldProp[]> = {
         { value: "center", label: "Center" },
         { value: "right", label: "Right" },
       ],
-      defaultValue: "left",
+      value: "left",
     },
   ],
 };
