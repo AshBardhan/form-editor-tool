@@ -1,5 +1,5 @@
 import { JSX } from "react";
-import { BaseFieldType, FormField } from "@/types/form-field";
+import { FormFieldType, FormField } from "@/types/form-field";
 import { HeadingField } from "./HeadingField";
 import { ParagraphField } from "./ParagraphField";
 import { InputField } from "./InputField";
@@ -21,9 +21,9 @@ type FieldRenderer = (props: { field: FormField }) => JSX.Element;
 
 /**
  * A mapping of base field types to their corresponding renderer components.
- * @type {Record<BaseFieldType, FieldRenderer>}
+ * @type {Record<FormFieldType, FieldRenderer>}
  */
-export const fieldRenderers: Record<BaseFieldType, FieldRenderer> = {
+export const fieldRenderers: Record<FormFieldType, FieldRenderer> = {
   heading: HeadingField,
   paragraph: ParagraphField,
   text: InputField,

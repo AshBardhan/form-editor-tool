@@ -1,8 +1,8 @@
 import {
   FormField,
   FormFieldProp,
-  BaseFieldType,
-  BaseFormFieldValueType,
+  FormFieldType,
+  FormFieldValueType,
 } from "@/types/form-field";
 import { fieldPropTemplates } from "@/lib/constants/fieldTemplates";
 import { componentPalette } from "@/lib/constants/componentPalette";
@@ -10,10 +10,10 @@ import { fieldSchemas } from "@/lib/fieldSchema";
 
 /**
  * Retrieves the default properties for a given field type.
- * @param {BaseFieldType} type - The type of the field.
+ * @param {FormFieldType} type - The type of the field.
  * @returns {FormFieldProp[]} An array of default properties for the field.
  */
-export function getDefaultProps(type: BaseFieldType): FormFieldProp[] {
+export function getDefaultProps(type: FormFieldType): FormFieldProp[] {
   return fieldPropTemplates[type].map((prop) => {
     let value;
 
@@ -25,7 +25,8 @@ export function getDefaultProps(type: BaseFieldType): FormFieldProp[] {
         value = prop.value ?? prop.defaultValue ?? false;
         break;
       case "select":
-        value = prop.value ?? prop.defaultValue ?? prop.options?.[0]?.value ?? "";
+        value =
+          prop.value ?? prop.defaultValue ?? prop.options?.[0]?.value ?? "";
         break;
       case "list":
         value = prop.value ?? prop.defaultValue ?? [];
@@ -50,16 +51,16 @@ export function getDefaultProps(type: BaseFieldType): FormFieldProp[] {
 export function getPropValue(
   field: FormField,
   key: string,
-): BaseFormFieldValueType {
+): FormFieldValueType {
   return field.props.find((p) => p.key === key)?.value ?? "";
 }
 
 /**
  * Retrieves a field definition from the component palette by type.
- * @param {BaseFieldType} type - The type of the field to retrieve.
+ * @param {FormFieldType} type - The type of the field to retrieve.
  * @returns {Object | undefined} The field definition including its schema, or undefined if not found.
  */
-export function getField(type: BaseFieldType) {
+export function getField(type: FormFieldType) {
   const groups = componentPalette.flatMap((group) => group.items);
   const item = groups.find((f) => f.type === type);
   return item ? { ...item, schema: fieldSchemas[type] ?? null } : null;
