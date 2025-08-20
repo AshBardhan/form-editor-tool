@@ -18,7 +18,7 @@ The application is crafted using `Next.js` and `React` to build scalable and reu
     *   Dark and Light themed classes
 *   Optimised performance to minimise redundant re-renders and computations, by managing
     *   `useMemo` and `useCallback` hooks.
-    *   selector-based `zustland` stores (states and actions)
+    *   selector-based `zustand` stores (states and actions)
 *   **Semantic HTML** to promote SEO and accessibility
 *   Multiple animated components using `Framer motion`
     
