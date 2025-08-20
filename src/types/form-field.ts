@@ -20,12 +20,26 @@ export type FormFieldValueType =
   | string[]
   | undefined;
 
-export interface FormFieldProp {
+export type FormFieldPropType =
+  | "string"
+  | "long-string"
+  | "number"
+  | "boolean"
+  | "list"
+  | "select";
+
+export interface FormFieldPropConfig {
   key: string;
   label: string;
-  type: "string" | "long-string" | "number" | "boolean" | "list" | "select";
-  defaultValue?: FormFieldValueType;
-  value?: FormFieldValueType;
+  type: FormFieldPropType;
+  value: FormFieldValueType;
+}
+
+export interface FormFieldPropTemplate {
+  key: string;
+  label: string;
+  type: FormFieldPropType;
+  value: FormFieldValueType;
 
   // Number-based fields
   min?: number;
@@ -48,7 +62,7 @@ export interface FormField {
   type: FormFieldType;
   id: string;
   name: string;
-  props: FormFieldProp[];
+  props: FormFieldPropConfig[];
 }
 
 export interface FormData {

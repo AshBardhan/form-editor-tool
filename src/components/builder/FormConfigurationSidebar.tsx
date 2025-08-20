@@ -28,6 +28,7 @@ import {
 import { AnimatePresence, motion } from "motion/react";
 import { visibleContentVariants } from "@/lib/constants/styles";
 import { cn } from "@/lib/utils/styleUtils";
+import { fieldPropTemplates } from "@/lib/constants/fieldTemplates";
 
 /**
  * Form Configuration Sidebar
@@ -216,7 +217,11 @@ const FormConfigurationSidebar = memo(
                           <SelectPropEditor
                             id={selectedFieldPropKey}
                             value={prop.value}
-                            options={prop.options ?? []}
+                            options={
+                              fieldPropTemplates[selected.type].find(
+                                (p) => p.key === prop.key,
+                              )?.options ?? []
+                            }
                             onChange={(value) =>
                               updateField(selected.id, prop.key, value)
                             }
