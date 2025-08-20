@@ -23,7 +23,7 @@ import { Sidebar } from "@/components/layout/Sidebar";
 import { MainContent } from "@/components/layout/MainContent";
 import { DeviceSelector } from "./DeviceSelector";
 import { DroppableItemPreview } from "./DroppableItemPreview";
-import { hybridKeyboardCoordinates } from "@/lib/hybridKeyboardCoordinates";
+import { hybridKeyboardCoordinates } from "@/lib/utils/keyboardUtils";
 import { useFormDataStore, useUIStateStore } from "@/lib/stores";
 import { AnimatePresence } from "motion/react";
 

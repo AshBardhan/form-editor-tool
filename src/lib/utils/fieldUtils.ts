@@ -6,7 +6,7 @@ import {
 } from "@/types/form-field";
 import { fieldPropTemplates } from "@/lib/constants/fieldTemplates";
 import { componentPalette } from "@/lib/constants/componentPalette";
-import { fieldSchemas } from "@/lib/fieldSchema";
+import { fieldSchemas } from "@/lib/schema/fieldSchema";
 
 /**
  * Retrieves the default properties for a given field type.
