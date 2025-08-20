@@ -42,6 +42,7 @@ interface FormBuilderContainerProps {
  * - Provides drag-and-drop and configuration for form fields
  * - Device selection for different screen sizes
  *
+ * @param {FormBuilderContainerProps} props - The props for the component.
  * @returns {JSX.Element} The rendered component.
  */
 const FormBuilderContainer = ({
@@ -55,6 +56,7 @@ const FormBuilderContainer = ({
   });
   const form = useFormDataStore((state) => state.form);
   const setForm = useFormDataStore((state) => state.setForm);
+  const resetForm = useFormDataStore((state) => state.resetForm);
   const moveField = useFormDataStore((state) => state.moveField);
   const addField = useFormDataStore((state) => state.addField);
   const selectField = useUIStateStore((state) => state.selectField);
@@ -105,15 +107,23 @@ const FormBuilderContainer = ({
   );
 
   useEffect(() => {
-    if (id === undefined) return;
+    if (!id) return;
     (async () => {
-      setLoading(true);
-      const response = await fetch("/api/form");
-      const data = await response.json();
-      setForm(data);
-      setLoading(false);
+      try {
+        setLoading(true);
+        const response = await fetch(`/api/form/${id}`);
+        const data = await response.json();
+        setForm(data);
+      } catch (err) {
+        console.error("Failed to load form", err);
+      } finally {
+        setLoading(false);
+      }
     })();
-  }, []);
+    return () => {
+      resetForm();
+    };
+  }, [id]);
 
   if (loading) {
     return <p>Loading</p>;

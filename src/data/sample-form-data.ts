@@ -1,7 +1,7 @@
 import { FormData } from "@/types/form-field";
 
 export const sampleForm: FormData = {
-  title: "Untitled Form",
+  title: "Profile Form",
   theme: "light",
   fields: [
     {
