@@ -13,11 +13,10 @@ export function MswProvider({
   useEffect(() => {
     if (process.env.NEXT_PUBLIC_API_MOCKING === "enabled") {
       initMocks()
-        .then(() => setReady(true))
-        .catch((err) => {
-          console.error("Failed to init MSW", err);
-          setReady(true);
-        });
+        .catch((err) => console.error("Failed to init MSW", err))
+        .finally(() => setReady(true));
+    } else {
+      setReady(true);
     }
   }, []);
 
