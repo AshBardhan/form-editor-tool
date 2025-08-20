@@ -2,7 +2,7 @@ import { FormBuilderContainer } from "@/components/builder/FormBuilderContainer"
 import { JSX } from "react";
 
 /**
- * Builder Page
+ * New Form Builder Page
  *
  * @returns {JSX.Element} The rendered page component.
  */

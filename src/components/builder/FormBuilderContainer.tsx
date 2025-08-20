@@ -33,6 +33,10 @@ interface DragState {
   source: "sidebar" | "canvas" | null;
 }
 
+interface FormBuilderContainerProps {
+  id?: string;
+}
+
 /**
  * Form Builder Container
  * - Provides drag-and-drop and configuration for form fields
@@ -40,8 +44,10 @@ interface DragState {
  *
  * @returns {JSX.Element} The rendered component.
  */
-const FormBuilderContainer = (): JSX.Element => {
-  const [loading, setLoading] = useState(true);
+const FormBuilderContainer = ({
+  id,
+}: FormBuilderContainerProps): JSX.Element => {
+  const [loading, setLoading] = useState(false);
   const [dragState, setDragState] = useState<DragState>({
     overId: null,
     activeItem: null,
@@ -98,6 +104,7 @@ const FormBuilderContainer = (): JSX.Element => {
   );
 
   useEffect(() => {
+    if (id === undefined) return;
     (async () => {
       setLoading(true);
       const response = await fetch("/api/user");
