@@ -26,6 +26,7 @@ import { DroppableItemPreview } from "./DroppableItemPreview";
 import { hybridKeyboardCoordinates } from "@/lib/utils/keyboardUtils";
 import { useFormDataStore, useUIStateStore } from "@/lib/stores";
 import { AnimatePresence } from "motion/react";
+import { LoaderCircleIcon } from "lucide-react";
 
 interface DragState {
   overId: string | null;
@@ -48,7 +49,6 @@ interface FormBuilderContainerProps {
 const FormBuilderContainer = ({
   id,
 }: FormBuilderContainerProps): JSX.Element => {
-  const [loading, setLoading] = useState(false);
   const [dragState, setDragState] = useState<DragState>({
     overId: null,
     activeItem: null,
@@ -59,6 +59,8 @@ const FormBuilderContainer = ({
   const resetForm = useFormDataStore((state) => state.resetForm);
   const moveField = useFormDataStore((state) => state.moveField);
   const addField = useFormDataStore((state) => state.addField);
+  const loading = useUIStateStore((state) => state.loading);
+  const setLoading = useUIStateStore((state) => state.setLoading);
   const selectField = useUIStateStore((state) => state.selectField);
   const isSidebarCollapsed = useUIStateStore(
     (state) => state.isSidebarCollapsed,
@@ -122,11 +124,17 @@ const FormBuilderContainer = ({
     })();
     return () => {
       resetForm();
+      setLoading(false);
     };
   }, [id]);
 
   if (loading) {
-    return <p>Loading</p>;
+    return (
+      <div className="main-content flex items-center justify-center gap-4">
+        <LoaderCircleIcon className="size-10 animate-spin" />
+        <span className="text-2xl">Loading Form...</span>
+      </div>
+    );
   }
 
   return (

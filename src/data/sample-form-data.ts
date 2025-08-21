@@ -1,7 +1,7 @@
 import { FormData } from "@/types/form-field";
 
 export const sampleForm: FormData = {
-  title: "Profile Form",
+  title: "Profile Settings Form",
   theme: "light",
   fields: [
     {
@@ -13,7 +13,7 @@ export const sampleForm: FormData = {
           key: "text",
           label: "Text",
           type: "string",
-          value: "Profile",
+          value: "Profile Settings",
         },
         {
           key: "level",
