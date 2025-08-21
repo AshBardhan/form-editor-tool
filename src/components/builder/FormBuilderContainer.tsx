@@ -17,7 +17,7 @@ import {
 import { JSX, useEffect, useState } from "react";
 import { FormConfigurationSidebar } from "./FormConfigurationSidebar";
 import { Component } from "@/types/component";
-import { FormField } from "@/types/form-field";
+import { FormField, FormData } from "@/types/form-field";
 import { DeviceType } from "@/lib/constants/device";
 import { Sidebar } from "@/components/layout/Sidebar";
 import { MainContent } from "@/components/layout/MainContent";
@@ -27,6 +27,7 @@ import { hybridKeyboardCoordinates } from "@/lib/utils/keyboardUtils";
 import { useFormDataStore, useUIStateStore } from "@/lib/stores";
 import { AnimatePresence } from "motion/react";
 import { LoaderCircleIcon } from "lucide-react";
+import { switchTheme } from "@/lib/utils/domUtils";
 
 interface DragState {
   overId: string | null;
@@ -66,6 +67,7 @@ const FormBuilderContainer = ({
     (state) => state.isSidebarCollapsed,
   );
   const [deviceType, setDeviceType] = useState<DeviceType>(DeviceType.DESKTOP);
+  const [error, setError] = useState<string | null>(null);
 
   /**
    * Handles the end of a drag event.
@@ -113,11 +115,18 @@ const FormBuilderContainer = ({
     (async () => {
       try {
         setLoading(true);
+        setError(null);
         const response = await fetch(`/api/form/${id}`);
-        const data = await response.json();
-        setForm(data);
+        if (!response.ok) {
+          throw new Error(`Error ${response.status}: Failed to load form`);
+        }
+        const form: FormData = await response.json();
+        setForm(form);
+        switchTheme(form.theme);
       } catch (err) {
-        console.error("Failed to load form", err);
+        if (err instanceof Error) {
+          setError(err.message);
+        }
       } finally {
         setLoading(false);
       }
@@ -125,6 +134,8 @@ const FormBuilderContainer = ({
     return () => {
       resetForm();
       setLoading(false);
+      setError(null);
+      switchTheme("");
     };
   }, [id]);
 
@@ -133,6 +144,17 @@ const FormBuilderContainer = ({
       <div className="main-content flex items-center justify-center gap-4">
         <LoaderCircleIcon className="size-10 animate-spin" />
         <span className="text-2xl">Loading Form...</span>
+      </div>
+    );
+  }
+
+  if (error) {
+    return (
+      <div className="main-content flex items-center justify-center text-red-600 flex-col gap-3">
+        <p className="text-lg font-semibold">{error}</p>
+        <p className="text-sm text-gray-500">
+          Please check the form ID or go back.
+        </p>
       </div>
     );
   }

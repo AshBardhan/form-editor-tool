@@ -8,6 +8,7 @@ interface BuilderPageProps {
 /**
  * Current Form Builder Page
  *
+ * @param {Object} props - Props object containing the route parameters.
  * @returns {JSX.Element} The rendered page component.
  */
 export default async function BuilderPage({

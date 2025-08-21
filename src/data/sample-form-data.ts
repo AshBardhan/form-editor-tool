@@ -1,6 +1,6 @@
 import { FormData } from "@/types/form-field";
 
-export const sampleForm: FormData = {
+export const sampleLightForm: FormData = {
   title: "Profile Settings Form",
   theme: "light",
   fields: [
@@ -239,6 +239,196 @@ export const sampleForm: FormData = {
           label: "Position",
           type: "select",
           value: "left",
+        },
+      ],
+    },
+  ],
+};
+
+export const sampleDarkForm: FormData = {
+  title: "Dark Settings Form",
+  theme: "dark",
+  fields: [
+    {
+      id: "hdr1-dark",
+      type: "heading",
+      name: "heading-hdr1-dark",
+      props: [
+        {
+          key: "text",
+          label: "Text",
+          type: "string",
+          value: "Dark Mode Preferences",
+        },
+        {
+          key: "level",
+          label: "Heading Level",
+          type: "number",
+          value: 1,
+        },
+      ],
+    },
+    {
+      id: "pgh1-dark",
+      type: "paragraph",
+      name: "paragraph-pgh1-dark",
+      props: [
+        {
+          key: "text",
+          label: "Text",
+          type: "long-string",
+          value: "Customize your experience with dark theme options.",
+        },
+      ],
+    },
+    {
+      id: "sep1-dark",
+      type: "separator",
+      name: "separator-sep1-dark",
+      props: [
+        {
+          key: "spacing",
+          label: "Spacing",
+          type: "number",
+          value: 10,
+        },
+        {
+          key: "divider",
+          label: "Divider",
+          type: "boolean",
+          value: false,
+        },
+      ],
+    },
+    {
+      id: "select-contrast",
+      type: "select",
+      name: "select-contrast",
+      props: [
+        {
+          key: "label",
+          label: "Label",
+          type: "string",
+          value: "Contrast Level",
+        },
+        {
+          key: "placeholder",
+          label: "Placeholder",
+          type: "string",
+          value: "Choose a level",
+        },
+        {
+          key: "options",
+          label: "Options",
+          type: "list",
+          value: ["Low", "Medium", "High"],
+        },
+        {
+          key: "required",
+          label: "Required",
+          type: "boolean",
+          value: true,
+        },
+      ],
+    },
+    {
+      id: "hdr4-dark",
+      type: "heading",
+      name: "heading-hdr4-dark",
+      props: [
+        {
+          key: "text",
+          label: "Text",
+          type: "string",
+          value: "Select Size",
+        },
+        {
+          key: "level",
+          label: "Heading Level",
+          type: "number",
+          value: 6,
+        },
+      ],
+    },
+    {
+      id: "radio-fontsize",
+      type: "radio",
+      name: "radio-fontsize",
+      props: [
+        {
+          key: "alignment",
+          label: "Alignment",
+          type: "select",
+          value: "vertical",
+        },
+        {
+          key: "options",
+          label: "Options",
+          type: "list",
+          value: ["Small", "Default", "Large"],
+        },
+      ],
+    },
+    {
+      id: "sep2-dark",
+      type: "separator",
+      name: "separator-sep2-dark",
+      props: [
+        {
+          key: "spacing",
+          label: "Spacing",
+          type: "number",
+          value: 20,
+        },
+        {
+          key: "divider",
+          label: "Divider",
+          type: "boolean",
+          value: true,
+        },
+      ],
+    },
+    {
+      id: "chk-notifications",
+      type: "checkbox",
+      name: "checkbox-chk-notifications",
+      props: [
+        {
+          key: "label",
+          label: "Label",
+          type: "string",
+          value: "Enable dark mode notifications",
+        },
+        {
+          key: "required",
+          label: "Required",
+          type: "boolean",
+          value: false,
+        },
+      ],
+    },
+    {
+      id: "btn-save",
+      type: "button",
+      name: "button-btn-save",
+      props: [
+        {
+          key: "title",
+          label: "Title",
+          type: "string",
+          value: "Save Settings",
+        },
+        {
+          key: "level",
+          label: "Level",
+          type: "select",
+          value: "primary",
+        },
+        {
+          key: "position",
+          label: "Position",
+          type: "select",
+          value: "right",
         },
       ],
     },

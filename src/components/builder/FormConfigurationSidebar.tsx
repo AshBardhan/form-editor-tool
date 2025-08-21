@@ -29,6 +29,7 @@ import { AnimatePresence, motion } from "motion/react";
 import { visibleContentVariants } from "@/lib/constants/styles";
 import { cn } from "@/lib/utils/styleUtils";
 import { fieldPropTemplates } from "@/lib/constants/fieldTemplates";
+import { switchTheme } from "@/lib/utils/domUtils";
 
 /**
  * Form Configuration Sidebar
@@ -64,12 +65,7 @@ const FormConfigurationSidebar = memo(
      * @param {string} value - The selected theme value.
      */
     const onThemeChange = (value: string) => {
-      const html = document.documentElement;
-      if (value === "dark") {
-        html.classList.add("dark");
-      } else {
-        html.classList.remove("dark");
-      }
+      switchTheme(value);
       updateForm("theme", value);
     };
 
