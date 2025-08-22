@@ -1,39 +1,14 @@
 "use client";
 
-import { FormBuilderCanvas } from "./FormBuilderCanvas";
-import { FormComponentSidebar } from "./FormComponentSidebar";
-import {
-  DndContext,
-  DragStartEvent,
-  DragOverEvent,
-  DragEndEvent,
-  DragOverlay,
-  KeyboardSensor,
-  MouseSensor,
-  rectIntersection,
-  useSensor,
-  useSensors,
-} from "@dnd-kit/core";
 import { JSX, useEffect, useState } from "react";
-import { FormConfigurationSidebar } from "./FormConfigurationSidebar";
-import { Component } from "@/types/component";
-import { FormField, FormData } from "@/types/form-field";
-import { DeviceType } from "@/lib/constants/device";
-import { Sidebar } from "@/components/layout/Sidebar";
-import { MainContent } from "@/components/layout/MainContent";
-import { DeviceSelector } from "./DeviceSelector";
-import { DroppableItemPreview } from "./DroppableItemPreview";
-import { hybridKeyboardCoordinates } from "@/lib/utils/keyboardUtils";
-import { useFormDataStore, useUIStateStore } from "@/lib/stores";
-import { AnimatePresence } from "motion/react";
+import { FormData } from "@/types/form-field";
 import { LoaderCircleIcon } from "lucide-react";
 import { switchTheme } from "@/lib/utils/domUtils";
-
-interface DragState {
-  overId: string | null;
-  activeItem: FormField | Component | null;
-  source: "sidebar" | "canvas" | null;
-}
+import { Header } from "@/components/layout/Header";
+import { FormBuilderHeader } from "@/components/builder/FormBuilderHeader";
+import { useFormDataStore, useUIStateStore } from "@/lib/stores";
+import { FormBuilderContent } from "@/components/builder/FormBuilderContent";
+import { PageContent } from "@/components/layout/PageContent";
 
 interface FormBuilderContainerProps {
   id?: string;
@@ -41,8 +16,10 @@ interface FormBuilderContainerProps {
 
 /**
  * Form Builder Container
- * - Provides drag-and-drop and configuration for form fields
- * - Device selection for different screen sizes
+ * - Prefills the form data store with the form data from the API if an 'id' is provided.
+ * - Switches the theme of the page based on the form data.
+ * - Handles errors and loading states.
+ * - Renders empty form builder when no 'id' is provided.
  *
  * @param {FormBuilderContainerProps} props - The props for the component.
  * @returns {JSX.Element} The rendered component.
@@ -50,65 +27,11 @@ interface FormBuilderContainerProps {
 const FormBuilderContainer = ({
   id,
 }: FormBuilderContainerProps): JSX.Element => {
-  const [dragState, setDragState] = useState<DragState>({
-    overId: null,
-    activeItem: null,
-    source: null,
-  });
-  const form = useFormDataStore((state) => state.form);
   const setForm = useFormDataStore((state) => state.setForm);
   const resetForm = useFormDataStore((state) => state.resetForm);
-  const moveField = useFormDataStore((state) => state.moveField);
-  const addField = useFormDataStore((state) => state.addField);
   const loading = useUIStateStore((state) => state.loading);
   const setLoading = useUIStateStore((state) => state.setLoading);
-  const selectField = useUIStateStore((state) => state.selectField);
-  const isSidebarCollapsed = useUIStateStore(
-    (state) => state.isSidebarCollapsed,
-  );
-  const [deviceType, setDeviceType] = useState<DeviceType>(DeviceType.DESKTOP);
   const [error, setError] = useState<string | null>(null);
-
-  /**
-   * Handles the end of a drag event.
-   * Determines the appropriate action based on the drag source and target.
-   *
-   * @param {DragEndEvent} event - The drag end event.
-   */
-  function handleDragEnd(event: DragEndEvent) {
-    const { active, over } = event;
-    if (!over) return;
-
-    const dragged = active.data?.current;
-    if (!dragged) return;
-
-    const activeIndex = form.fields.findIndex((f) => f.id === active.id);
-    const overIndex = form.fields.findIndex((f) => f.id === over.id);
-    const isExistingField = activeIndex !== -1;
-
-    // Handle reordering existing fields
-    if (isExistingField && overIndex !== -1 && activeIndex !== overIndex) {
-      moveField(activeIndex, overIndex);
-      return;
-    }
-
-    // Handle adding new fields (from sidebar)
-    if (!isExistingField) {
-      const insertIndex = over.id === "canvas" ? undefined : overIndex;
-      const newId = addField(dragged.type, insertIndex);
-      selectField(newId);
-    }
-  }
-
-  /**
-   * Sets up sensor configurations for mouse and keyboard interactions.
-   */
-  const sensors = useSensors(
-    useSensor(MouseSensor),
-    useSensor(KeyboardSensor, {
-      coordinateGetter: hybridKeyboardCoordinates,
-    }),
-  );
 
   useEffect(() => {
     if (!id) return;
@@ -161,91 +84,12 @@ const FormBuilderContainer = ({
 
   return (
     <>
-      {/* Drag Context Container */}
-      <DndContext
-        sensors={sensors}
-        collisionDetection={rectIntersection}
-        onDragStart={(event: DragStartEvent) => {
-          const data = event.active.data.current;
-          if (!data) return;
-
-          if (data.from === "sidebar") {
-            selectField(null);
-          } else {
-            selectField(data.id);
-          }
-          setDragState({
-            ...dragState,
-            activeItem: data as FormField | Component,
-            source: data.from,
-          });
-        }}
-        onDragOver={(event: DragOverEvent) => {
-          const overId = (event.over?.id as string) ?? null;
-          setDragState({ ...dragState, overId });
-        }}
-        onDragEnd={(event: DragEndEvent) => {
-          handleDragEnd(event);
-          setDragState({
-            overId: null,
-            activeItem: null,
-            source: null,
-          });
-        }}
-      >
-        {/* Drag Placeholder Overlay */}
-        <DragOverlay>
-          {dragState.activeItem && (
-            <DroppableItemPreview
-              item={dragState.activeItem}
-              source={dragState.source}
-            />
-          )}
-        </DragOverlay>
-
-        {/* Left Form Component Sidebar */}
-        <AnimatePresence>
-          {!isSidebarCollapsed.left && (
-            <Sidebar>
-              <FormComponentSidebar />
-            </Sidebar>
-          )}
-        </AnimatePresence>
-
-        {/* Main Content Area with Canvas and Device Selector */}
-        <MainContent>
-          <div
-            className="py-12 px-8 h-full overflow-y-auto"
-            onClickCapture={(e) => {
-              const target = e.target as HTMLElement;
-              if (!target.closest("[data-slot='field']")) {
-                selectField(null);
-              }
-            }}
-          >
-            <DeviceSelector
-              currentDevice={deviceType}
-              onDeviceChange={setDeviceType}
-            />
-
-            <FormBuilderCanvas
-              currentDevice={deviceType}
-              overId={dragState.overId}
-              activeDragItem={dragState.activeItem as FormField}
-              dragSource={dragState.source}
-            />
-          </div>
-        </MainContent>
-
-        {/* Right Form/Field Configuration Sidebar */}
-        <AnimatePresence>
-          {!isSidebarCollapsed.right && (
-            <Sidebar position="right">
-              <FormConfigurationSidebar />
-            </Sidebar>
-          )}
-        </AnimatePresence>
-      </DndContext>
+      <Header>
+        <FormBuilderHeader />
+      </Header>
+      <PageContent>
+        <FormBuilderContent />
+      </PageContent>
     </>
   );
 };
