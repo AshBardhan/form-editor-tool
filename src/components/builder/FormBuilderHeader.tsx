@@ -1,10 +1,11 @@
 "use client";
 
 import { Button } from "@/components/ui/Button";
-import { PanelLeft, PanelRight } from "lucide-react";
+import { ChevronLeftIcon, PanelLeft, PanelRight } from "lucide-react";
 import { JSX } from "react";
 import { useFormDataStore, useUIStateStore } from "@/lib/stores";
 import { cn } from "@/lib/utils/styleUtils";
+import Link from "next/link";
 
 /**
  * Form Builder Header
@@ -26,6 +27,11 @@ const FormBuilderHeader = (): JSX.Element => {
     <div className="flex items-center h-full">
       {/* Toggle collapse/expand Sidebar Control */}
       <div className="flex-shrink-0 w-50 flex items-center gap-2">
+        <Button variant="ghost" asChild className="hover:bg-[#1f1f1f]">
+          <Link href="/">
+            <ChevronLeftIcon size={20} />
+          </Link>
+        </Button>
         <Button
           variant="ghost"
           title={`${isLeftCollapsed ? "Expand" : "Collapse"} Left Sidebar`}
