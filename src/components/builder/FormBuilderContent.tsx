@@ -35,6 +35,7 @@ interface DragState {
 
 /**
  * Form Builder Content
+ * - Renders form with prefilled and empty data
  * - Provides drag-and-drop and configuration for form fields
  * - Device selection for different screen sizes
  *
