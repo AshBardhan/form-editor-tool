@@ -4,7 +4,7 @@ import { JSX, useEffect } from "react";
 import { FormData } from "@/types/form-field";
 import { LoaderCircleIcon } from "lucide-react";
 import { switchTheme } from "@/lib/utils/domUtils";
-import { useFormDataStore } from "@/lib/stores";
+import { useFormDataStore, useUIStateStore } from "@/lib/stores";
 import { useFetch } from "@/lib/hooks/useFetch";
 import { Header } from "@/components/layout/Header";
 import { FormBuilderHeader } from "@/components/builder/FormBuilderHeader";
@@ -30,6 +30,7 @@ const FormBuilderContainer = ({
 }: FormBuilderContainerProps): JSX.Element => {
   const setForm = useFormDataStore((state) => state.setForm);
   const resetForm = useFormDataStore((state) => state.resetForm);
+  const resetSidebar = useUIStateStore((state) => state.resetSidebar);
 
   const { data, loading, error } = useFetch<FormData>(
     id ? `/api/form/${id}` : "",
@@ -44,6 +45,7 @@ const FormBuilderContainer = ({
 
     return () => {
       resetForm();
+      resetSidebar();
       switchTheme("");
     };
   }, [data, setForm, resetForm]);
