@@ -1,10 +1,11 @@
 "use client";
 
 import { Button } from "@/components/ui/Button";
-import { PanelLeft, PanelRight } from "lucide-react";
+import { ChevronLeftIcon, PanelLeft, PanelRight } from "lucide-react";
 import { JSX } from "react";
 import { useFormDataStore, useUIStateStore } from "@/lib/stores";
 import { cn } from "@/lib/utils/styleUtils";
+import Link from "next/link";
 
 /**
  * Form Builder Header
@@ -14,7 +15,7 @@ import { cn } from "@/lib/utils/styleUtils";
  * @returns {JSX.Element} The rendered component.
  */
 const FormBuilderHeader = (): JSX.Element => {
-  const form = useFormDataStore((state) => state.form);
+  const formTitle = useFormDataStore((state) => state.form.title);
   const isSidebarCollapsed = useUIStateStore(
     (state) => state.isSidebarCollapsed,
   );
@@ -23,9 +24,14 @@ const FormBuilderHeader = (): JSX.Element => {
   const isRightCollapsed = isSidebarCollapsed.right;
 
   return (
-    <>
+    <div className="flex items-center h-full">
       {/* Toggle collapse/expand Sidebar Control */}
       <div className="flex-shrink-0 w-50 flex items-center gap-2">
+        <Button variant="ghost" asChild className="hover:bg-[#1f1f1f]">
+          <Link href="/">
+            <ChevronLeftIcon size={20} />
+          </Link>
+        </Button>
         <Button
           variant="ghost"
           title={`${isLeftCollapsed ? "Expand" : "Collapse"} Left Sidebar`}
@@ -50,7 +56,7 @@ const FormBuilderHeader = (): JSX.Element => {
         </Button>
       </div>
       {/* Form Title */}
-      <h1 className="flex-1 font-semibold text-center text-xl">{form.title}</h1>
+      <h1 className="flex-1 font-semibold text-center text-xl">{formTitle}</h1>
       {/* Action Buttons - Just for display purpose. Not functional yet... */}
       <div className="flex-shrink-0 w-50 flex items-center justify-end gap-2">
         <Button variant="secondary" size="sm">
@@ -60,7 +66,7 @@ const FormBuilderHeader = (): JSX.Element => {
           Publish
         </Button>
       </div>
-    </>
+    </div>
   );
 };
 

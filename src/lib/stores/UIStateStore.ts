@@ -10,6 +10,7 @@ interface UIStateStore {
   selectField: (id: string | null) => void;
   hoverField: (id: string | null) => void;
   toggleSidebar: (side: "left" | "right") => void;
+  resetSidebar: () => void;
 }
 
 /**
@@ -42,5 +43,9 @@ export const useUIStateStore = create<UIStateStore>((set) => ({
         [side]: !state.isSidebarCollapsed[side],
       },
     }));
+  },
+
+  resetSidebar: () => {
+    set({ isSidebarCollapsed: { left: false, right: false } });
   },
 }));

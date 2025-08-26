@@ -10,7 +10,9 @@ import { getDefaultProps } from "@/lib/utils/fieldUtils";
 
 interface FormDataState {
   form: FormData;
+  setForm: (form: FormData) => void;
   updateForm: (key: string, value: string) => void;
+  resetForm: () => void;
   addField: (type: FormFieldType, index?: number) => string;
   moveField: (fromIndex: number, toIndex: number) => void;
   updateField: (id: string, key: string, value: FormFieldValueType) => void;
@@ -19,14 +21,20 @@ interface FormDataState {
 }
 
 /**
+ * Initial form data with a default title, theme and an empty array of fields.
+ */
+const initialFormData: FormData = {
+  title: "Untitled Form",
+  theme: "light",
+  fields: [],
+};
+
+/**
  * Zustand store for managing the Form data and field operations.
  */
 export const useFormDataStore = create<FormDataState>((set) => ({
-  form: {
-    title: "Untitled Form",
-    theme: "light",
-    fields: [],
-  },
+  form: initialFormData,
+  setForm: (form) => set({ form }),
   updateForm: (key, value) => {
     set((state) => ({
       form: {
@@ -34,6 +42,11 @@ export const useFormDataStore = create<FormDataState>((set) => ({
         [key]: value,
       },
     }));
+  },
+  resetForm: () => {
+    set({
+      form: initialFormData,
+    });
   },
   addField: (type, index) => {
     const id = nanoid();

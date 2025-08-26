@@ -70,3 +70,8 @@ export interface FormData {
   theme: "light" | "dark";
   fields: FormField[];
 }
+
+export interface FormListItem {
+  id: string;
+  name: string;
+}

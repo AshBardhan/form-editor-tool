@@ -29,7 +29,7 @@ const DropPlaceholder = (): JSX.Element => (
  * Drop Zero State Content
  */
 const DropZeroState = (): JSX.Element => (
-  <div className="h-full text-gray-500 border dark:text-white transition-colors border-dashed flex items-center justify-center text-sm">
+  <div className="h-full text-gray-500 border dark:text-white shadow dark:shadow-white/80 transition-colors border-dashed flex items-center justify-center text-sm">
     Drop components here
   </div>
 );
@@ -58,7 +58,7 @@ const FormBuilderCanvas = ({
   return (
     <div className="flex justify-center" ref={setNodeRef}>
       <div
-        className="min-h-[75vh] w-full flex-1 bg-white dark:bg-black transition-[colors,max-width]"
+        className="min-h-[75vh] w-full flex-1 bg-white dark:bg-black shadow dark:shadow-white/80 transition-[colors,max-width]"
         style={{ maxWidth: currentDeviceMeta?.size }}
       >
         <SortableContext
