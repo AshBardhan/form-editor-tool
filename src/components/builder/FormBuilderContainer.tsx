@@ -50,7 +50,7 @@ const FormBuilderContainer = ({
 
   if (loading) {
     return (
-      <div className="main-content flex items-center justify-center gap-4">
+      <div className="empty-content gap-4">
         <LoaderCircleIcon className="size-10 animate-spin" />
         <span className="text-2xl">Loading Form...</span>
       </div>
@@ -59,10 +59,10 @@ const FormBuilderContainer = ({
 
   if (error) {
     return (
-      <div className="main-content flex items-center justify-center text-red-600 flex-col gap-3">
-        <p className="text-lg font-semibold">{error.message}</p>
-        <p className="text-sm text-gray-500">
-          Please check the form ID or go back to hoome page.
+      <div className="empty-content flex-col gap-3">
+        <h2 className="text-lg font-semibold">Unable to load form</h2>
+        <p className="text-sm">
+          Please check the form ID or go back to home page.
         </p>
       </div>
     );

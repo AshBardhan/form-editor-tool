@@ -64,6 +64,10 @@
     @apply flex-1 bg-gray-200 dark:bg-gray-500 transition-colors relative overflow-hidden;
   }
 
+  .empty-content {
+    @apply h-full flex items-center justify-center;
+  }
+
   .form-field {
     @apply py-2 px-6;
   }
