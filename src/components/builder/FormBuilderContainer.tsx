@@ -17,10 +17,9 @@ interface FormBuilderContainerProps {
 
 /**
  * Form Builder Container
- * - Prefills the form data store with the form data from the API if an 'id' is provided.
+ * - Renders the form with prefilled data fetched from API if an 'id' is provided. Otherwise, renders an empty form.
  * - Switches the theme of the page based on the form data.
  * - Handles errors and loading states.
- * - Renders empty form builder when no 'id' is provided.
  *
  * @param {FormBuilderContainerProps} props - The props for the component.
  * @returns {JSX.Element} The rendered component.
