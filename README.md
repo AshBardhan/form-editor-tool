@@ -69,7 +69,8 @@ As per given requirements
 - **Lucide React**: Lightweight, modern SVG icon library for clean, scalable icons.
 
 ## File Structure
-```
+
+```text
 form-editor-tool/
 ├─ src/
 │  ├─ app                       # App-router directory
@@ -130,12 +131,102 @@ form-editor-tool/
 
 ## Future Improvements
 
+### High Priority - Architecture & Refactoring
+
+- **Route Restructuring**: Migrate from `/builder` routes to `/forms` for RESTful structure
+  - `/forms/new` → Create new form (empty builder)
+  - `/forms/:formId` → Edit existing form (prefilled builder)
+- **Terminology Standardization**: Rename ambiguous terms for clarity
+  - `form-field` → `widgets` (dropped components in canvas)
+  - `field-prop` → `property-editors` (configuration inputs)
+  - Component → Widget (to distinguish from React components)
+- **Dashboard Enhancement**: Build form management dashboard with metrics
+  - Form cards with title, status, and thumbnails
+  - Display metrics: total input widgets, submission count
+  - Create new form button
+- **Modal System**: Add Dialog/Modal components for user interactions
+  - Preview modal for testing working forms
+  - Success modal showing form submission data
+  - Error modal displaying validation failures
+- **Notification System**: Implement Toast notifications for user feedback
+  - Success/error messages for save, publish, delete actions
+  - Real-time feedback for widget operations
+- **Loading States**: Add comprehensive loading indicators
+  - Skeleton loaders for form data fetching
+  - Spinner components for async operations
+  - Loading states for all user actions
+- **Preview Mode**: Implement functional preview functionality
+  - Render working form in modal popup
+  - Enable form submission with validation
+  - Display success/error results with data
+- **Form Lifecycle Management**: Implement save/discard/publish workflow
+  - Save draft (persist to backend/localStorage)
+  - Discard changes (revert to last saved version)
+  - Publish form (validate + make public)
+  - Track form status (draft vs published)
+- **Type Definition Updates**: Revise core type structures
+  - `Widget` types (replacing FormField)
+  - `Form` types with status and timestamps
+  - `FormMetrics` for dashboard
+  - `SubmissionResult` for preview validation
+
+### Medium Priority - Features & Functionality
+
+- **Form State Management**: Add form status tracking
+  - Draft vs Published states
+  - Version control for forms
+  - Timestamps (createdAt, updatedAt, publishedAt)
+- **Auto-Save**: Implement automatic draft saving
+  - Periodic auto-save to backend/localStorage
+  - "Last saved" timestamp indicator
+  - Conflict resolution for simultaneous edits
+- **Submission Validation**: Add client-side form validation
+  - Required field checks
+  - Pattern validation (email, URL, etc.)
+  - Custom validation rules per widget type
+- **Success/Error Handling**: Enhanced error states
+  - Form-level error messages
+  - Widget-level validation errors
+  - Network error recovery
+- **MSW Organization**: Restructure mock handlers by feature
+  - `/handlers/forms.ts` for form CRUD
+  - `/handlers/submissions.ts` for submission endpoints
+  - Organized handler exports
+- **API Client Layer**: Create API wrapper functions
+  - `lib/api/forms.ts` for form operations
+  - `lib/api/submissions.ts` for submission handling
+  - Centralized error handling
+- **Metrics Calculation**: Implement form analytics
+  - Count input widgets dynamically
+  - Track submission statistics
+  - Display form engagement metrics
+
+### Low Priority - Advanced Features
+
+- **Layout Widgets**: Add container components for nested structures
+  - Group widget (flex-based container)
+  - Column widget (multi-column layout)
+  - Nested drag-and-drop support
+  - Updated data store for hierarchical widgets
+- **Form Versioning**: Track and manage form versions
+  - Version history
+  - Restore previous versions
+  - Compare version differences
+- **Form Analytics Dashboard**: Advanced metrics and insights
+  - Submission trends over time
+  - Field completion rates
+  - Drop-off analysis
+- **Form Templates**: Pre-built form templates
+  - Contact forms, surveys, registration forms
+  - Custom template creation
+  - Template marketplace/gallery
+
+### Existing Planned Improvements
+
 - **Real data & actions**: Integrate API calls via `REST` or `GraphQL` from a backend service.
 - **Persisted preferences**: Save `theme` and `form layout` preferences in `localStorage` for a consistent experience across sessions.
-- **Testing**: Implement unit tests with `Vitest + React Testing `Library and end-to-end/integration tests with `Playwright`.
+- **Testing**: Implement unit tests with `Vitest + React Testing Library` and end-to-end/integration tests with `Playwright`.
 - **Form Listing**: Introduce `React Query` for fetching and displaying multiple forms from the server, as the project scales.
-- **Form Management**: Facilitate creating new forms, editing existing ones, deleting them, and navigating between different forms.
-- **Form Templates**: Provide pre-built and customised templates for common form layouts and fields.
 - **Performance Optimization**: Further optimize performance through lazy loading, caching strategies, and more efficient rendering techniques.
 
 ## Screenshots
