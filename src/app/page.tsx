@@ -8,7 +8,7 @@ export default function Home() {
       <div className="flex items-center justify-between mb-4">
         <h1 className="text-3xl font-bold">FormKit GUI Builder</h1>
         <Button asChild>
-          <Link href="/builder">Create Form</Link>
+          <Link href="/forms/new">Create Form</Link>
         </Button>
       </div>
       <FormList />

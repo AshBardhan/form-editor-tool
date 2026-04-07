@@ -4,7 +4,7 @@ View Demo: [https://my-formkit-ui.netlify.app](https://my-formkit-ui.netlify.app
 ## Overview
 The application is crafted using `Next.js` and `React` to build scalable and reusable components.
 * Components are categorised for reusability and scalability.
-    *   **Builder**: Page-specific components for the `/builder` page consisting of
+    *   **Builder**: Page-specific components for the form builder consisting of
         *   Form Builder Container
         *   Form Component Sidebar
         *   Form Builder Canvas
@@ -74,7 +74,7 @@ As per given requirements
 form-editor-tool/
 ├─ src/
 │  ├─ app                       # App-router directory
-│  │  ├─ builder                # Builder page
+│  │  ├─ forms                  # Forms pages (/forms/new, /forms/:formId)
 │  │  ├─ pages.tsx              # Main page
 │  │  ├─ layout.tsx             # Main page layout
 │  │  └─ global.css             # Global stylesheets with Tailwind Setup and CSS variables
@@ -133,7 +133,7 @@ form-editor-tool/
 
 ### High Priority - Architecture & Refactoring
 
-- **Route Restructuring**: Migrate from `/builder` routes to `/forms` for RESTful structure
+- ✅ **Route Restructuring**: Migrated from `/builder` routes to `/forms` for RESTful structure
   - `/forms/new` → Create new form (empty builder)
   - `/forms/:formId` → Edit existing form (prefilled builder)
 - **Terminology Standardization**: Rename ambiguous terms for clarity

@@ -34,7 +34,7 @@ function FormListContent() {
         data.map((form) => (
           <div key={form.id}>
             <Link
-              href={`/builder/${form.id}`}
+              href={`/forms/${form.id}`}
               className="text-blue-500 underline"
             >
               {form.name}
