@@ -1,6 +1,6 @@
 "use client";
 
-import { FormField } from "@/types/form-field";
+import { FormField } from "@/types/form.types";
 import { SortableField } from "./SortableField";
 import { JSX } from "react";
 import { Component } from "@/types/component";

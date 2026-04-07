@@ -1,6 +1,6 @@
 import { getPropValue } from "@/lib/utils/fieldUtils";
 import { cn } from "@/lib/utils/styleUtils";
-import { FormField } from "@/types/form-field";
+import { FormField } from "@/types/form.types";
 import { JSX } from "react";
 
 interface HeadingFieldProps {

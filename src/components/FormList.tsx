@@ -1,7 +1,7 @@
 "use client";
 
 import { useFetch } from "@/lib/hooks/useFetch";
-import { FormListItem } from "@/types/form-field";
+import { FormListItem } from "@/types/form.types";
 import { Card, CardContent } from "@/components/ui/Card";
 import Link from "next/link";
 import { LoaderCircleIcon } from "lucide-react";

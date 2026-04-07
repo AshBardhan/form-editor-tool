@@ -1,7 +1,7 @@
 "use client";
 
 import { useFetch } from "@/lib/hooks/useFetch";
-import { FormListItem } from "@/types/form-field";
+import { FormListItem } from "@/types/form.types";
 import { FormCard } from "./FormCard";
 import Text from "@/components/ui/Text";
 import { Card, CardContent } from "@/components/ui/Card";

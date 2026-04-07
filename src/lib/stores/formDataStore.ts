@@ -3,7 +3,7 @@ import {
   FormFieldType,
   FormFieldValueType,
   FormData,
-} from "@/types/form-field";
+} from "@/types/form.types";
 import { nanoid } from "nanoid";
 import { create } from "zustand";
 import { getDefaultProps } from "@/lib/utils/fieldUtils";

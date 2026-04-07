@@ -1,4 +1,4 @@
-import { FormData } from "@/types/form-field";
+import { FormData } from "@/types/form.types";
 
 export const sampleLightForm: FormData = {
   title: "Profile Settings Form",

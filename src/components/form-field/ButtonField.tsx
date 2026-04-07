@@ -1,4 +1,4 @@
-import { FormField } from "@/types/form-field";
+import { FormField } from "@/types/form.types";
 import { Button } from "@/components/ui/Button";
 import { getPropValue } from "@/lib/utils/fieldUtils";
 import { cn } from "@/lib/utils/styleUtils";

@@ -8,7 +8,7 @@ import { SortableField } from "./SortableField";
 import { useDroppable } from "@dnd-kit/core";
 import { JSX } from "react";
 import { DeviceList, DeviceType } from "@/lib/constants/device";
-import { FormField } from "@/types/form-field";
+import { FormField } from "@/types/form.types";
 import { useFormDataStore } from "@/lib/stores/formDataStore";
 
 interface FormBuilderCanvasProps {

@@ -19,7 +19,7 @@ import { TextareaPropEditor } from "@/components/field-prop/TextareaPropEditor";
 import { CheckboxPropEditor } from "@/components/field-prop/CheckboxPropEditor";
 import { SelectPropEditor } from "@/components/field-prop/SelectPropEditor";
 import { ListPropEditor } from "@/components/field-prop/ListPropEditor";
-import { FormFieldValueType } from "@/types/form-field";
+import { FormFieldValueType } from "@/types/form.types";
 import {
   useFieldValidationStore,
   useFormDataStore,

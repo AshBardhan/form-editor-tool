@@ -1,5 +1,5 @@
 import { getPropValue } from "@/lib/utils/fieldUtils";
-import { FormField } from "@/types/form-field";
+import { FormField } from "@/types/form.types";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/RadioGroup";
 import { Label } from "@/components/ui/Label";
 import { JSX } from "react";

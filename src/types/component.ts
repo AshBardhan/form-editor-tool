@@ -1,4 +1,4 @@
-import { FormFieldType } from "./form-field";
+import { FormFieldType } from "./form.types";
 import { LucideIcon } from "lucide-react";
 
 export interface Component {

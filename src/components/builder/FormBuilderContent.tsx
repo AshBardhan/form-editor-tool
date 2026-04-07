@@ -17,7 +17,7 @@ import { hybridKeyboardCoordinates } from "@/lib/utils/keyboardUtils";
 import { useFormDataStore, useUIStateStore } from "@/lib/stores";
 import { AnimatePresence } from "motion/react";
 import { Component } from "@/types/component";
-import { FormField } from "@/types/form-field";
+import { FormField } from "@/types/form.types";
 import { DeviceType } from "@/lib/constants/device";
 import { Sidebar } from "@/components/layout/Sidebar";
 import { MainContent } from "@/components/layout/MainContent";

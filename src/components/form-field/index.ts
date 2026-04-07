@@ -1,5 +1,5 @@
 import { JSX } from "react";
-import { FormFieldType, FormField } from "@/types/form-field";
+import { FormFieldType, FormField } from "@/types/form.types";
 import { HeadingField } from "./HeadingField";
 import { ParagraphField } from "./ParagraphField";
 import { InputField } from "./InputField";

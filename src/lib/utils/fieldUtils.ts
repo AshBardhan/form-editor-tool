@@ -3,7 +3,7 @@ import {
   FormFieldPropConfig,
   FormFieldType,
   FormFieldValueType,
-} from "@/types/form-field";
+} from "@/types/form.types";
 import { fieldPropTemplates } from "@/lib/constants/fieldTemplates";
 import { componentPalette } from "@/lib/constants/componentPalette";
 import { fieldSchemas } from "@/lib/schema/fieldSchema";

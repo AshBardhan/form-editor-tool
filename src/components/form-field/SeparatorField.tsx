@@ -1,5 +1,5 @@
 import { getPropValue } from "@/lib/utils/fieldUtils";
-import { FormField } from "@/types/form-field";
+import { FormField } from "@/types/form.types";
 import { Separator } from "@/components/ui/Separator";
 import { JSX } from "react";
 

@@ -1,6 +1,6 @@
 "use client";
 
-import { FormField } from "@/types/form-field";
+import { FormField } from "@/types/form.types";
 import { Label } from "@/components/ui/Label";
 import {
   Select,

@@ -71,7 +71,17 @@ export interface FormData {
   fields: FormField[];
 }
 
+export type FormStatus = "draft" | "published";
+
+export interface FormMetric {
+  key: string;
+  label: string;
+  value: string | number;
+}
+
 export interface FormListItem {
   id: string;
   name: string;
+  status: FormStatus;
+  metrics: FormMetric[];
 }
