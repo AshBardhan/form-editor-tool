@@ -94,7 +94,7 @@ export const WidgetPanel = memo(function WidgetPanel(): JSX.Element {
             placeholder="Search Widgets..."
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
-            className="w-full focus-visible:ring-0 focus-visible:!shadow-none"
+            className="w-full focus-visible:ring-0 focus-visible:shadow-none!"
           />
           <SearchIcon className="absolute right-3 top-1/2 transform -translate-y-1/2 size-4 text-muted-foreground" />
         </div>

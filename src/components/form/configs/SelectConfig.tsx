@@ -30,7 +30,7 @@ export const SelectConfig = ({
     <Select value={value} onValueChange={onChange}>
       <SelectTrigger
         id={id}
-        className="w-full focus-visible:ring-0 focus-visible:!shadow-none"
+        className="w-full focus-visible:ring-0 focus-visible:shadow-none!"
       >
         <SelectValue>
           {options?.find((opt) => opt.value === value)?.label ?? value}

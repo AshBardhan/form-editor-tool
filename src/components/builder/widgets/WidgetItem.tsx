@@ -36,7 +36,7 @@ export const WidgetItem = memo(function WidgetItem({
         "p-2 rounded-md flex items-center gap-2 cursor-move",
         "border border-[#2d2d2d] bg-[#1e1e1e] text-white",
         "hover:bg-[#0f0f0f]",
-        "focus-visible:border-white focus-visible:bg-[#0f0f0f] focus-visible:!shadow-none focus-visible:!outline-none",
+        "focus-visible:border-white focus-visible:bg-[#0f0f0f] focus-visible:shadow-none! focus-visible:outline-none!",
         "transition-all",
       )}
     >

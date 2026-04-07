@@ -136,7 +136,7 @@ export const ConfigurationPanel = memo(
                   const selectedBlockPropKey = `${selected.id}-${prop.key}`;
                   return (
                     <div
-                      className="flex flex-col gap-2 focus-within:!shadow-none"
+                      className="flex flex-col gap-2 focus-within:shadow-none!"
                       key={selectedBlockPropKey}
                     >
                       {/* Block Property Label */}
@@ -156,8 +156,8 @@ export const ConfigurationPanel = memo(
                             id={selectedBlockPropKey}
                             value={prop.value ?? ""}
                             className={cn(
-                              "focus-visible:ring-0 focus-visible:!shadow-none",
-                              hasErrorProp(prop.key) && "!border-destructive",
+                              "focus-visible:ring-0 focus-visible:shadow-none!",
+                              hasErrorProp(prop.key) && "border-destructive!",
                             )}
                             onChange={(value) =>
                               updateFormBlock(selected.id, prop.key, value)
@@ -171,8 +171,8 @@ export const ConfigurationPanel = memo(
                             id={selectedBlockPropKey}
                             value={prop.value ?? ""}
                             className={cn(
-                              "resize-y focus-visible:ring-0 focus-visible:!shadow-none",
-                              hasErrorProp(prop.key) && "!border-destructive",
+                              "resize-y focus-visible:ring-0 focus-visible:shadow-none!",
+                              hasErrorProp(prop.key) && "border-destructive!",
                             )}
                             onChange={(value) =>
                               updateFormBlock(selected.id, prop.key, value)
@@ -188,8 +188,8 @@ export const ConfigurationPanel = memo(
                             id={selectedBlockPropKey}
                             value={prop.value ?? 0}
                             className={cn(
-                              "focus-visible:ring-0 focus-visible:!shadow-none",
-                              hasErrorProp(prop.key) && "!border-destructive",
+                              "focus-visible:ring-0 focus-visible:shadow-none!",
+                              hasErrorProp(prop.key) && "border-destructive!",
                             )}
                             onChange={(value) =>
                               updateFormBlock(selected.id, prop.key, value)
@@ -260,7 +260,7 @@ export const ConfigurationPanel = memo(
                   <Input
                     id="form-title"
                     value={formTitle}
-                    className="focus-visible:ring-0 focus-visible:!shadow-none"
+                    className="focus-visible:ring-0 focus-visible:shadow-none!"
                     onChange={(e) => updateForm("title", e.target.value)}
                   />
                 </div>
@@ -272,7 +272,7 @@ export const ConfigurationPanel = memo(
                   <Select value={formTheme} onValueChange={onThemeChange}>
                     <SelectTrigger
                       id="form-theme"
-                      className="w-full focus-visible:ring-0 focus-visible:!shadow-none"
+                      className="w-full focus-visible:ring-0 focus-visible:shadow-none!"
                     >
                       <SelectValue placeholder="Select theme">
                         {THEME_OPTIONS[formTheme]}

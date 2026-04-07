@@ -1,66 +1,71 @@
 # Form Kit - A Visual DnD Form Editor
+
 View Demo: [https://my-formkit-ui.netlify.app](https://my-formkit-ui.netlify.app/)
 
 ## Overview
+
 The application is crafted using `Next.js` and `React` to build scalable and reusable components.
-* Components are categorised for reusability and scalability.
-    *   **Builder**: Page-specific components for the form builder consisting of
-        *   Form Builder Container
-        *   Form Component Sidebar
-        *   Form Builder Canvas
-        *   Form/Field Configuration Sidebar
-        *   Form Builder Header
-    *   **Form Field**: Components specific for Form Builder Canvas.
-    *   **Field Prop**: Components specific for Field Configuration Sidebar.
-    *   **UI**: Basic components being used by Form Field and Field Prop components.
-    *   **Layout**: Wrapper Components used by Builder components.
-*   **TailwindCSS** has been used maintaining styling of multiple components.
-    *   A set of commonly used colors.
-    *   Dark and Light themed classes.
-*   Optimised performance to minimise redundant re-renders and computations, by managing
-    *   In-build `useMemo` and `useCallback` hooks.
-    *   Selector-based `zustand` stores (states and actions).
-*   **Semantic HTML** to promote SEO and accessibility.
-*   Multiple animated components using `Framer motion`.
-    
+
+- Components are categorised for reusability and scalability.
+  - **Builder**: Page-specific components for the form builder consisting of
+    - Form Builder Container
+    - Widget Panel (drag-and-drop component palette)
+    - Canvas (drag-drop area with device preview)
+    - Configuration Panel (form/block property editor)
+    - Form Builder Header
+  - **Form Blocks**: Renderable form components (Input, Checkbox, Textarea, etc.) displayed on the canvas.
+  - **Block Configs**: Configuration components for editing block properties in the Configuration Panel.
+  - **UI**: Primitive components (Button, Input, Select, etc.) used across the application.
+  - **Layout**: Wrapper components for consistent page structure.
+  - **Dashboard**: Components for the main dashboard (FormCard, FormGrid, etc.).
+- **TailwindCSS** has been used maintaining styling of multiple components.
+  - A set of commonly used colors.
+  - Dark and Light themed classes.
+- Optimised performance to minimise redundant re-renders and computations, by managing
+  - In-build `useMemo` and `useCallback` hooks.
+  - Selector-based `zustand` stores (states and actions).
+- **Semantic HTML** to promote SEO and accessibility.
+- Multiple animated components using `Framer motion`.
 
 ## Features Implemented
+
 As per given requirements
-*   **Form Builder Container**
-    *   The main container that wraps all the components related to form building.
-    *   Renders the form with prefilled data fetched from API if an `id` is provided. Otherwise, renders an empty form.
-*   **Form Component Sidebar**
-    *   A list of components are grouped under categories.
-    *   Every category can be collapsed/expanded by a caret icon next to category heading.
-    *   Search bar input at the top to get filtered results by component or category name.
-    *   Any component can be dragged and dropped to the Form Builder Canvas (with keyboard a11y).
-*   **Form Builder Canvas**
-    *   A list of dropped components, which are Form Field items.
-    *   Each Form Field item has the following capabilities.
-        *   **Select** to edit the required properties (as shown in Field Configuration Sidebar).
-        *   **Rearrange** their position within the list (with keyboard a11y).
-        *   **Copy** to save some form building time (unavailable on error state).
-        *   **Delete** the existing item.
-    *   A Device Selector toolbar can be used to toggle to check the canvas responsiveness.
-*   **Form/Field Configuration Sidebar**
-    *   Form Configuration is shown by default, to update
-        *   **Form Title** (changes are reflected on the Form Builder Header).
-        *   **Theme** (changes reflected on the Form Builder Canvas).
-    *   Field Configuration is shown, once a field has been selected from Form Builder Canvas
-        *   A list of editable properties are shown of the selected field.
-        *   Every property has some validation check (implemented with `zod`) which will reflect error message below and error block on the selected field of canvas.
-*   **Form Builder Header**
-    *   Toggle buttons to expand and collapse both sidebars.
-    *   Form title at the middle configured for Form/Field Configuration Sidebar.
-    *   Publish and Preview buttons (just for presentation purposes).
+
+- **Form Builder Container**
+  - The main container that wraps all the components related to form building.
+  - Renders the form with prefilled data fetched from API if an `id` is provided. Otherwise, renders an empty form.
+- **Widget Panel**
+  - Widgets are grouped under categories (Input Fields, Content, Layout).
+  - Every category can be collapsed/expanded by a caret icon next to category heading.
+  - Search bar input at the top to get filtered results by widget or category name.
+  - Any widget can be dragged and dropped to the Canvas (with keyboard a11y).
+- **Canvas**
+  - A list of dropped widgets, rendered as Form Blocks.
+  - Each Form Block has the following capabilities:
+    - **Select** to edit properties (shown in Configuration Panel).
+    - **Rearrange** their position within the list (with keyboard a11y).
+    - **Copy** to duplicate blocks quickly (unavailable on error state).
+    - **Delete** the block from canvas.
+  - A Device Selector toolbar can be used to toggle between desktop, tablet, and mobile views for responsive preview.
+- **Configuration Panel**
+  - Form Configuration is shown by default, to update:
+    - **Form Title** (changes are reflected on the Form Builder Header).
+    - **Theme** (changes reflected on the Canvas).
+  - Block Configuration is shown once a block has been selected from the Canvas:
+    - A list of editable properties specific to the selected block type.
+    - Every property has validation checks (implemented with `zod`) which will reflect error messages below and error state on the selected block.
+- **Form Builder Header**
+  - Toggle buttons to expand and collapse both sidebars.
+  - Form title at the center configured via Configuration Panel.
+  - Publish and Preview buttons (currently for presentation purposes).
 
 ## Tech Stack and Rationale
+
 - **Next.js 15**: Robust web application framework for routing, CSR/SSR, and static site generation.
 - **React 19**: Modern UI development library for reusable components.
-- **TypeScript** – Ensures strong typing for props, state, and domain models, reducing runtime errors.
-- **Vite**: Lightning-fast development builds with optimized bundling (simplifies setup for unit tests via `Vitest` in future).
+- **TypeScript**: Ensures strong typing for props, state, and domain models, reducing runtime errors.
 - **MSW**: Mock HTTP requests during development without external services.
-- **Zustand**: As an alternative to `Redux` for state management due to its simplicity and ease of use.
+- **Zustand**: Lightweight state management alternative to `Redux` with simplicity and ease of use.
 - **TailwindCSS v4**: Utility-first styling with theme tokens and responsive support.
 - **Radix UI Primitives**: Accessible, unstyled components for building complex UI.
 - **Zod**: Type-safe client-side validation.
@@ -73,27 +78,43 @@ As per given requirements
 ```text
 form-editor-tool/
 ├─ src/
-│  ├─ app                       # App-router directory
-│  │  ├─ forms                  # Forms pages (/forms/new, /forms/:formId)
-│  │  ├─ pages.tsx              # Main page
-│  │  ├─ layout.tsx             # Main page layout
-│  │  └─ global.css             # Global stylesheets with Tailwind Setup and CSS variables
-│  ├─ lib/
-│  │  ├─ constants              # Constants for various values
-│  │  ├─ stores                 # Zustand stores for states and actions
-│  │  ├─ hooks                  # Custom Hooks
-│  │  ├─ utils                  # Utility functions
-│  │  └─ schema                 # Zod schemas for validations
-│  ├─ mocks/
-│  │  ├─ handlers.ts            # MSW request handlers
-│  │  └─ browser.ts             # MSW worker configuration
-│  ├─ types/                    # Type definitions
+│  ├─ app/                      # App-router directory
+│  │  ├─ forms/                 # Forms routes
+│  │  │  ├─ layout.tsx          # Forms layout
+│  │  │  ├─ [formId]/           # Dynamic form editor route
+│  │  │  └─ new/                # New form creation route
+│  │  ├─ page.tsx               # Main dashboard page
+│  │  ├─ layout.tsx             # Root layout
+│  │  └─ globals.css            # Global styles with Tailwind and CSS variables
 │  ├─ components/
-│  │  ├─ builder                # Builder page-specific components
-│  │  ├─ form-field             # Form Field-specific components
-│  │  ├─ field-prop             # Field Property-specific components
-│  │  ├─ layout                 # Generic Layout wrapper components
-│  │  └─ ui                     # Primitive UI components (Button, Input, etc.)
+│  │  ├─ builder/               # Form builder components
+│  │  │  ├─ canvas/             # Canvas drag-drop components
+│  │  │  ├─ configuration/      # Configuration panel components
+│  │  │  └─ widgets/            # Widget palette components
+│  │  ├─ dashboard/             # Dashboard page components
+│  │  ├─ form/                  # Form rendering components
+│  │  │  ├─ blocks/             # Block components (Input, Checkbox, etc.)
+│  │  │  └─ configs/            # Block configuration components
+│  │  ├─ layout/                # Layout wrapper components
+│  │  └─ ui/                    # Primitive UI components (Button, Input, etc.)
+│  ├─ lib/
+│  │  ├─ constants/             # App constants (themes, styles, templates)
+│  │  ├─ hooks/                 # Custom React hooks
+│  │  ├─ providers/             # Context providers (MSW, etc.)
+│  │  ├─ schema/                # Zod validation schemas
+│  │  ├─ stores/                # Zustand state management
+│  │  ├─ types/                 # TypeScript type definitions
+│  │  └─ utils/                 # Utility functions
+│  └─ mocks/
+│     ├─ data/                  # Mock data (sample forms)
+│     ├─ handlers.ts            # MSW request handlers
+│     ├─ browser.ts             # MSW browser worker
+│     └─ index.ts               # Mock exports
+├─ public/
+│  └─ mockServiceWorker.js      # MSW service worker
+├─ instructions/                 # Project documentation
+├─ screenshots/                  # Screenshots for README
+└─ [config files]               # Next.js, TypeScript, ESLint, Tailwind configs
 ```
 
 ## Setup Instructions
@@ -103,43 +124,42 @@ form-editor-tool/
    - npm 9+
 
 2. **Install dependencies**
+
    ```bash
-   npm install
+     npm install
    ```
 
 3. **Setup environment variables**
    Copy the `.env.sample` file into `.env.development` and update the environment variables to enable `MSW`.
+
    ```bash
-   NEXT_PUBLIC_API_MOCKING=enabled
+     NEXT_PUBLIC_API_MOCKING=enabled
    ```
 
 4. **Start development server**
+
    ```bash
-   npm run dev
+     npm run dev
    ```
-    Open the your browser at http://localhost:3000/.
+
+   Open the your browser at `http://localhost:3000/`.
 
 5. **Build for production server (Optional)**
+
    ```bash
-   npm run build && npm run start
+     npm run build && npm run start
    ```
 
 6. **Linting codebase (Optional)**
+
    ```bash
-   npm run lint
+     npm run lint
    ```
 
 ## Future Improvements
 
 ### High Priority - Architecture & Refactoring
 
-- ✅ **Route Restructuring**: Migrated from `/builder` routes to `/forms` for RESTful structure
-  - `/forms/new` → Create new form (empty builder)
-  - `/forms/:formId` → Edit existing form (prefilled builder)
-- **Terminology Standardization**: Rename ambiguous terms for clarity
-  - `form-field` → `widgets` (dropped components in canvas)
-  - `field-prop` → `property-editors` (configuration inputs)
-  - Component → Widget (to distinguish from React components)
 - **Dashboard Enhancement**: Build form management dashboard with metrics
   - Form cards with title, status, and thumbnails
   - Display metrics: total input widgets, submission count
@@ -221,215 +241,6 @@ form-editor-tool/
   - Custom template creation
   - Template marketplace/gallery
 
-### Proposed File Structure
-
-```text
-form-editor-tool/
-├── public/
-│   └── mockServiceWorker.js
-│
-├── src/
-│   ├── app/                              # Next.js App Router
-│   │   ├── layout.tsx                    # Root layout
-│   │   ├── page.tsx                      # Dashboard (/) - Form list
-│   │   ├── globals.css                   # Global styles
-│   │   │
-│   │   └── forms/                        # Forms feature routes
-│   │       ├── layout.tsx                # Forms layout wrapper
-│   │       ├── new/                      
-│   │       │   └── page.tsx              # Create new form (/forms/new)
-│   │       └── [formId]/
-│   │           └── page.tsx              # Edit form (/forms/:formId)
-│   │
-│   ├── components/
-│   │   ├── dashboard/                    # Dashboard-specific components
-│   │   │   ├── FormCard.tsx              # Form tile with metrics
-│   │   │   ├── FormGrid.tsx              # Grid layout for forms
-│   │   │   ├── DashboardHeader.tsx       # Dashboard header
-│   │   │   └── index.ts
-│   │   │
-│   │   ├── builder/                      # Form builder components
-│   │   │   ├── FormBuilderContainer.tsx  # Main builder wrapper
-│   │   │   ├── FormBuilderHeader.tsx     # Builder header with actions
-│   │   │   ├── FormBuilderContent.tsx    # Builder layout coordinator
-│   │   │   │
-│   │   │   ├── widgets/                  # Widget panel (left sidebar)
-│   │   │   │   ├── WidgetPanel.tsx       # Main widget sidebar
-│   │   │   │   ├── WidgetPalette.tsx     # Widget categories & list
-│   │   │   │   ├── WidgetCategory.tsx    # Collapsible category
-│   │   │   │   ├── WidgetItem.tsx        # Draggable widget item
-│   │   │   │   ├── WidgetSearch.tsx      # Search/filter widgets
-│   │   │   │   └── index.ts
-│   │   │   │
-│   │   │   ├── canvas/                   # Canvas (center)
-│   │   │   │   ├── FormCanvas.tsx        # Main canvas component
-│   │   │   │   ├── CanvasField.tsx       # Sortable field wrapper
-│   │   │   │   ├── CanvasEmptyState.tsx  # Empty canvas state
-│   │   │   │   ├── CanvasDropIndicator.tsx # Drop placeholder
-│   │   │   │   ├── DeviceSelector.tsx    # Device preview toolbar
-│   │   │   │   └── index.ts
-│   │   │   │
-│   │   │   ├── configuration/            # Configuration panel (right sidebar)
-│   │   │   │   ├── ConfigurationPanel.tsx        # Main config sidebar
-│   │   │   │   ├── FormConfigurationView.tsx     # Form-level settings
-│   │   │   │   ├── WidgetConfigurationView.tsx   # Widget-level settings
-│   │   │   │   ├── PropertyEditor.tsx            # Generic property editor
-│   │   │   │   └── index.ts
-│   │   │   │
-│   │   │   ├── preview/                  # Preview mode
-│   │   │   │   ├── PreviewModal.tsx      # Preview popup modal
-│   │   │   │   ├── PreviewForm.tsx       # Rendered working form
-│   │   │   │   ├── SubmissionSuccessModal.tsx  # Success popup
-│   │   │   │   ├── SubmissionErrorModal.tsx    # Error popup
-│   │   │   │   └── index.ts
-│   │   │   │
-│   │   │   └── index.ts
-│   │   │
-│   │   ├── widgets/                      # Droppable form widgets (canvas)
-│   │   │   ├── index.ts                  # Widget registry
-│   │   │   │
-│   │   │   ├── fields/                   # Input-based widgets
-│   │   │   │   ├── TextInputWidget.tsx
-│   │   │   │   ├── TextareaWidget.tsx
-│   │   │   │   ├── NumberInputWidget.tsx
-│   │   │   │   ├── EmailInputWidget.tsx
-│   │   │   │   ├── PasswordInputWidget.tsx
-│   │   │   │   ├── URLInputWidget.tsx
-│   │   │   │   ├── SelectWidget.tsx
-│   │   │   │   ├── RadioGroupWidget.tsx
-│   │   │   │   ├── CheckboxWidget.tsx
-│   │   │   │   └── index.ts
-│   │   │   │
-│   │   │   ├── content/                  # Content-based widgets
-│   │   │   │   ├── HeadingWidget.tsx
-│   │   │   │   ├── ParagraphWidget.tsx
-│   │   │   │   ├── SeparatorWidget.tsx
-│   │   │   │   └── index.ts
-│   │   │   │
-│   │   │   ├── controls/                 # Control widgets
-│   │   │   │   ├── ButtonWidget.tsx
-│   │   │   │   └── index.ts
-│   │   │   │
-│   │   │   └── layouts/                  # Layout widgets (FUTURE)
-│   │   │       ├── GroupWidget.tsx       # Flex container
-│   │   │       ├── ColumnWidget.tsx      # Column layout
-│   │   │       └── index.ts
-│   │   │
-│   │   ├── property-editors/             # Property inputs (config sidebar)
-│   │   │   ├── TextPropertyEditor.tsx    # String input
-│   │   │   ├── NumberPropertyEditor.tsx  # Number input
-│   │   │   ├── LongTextPropertyEditor.tsx # Textarea
-│   │   │   ├── SelectPropertyEditor.tsx  # Dropdown
-│   │   │   ├── CheckboxPropertyEditor.tsx # Boolean toggle
-│   │   │   ├── ListPropertyEditor.tsx    # Array editor (options)
-│   │   │   └── index.ts
-│   │   │
-│   │   ├── ui/                           # Primitive UI components
-│   │   │   ├── Avatar.tsx
-│   │   │   ├── Button.tsx
-│   │   │   ├── Card.tsx
-│   │   │   ├── Checkbox.tsx
-│   │   │   ├── Dialog.tsx                # NEW: For modals
-│   │   │   ├── Form.tsx
-│   │   │   ├── Input.tsx
-│   │   │   ├── InputOTP.tsx
-│   │   │   ├── Label.tsx
-│   │   │   ├── RadioGroup.tsx
-│   │   │   ├── Select.tsx
-│   │   │   ├── Separator.tsx
-│   │   │   ├── Skeleton.tsx              # NEW: Loading states
-│   │   │   ├── Spinner.tsx               # NEW: Loading spinner
-│   │   │   ├── Switch.tsx
-│   │   │   ├── Textarea.tsx
-│   │   │   ├── Toast.tsx                 # NEW: Notifications
-│   │   │   └── index.ts
-│   │   │
-│   │   ├── layout/                       # Layout wrappers
-│   │   │   ├── Header.tsx
-│   │   │   ├── MainContent.tsx
-│   │   │   ├── PageContent.tsx
-│   │   │   ├── Sidebar.tsx
-│   │   │   └── index.ts
-│   │   │
-│   │   └── shared/                       # Shared components
-│   │       ├── LoadingState.tsx          # Generic loading
-│   │       ├── ErrorState.tsx            # Generic error
-│   │       ├── EmptyState.tsx            # Generic empty
-│   │       └── index.ts
-│   │
-│   ├── lib/
-│   │   ├── stores/                       # Zustand stores
-│   │   │   ├── formDataStore.ts          # Form data & widgets
-│   │   │   ├── uiStateStore.ts           # UI state (selection, sidebars)
-│   │   │   ├── validationStore.ts        # Validation errors
-│   │   │   ├── previewStore.ts           # NEW: Preview mode state
-│   │   │   ├── dashboardStore.ts         # NEW: Dashboard/forms list
-│   │   │   └── index.ts
-│   │   │
-│   │   ├── hooks/
-│   │   │   ├── useFetch.ts               # Data fetching
-│   │   │   ├── useFormBuilder.ts         # NEW: Builder logic
-│   │   │   ├── useFormPreview.ts         # NEW: Preview logic
-│   │   │   ├── useFormValidation.ts      # NEW: Validation logic
-│   │   │   ├── useAutoSave.ts            # NEW: Auto-save drafts
-│   │   │   └── index.ts
-│   │   │
-│   │   ├── constants/
-│   │   │   ├── widgetPalette.ts          # Widget categories & definitions
-│   │   │   ├── widgetTemplates.ts        # Default widget properties
-│   │   │   ├── devicePresets.ts          # Device viewport configs
-│   │   │   ├── formStatuses.ts           # NEW: draft/published states
-│   │   │   └── index.ts
-│   │   │
-│   │   ├── schemas/                      # Zod validation
-│   │   │   ├── widgetSchemas.ts          # Widget property validation
-│   │   │   ├── formSchemas.ts            # Form-level validation
-│   │   │   ├── submissionSchemas.ts      # NEW: Submission validation
-│   │   │   └── index.ts
-│   │   │
-│   │   ├── utils/
-│   │   │   ├── widgetUtils.ts            # Widget helpers
-│   │   │   ├── formUtils.ts              # Form helpers
-│   │   │   ├── validationUtils.ts        # Validation helpers
-│   │   │   ├── styleUtils.ts             # Style utilities
-│   │   │   ├── domUtils.ts               # DOM manipulation
-│   │   │   ├── keyboardUtils.ts          # Keyboard handlers
-│   │   │   └── index.ts
-│   │   │
-│   │   └── api/                          # NEW: API client functions
-│   │       ├── forms.ts                  # Forms CRUD
-│   │       ├── submissions.ts            # Form submissions
-│   │       └── index.ts
-│   │
-│   ├── types/
-│   │   ├── widget.ts                     # Widget types
-│   │   ├── form.ts                       # Form types
-│   │   ├── dashboard.ts                  # NEW: Dashboard types
-│   │   ├── submission.ts                 # NEW: Submission types
-│   │   ├── api.ts                        # NEW: API response types
-│   │   └── index.ts
-│   │
-│   ├── data/                             # Mock data
-│   │   ├── sampleForms.ts                # Sample form configurations
-│   │   ├── sampleFormsList.ts            # Sample forms with metrics
-│   │   └── index.ts
-│   │
-│   └── mocks/                            # MSW
-│       ├── index.ts
-│       ├── browser.ts
-│       └── handlers/                     # NEW: Organized handlers
-│           ├── forms.ts                  # Form endpoints
-│           ├── submissions.ts            # Submission endpoints
-│           └── index.ts
-│
-├── .env.example                          # NEW: Environment template
-├── .env.development                      # Development config
-├── package.json
-├── tsconfig.json
-├── next.config.ts
-└── README.md
-```
-
 ### Existing Planned Improvements
 
 - **Real data & actions**: Integrate API calls via `REST` or `GraphQL` from a backend service.
@@ -440,13 +251,13 @@ form-editor-tool/
 
 ## Screenshots
 
-### Component Architecture
+**Component Architecture**
 ![Components Architecture](./screenshots/dnd-form-components.png)
-### Desktop View
+**Desktop View**
 ![Desktop View](./screenshots/dnd-form-default.png)
-### Tablet View
+**Tablet View**
 ![Desktop View](./screenshots/dnd-form-tablet.png)
-### Mobile View
+**Mobile View**
 ![Desktop View](./screenshots/dnd-form-mobile.png)
-### Dark Mode View
+**Dark Mode View**
 ![Dark Mode View](./screenshots/dnd-form-dark.png)

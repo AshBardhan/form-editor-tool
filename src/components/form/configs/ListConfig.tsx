@@ -67,8 +67,8 @@ export const ListConfig = ({ id, value, onChange }: ListConfigProps) => {
             value={option}
             onChange={(e) => updateOption(i, e.target.value)}
             className={cn(
-              "pr-8 py-2 focus-visible:ring-0 focus-visible:!shadow-none",
-              option.length === 0 && "!border-destructive",
+              "pr-8 py-2 focus-visible:ring-0 focus-visible:shadow-none!",
+              option.length === 0 && "border-destructive!",
             )}
           />
           <Button
@@ -89,7 +89,7 @@ export const ListConfig = ({ id, value, onChange }: ListConfigProps) => {
         value={newOption}
         onChange={(e) => setNewOption(e.target.value)}
         onKeyDown={handleKeyDown}
-        className="focus-visible:ring-0 focus-visible:!shadow-none"
+        className="focus-visible:ring-0 focus-visible:shadow-none!"
       />
     </div>
   );

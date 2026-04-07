@@ -26,7 +26,7 @@ export const FormBuilderHeader = (): JSX.Element => {
   return (
     <div className="flex items-center h-full">
       {/* Toggle collapse/expand Sidebar Control */}
-      <div className="flex-shrink-0 w-50 flex items-center gap-2">
+      <div className="shrink-0 w-50 flex items-center gap-2">
         <Button variant="ghost" asChild className="hover:bg-[#1f1f1f]">
           <Link href="/">
             <ChevronLeftIcon size={20} />
@@ -58,7 +58,7 @@ export const FormBuilderHeader = (): JSX.Element => {
       {/* Form Title */}
       <h1 className="flex-1 font-semibold text-center text-xl">{formTitle}</h1>
       {/* Action Buttons - Just for display purpose. Not functional yet... */}
-      <div className="flex-shrink-0 w-50 flex items-center justify-end gap-2">
+      <div className="shrink-0 w-50 flex items-center justify-end gap-2">
         <Button variant="secondary" size="sm">
           Preview
         </Button>
