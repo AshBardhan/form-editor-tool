@@ -221,6 +221,215 @@ form-editor-tool/
   - Custom template creation
   - Template marketplace/gallery
 
+### Proposed File Structure
+
+```text
+form-editor-tool/
+├── public/
+│   └── mockServiceWorker.js
+│
+├── src/
+│   ├── app/                              # Next.js App Router
+│   │   ├── layout.tsx                    # Root layout
+│   │   ├── page.tsx                      # Dashboard (/) - Form list
+│   │   ├── globals.css                   # Global styles
+│   │   │
+│   │   └── forms/                        # Forms feature routes
+│   │       ├── layout.tsx                # Forms layout wrapper
+│   │       ├── new/                      
+│   │       │   └── page.tsx              # Create new form (/forms/new)
+│   │       └── [formId]/
+│   │           └── page.tsx              # Edit form (/forms/:formId)
+│   │
+│   ├── components/
+│   │   ├── dashboard/                    # Dashboard-specific components
+│   │   │   ├── FormCard.tsx              # Form tile with metrics
+│   │   │   ├── FormGrid.tsx              # Grid layout for forms
+│   │   │   ├── DashboardHeader.tsx       # Dashboard header
+│   │   │   └── index.ts
+│   │   │
+│   │   ├── builder/                      # Form builder components
+│   │   │   ├── FormBuilderContainer.tsx  # Main builder wrapper
+│   │   │   ├── FormBuilderHeader.tsx     # Builder header with actions
+│   │   │   ├── FormBuilderContent.tsx    # Builder layout coordinator
+│   │   │   │
+│   │   │   ├── widgets/                  # Widget panel (left sidebar)
+│   │   │   │   ├── WidgetPanel.tsx       # Main widget sidebar
+│   │   │   │   ├── WidgetPalette.tsx     # Widget categories & list
+│   │   │   │   ├── WidgetCategory.tsx    # Collapsible category
+│   │   │   │   ├── WidgetItem.tsx        # Draggable widget item
+│   │   │   │   ├── WidgetSearch.tsx      # Search/filter widgets
+│   │   │   │   └── index.ts
+│   │   │   │
+│   │   │   ├── canvas/                   # Canvas (center)
+│   │   │   │   ├── FormCanvas.tsx        # Main canvas component
+│   │   │   │   ├── CanvasField.tsx       # Sortable field wrapper
+│   │   │   │   ├── CanvasEmptyState.tsx  # Empty canvas state
+│   │   │   │   ├── CanvasDropIndicator.tsx # Drop placeholder
+│   │   │   │   ├── DeviceSelector.tsx    # Device preview toolbar
+│   │   │   │   └── index.ts
+│   │   │   │
+│   │   │   ├── configuration/            # Configuration panel (right sidebar)
+│   │   │   │   ├── ConfigurationPanel.tsx        # Main config sidebar
+│   │   │   │   ├── FormConfigurationView.tsx     # Form-level settings
+│   │   │   │   ├── WidgetConfigurationView.tsx   # Widget-level settings
+│   │   │   │   ├── PropertyEditor.tsx            # Generic property editor
+│   │   │   │   └── index.ts
+│   │   │   │
+│   │   │   ├── preview/                  # Preview mode
+│   │   │   │   ├── PreviewModal.tsx      # Preview popup modal
+│   │   │   │   ├── PreviewForm.tsx       # Rendered working form
+│   │   │   │   ├── SubmissionSuccessModal.tsx  # Success popup
+│   │   │   │   ├── SubmissionErrorModal.tsx    # Error popup
+│   │   │   │   └── index.ts
+│   │   │   │
+│   │   │   └── index.ts
+│   │   │
+│   │   ├── widgets/                      # Droppable form widgets (canvas)
+│   │   │   ├── index.ts                  # Widget registry
+│   │   │   │
+│   │   │   ├── fields/                   # Input-based widgets
+│   │   │   │   ├── TextInputWidget.tsx
+│   │   │   │   ├── TextareaWidget.tsx
+│   │   │   │   ├── NumberInputWidget.tsx
+│   │   │   │   ├── EmailInputWidget.tsx
+│   │   │   │   ├── PasswordInputWidget.tsx
+│   │   │   │   ├── URLInputWidget.tsx
+│   │   │   │   ├── SelectWidget.tsx
+│   │   │   │   ├── RadioGroupWidget.tsx
+│   │   │   │   ├── CheckboxWidget.tsx
+│   │   │   │   └── index.ts
+│   │   │   │
+│   │   │   ├── content/                  # Content-based widgets
+│   │   │   │   ├── HeadingWidget.tsx
+│   │   │   │   ├── ParagraphWidget.tsx
+│   │   │   │   ├── SeparatorWidget.tsx
+│   │   │   │   └── index.ts
+│   │   │   │
+│   │   │   ├── controls/                 # Control widgets
+│   │   │   │   ├── ButtonWidget.tsx
+│   │   │   │   └── index.ts
+│   │   │   │
+│   │   │   └── layouts/                  # Layout widgets (FUTURE)
+│   │   │       ├── GroupWidget.tsx       # Flex container
+│   │   │       ├── ColumnWidget.tsx      # Column layout
+│   │   │       └── index.ts
+│   │   │
+│   │   ├── property-editors/             # Property inputs (config sidebar)
+│   │   │   ├── TextPropertyEditor.tsx    # String input
+│   │   │   ├── NumberPropertyEditor.tsx  # Number input
+│   │   │   ├── LongTextPropertyEditor.tsx # Textarea
+│   │   │   ├── SelectPropertyEditor.tsx  # Dropdown
+│   │   │   ├── CheckboxPropertyEditor.tsx # Boolean toggle
+│   │   │   ├── ListPropertyEditor.tsx    # Array editor (options)
+│   │   │   └── index.ts
+│   │   │
+│   │   ├── ui/                           # Primitive UI components
+│   │   │   ├── Avatar.tsx
+│   │   │   ├── Button.tsx
+│   │   │   ├── Card.tsx
+│   │   │   ├── Checkbox.tsx
+│   │   │   ├── Dialog.tsx                # NEW: For modals
+│   │   │   ├── Form.tsx
+│   │   │   ├── Input.tsx
+│   │   │   ├── InputOTP.tsx
+│   │   │   ├── Label.tsx
+│   │   │   ├── RadioGroup.tsx
+│   │   │   ├── Select.tsx
+│   │   │   ├── Separator.tsx
+│   │   │   ├── Skeleton.tsx              # NEW: Loading states
+│   │   │   ├── Spinner.tsx               # NEW: Loading spinner
+│   │   │   ├── Switch.tsx
+│   │   │   ├── Textarea.tsx
+│   │   │   ├── Toast.tsx                 # NEW: Notifications
+│   │   │   └── index.ts
+│   │   │
+│   │   ├── layout/                       # Layout wrappers
+│   │   │   ├── Header.tsx
+│   │   │   ├── MainContent.tsx
+│   │   │   ├── PageContent.tsx
+│   │   │   ├── Sidebar.tsx
+│   │   │   └── index.ts
+│   │   │
+│   │   └── shared/                       # Shared components
+│   │       ├── LoadingState.tsx          # Generic loading
+│   │       ├── ErrorState.tsx            # Generic error
+│   │       ├── EmptyState.tsx            # Generic empty
+│   │       └── index.ts
+│   │
+│   ├── lib/
+│   │   ├── stores/                       # Zustand stores
+│   │   │   ├── formDataStore.ts          # Form data & widgets
+│   │   │   ├── uiStateStore.ts           # UI state (selection, sidebars)
+│   │   │   ├── validationStore.ts        # Validation errors
+│   │   │   ├── previewStore.ts           # NEW: Preview mode state
+│   │   │   ├── dashboardStore.ts         # NEW: Dashboard/forms list
+│   │   │   └── index.ts
+│   │   │
+│   │   ├── hooks/
+│   │   │   ├── useFetch.ts               # Data fetching
+│   │   │   ├── useFormBuilder.ts         # NEW: Builder logic
+│   │   │   ├── useFormPreview.ts         # NEW: Preview logic
+│   │   │   ├── useFormValidation.ts      # NEW: Validation logic
+│   │   │   ├── useAutoSave.ts            # NEW: Auto-save drafts
+│   │   │   └── index.ts
+│   │   │
+│   │   ├── constants/
+│   │   │   ├── widgetPalette.ts          # Widget categories & definitions
+│   │   │   ├── widgetTemplates.ts        # Default widget properties
+│   │   │   ├── devicePresets.ts          # Device viewport configs
+│   │   │   ├── formStatuses.ts           # NEW: draft/published states
+│   │   │   └── index.ts
+│   │   │
+│   │   ├── schemas/                      # Zod validation
+│   │   │   ├── widgetSchemas.ts          # Widget property validation
+│   │   │   ├── formSchemas.ts            # Form-level validation
+│   │   │   ├── submissionSchemas.ts      # NEW: Submission validation
+│   │   │   └── index.ts
+│   │   │
+│   │   ├── utils/
+│   │   │   ├── widgetUtils.ts            # Widget helpers
+│   │   │   ├── formUtils.ts              # Form helpers
+│   │   │   ├── validationUtils.ts        # Validation helpers
+│   │   │   ├── styleUtils.ts             # Style utilities
+│   │   │   ├── domUtils.ts               # DOM manipulation
+│   │   │   ├── keyboardUtils.ts          # Keyboard handlers
+│   │   │   └── index.ts
+│   │   │
+│   │   └── api/                          # NEW: API client functions
+│   │       ├── forms.ts                  # Forms CRUD
+│   │       ├── submissions.ts            # Form submissions
+│   │       └── index.ts
+│   │
+│   ├── types/
+│   │   ├── widget.ts                     # Widget types
+│   │   ├── form.ts                       # Form types
+│   │   ├── dashboard.ts                  # NEW: Dashboard types
+│   │   ├── submission.ts                 # NEW: Submission types
+│   │   ├── api.ts                        # NEW: API response types
+│   │   └── index.ts
+│   │
+│   ├── data/                             # Mock data
+│   │   ├── sampleForms.ts                # Sample form configurations
+│   │   ├── sampleFormsList.ts            # Sample forms with metrics
+│   │   └── index.ts
+│   │
+│   └── mocks/                            # MSW
+│       ├── index.ts
+│       ├── browser.ts
+│       └── handlers/                     # NEW: Organized handlers
+│           ├── forms.ts                  # Form endpoints
+│           ├── submissions.ts            # Submission endpoints
+│           └── index.ts
+│
+├── .env.example                          # NEW: Environment template
+├── .env.development                      # Development config
+├── package.json
+├── tsconfig.json
+├── next.config.ts
+└── README.md
+```
+
 ### Existing Planned Improvements
 
 - **Real data & actions**: Integrate API calls via `REST` or `GraphQL` from a backend service.

@@ -1,3 +1,5 @@
+"use client"
+
 import * as React from "react";
 import { cn } from "@/lib/utils/styleUtils";
 
@@ -6,7 +8,8 @@ function Card({ className, ...props }: React.ComponentProps<"div">) {
     <div
       data-slot="card"
       className={cn(
-        "bg-card text-card-foreground flex flex-col gap-6 rounded-xl border py-6 shadow-sm",
+        'block py-6 bg-white border border-gray-200 rounded-lg shadow transition-colors',
+			'hover:bg-gray-100 hover:shadow-md cursor-pointer',
         className,
       )}
       {...props}
