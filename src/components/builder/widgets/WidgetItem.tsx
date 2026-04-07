@@ -15,7 +15,7 @@ interface WidgetItemProps {
  * @param {WidgetItemProps} props - The props for the component.
  * @returns {JSX.Element} The rendered component.
  */
-const WidgetItem = memo(function WidgetItem({
+export const WidgetItem = memo(function WidgetItem({
   widget,
 }: WidgetItemProps): JSX.Element {
   const { attributes, listeners, setNodeRef } = useDraggable({
@@ -49,5 +49,3 @@ const WidgetItem = memo(function WidgetItem({
     </div>
   );
 });
-
-export { WidgetItem };

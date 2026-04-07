@@ -17,7 +17,7 @@ interface DeviceSelectorProps {
  * @param {DeviceSelectorProps} props - The props for the component.
  * @returns {JSX.Element} The rendered component.
  */
-const DeviceSelector = ({
+export const DeviceSelector = ({
   currentDevice,
   onDeviceChange,
 }: DeviceSelectorProps): JSX.Element => {
@@ -46,5 +46,3 @@ const DeviceSelector = ({
     </div>
   );
 };
-
-export { DeviceSelector };

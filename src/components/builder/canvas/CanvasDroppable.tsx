@@ -17,7 +17,7 @@ interface CanvasDroppableProps {
  * @param {CanvasDroppableProps} props - The props for the component.
  * @returns {JSX.Element | null} The rendered component or null.
  */
-const CanvasDroppable = ({
+export const CanvasDroppable = ({
   item,
   source,
 }: CanvasDroppableProps): JSX.Element | null => {
@@ -39,5 +39,3 @@ const CanvasDroppable = ({
 
   return <CanvasBlock isGhostMode={true} block={item as FormBlock} />;
 };
-
-export { CanvasDroppable };

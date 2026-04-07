@@ -27,7 +27,7 @@ interface CanvasBlockProps {
  * @param {CanvasBlockProps} props - The props for the component.
  * @returns {JSX.Element} The rendered component.
  */
-const CanvasBlock = ({
+export const CanvasBlock = ({
   block,
   isGhostMode = false,
 }: CanvasBlockProps): JSX.Element => {
@@ -192,5 +192,3 @@ const CanvasBlock = ({
     </div>
   );
 };
-
-export { CanvasBlock };

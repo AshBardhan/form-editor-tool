@@ -42,7 +42,7 @@ const DropZeroState = (): JSX.Element => (
  * @param {CanvasFormProps} props - The props for the component.
  * @returns {JSX.Element} The rendered component.
  */
-const CanvasForm = ({
+export const CanvasForm = ({
   overId,
   activeDragItem,
   dragSource,
@@ -90,5 +90,3 @@ const CanvasForm = ({
     </div>
   );
 };
-
-export { CanvasForm };

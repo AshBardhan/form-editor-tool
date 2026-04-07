@@ -14,7 +14,7 @@ import Link from "next/link";
  *
  * @returns {JSX.Element} The rendered component.
  */
-const FormBuilderHeader = (): JSX.Element => {
+export const FormBuilderHeader = (): JSX.Element => {
   const formTitle = useFormDataStore((state) => state.form.title);
   const isSidebarCollapsed = useUIStateStore(
     (state) => state.isSidebarCollapsed,
@@ -69,5 +69,3 @@ const FormBuilderHeader = (): JSX.Element => {
     </div>
   );
 };
-
-export { FormBuilderHeader };

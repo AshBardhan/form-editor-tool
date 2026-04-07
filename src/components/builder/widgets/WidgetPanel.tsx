@@ -17,7 +17,7 @@ import { cn } from "@/lib/utils/styleUtils";
  *
  * @returns {JSX.Element} The rendered component.
  */
-const WidgetPanel = memo(function WidgetPanel(): JSX.Element {
+export const WidgetPanel = memo(function WidgetPanel(): JSX.Element {
   const [expandedCategories, setExpandedCategories] = useState<{
     [category: string]: boolean;
   }>({});
@@ -165,5 +165,3 @@ const WidgetPanel = memo(function WidgetPanel(): JSX.Element {
     </>
   );
 });
-
-export { WidgetPanel };

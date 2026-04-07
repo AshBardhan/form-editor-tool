@@ -24,7 +24,7 @@ interface FormBuilderContainerProps {
  * @param {FormBuilderContainerProps} props - The props for the component.
  * @returns {JSX.Element} The rendered component.
  */
-const FormBuilderContainer = ({
+export const FormBuilderContainer = ({
   id,
 }: FormBuilderContainerProps): JSX.Element => {
   const setForm = useFormDataStore((state) => state.setForm);
@@ -47,7 +47,7 @@ const FormBuilderContainer = ({
       resetSidebar();
       switchTheme("");
     };
-  }, [data, setForm, resetForm]);
+  }, [data, setForm, resetForm, resetSidebar]);
 
   if (loading) {
     return (
@@ -80,5 +80,3 @@ const FormBuilderContainer = ({
     </>
   );
 };
-
-export { FormBuilderContainer };

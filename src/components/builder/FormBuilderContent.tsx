@@ -41,7 +41,7 @@ interface DragState {
  *
  * @returns {JSX.Element} The rendered component.
  */
-const FormBuilderContent = (): JSX.Element => {
+export const FormBuilderContent = (): JSX.Element => {
   const [dragState, setDragState] = useState<DragState>({
     overId: null,
     activeItem: null,
@@ -187,5 +187,3 @@ const FormBuilderContent = (): JSX.Element => {
     </>
   );
 };
-
-export { FormBuilderContent };
