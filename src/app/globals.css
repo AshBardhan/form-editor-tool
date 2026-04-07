@@ -40,7 +40,7 @@
     @apply flex flex-col h-screen;
   }
   .page-header {
-    @apply flex-shrink-0 text-white h-16 px-4 bg-[#151515] border-b border-[#2f2f2f];
+    @apply shrink-0 text-white h-16 px-4 bg-[#151515] border-b border-[#2f2f2f];
   }
 
   .page-content {
@@ -48,7 +48,7 @@
   }
 
   .sidebar {
-    @apply h-full overflow-y-auto flex-shrink-0 bg-[#151515] text-[#fefefe] border border-[#373737];
+    @apply h-full overflow-y-auto shrink-0 bg-[#151515] text-[#fefefe] border border-[#373737];
   }
 
   .sidebar--left {
@@ -67,7 +67,7 @@
     @apply h-full flex items-center justify-center;
   }
 
-  .form-field {
+  .form-block {
     @apply py-2 px-6;
   }
 }

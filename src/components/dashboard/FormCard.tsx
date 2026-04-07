@@ -1,4 +1,4 @@
-import { FormListItem } from "@/types/form.types";
+import { FormListItem } from "@/lib/types/form";
 import { Card, CardContent } from "@/components/ui/Card";
 import Link from "next/link";
 import Text from "@/components/ui/Text";

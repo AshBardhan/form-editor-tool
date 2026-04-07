@@ -1,7 +1,7 @@
 "use client";
 
 import { JSX, useEffect } from "react";
-import { FormData } from "@/types/form.types";
+import { FormData } from "@/lib/types/form";
 import { LoaderCircleIcon } from "lucide-react";
 import { switchTheme } from "@/lib/utils/domUtils";
 import { useFormDataStore, useUIStateStore } from "@/lib/stores";

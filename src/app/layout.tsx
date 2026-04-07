@@ -1,6 +1,7 @@
-import type { Metadata, Viewport } from "next";
 import "./globals.css";
-import { MswProvider } from "@/components/MswProvider";
+
+import type { Metadata, Viewport } from "next";
+import { MockProvider } from "@/lib/providers/MockProvider";
 
 export const metadata: Metadata = {
   title: "FormKit - A Visual DnD Form Builder",
@@ -20,7 +21,7 @@ export default function RootLayout({
   return (
     <html lang="en" suppressHydrationWarning>
       <body suppressHydrationWarning>
-        <MswProvider>{children}</MswProvider>
+        <MockProvider>{children}</MockProvider>
       </body>
     </html>
   );

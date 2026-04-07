@@ -1,38 +1,38 @@
 import { create } from "zustand";
 
 interface UIStateStore {
-  selectedFieldId: string | null;
-  hoveredFieldId: string | null;
+  selectedFormBlockId: string | null;
+  hoveredFormBlockId: string | null;
   isSidebarCollapsed: {
     left: boolean;
     right: boolean;
   };
-  selectField: (id: string | null) => void;
-  hoverField: (id: string | null) => void;
+  selectFormBlock: (id: string | null) => void;
+  hoverFormBlock: (id: string | null) => void;
   toggleSidebar: (side: "left" | "right") => void;
   resetSidebar: () => void;
 }
 
 /**
- * Zustand store for managing UI state of field selection and sidebar visibility.
+ * Zustand store for managing UI state of block selection and sidebar visibility.
  */
 export const useUIStateStore = create<UIStateStore>((set) => ({
-  selectedFieldId: null,
-  hoveredFieldId: null,
+  selectedFormBlockId: null,
+  hoveredFormBlockId: null,
   isSidebarCollapsed: {
     left: false,
     right: false,
   },
 
-  selectField: (id) => {
+  selectFormBlock: (id) => {
     set((state) =>
-      state.selectedFieldId === id ? state : { selectedFieldId: id },
+      state.selectedFormBlockId === id ? state : { selectedFormBlockId: id },
     );
   },
 
-  hoverField: (id) => {
+  hoverFormBlock: (id) => {
     set((state) =>
-      state.hoveredFieldId === id ? state : { hoveredFieldId: id },
+      state.hoveredFormBlockId === id ? state : { hoveredFormBlockId: id },
     );
   },
 

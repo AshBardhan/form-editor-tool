@@ -7,7 +7,6 @@ interface TextProps {
   variant?: "h1" | "h2" | "h3" | "h4" | "h5" | "h6" | "p" | "div";
   className?: string;
   children: ReactNode;
-  [key: string]: any;
 }
 
 const Text = ({

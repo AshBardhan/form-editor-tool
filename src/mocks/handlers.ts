@@ -1,5 +1,5 @@
-import { sampleDarkForm, sampleLightForm } from "@/mocks/data/sample-form-data";
-import { sampleFormList } from "@/mocks/data/sample-form-list";
+import { sampleDarkForm, sampleLightForm } from "@/mocks/data/sampleForms";
+import { sampleFormList } from "@/mocks/data/sampleFormsList";
 import { delay, http, HttpResponse } from "msw";
 
 export const handlers = [

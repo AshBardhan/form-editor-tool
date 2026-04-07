@@ -1,36 +1,36 @@
 import {
-  FormField,
-  FormFieldType,
-  FormFieldValueType,
+  FormBlock,
+  FormBlockType,
+  FormBlockValueType,
   FormData,
-} from "@/types/form.types";
+} from "@/lib/types/form";
 import { nanoid } from "nanoid";
 import { create } from "zustand";
-import { getDefaultProps } from "@/lib/utils/fieldUtils";
+import { getDefaultProps } from "@/lib/utils/formUtils";
 
 interface FormDataState {
   form: FormData;
   setForm: (form: FormData) => void;
   updateForm: (key: string, value: string) => void;
   resetForm: () => void;
-  addField: (type: FormFieldType, index?: number) => string;
-  moveField: (fromIndex: number, toIndex: number) => void;
-  updateField: (id: string, key: string, value: FormFieldValueType) => void;
-  cloneField: (id: string) => void;
-  removeField: (id: string) => void;
+  addFormBlock: (type: FormBlockType, index?: number) => string;
+  moveFormBlock: (fromIndex: number, toIndex: number) => void;
+  updateFormBlock: (id: string, key: string, value: FormBlockValueType) => void;
+  cloneFormBlock: (id: string) => void;
+  removeFormBlock: (id: string) => void;
 }
 
 /**
- * Initial form data with a default title, theme and an empty array of fields.
+ * Initial form data with a default title, theme and an empty array of blocks.
  */
 const initialFormData: FormData = {
   title: "Untitled Form",
   theme: "light",
-  fields: [],
+  blocks: [],
 };
 
 /**
- * Zustand store for managing the Form data and field operations.
+ * Zustand store for managing the Form data and block operations.
  */
 export const useFormDataStore = create<FormDataState>((set) => ({
   form: initialFormData,
@@ -48,9 +48,9 @@ export const useFormDataStore = create<FormDataState>((set) => ({
       form: initialFormData,
     });
   },
-  addField: (type, index) => {
+  addFormBlock: (type, index) => {
     const id = nanoid();
-    const newField: FormField = {
+    const newBlock: FormBlock = {
       id,
       type,
       name: `${type}-${id}`,
@@ -58,84 +58,84 @@ export const useFormDataStore = create<FormDataState>((set) => ({
     };
 
     set((state) => {
-      const updated = [...state.form.fields];
+      const updated = [...state.form.blocks];
       if (index !== undefined) {
-        updated.splice(index, 0, newField);
+        updated.splice(index, 0, newBlock);
       } else {
-        updated.push(newField);
+        updated.push(newBlock);
       }
       return {
         form: {
           ...state.form,
-          fields: updated,
+          blocks: updated,
         },
       };
     });
 
     return id;
   },
-  moveField: (from, to) => {
+  moveFormBlock: (from, to) => {
     set((state) => {
-      const updated = [...state.form.fields];
+      const updated = [...state.form.blocks];
       const [moved] = updated.splice(from, 1);
       updated.splice(to, 0, moved);
       return {
         form: {
           ...state.form,
-          fields: updated,
+          blocks: updated,
         },
       };
     });
   },
-  updateField: (id, key, value) => {
+  updateFormBlock: (id, key, value) => {
     set((state) => ({
       form: {
         ...state.form,
-        fields: state.form.fields.map((f) =>
-          f.id === id
+        blocks: state.form.blocks.map((b) =>
+          b.id === id
             ? {
-                ...f,
-                props: f.props.map((p) =>
+                ...b,
+                props: b.props.map((p) =>
                   p.key === key ? { ...p, value } : p,
                 ),
               }
-            : f,
+            : b,
         ),
       },
     }));
   },
-  cloneField: (id: string) => {
+  cloneFormBlock: (id: string) => {
     set((state) => {
-      const original = state.form.fields.find((f) => f.id === id);
+      const original = state.form.blocks.find((b) => b.id === id);
       if (!original) return {};
 
       const newId = nanoid();
-      const clonedField: FormField = {
+      const clonedBlock: FormBlock = {
         ...original,
         id: newId,
         name: `${original.type}-${newId}`,
         props: original.props.map((p) => ({ ...p })),
       };
 
-      const updated = [...state.form.fields];
-      const originalIndex = state.form.fields.findIndex((f) => f.id === id);
+      const updated = [...state.form.blocks];
+      const originalIndex = state.form.blocks.findIndex((b) => b.id === id);
       const insertAt = originalIndex >= 0 ? originalIndex + 1 : updated.length;
 
-      updated.splice(insertAt, 0, clonedField);
+      updated.splice(insertAt, 0, clonedBlock);
 
       return {
         form: {
           ...state.form,
-          fields: updated,
+          blocks: updated,
         },
       };
     });
   },
-  removeField: (id) => {
+  removeFormBlock: (id) => {
     set((state) => ({
       form: {
         ...state.form,
-        fields: state.form.fields.filter((f) => f.id !== id),
+        blocks: state.form.blocks.filter((b) => b.id !== id),
       },
     }));
   },

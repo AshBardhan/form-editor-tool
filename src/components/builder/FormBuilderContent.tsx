@@ -16,27 +16,27 @@ import { JSX, useState } from "react";
 import { hybridKeyboardCoordinates } from "@/lib/utils/keyboardUtils";
 import { useFormDataStore, useUIStateStore } from "@/lib/stores";
 import { AnimatePresence } from "motion/react";
-import { Component } from "@/types/component";
-import { FormField } from "@/types/form.types";
+import { Widget } from "@/lib/types/widget";
+import { FormBlock } from "@/lib/types/form";
 import { DeviceType } from "@/lib/constants/device";
 import { Sidebar } from "@/components/layout/Sidebar";
 import { MainContent } from "@/components/layout/MainContent";
-import { DeviceSelector } from "@/components/builder/DeviceSelector";
-import { DroppableItemPreview } from "@/components/builder/DroppableItemPreview";
-import { FormBuilderCanvas } from "@/components/builder/FormBuilderCanvas";
-import { FormComponentSidebar } from "@/components/builder/FormComponentSidebar";
-import { FormConfigurationSidebar } from "@/components/builder/FormConfigurationSidebar";
+import { DeviceSelector } from "@/components/builder/canvas/DeviceSelector";
+import { CanvasDroppable } from "@/components/builder/canvas/CanvasDroppable";
+import { CanvasForm } from "@/components/builder/canvas/CanvasForm";
+import { WidgetPanel } from "@/components/builder/widgets/WidgetPanel";
+import { ConfigurationPanel } from "@/components/builder/configuration/ConfigurationPanel";
 
 interface DragState {
   overId: string | null;
-  activeItem: FormField | Component | null;
+  activeItem: FormBlock | Widget | null;
   source: "sidebar" | "canvas" | null;
 }
 
 /**
  * Form Builder Content
  * - Renders form with prefilled and empty data
- * - Provides drag-and-drop and configuration for form fields
+ * - Provides drag-and-drop and configuration for form
  * - Device selection for different screen sizes
  *
  * @returns {JSX.Element} The rendered component.
@@ -47,10 +47,10 @@ const FormBuilderContent = (): JSX.Element => {
     activeItem: null,
     source: null,
   });
-  const formFields = useFormDataStore((state) => state.form.fields);
-  const moveField = useFormDataStore((state) => state.moveField);
-  const addField = useFormDataStore((state) => state.addField);
-  const selectField = useUIStateStore((state) => state.selectField);
+  const formBlocks = useFormDataStore((state) => state.form.blocks);
+  const moveFormBlock = useFormDataStore((state) => state.moveFormBlock);
+  const addFormBlock = useFormDataStore((state) => state.addFormBlock);
+  const selectFormBlock = useUIStateStore((state) => state.selectFormBlock);
   const isSidebarCollapsed = useUIStateStore(
     (state) => state.isSidebarCollapsed,
   );
@@ -69,21 +69,21 @@ const FormBuilderContent = (): JSX.Element => {
     const dragged = active.data?.current;
     if (!dragged) return;
 
-    const activeIndex = formFields.findIndex((f) => f.id === active.id);
-    const overIndex = formFields.findIndex((f) => f.id === over.id);
-    const isExistingField = activeIndex !== -1;
+    const activeIndex = formBlocks.findIndex((f) => f.id === active.id);
+    const overIndex = formBlocks.findIndex((f) => f.id === over.id);
+    const isExistingFormBlock = activeIndex !== -1;
 
-    // Handle reordering existing fields
-    if (isExistingField && overIndex !== -1 && activeIndex !== overIndex) {
-      moveField(activeIndex, overIndex);
+    // Handle reordering existing blocks
+    if (isExistingFormBlock && overIndex !== -1 && activeIndex !== overIndex) {
+      moveFormBlock(activeIndex, overIndex);
       return;
     }
 
-    // Handle adding new fields (from sidebar)
-    if (!isExistingField) {
+    // Handle adding new blocks (from sidebar)
+    if (!isExistingFormBlock) {
       const insertIndex = over.id === "canvas" ? undefined : overIndex;
-      const newId = addField(dragged.type, insertIndex);
-      selectField(newId);
+      const newId = addFormBlock(dragged.type, insertIndex);
+      selectFormBlock(newId);
     }
   }
 
@@ -108,13 +108,13 @@ const FormBuilderContent = (): JSX.Element => {
           if (!data) return;
 
           if (data.from === "sidebar") {
-            selectField(null);
+            selectFormBlock(null);
           } else {
-            selectField(data.id);
+            selectFormBlock(data.id);
           }
           setDragState({
             ...dragState,
-            activeItem: data as FormField | Component,
+            activeItem: data as FormBlock | Widget,
             source: data.from,
           });
         }}
@@ -134,7 +134,7 @@ const FormBuilderContent = (): JSX.Element => {
         {/* Drag Placeholder Overlay */}
         <DragOverlay>
           {dragState.activeItem && (
-            <DroppableItemPreview
+            <CanvasDroppable
               item={dragState.activeItem}
               source={dragState.source}
             />
@@ -145,7 +145,7 @@ const FormBuilderContent = (): JSX.Element => {
         <AnimatePresence>
           {!isSidebarCollapsed.left && (
             <Sidebar>
-              <FormComponentSidebar />
+              <WidgetPanel />
             </Sidebar>
           )}
         </AnimatePresence>
@@ -156,8 +156,8 @@ const FormBuilderContent = (): JSX.Element => {
             className="py-12 px-8 h-full overflow-y-auto"
             onClickCapture={(e) => {
               const target = e.target as HTMLElement;
-              if (!target.closest("[data-slot='field']")) {
-                selectField(null);
+              if (!target.closest("[data-slot='block']")) {
+                selectFormBlock(null);
               }
             }}
           >
@@ -166,20 +166,20 @@ const FormBuilderContent = (): JSX.Element => {
               onDeviceChange={setDeviceType}
             />
 
-            <FormBuilderCanvas
+            <CanvasForm
               currentDevice={deviceType}
               overId={dragState.overId}
-              activeDragItem={dragState.activeItem as FormField}
+              activeDragItem={dragState.activeItem as FormBlock}
               dragSource={dragState.source}
             />
           </div>
         </MainContent>
 
-        {/* Right Form/Field Configuration Sidebar */}
+        {/* Right Form Configuration Sidebar */}
         <AnimatePresence>
           {!isSidebarCollapsed.right && (
             <Sidebar position="right">
-              <FormConfigurationSidebar />
+              <ConfigurationPanel />
             </Sidebar>
           )}
         </AnimatePresence>
