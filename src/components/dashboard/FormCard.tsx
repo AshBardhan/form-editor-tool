@@ -21,28 +21,31 @@ export function FormCard({ form }: FormCardProps) {
   return (
     <Link href={`/forms/${form.id}`} className="block group">
       <Card className="hover:shadow-lg transition-shadow duration-200 h-full relative">
-        <Badge 
-          label={statusLabel} 
-          variant={statusVariant} 
-          size="sm" 
+        <Badge
+          label={statusLabel}
+          variant={statusVariant}
+          size="sm"
           className="absolute top-3 right-3"
         />
         <CardContent className="px-6 space-y-2">
-            <Text variant="h4" className="truncate group-hover:text-primary transition-colors">
-              {form.name}
-            </Text>
-            <div className="flex gap-8">
-              {form.metrics.map((metric) => (
-                <Metric
-                  key={metric.key}
-                  direction="column"
-                  label={metric.label}
-                  reverse={true}
-                  value={metric.value}
-                  size="sm"
-                />
-              ))}
-            </div>
+          <Text
+            variant="h4"
+            className="truncate group-hover:text-primary transition-colors"
+          >
+            {form.name}
+          </Text>
+          <div className="flex gap-8">
+            {form.metrics.map((metric) => (
+              <Metric
+                key={metric.key}
+                direction="column"
+                label={metric.label}
+                reverse={true}
+                value={metric.value}
+                size="sm"
+              />
+            ))}
+          </div>
         </CardContent>
       </Card>
     </Link>

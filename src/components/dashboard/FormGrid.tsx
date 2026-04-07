@@ -21,12 +21,16 @@ export function FormGrid() {
         {[1, 2, 3, 4, 5, 6].map((i) => (
           <Card key={i} className="h-full relative">
             {/* Badge skeleton */}
-            <Skeleton className="absolute top-3 right-3" width={60} height={15} />
-            
+            <Skeleton
+              className="absolute top-3 right-3"
+              width={60}
+              height={15}
+            />
+
             <CardContent className="px-6 space-y-2">
               {/* Title skeleton */}
               <Skeleton width="70%" height={20} />
-              
+
               {/* Metrics skeletons */}
               <div className="flex gap-8 pt-2">
                 <div className="space-y-1">
@@ -39,7 +43,7 @@ export function FormGrid() {
                 </div>
                 <div className="space-y-1">
                   <Skeleton width={40} height={20} />
-                  <Skeleton width={60} height={10}/>
+                  <Skeleton width={60} height={10} />
                 </div>
               </div>
             </CardContent>
@@ -52,7 +56,9 @@ export function FormGrid() {
   if (error) {
     return (
       <div className="text-center py-12">
-        <Text variant="h4" className="mb-1">Unable to load forms</Text>
+        <Text variant="h4" className="mb-1">
+          Unable to load forms
+        </Text>
         <Text variant="p" className="text-sm text-muted-foreground">
           Please check try again later.
         </Text>
@@ -63,7 +69,9 @@ export function FormGrid() {
   if (!data || data.length === 0) {
     return (
       <div className="text-center py-12">
-        <Text variant="h4" className="mb-2">No forms yet</Text>
+        <Text variant="h4" className="mb-2">
+          No forms yet
+        </Text>
         <Text variant="p" className="text-sm text-muted-foreground">
           Create your first form to get started.
         </Text>

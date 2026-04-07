@@ -13,8 +13,6 @@ export const sampleFormList = [
     id: "666",
     name: "Dark Settings Form",
     status: "draft",
-    metrics: [
-      { key: "fields", label: "Fields", value: 8 },
-    ],
+    metrics: [{ key: "fields", label: "Fields", value: 8 }],
   },
 ];

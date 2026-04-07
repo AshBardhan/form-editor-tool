@@ -1,4 +1,4 @@
-"use client"
+"use client";
 
 import { ReactNode, ElementType } from "react";
 import clsx from "clsx";
