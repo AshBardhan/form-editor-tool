@@ -6,6 +6,8 @@ import { JSX } from "react";
 
 interface InputBlockProps {
   block: FormBlock;
+  editable?: boolean;
+  onChange?: (value: string) => void;
 }
 
 /**
@@ -15,7 +17,11 @@ interface InputBlockProps {
  * @param {InputBlockProps} props - The props for the component.
  * @returns {JSX.Element} The rendered component.
  */
-export const InputBlock = ({ block }: InputBlockProps): JSX.Element => {
+export const InputBlock = ({
+  block,
+  editable = false,
+  onChange,
+}: InputBlockProps): JSX.Element => {
   return (
     <div className="form-block flex flex-col gap-2">
       {getPropValue(block, "label") && (
@@ -26,10 +32,11 @@ export const InputBlock = ({ block }: InputBlockProps): JSX.Element => {
       <Input
         id={`input-${block.id}`}
         type={block.type}
-        readOnly
-        tabIndex={-1}
+        readOnly={!editable}
+        tabIndex={editable ? 0 : -1}
         required={Boolean(getPropValue(block, "required"))}
         placeholder={String(getPropValue(block, "placeholder"))}
+        onChange={(e) => onChange?.(e.target.value)}
       />
     </div>
   );
