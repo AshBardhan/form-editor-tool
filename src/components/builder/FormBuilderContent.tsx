@@ -14,7 +14,7 @@ import {
 } from "@dnd-kit/core";
 import { JSX, useState } from "react";
 import { hybridKeyboardCoordinates } from "@/lib/utils/keyboardUtils";
-import { useFormDataStore, useUIStateStore } from "@/lib/stores";
+import { useFormConfigStore, useUIStateStore } from "@/lib/stores";
 import { AnimatePresence } from "motion/react";
 import { Widget } from "@/lib/types/widget";
 import { FormBlock } from "@/lib/types/form";
@@ -47,9 +47,9 @@ export const FormBuilderContent = (): JSX.Element => {
     activeItem: null,
     source: null,
   });
-  const formBlocks = useFormDataStore((state) => state.form.blocks);
-  const moveFormBlock = useFormDataStore((state) => state.moveFormBlock);
-  const addFormBlock = useFormDataStore((state) => state.addFormBlock);
+  const formBlocks = useFormConfigStore((state) => state.form.blocks);
+  const moveFormBlock = useFormConfigStore((state) => state.moveFormBlock);
+  const addFormBlock = useFormConfigStore((state) => state.addFormBlock);
   const selectFormBlock = useUIStateStore((state) => state.selectFormBlock);
   const isSidebarCollapsed = useUIStateStore(
     (state) => state.isSidebarCollapsed,

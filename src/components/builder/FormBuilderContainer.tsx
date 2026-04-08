@@ -1,10 +1,10 @@
 "use client";
 
 import { JSX, useEffect } from "react";
-import { FormData } from "@/lib/types/form";
+import { FormConfig } from "@/lib/types/form";
 import { LoaderCircleIcon } from "lucide-react";
 import { switchTheme } from "@/lib/utils/domUtils";
-import { useFormDataStore, useUIStateStore } from "@/lib/stores";
+import { useFormConfigStore, useUIStateStore } from "@/lib/stores";
 import { useFetch } from "@/lib/hooks/useFetch";
 import { Header } from "@/components/layout/Header";
 import { FormBuilderHeader } from "@/components/builder/FormBuilderHeader";
@@ -18,8 +18,9 @@ interface FormBuilderContainerProps {
 /**
  * Form Builder Container
  * - Renders the form with prefilled data fetched from API if an 'id' is provided. Otherwise, renders an empty form.
- * - Switches the theme of the page based on the form data.
+ * - Switches the theme of the page based on the form config.
  * - Handles errors and loading states.
+ * - Clears localStorage when opening new form or existing form pages
  *
  * @param {FormBuilderContainerProps} props - The props for the component.
  * @returns {JSX.Element} The rendered component.
@@ -27,27 +28,39 @@ interface FormBuilderContainerProps {
 export const FormBuilderContainer = ({
   id,
 }: FormBuilderContainerProps): JSX.Element => {
-  const setForm = useFormDataStore((state) => state.setForm);
-  const resetForm = useFormDataStore((state) => state.resetForm);
+  const setForm = useFormConfigStore((state) => state.setForm);
+  const resetForm = useFormConfigStore((state) => state.resetForm);
+  const storedFormId = useFormConfigStore((state) => state.formId);
   const resetSidebar = useUIStateStore((state) => state.resetSidebar);
 
-  const { data, loading, error } = useFetch<FormData>(
+  const { data, loading, error } = useFetch<FormConfig>(
     id ? `/api/form/${id}` : "",
   );
+
+  // Clear existing form config data when opening new form page
+  useEffect(() => {
+    if (!id && storedFormId !== null) {
+      // Opening /forms/new but localStorage has data from an existing form
+      // Clear it to start fresh
+      resetForm();
+    }
+  }, [id, storedFormId, resetForm]);
 
   useEffect(() => {
     console.log("trigger", data);
     if (data) {
-      setForm(data);
+      // For existing forms: load data from API and override localStorage
+      setForm(data, id);
       switchTheme(data.theme);
     }
 
     return () => {
-      resetForm();
+      // Don't reset form config - let localStorage persistence handle it
+      // Only reset UI state and theme
       resetSidebar();
       switchTheme("");
     };
-  }, [data, setForm, resetForm, resetSidebar]);
+  }, [data, setForm, id, resetSidebar]);
 
   if (loading) {
     return (
@@ -72,7 +85,7 @@ export const FormBuilderContainer = ({
   return (
     <>
       <Header>
-        <FormBuilderHeader />
+        <FormBuilderHeader formId={id} />
       </Header>
       <PageContent>
         <FormBuilderContent />

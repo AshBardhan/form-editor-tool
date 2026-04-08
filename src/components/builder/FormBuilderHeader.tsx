@@ -3,19 +3,26 @@
 import { Button } from "@/components/ui/Button";
 import { ChevronLeftIcon, PanelLeft, PanelRight } from "lucide-react";
 import { JSX } from "react";
-import { useFormDataStore, useUIStateStore } from "@/lib/stores";
+import { useFormConfigStore, useUIStateStore } from "@/lib/stores";
 import { cn } from "@/lib/utils/styleUtils";
 import Link from "next/link";
+
+interface FormBuilderHeaderProps {
+  formId?: string;
+}
 
 /**
  * Form Builder Header
  * - Controls the toggling of left/right sidebars
  * - Render buttons for previewing and publishing the form.
  *
+ * @param {FormBuilderHeaderProps} props - The props for the component.
  * @returns {JSX.Element} The rendered component.
  */
-export const FormBuilderHeader = (): JSX.Element => {
-  const formTitle = useFormDataStore((state) => state.form.title);
+export const FormBuilderHeader = ({
+  formId,
+}: FormBuilderHeaderProps): JSX.Element => {
+  const formTitle = useFormConfigStore((state) => state.form.title);
   const isSidebarCollapsed = useUIStateStore(
     (state) => state.isSidebarCollapsed,
   );
@@ -57,10 +64,14 @@ export const FormBuilderHeader = (): JSX.Element => {
       </div>
       {/* Form Title */}
       <h1 className="flex-1 font-semibold text-center text-xl">{formTitle}</h1>
-      {/* Action Buttons - Just for display purpose. Not functional yet... */}
+      {/* Action Buttons */}
       <div className="shrink-0 w-50 flex items-center justify-end gap-2">
-        <Button variant="secondary" size="sm">
-          Preview
+        <Button variant="secondary" size="sm" asChild>
+          <Link
+            href={formId ? `/forms/${formId}/preview` : "/forms/new/preview"}
+          >
+            Preview
+          </Link>
         </Button>
         <Button variant="default" size="sm">
           Publish

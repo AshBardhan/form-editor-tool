@@ -65,7 +65,7 @@ export interface FormBlock {
   props: FormBlockPropConfig[];
 }
 
-export interface FormData {
+export interface FormConfig {
   title: string;
   theme: "light" | "dark";
   blocks: FormBlock[];

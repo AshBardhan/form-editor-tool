@@ -1,6 +1,6 @@
-import { FormData } from "@/lib/types/form";
+import { FormConfig } from "@/lib/types/form";
 
-export const sampleLightForm: FormData = {
+export const sampleLightForm: FormConfig = {
   title: "Profile Settings Form",
   theme: "light",
   blocks: [
@@ -48,6 +48,12 @@ export const sampleLightForm: FormData = {
           value: "Name",
         },
         {
+          key: "key",
+          label: "Key",
+          type: "string",
+          value: "name",
+        },
+        {
           key: "placeholder",
           label: "Placeholder",
           type: "string",
@@ -77,6 +83,12 @@ export const sampleLightForm: FormData = {
           label: "Label",
           type: "string",
           value: "Age",
+        },
+        {
+          key: "key",
+          label: "Key",
+          type: "string",
+          value: "age",
         },
         {
           key: "placeholder",
@@ -120,6 +132,12 @@ export const sampleLightForm: FormData = {
           label: "Label",
           type: "string",
           value: "Occupation",
+        },
+        {
+          key: "key",
+          label: "Key",
+          type: "string",
+          value: "occupation",
         },
         {
           key: "required",
@@ -166,6 +184,12 @@ export const sampleLightForm: FormData = {
       name: "radio-J11-aGpVAvdJMXD514G_j",
       props: [
         {
+          key: "key",
+          label: "Key",
+          type: "string",
+          value: "gender",
+        },
+        {
           key: "alignment",
           label: "Alignment",
           type: "select",
@@ -210,6 +234,12 @@ export const sampleLightForm: FormData = {
           value: "I accept terms and conditions",
         },
         {
+          key: "key",
+          label: "Key",
+          type: "string",
+          value: "accept-terms",
+        },
+        {
           key: "required",
           label: "Required",
           type: "boolean",
@@ -245,7 +275,7 @@ export const sampleLightForm: FormData = {
   ],
 };
 
-export const sampleDarkForm: FormData = {
+export const sampleDarkForm: FormConfig = {
   title: "Dark Settings Form",
   theme: "dark",
   blocks: [
@@ -312,6 +342,12 @@ export const sampleDarkForm: FormData = {
           value: "Contrast Level",
         },
         {
+          key: "key",
+          label: "Key",
+          type: "string",
+          value: "contrast-level",
+        },
+        {
           key: "placeholder",
           label: "Placeholder",
           type: "string",
@@ -356,6 +392,12 @@ export const sampleDarkForm: FormData = {
       name: "radio-fontsize",
       props: [
         {
+          key: "key",
+          label: "Key",
+          type: "string",
+          value: "font-size",
+        },
+        {
           key: "alignment",
           label: "Alignment",
           type: "select",
@@ -398,6 +440,12 @@ export const sampleDarkForm: FormData = {
           label: "Label",
           type: "string",
           value: "Enable dark mode notifications",
+        },
+        {
+          key: "key",
+          label: "Key",
+          type: "string",
+          value: "enable-notifications",
         },
         {
           key: "required",

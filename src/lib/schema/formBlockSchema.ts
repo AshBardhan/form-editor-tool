@@ -34,6 +34,7 @@ export const formBlockSchemas: Record<string, z.ZodSchema> = {
 
   text: z.object({
     label: requiredString("Label"),
+    key: requiredString("Key"),
     placeholder: optionalString,
     maxLength: nonNegativeOptionalNumber,
     required: z.boolean(),
@@ -42,6 +43,7 @@ export const formBlockSchemas: Record<string, z.ZodSchema> = {
   number: z
     .object({
       label: requiredString("Label"),
+      key: requiredString("Key"),
       placeholder: optionalString,
       min: optionalNumber,
       max: optionalNumber,
@@ -61,6 +63,7 @@ export const formBlockSchemas: Record<string, z.ZodSchema> = {
 
   email: z.object({
     label: requiredString("Label"),
+    key: requiredString("Key"),
     placeholder: optionalString,
     required: z.boolean(),
   }),
@@ -68,6 +71,7 @@ export const formBlockSchemas: Record<string, z.ZodSchema> = {
   password: z
     .object({
       label: requiredString("Label"),
+      key: requiredString("Key"),
       placeholder: optionalString,
       minLength: nonNegativeOptionalNumber,
       maxLength: z.number().min(1).optional(),
@@ -86,12 +90,14 @@ export const formBlockSchemas: Record<string, z.ZodSchema> = {
 
   url: z.object({
     label: requiredString("Label"),
+    key: requiredString("Key"),
     placeholder: optionalString,
     required: z.boolean(),
   }),
 
   textarea: z.object({
     label: requiredString("Label"),
+    key: requiredString("Key"),
     placeholder: optionalString,
     rows: nonNegativeOptionalNumber,
     maxLength: nonNegativeOptionalNumber,
@@ -100,10 +106,12 @@ export const formBlockSchemas: Record<string, z.ZodSchema> = {
 
   checkbox: z.object({
     label: requiredString("Label"),
+    key: requiredString("Key"),
     required: z.boolean(),
   }),
 
   radio: z.object({
+    key: requiredString("Key"),
     alignment: z.enum(["vertical", "horizontal"]),
     options: z
       .array(requiredString("Radio option"))
@@ -112,6 +120,7 @@ export const formBlockSchemas: Record<string, z.ZodSchema> = {
 
   select: z.object({
     label: requiredString("Label"),
+    key: requiredString("Key"),
     required: z.boolean(),
     placeholder: optionalString,
     options: z

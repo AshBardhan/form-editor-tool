@@ -38,6 +38,12 @@ export const blockPropTemplates: Record<
       value: "Text Field",
     },
     {
+      key: "key",
+      label: "Key",
+      type: "string",
+      value: "",
+    },
+    {
       key: "placeholder",
       label: "Placeholder",
       type: "string",
@@ -62,6 +68,12 @@ export const blockPropTemplates: Record<
       label: "Label",
       type: "string",
       value: "Number Field",
+    },
+    {
+      key: "key",
+      label: "Key",
+      type: "string",
+      value: "",
     },
     {
       key: "placeholder",
@@ -102,6 +114,12 @@ export const blockPropTemplates: Record<
       value: "Email Field",
     },
     {
+      key: "key",
+      label: "Key",
+      type: "string",
+      value: "",
+    },
+    {
       key: "placeholder",
       label: "Placeholder",
       type: "string",
@@ -120,6 +138,12 @@ export const blockPropTemplates: Record<
       label: "Label",
       type: "string",
       value: "Password Field",
+    },
+    {
+      key: "key",
+      label: "Key",
+      type: "string",
+      value: "",
     },
     {
       key: "placeholder",
@@ -154,6 +178,12 @@ export const blockPropTemplates: Record<
       value: "URL Field",
     },
     {
+      key: "key",
+      label: "Key",
+      type: "string",
+      value: "",
+    },
+    {
       key: "placeholder",
       label: "Placeholder",
       type: "string",
@@ -172,6 +202,12 @@ export const blockPropTemplates: Record<
       label: "Label",
       type: "string",
       value: "Textarea Field",
+    },
+    {
+      key: "key",
+      label: "Key",
+      type: "string",
+      value: "",
     },
     {
       key: "placeholder",
@@ -206,6 +242,12 @@ export const blockPropTemplates: Record<
       value: "Checkbox Label",
     },
     {
+      key: "key",
+      label: "Key",
+      type: "string",
+      value: "",
+    },
+    {
       key: "required",
       label: "Required",
       type: "boolean",
@@ -213,6 +255,12 @@ export const blockPropTemplates: Record<
     },
   ],
   radio: [
+    {
+      key: "key",
+      label: "Key",
+      type: "string",
+      value: "",
+    },
     {
       key: "alignment",
       label: "Alignment",
@@ -236,6 +284,12 @@ export const blockPropTemplates: Record<
       label: "Label",
       type: "string",
       value: "Select Label",
+    },
+    {
+      key: "key",
+      label: "Key",
+      type: "string",
+      value: "",
     },
     {
       key: "required",

@@ -9,7 +9,7 @@ import { useDroppable } from "@dnd-kit/core";
 import { JSX } from "react";
 import { DeviceList, DeviceType } from "@/lib/constants/device";
 import { FormBlock } from "@/lib/types/form";
-import { useFormDataStore } from "@/lib/stores/formDataStore";
+import { useFormConfigStore } from "@/lib/stores/formConfigStore";
 
 interface CanvasFormProps {
   overId: string | null;
@@ -48,7 +48,7 @@ export const CanvasForm = ({
   dragSource,
   currentDevice,
 }: CanvasFormProps): JSX.Element => {
-  const form = useFormDataStore((state) => state.form);
+  const form = useFormConfigStore((state) => state.form);
   const { setNodeRef } = useDroppable({ id: "canvas" });
   const isOverEnd = overId && !form.blocks.some((f) => f.id === overId);
   const currentDeviceMeta = DeviceList.find(

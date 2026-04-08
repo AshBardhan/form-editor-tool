@@ -57,6 +57,71 @@ export function getPropValue(
 }
 
 /**
+ * Converts a string to kebab-case.
+ * @param {string} str - The string to convert.
+ * @returns {string} The kebab-cased string.
+ */
+export function toKebabCase(str: string): string {
+  return str
+    .trim()
+    .toLowerCase()
+    .replace(/[^a-z0-9]+/g, "-") // Replace non-alphanumeric with hyphens
+    .replace(/^-+|-+$/g, ""); // Remove leading/trailing hyphens
+}
+
+/**
+ * Generates a unique key based on a label and existing blocks.
+ * Ensures uniqueness by appending a number if the key already exists.
+ * @param {string} label - The label to convert to a key.
+ * @param {FormBlock[]} existingBlocks - Array of existing form blocks.
+ * @param {string} currentBlockId - ID of the current block (to exclude from uniqueness check).
+ * @returns {string} A unique key in kebab-case.
+ */
+export function generateUniqueKey(
+  label: string,
+  existingBlocks: FormBlock[],
+  currentBlockId?: string,
+): string {
+  const baseKey = toKebabCase(label);
+  
+  // Get all existing keys except the current block
+  const existingKeys = existingBlocks
+    .filter((b) => b.id !== currentBlockId)
+    .map((b) => getPropValue(b, "key") as string)
+    .filter(Boolean);
+
+  // If base key doesn't exist, use it
+  if (!existingKeys.includes(baseKey)) {
+    return baseKey;
+  }
+
+  // Otherwise, append a number to make it unique
+  let counter = 1;
+  let uniqueKey = `${baseKey}-${counter}`;
+  while (existingKeys.includes(uniqueKey)) {
+    counter++;
+    uniqueKey = `${baseKey}-${counter}`;
+  }
+
+  return uniqueKey;
+}
+
+/**
+ * Derives a key from a form block.
+ * Uses the stored key if available, otherwise falls back to type-id.
+ * @param {FormBlock} block - The form block.
+ * @returns {string} The key in kebab-case.
+ */
+export function getFieldKey(block: FormBlock): string {
+  const key = getPropValue(block, "key");
+  if (key && typeof key === "string" && key.trim()) {
+    return key;
+  }
+  // Fallback: use type and first 8 chars of id
+  return `${block.type}-${block.id.substring(0, 8)}`;
+}
+
+/**
  * Retrieves a form block definition from the widget palette by type.
  * @param {FormBlockType} type - The type of the form block to retrieve.
  * @returns {Object | null} The form block definition including its schema, or null if not found.

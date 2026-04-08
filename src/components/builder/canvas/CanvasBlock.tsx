@@ -9,7 +9,7 @@ import { Button } from "@/components/ui/Button";
 import { CSSProperties, JSX } from "react";
 import {
   useFormBlockValidationStore,
-  useFormDataStore,
+  useFormConfigStore,
   useUIStateStore,
 } from "@/lib/stores";
 import { cn } from "@/lib/utils/styleUtils";
@@ -31,8 +31,8 @@ export const CanvasBlock = ({
   block,
   isGhostMode = false,
 }: CanvasBlockProps): JSX.Element => {
-  const cloneBlock = useFormDataStore((state) => state.cloneFormBlock);
-  const removeBlock = useFormDataStore((state) => state.removeFormBlock);
+  const cloneBlock = useFormConfigStore((state) => state.cloneFormBlock);
+  const removeBlock = useFormConfigStore((state) => state.removeFormBlock);
   const selectedBlockId = useUIStateStore((state) => state.selectedFormBlockId);
   const hoveredBlockId = useUIStateStore((state) => state.hoveredFormBlockId);
   const selectBlock = useUIStateStore((state) => state.selectFormBlock);

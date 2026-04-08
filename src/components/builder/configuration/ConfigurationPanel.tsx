@@ -24,7 +24,7 @@ import {
 import { FormBlockValueType } from "@/lib/types/form";
 import {
   useFormBlockValidationStore,
-  useFormDataStore,
+  useFormConfigStore,
   useUIStateStore,
 } from "@/lib/stores";
 import { AnimatePresence, motion } from "motion/react";
@@ -42,11 +42,11 @@ import { switchTheme } from "@/lib/utils/domUtils";
  */
 export const ConfigurationPanel = memo(
   function ConfigurationPanel(): JSX.Element {
-    const formTitle = useFormDataStore((state) => state.form.title);
-    const formTheme = useFormDataStore((state) => state.form.theme);
-    const formBlocks = useFormDataStore((state) => state.form.blocks);
-    const updateFormBlock = useFormDataStore((state) => state.updateFormBlock);
-    const updateForm = useFormDataStore((state) => state.updateForm);
+    const formTitle = useFormConfigStore((state) => state.form.title);
+    const formTheme = useFormConfigStore((state) => state.form.theme);
+    const formBlocks = useFormConfigStore((state) => state.form.blocks);
+    const updateFormBlock = useFormConfigStore((state) => state.updateFormBlock);
+    const updateForm = useFormConfigStore((state) => state.updateForm);
     const updateFormBlockErrors = useFormBlockValidationStore(
       (state) => state.updateFormBlockErrors,
     );
@@ -94,6 +94,31 @@ export const ConfigurationPanel = memo(
         );
         updateFormBlockErrors(selected.id, combined);
       } else {
+        // Schema validation passed, now check key uniqueness
+        const keyProp = selected.props.find((p) => p.key === "key");
+        const keyValue = keyProp?.value;
+        
+        if (keyProp && typeof keyValue === "string" && keyValue.trim()) {
+          // Check if any other block has the same key
+          const isDuplicate = formBlocks.some(
+            (block) =>
+              block.id !== selected.id &&
+              block.props.some(
+                (p) => p.key === "key" && p.value === keyValue,
+              ),
+          );
+
+          if (isDuplicate) {
+            const uniquenessError = {
+              key: ["Key must be unique across all form blocks"],
+            };
+            setErrors(uniquenessError);
+            updateFormBlockErrors(selected.id, uniquenessError.key);
+            return;
+          }
+        }
+
+        // All validations passed
         setErrors({});
         clearFormBlockErrors(selected.id);
       }
