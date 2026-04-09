@@ -15,6 +15,7 @@ interface FormPreviewProps {
  * Form Preview
  * - Renders all form blocks in preview mode
  * - Supports both read-only and editable modes
+ * - Collects form data on submission
  *
  * @param {FormPreviewProps} props - The props for the component.
  * @returns {JSX.Element} The rendered component.
@@ -23,7 +24,7 @@ export const FormPreview = ({
   form,
   editable = false,
 }: FormPreviewProps): JSX.Element => {
-  const { updateField } = useFormDataStore();
+  const { responses, updateField, resetResponses } = useFormDataStore();
 
   /**
    * Handles form field value changes
@@ -33,6 +34,29 @@ export const FormPreview = ({
    */
   const handleFieldChange = (key: string, value: FormBlockValueType) => {
     updateField(key, value);
+  };
+
+  /**
+   * Handles form submission
+   */
+  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+
+    // Form data is already collected in responses store!
+    console.log("Form submitted successfully!");
+    console.log("Form Data:", responses);
+
+    // You could also send this data to an API here
+    // Example: await fetch('/api/submit', { method: 'POST', body: JSON.stringify(responses) })
+  };
+
+  /**
+   * Handles form reset
+   */
+  const handleReset = (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    resetResponses();
+    console.log("Form reset");
   };
 
   /**
@@ -71,11 +95,13 @@ export const FormPreview = ({
         <InputRenderer
           block={block}
           editable={editable}
-          onChange={(value: FormBlockValueType) => handleFieldChange(getFieldKey(block), value)}
+          onChange={(value: FormBlockValueType) =>
+            handleFieldChange(getFieldKey(block), value)
+          }
         />
       );
     }
-    
+
     return <FormRenderer block={block} />;
   };
 
@@ -94,11 +120,9 @@ export const FormPreview = ({
           </div>
         ) : (
           <form
-            onSubmit={(e) => {
-              e.preventDefault();
-              console.log("Form submitted");
-            }}
-            className="p-8 space-y-6"
+            onSubmit={handleSubmit}
+            onReset={handleReset}
+            className="py-8 px-4"
           >
             {form.blocks.map((block) => (
               <div key={block.id} className="form-block-wrapper">

@@ -27,7 +27,7 @@ const POSITION_CLASS_MAP: Record<string, string> = {
 
 /**
  * Button Block
- * - Displays a button with title, variant, and alignment
+ * - Displays a single button with title, variant, and alignment
  *
  * @param {ButtonBlockProps} props - The props for the component.
  * @returns {JSX.Element} The rendered component.
@@ -37,9 +37,9 @@ export const ButtonBlock = ({ block }: ButtonBlockProps): JSX.Element => {
   const levelRaw = getPropValue(block, "level") ?? "primary";
   const positionRaw = getPropValue(block, "position") ?? "left";
 
-  const level = BUTTON_VARIANT_MAP[levelRaw as string as string] || "default";
+  const level = BUTTON_VARIANT_MAP[levelRaw as string] || "default";
   const alignmentClass =
-    POSITION_CLASS_MAP[positionRaw as string as string] || "justify-start";
+    POSITION_CLASS_MAP[positionRaw as string] || "justify-start";
 
   return (
     <div className={cn("form-block flex", alignmentClass)}>

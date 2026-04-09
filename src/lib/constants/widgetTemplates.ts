@@ -329,7 +329,7 @@ export const blockPropTemplates: Record<
       key: "title",
       label: "Title",
       type: "string",
-      value: "Buttton",
+      value: "Button",
     },
     {
       key: "level",
