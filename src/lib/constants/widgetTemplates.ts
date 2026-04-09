@@ -353,4 +353,60 @@ export const blockPropTemplates: Record<
       value: "left",
     },
   ],
+  buttons: [
+    {
+      key: "submitLabel",
+      label: "Submit Button Label",
+      type: "string",
+      value: "Submit",
+    },
+    {
+      key: "submitTheme",
+      label: "Submit Button Theme",
+      type: "select",
+      options: [
+        { value: "primary", label: "Primary" },
+        { value: "secondary", label: "Secondary" },
+        { value: "outline", label: "Outline" },
+        { value: "destructive", label: "Destructive" },
+      ],
+      value: "primary",
+    },
+    {
+      key: "resetLabel",
+      label: "Reset Button Label",
+      type: "string",
+      value: "Reset",
+    },
+    {
+      key: "resetTheme",
+      label: "Reset Button Theme",
+      type: "select",
+      options: [
+        { value: "primary", label: "Primary" },
+        { value: "secondary", label: "Secondary" },
+        { value: "outline", label: "Outline" },
+        { value: "destructive", label: "Destructive" },
+      ],
+      value: "outline",
+    },
+    {
+      key: "alignment",
+      label: "Alignment",
+      type: "select",
+      options: [
+        { value: "left", label: "Left" },
+        { value: "center", label: "Center" },
+        { value: "right", label: "Right" },
+        { value: "justified", label: "Justified" },
+      ],
+      value: "left",
+    },
+    {
+      key: "reverse",
+      label: "Reverse Order",
+      type: "boolean",
+      value: false,
+    },
+  ],
 };

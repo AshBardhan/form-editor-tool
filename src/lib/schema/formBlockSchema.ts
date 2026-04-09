@@ -138,4 +138,13 @@ export const formBlockSchemas: Record<string, z.ZodSchema> = {
     level: z.enum(["primary", "secondary"]),
     position: z.enum(["left", "center", "right"]),
   }),
+
+  buttons: z.object({
+    submitLabel: requiredString("Submit button label"),
+    submitTheme: z.enum(["primary", "secondary", "outline", "destructive"]),
+    resetLabel: requiredString("Reset button label"),
+    resetTheme: z.enum(["primary", "secondary", "outline", "destructive"]),
+    alignment: z.enum(["left", "center", "right", "justified"]),
+    reverse: z.boolean(),
+  }),
 };

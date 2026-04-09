@@ -9,7 +9,7 @@ export type InputBlockType =
   | "radio"
   | "checkbox"
   | "select";
-export type MediaBlockType = "button";
+export type MediaBlockType = "button" | "buttons";
 
 export type FormBlockType = TextBlockType | InputBlockType | MediaBlockType;
 
