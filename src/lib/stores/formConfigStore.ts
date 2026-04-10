@@ -11,8 +11,7 @@ import { getDefaultProps, generateUniqueKey } from "@/lib/utils/formUtils";
 
 interface FormConfigState {
   form: FormConfig;
-  formId: string | null;
-  setForm: (form: FormConfig, formId?: string) => void;
+  setForm: (form: FormConfig) => void;
   updateForm: (key: string, value: string) => void;
   resetForm: () => void;
   addFormBlock: (type: FormBlockType, index?: number) => string;
@@ -26,6 +25,7 @@ interface FormConfigState {
  * Initial form config with a default title, theme and an empty array of blocks.
  */
 const initialFormConfig: FormConfig = {
+  id: undefined, // No ID for new forms
   title: "Untitled Form",
   theme: "light",
   blocks: [],
@@ -39,8 +39,7 @@ export const useFormConfigStore = create<FormConfigState>()(
   persist(
     (set, get) => ({
       form: initialFormConfig,
-      formId: null, // null = new form, string = existing form ID
-      setForm: (form, formId) => set({ form, formId: formId || null }),
+      setForm: (form) => set({ form }),
       updateForm: (key, value) => {
         set((state) => ({
           form: {
@@ -52,19 +51,19 @@ export const useFormConfigStore = create<FormConfigState>()(
       resetForm: () => {
         set({
           form: initialFormConfig,
-          formId: null,
         });
       },
       addFormBlock: (type, index) => {
         const state = get();
         const id = nanoid();
         const defaultProps = getDefaultProps(type);
-        
+
         // Auto-generate key from label if the block has a key prop
         const updatedProps = defaultProps.map((prop) => {
           if (prop.key === "key") {
             const labelProp = defaultProps.find((p) => p.key === "label");
-            const label = typeof labelProp?.value === "string" ? labelProp.value : type;
+            const label =
+              typeof labelProp?.value === "string" ? labelProp.value : type;
             // Generate unique key based on current blocks
             const uniqueKey = generateUniqueKey(label, state.form.blocks);
             return { ...prop, value: uniqueKey };
@@ -115,12 +114,12 @@ export const useFormConfigStore = create<FormConfigState>()(
             ...state.form,
             blocks: state.form.blocks.map((b) => {
               if (b.id !== id) return b;
-              
+
               // Update the specified prop
               let updatedProps = b.props.map((p) =>
                 p.key === key ? { ...p, value } : p,
               );
-              
+
               // If label is being updated and key exists, auto-update key
               if (key === "label") {
                 const keyProp = updatedProps.find((p) => p.key === "key");
@@ -135,7 +134,7 @@ export const useFormConfigStore = create<FormConfigState>()(
                   );
                 }
               }
-              
+
               return {
                 ...b,
                 props: updatedProps,
@@ -150,19 +149,24 @@ export const useFormConfigStore = create<FormConfigState>()(
           if (!original) return {};
 
           const newId = nanoid();
-          
+
           // Clone props and update key if it exists
           const clonedProps = original.props.map((p) => {
             if (p.key === "key" && p.value) {
               // Generate unique key for the cloned block
-              const labelProp = original.props.find((prop) => prop.key === "label");
-              const label = typeof labelProp?.value === "string" ? labelProp.value : original.type;
+              const labelProp = original.props.find(
+                (prop) => prop.key === "label",
+              );
+              const label =
+                typeof labelProp?.value === "string"
+                  ? labelProp.value
+                  : original.type;
               const uniqueKey = generateUniqueKey(label, state.form.blocks);
               return { ...p, value: uniqueKey };
             }
             return { ...p };
           });
-          
+
           const clonedBlock: FormBlock = {
             ...original,
             id: newId,

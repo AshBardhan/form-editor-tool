@@ -1,6 +1,6 @@
 "use client";
 
-import { JSX, useEffect } from "react";
+import { JSX, useEffect, useState } from "react";
 import { FormConfig } from "@/lib/types/form";
 import { LoaderCircleIcon } from "lucide-react";
 import { switchTheme } from "@/lib/utils/domUtils";
@@ -17,10 +17,9 @@ interface FormBuilderContainerProps {
 
 /**
  * Form Builder Container
- * - Renders the form with prefilled data fetched from API if an 'id' is provided. Otherwise, renders an empty form.
- * - Switches the theme of the page based on the form config.
- * - Handles errors and loading states.
- * - Clears localStorage when opening new form or existing form pages
+ * - Smart loading: Uses localStorage when form.id matches route id (instant load)
+ * - Fetches from API only when needed (mismatch, first visit, or direct URL)
+ * - Handles new and existing forms with proper state management
  *
  * @param {FormBuilderContainerProps} props - The props for the component.
  * @returns {JSX.Element} The rendered component.
@@ -28,39 +27,61 @@ interface FormBuilderContainerProps {
 export const FormBuilderContainer = ({
   id,
 }: FormBuilderContainerProps): JSX.Element => {
+  const storeForm = useFormConfigStore((state) => state.form);
   const setForm = useFormConfigStore((state) => state.setForm);
   const resetForm = useFormConfigStore((state) => state.resetForm);
-  const storedFormId = useFormConfigStore((state) => state.formId);
   const resetSidebar = useUIStateStore((state) => state.resetSidebar);
+  const [shouldFetch, setShouldFetch] = useState(false);
+  const [isReady, setIsReady] = useState(false);
 
   const { data, loading, error } = useFetch<FormConfig>(
-    id ? `/api/form/${id}` : "",
+    shouldFetch && id ? `/api/form/${id}` : "",
   );
 
-  // Clear existing form config data when opening new form page
+  // Smart loading logic
   useEffect(() => {
-    if (!id && storedFormId !== null) {
-      // Opening /forms/new but localStorage has data from an existing form
-      // Clear it to start fresh
-      resetForm();
+    // Case 1: New form (no id)
+    if (!id) {
+      // If stored form has an id, it's from a different form → reset
+      if (storeForm.id) {
+        resetForm();
+      }
+      // Otherwise use localStorage (new form in progress)
+      setIsReady(true);
+      return;
     }
-  }, [id, storedFormId, resetForm]);
 
+    // Case 2: Existing form - check if localStorage matches
+    if (storeForm.id === id) {
+      // Match → Use localStorage, no fetch needed (instant load)
+      setIsReady(true);
+      return;
+    }
+
+    // Case 3: Mismatch or empty → Fetch from API
+    setShouldFetch(true);
+  }, [id, storeForm.id, resetForm]);
+
+  // Update store when API data arrives
   useEffect(() => {
-    console.log("trigger", data);
     if (data) {
-      // For existing forms: load data from API and override localStorage
-      setForm(data, id);
-      switchTheme(data.theme);
+      setForm(data);
+      setShouldFetch(false);
+      setIsReady(true);
+    }
+  }, [data, setForm]);
+
+  // Apply theme from store
+  useEffect(() => {
+    if (isReady) {
+      switchTheme(storeForm.theme);
     }
 
     return () => {
-      // Don't reset form config - let localStorage persistence handle it
-      // Only reset UI state and theme
       resetSidebar();
       switchTheme("");
     };
-  }, [data, setForm, id, resetSidebar]);
+  }, [isReady, storeForm.theme, resetSidebar]);
 
   if (loading) {
     return (

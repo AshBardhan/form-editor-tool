@@ -66,6 +66,7 @@ export interface FormBlock {
 }
 
 export interface FormConfig {
+  id?: string; // Form ID for tracking (undefined for new forms)
   title: string;
   theme: "light" | "dark";
   blocks: FormBlock[];

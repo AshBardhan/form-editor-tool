@@ -1,4 +1,4 @@
-import { FormPreviewNew } from "@/components/preview/FormPreviewNew";
+import { FormPreviewContainer } from "@/components/preview/FormPreviewContainer";
 import { JSX } from "react";
 
 /**
@@ -9,5 +9,5 @@ import { JSX } from "react";
  * @returns {JSX.Element} The rendered page component.
  */
 export default function NewFormPreviewPage(): JSX.Element {
-  return <FormPreviewNew />;
+  return <FormPreviewContainer />;
 }
