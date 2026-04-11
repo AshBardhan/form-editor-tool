@@ -7,6 +7,7 @@ import { JSX } from "react";
 interface TextareaBlockProps {
   block: FormBlock;
   editable?: boolean;
+  value?: string;
   onChange?: (value: string) => void;
 }
 
@@ -20,8 +21,11 @@ interface TextareaBlockProps {
 export const TextareaBlock = ({
   block,
   editable = false,
+  value,
   onChange,
 }: TextareaBlockProps): JSX.Element => {
+  const defaultValue = getPropValue(block, "value") as string | undefined;
+  const controlledValue = value ?? defaultValue ?? "";
   return (
     <div className="form-block flex flex-col gap-2">
       {getPropValue(block, "label") && (
@@ -34,7 +38,7 @@ export const TextareaBlock = ({
         className="resize-y"
         readOnly={!editable}
         tabIndex={editable ? 0 : -1}
-        value={String(getPropValue(block, "value") || "")}
+        value={controlledValue}
         placeholder={String(getPropValue(block, "placeholder"))}
         required={Boolean(getPropValue(block, "required"))}
         rows={Number(getPropValue(block, "rows") || 3)}

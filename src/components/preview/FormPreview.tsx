@@ -24,7 +24,7 @@ export const FormPreview = ({
   form,
   editable = false,
 }: FormPreviewProps): JSX.Element => {
-  const { responses, updateField, resetResponses } = useFormDataStore();
+  const { formData, updateFormData, resetFormData } = useFormDataStore();
 
   /**
    * Handles form field value changes
@@ -33,7 +33,7 @@ export const FormPreview = ({
    * @param {FormBlockValueType} value - The field value.
    */
   const handleFieldChange = (key: string, value: FormBlockValueType) => {
-    updateField(key, value);
+    updateFormData(key, value);
   };
 
   /**
@@ -42,12 +42,12 @@ export const FormPreview = ({
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
-    // Form data is already collected in responses store!
+    // Form data is already collected in form data store!
     console.log("Form submitted successfully!");
-    console.log("Form Data:", responses);
+    console.log("Form Data:", formData);
 
     // You could also send this data to an API here
-    // Example: await fetch('/api/submit', { method: 'POST', body: JSON.stringify(responses) })
+    // Example: await fetch('/api/submit', { method: 'POST', body: JSON.stringify(formData) })
   };
 
   /**
@@ -55,7 +55,7 @@ export const FormPreview = ({
    */
   const handleReset = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    resetResponses();
+    resetFormData();
     console.log("Form reset");
   };
 
@@ -89,14 +89,20 @@ export const FormPreview = ({
       const InputRenderer = FormRenderer as React.ComponentType<{
         block: FormBlock;
         editable?: boolean;
+        value?: FormBlockValueType;
         onChange?: (value: FormBlockValueType) => void;
       }>;
+
+      const fieldKey = getFieldKey(block);
+      const currentValue = formData[fieldKey];
+
       return (
         <InputRenderer
           block={block}
           editable={editable}
+          value={currentValue}
           onChange={(value: FormBlockValueType) =>
-            handleFieldChange(getFieldKey(block), value)
+            handleFieldChange(fieldKey, value)
           }
         />
       );

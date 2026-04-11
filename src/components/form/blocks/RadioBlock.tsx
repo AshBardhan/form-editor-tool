@@ -7,6 +7,7 @@ import { JSX } from "react";
 interface RadioBlockProps {
   block: FormBlock;
   editable?: boolean;
+  value?: string;
   onChange?: (value: string) => void;
 }
 
@@ -20,16 +21,20 @@ interface RadioBlockProps {
 export const RadioBlock = ({
   block,
   editable = false,
+  value,
   onChange,
 }: RadioBlockProps): JSX.Element => {
   const alignment = (getPropValue(block, "alignment") ?? "vertical") as
     | "horizontal"
     | "vertical";
   const options = (getPropValue(block, "options") ?? []) as string[];
+  const defaultValue = getPropValue(block, "value") as string | undefined;
+  const controlledValue = value ?? defaultValue;
 
   return (
     <RadioGroup
       name={`radio-${block.id}`}
+      value={controlledValue}
       alignment={alignment}
       className="form-block"
       onValueChange={onChange}

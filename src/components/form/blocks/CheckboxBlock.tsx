@@ -7,6 +7,7 @@ import { JSX } from "react";
 interface CheckboxBlockProps {
   block: FormBlock;
   editable?: boolean;
+  value?: boolean;
   onChange?: (value: boolean) => void;
 }
 
@@ -20,12 +21,16 @@ interface CheckboxBlockProps {
 export const CheckboxBlock = ({
   block,
   editable = false,
+  value,
   onChange,
 }: CheckboxBlockProps): JSX.Element => {
+  const defaultValue = getPropValue(block, "checked") as boolean | undefined;
+  const controlledValue = value ?? defaultValue ?? false;
   return (
     <div className="form-block flex gap-2 items-center">
       <Checkbox
         readOnly={!editable}
+        checked={controlledValue}
         id={`checkbox-${block.id}`}
         tabIndex={editable ? 0 : -1}
         onChange={(e) => onChange?.(e.target.checked)}

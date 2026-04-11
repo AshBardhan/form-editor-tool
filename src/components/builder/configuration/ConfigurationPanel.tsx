@@ -45,7 +45,9 @@ export const ConfigurationPanel = memo(
     const formTitle = useFormConfigStore((state) => state.form.title);
     const formTheme = useFormConfigStore((state) => state.form.theme);
     const formBlocks = useFormConfigStore((state) => state.form.blocks);
-    const updateFormBlock = useFormConfigStore((state) => state.updateFormBlock);
+    const updateFormBlock = useFormConfigStore(
+      (state) => state.updateFormBlock,
+    );
     const updateForm = useFormConfigStore((state) => state.updateForm);
     const updateFormBlockErrors = useFormBlockValidationStore(
       (state) => state.updateFormBlockErrors,
@@ -97,15 +99,13 @@ export const ConfigurationPanel = memo(
         // Schema validation passed, now check key uniqueness
         const keyProp = selected.props.find((p) => p.key === "key");
         const keyValue = keyProp?.value;
-        
+
         if (keyProp && typeof keyValue === "string" && keyValue.trim()) {
           // Check if any other block has the same key
           const isDuplicate = formBlocks.some(
             (block) =>
               block.id !== selected.id &&
-              block.props.some(
-                (p) => p.key === "key" && p.value === keyValue,
-              ),
+              block.props.some((p) => p.key === "key" && p.value === keyValue),
           );
 
           if (isDuplicate) {

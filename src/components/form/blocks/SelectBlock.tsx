@@ -15,6 +15,7 @@ import { getPropValue } from "@/lib/utils/formUtils";
 interface SelectBlockProps {
   block: FormBlock;
   editable?: boolean;
+  value?: string;
   onChange?: (value: string) => void;
 }
 
@@ -28,17 +29,19 @@ interface SelectBlockProps {
 export const SelectBlock = ({
   block,
   editable = false,
+  value,
   onChange,
 }: SelectBlockProps): JSX.Element => {
   const label = getPropValue(block, "label");
   const options = (getPropValue(block, "options") ?? []) as string[];
-  const value = (getPropValue(block, "value") ?? "") as string;
+  const defaultValue = (getPropValue(block, "value") ?? "") as string;
+  const controlledValue = value ?? defaultValue;
   const placeholder = (getPropValue(block, "placeholder") ?? "") as string;
 
   return (
     <div className="form-block flex flex-col gap-2">
       {label && <Label htmlFor={`select-${block.id}`}>{label}</Label>}
-      <Select value={value} onValueChange={onChange}>
+      <Select value={controlledValue} onValueChange={onChange}>
         <SelectTrigger
           id={`select-${block.id}`}
           className="w-full"

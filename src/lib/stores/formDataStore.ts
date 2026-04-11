@@ -6,30 +6,26 @@ import { FormBlockValueType } from "@/lib/types/form";
  * - Stores user input for form field data in preview/editable mode
  */
 interface FormDataState {
-  responses: Record<string, FormBlockValueType>;
-  updateField: (key: string, value: FormBlockValueType) => void;
-  resetResponses: () => void;
-  getField: (key: string) => FormBlockValueType | undefined;
+  formData: Record<string, FormBlockValueType>;
+  updateFormData: (key: string, value: FormBlockValueType) => void;
+  resetFormData: () => void;
 }
 
 /**
  * Zustand store for managing form field data in preview/editable mode.
  */
 export const useFormDataStore = create<FormDataState>((set, get) => ({
-  responses: {},
-  updateField: (key, value) => {
+  formData: {},
+  updateFormData: (key, value) => {
     console.log("Setting field value:", key, "=", value);
     set((state) => ({
-      responses: {
-        ...state.responses,
+      formData: {
+        ...state.formData,
         [key]: value,
       },
     }));
   },
-  resetResponses: () => {
-    set({ responses: {} });
-  },
-  getField: (key) => {
-    return get().responses[key];
+  resetFormData: () => {
+    set({ formData: {} });
   },
 }));

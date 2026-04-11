@@ -83,7 +83,7 @@ export function generateUniqueKey(
   currentBlockId?: string,
 ): string {
   const baseKey = toKebabCase(label);
-  
+
   // Get all existing keys except the current block
   const existingKeys = existingBlocks
     .filter((b) => b.id !== currentBlockId)

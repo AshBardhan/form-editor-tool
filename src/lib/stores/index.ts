@@ -5,7 +5,7 @@
  * - FormConfigStore: Manages form configurations and block operations
  * - BlockValidationStore: Manages block validation errors-
  * - UIStateStore: Manages UI state like selections and sidebar state-
- * - FormDataStore: Manages form field responses in preview/editable mode
+ * - FormDataStore: Manages form data in preview/editable mode
  *
  * Benefits of separation:
  * 1. Reduces unnecessary re-renders by isolating frequently changing state
