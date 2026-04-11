@@ -35,7 +35,8 @@ export const SelectBlock = ({
   const label = getPropValue(block, "label");
   const required = getPropValue(block, "required") || false;
   const options = (getPropValue(block, "options") ?? []) as string[];
-  const defaultValue = (getPropValue(block, "value") ?? "") as string;
+  const blockValue = (getPropValue(block, "value") ?? "") as string;
+  const defaultValue = required ? blockValue || options[0] || "" : blockValue;
   const controlledValue = value ?? defaultValue;
   const placeholder = (getPropValue(block, "placeholder") ?? "") as string;
 
