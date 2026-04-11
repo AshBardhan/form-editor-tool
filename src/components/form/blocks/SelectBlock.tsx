@@ -33,6 +33,7 @@ export const SelectBlock = ({
   onChange,
 }: SelectBlockProps): JSX.Element => {
   const label = getPropValue(block, "label");
+  const required = getPropValue(block, "required") || false;
   const options = (getPropValue(block, "options") ?? []) as string[];
   const defaultValue = (getPropValue(block, "value") ?? "") as string;
   const controlledValue = value ?? defaultValue;
@@ -40,7 +41,12 @@ export const SelectBlock = ({
 
   return (
     <div className="form-block flex flex-col gap-2">
-      {label && <Label htmlFor={`select-${block.id}`}>{label}</Label>}
+      {label && (
+        <Label htmlFor={`select-${block.id}`}>
+          {label}
+          {required && <span className="text-red-500 ml-1">*</span>}
+        </Label>
+      )}
       <Select value={controlledValue} onValueChange={onChange}>
         <SelectTrigger
           id={`select-${block.id}`}

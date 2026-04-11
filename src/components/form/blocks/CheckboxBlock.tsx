@@ -24,8 +24,11 @@ export const CheckboxBlock = ({
   value,
   onChange,
 }: CheckboxBlockProps): JSX.Element => {
+  const label = getPropValue(block, "label");
+  const required = getPropValue(block, "required") || false;
   const defaultValue = getPropValue(block, "checked") as boolean | undefined;
   const controlledValue = value ?? defaultValue ?? false;
+
   return (
     <div className="form-block flex gap-2 items-center">
       <Checkbox
@@ -36,7 +39,8 @@ export const CheckboxBlock = ({
         onChange={(e) => onChange?.(e.target.checked)}
       />
       <Label htmlFor={`checkbox-${block.id}`}>
-        {getPropValue(block, "label")}
+        {label}
+        {required && <span className="text-red-500 ml-1">*</span>}
       </Label>
     </div>
   );

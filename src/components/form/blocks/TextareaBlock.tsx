@@ -24,13 +24,19 @@ export const TextareaBlock = ({
   value,
   onChange,
 }: TextareaBlockProps): JSX.Element => {
+  const label = getPropValue(block, "label");
+  const required = getPropValue(block, "required") || false;
+  const placeholder = String(getPropValue(block, "placeholder"));
+  const rows = Number(getPropValue(block, "rows") || 3);
   const defaultValue = getPropValue(block, "value") as string | undefined;
   const controlledValue = value ?? defaultValue ?? "";
+
   return (
     <div className="form-block flex flex-col gap-2">
-      {getPropValue(block, "label") && (
+      {label && (
         <Label htmlFor={`textarea-${block.id}`}>
-          {getPropValue(block, "label")}
+          {label}
+          {required && <span className="text-red-500 ml-1">*</span>}
         </Label>
       )}
       <Textarea
@@ -39,9 +45,9 @@ export const TextareaBlock = ({
         readOnly={!editable}
         tabIndex={editable ? 0 : -1}
         value={controlledValue}
-        placeholder={String(getPropValue(block, "placeholder"))}
-        required={Boolean(getPropValue(block, "required"))}
-        rows={Number(getPropValue(block, "rows") || 3)}
+        placeholder={placeholder}
+        required={Boolean(required)}
+        rows={rows}
         onChange={(e) => onChange?.(e.target.value)}
       />
     </div>

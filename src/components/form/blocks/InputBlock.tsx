@@ -24,13 +24,18 @@ export const InputBlock = ({
   value,
   onChange,
 }: InputBlockProps): JSX.Element => {
+  const label = getPropValue(block, "label");
+  const required = getPropValue(block, "required") || false;
+  const placeholder = String(getPropValue(block, "placeholder"));
   const defaultValue = getPropValue(block, "value") as string | undefined;
   const controlledValue = value ?? defaultValue ?? "";
+
   return (
     <div className="form-block flex flex-col gap-2">
-      {getPropValue(block, "label") && (
+      {label && (
         <Label htmlFor={`input-${block.id}`}>
-          {getPropValue(block, "label")}
+          {label}
+          {required && <span className="text-red-500 ml-1">*</span>}
         </Label>
       )}
       <Input
@@ -39,8 +44,8 @@ export const InputBlock = ({
         value={controlledValue}
         readOnly={!editable}
         tabIndex={editable ? 0 : -1}
-        required={Boolean(getPropValue(block, "required"))}
-        placeholder={String(getPropValue(block, "placeholder"))}
+        required={Boolean(required)}
+        placeholder={placeholder}
         onChange={(e) => onChange?.(e.target.value)}
       />
     </div>
