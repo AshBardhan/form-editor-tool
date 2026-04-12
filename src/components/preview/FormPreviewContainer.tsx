@@ -5,7 +5,7 @@ import { FormConfig } from "@/lib/types/form";
 import { LoaderCircleIcon } from "lucide-react";
 import { switchTheme } from "@/lib/utils/domUtils";
 import { useFetch } from "@/lib/hooks/useFetch";
-import { useFormConfigStore } from "@/lib/stores";
+import { useFormConfigStore, useFormDataStore } from "@/lib/stores";
 import { Header } from "@/components/layout/Header";
 import { FormPreviewHeader } from "@/components/preview/FormPreviewHeader";
 import { FormPreview } from "@/components/preview/FormPreview";
@@ -29,6 +29,7 @@ export const FormPreviewContainer = ({
 }: FormPreviewContainerProps): JSX.Element => {
   const storeForm = useFormConfigStore((state) => state.form);
   const resetForm = useFormConfigStore((state) => state.resetForm);
+  const resetFormData = useFormDataStore((state) => state.resetFormData);
   const [shouldFetch, setShouldFetch] = useState(false);
   const [formConfig, setFormConfig] = useState<FormConfig | null>(null);
 
@@ -36,6 +37,11 @@ export const FormPreviewContainer = ({
   const { data, loading, error } = useFetch<FormConfig>(
     shouldFetch && id ? `/api/form/${id}` : "",
   );
+
+  // Reset form data on mount to ensure clean preview state
+  useEffect(() => {
+    resetFormData();
+  }, []);
 
   // Smart loading logic
   useEffect(() => {
