@@ -2,6 +2,7 @@
 
 import React, { JSX } from "react";
 import { FormConfig, FormBlock, FormBlockValueType } from "@/lib/types/form";
+import Text from "@/components/ui/Text";
 import { widgetBlockRenderers } from "@/components/form/blocks";
 import { useFormDataStore } from "@/lib/stores";
 import { getFieldKey } from "@/lib/utils/formUtils";
@@ -124,14 +125,11 @@ export const FormPreviewContent = ({
         style={{ maxWidth: currentDeviceMeta?.size }}
       >
         {form.blocks.length === 0 ? (
-          <div className="min-h-100 flex items-center justify-center text-gray-500 dark:text-gray-400">
-            <p className="text-center">
-              No form blocks found.
-              <br />
-              <span className="text-sm">
-                Please add blocks in the form builder.
-              </span>
-            </p>
+          <div className="h-full text-gray-500 dark:text-white transition-colors flex flex-col items-center justify-center">
+            <Text variant="h3">Empty form</Text>
+            <Text variant="p" className="text-sm">
+              Please add widgets from the form builder.
+            </Text>
           </div>
         ) : (
           <form onSubmit={handleSubmit} onReset={handleReset}>

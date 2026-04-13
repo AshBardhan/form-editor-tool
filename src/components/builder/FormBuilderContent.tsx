@@ -44,7 +44,7 @@ export const FormBuilderContent = (): JSX.Element => {
     activeItem: null,
     source: null,
   });
-  const formBlocks = useFormConfigStore((state) => state.form.blocks);
+  const formBlocks = useFormConfigStore((state) => state.formConfig.blocks);
   const moveFormBlock = useFormConfigStore((state) => state.moveFormBlock);
   const addFormBlock = useFormConfigStore((state) => state.addFormBlock);
   const selectFormBlock = useUIStateStore((state) => state.selectFormBlock);

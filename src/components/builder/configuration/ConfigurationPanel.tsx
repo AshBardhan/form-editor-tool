@@ -42,13 +42,15 @@ import { switchTheme } from "@/lib/utils/domUtils";
  */
 export const ConfigurationPanel = memo(
   function ConfigurationPanel(): JSX.Element {
-    const formTitle = useFormConfigStore((state) => state.form.title);
-    const formTheme = useFormConfigStore((state) => state.form.theme);
-    const formBlocks = useFormConfigStore((state) => state.form.blocks);
+    const formTitle = useFormConfigStore((state) => state.formConfig.title);
+    const formTheme = useFormConfigStore((state) => state.formConfig.theme);
+    const formBlocks = useFormConfigStore((state) => state.formConfig.blocks);
     const updateFormBlock = useFormConfigStore(
       (state) => state.updateFormBlock,
     );
-    const updateForm = useFormConfigStore((state) => state.updateForm);
+    const updateFormConfig = useFormConfigStore(
+      (state) => state.updateFormConfig,
+    );
     const updateFormBlockErrors = useFormBlockValidationStore(
       (state) => state.updateFormBlockErrors,
     );
@@ -72,7 +74,7 @@ export const ConfigurationPanel = memo(
      */
     const onThemeChange = (value: string) => {
       switchTheme(value);
-      updateForm("theme", value);
+      updateFormConfig("theme", value);
     };
 
     /**
@@ -286,7 +288,7 @@ export const ConfigurationPanel = memo(
                     id="form-title"
                     value={formTitle}
                     className="focus-visible:ring-0 focus-visible:shadow-none!"
-                    onChange={(e) => updateForm("title", e.target.value)}
+                    onChange={(e) => updateFormConfig("title", e.target.value)}
                   />
                 </div>
 

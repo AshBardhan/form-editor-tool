@@ -22,7 +22,7 @@ interface FormBuilderHeaderProps {
 export const FormBuilderHeader = ({
   formId,
 }: FormBuilderHeaderProps): JSX.Element => {
-  const formTitle = useFormConfigStore((state) => state.form.title);
+  const formTitle = useFormConfigStore((state) => state.formConfig.title);
   const isSidebarCollapsed = useUIStateStore(
     (state) => state.isSidebarCollapsed,
   );

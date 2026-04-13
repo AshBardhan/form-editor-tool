@@ -9,6 +9,7 @@ import { useDroppable } from "@dnd-kit/core";
 import { JSX } from "react";
 import { FormBlock } from "@/lib/types/form";
 import { useFormConfigStore } from "@/lib/stores/formConfigStore";
+import Text from "@/components/ui/Text";
 
 interface CanvasFormProps {
   overId: string | null;
@@ -27,8 +28,11 @@ const DropPlaceholder = (): JSX.Element => (
  * Drop Zero State Content
  */
 const DropZeroState = (): JSX.Element => (
-  <div className="h-full text-gray-500 border dark:text-white shadow dark:shadow-white/80 transition-colors border-dashed flex items-center justify-center text-sm">
-    Drop widgets to create form
+  <div className="h-full text-gray-500 dark:text-white transition-colors flex flex-col items-center justify-center">
+    <Text variant="h3">Empty form</Text>
+    <Text variant="p" className="text-sm">
+      Please drop widgets to create form.
+    </Text>
   </div>
 );
 
@@ -45,23 +49,23 @@ export const CanvasForm = ({
   activeDragItem,
   dragSource,
 }: CanvasFormProps): JSX.Element => {
-  const form = useFormConfigStore((state) => state.form);
+  const formConfig = useFormConfigStore((state) => state.formConfig);
   const { setNodeRef } = useDroppable({ id: "canvas" });
-  const isOverEnd = overId && !form.blocks.some((f) => f.id === overId);
+  const isOverEnd = overId && !formConfig.blocks.some((f) => f.id === overId);
 
   return (
     <div className="form-content" ref={setNodeRef}>
       <SortableContext
-        items={form.blocks.map((f) => f.id)}
+        items={formConfig.blocks.map((f) => f.id)}
         strategy={verticalListSortingStrategy}
       >
         {/* Empty canvas state */}
-        {form.blocks.length === 0 && !overId ? (
+        {formConfig.blocks.length === 0 && !overId ? (
           <DropZeroState />
         ) : (
           <>
             {/* Form canvas state with dropped and configured blocks */}
-            {form.blocks.map((block) => (
+            {formConfig.blocks.map((block) => (
               <div className="relative" key={block.id}>
                 {/* Drop placeholder in the middle of the list */}
                 {overId === block.id &&

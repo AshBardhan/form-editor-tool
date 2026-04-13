@@ -27,9 +27,9 @@ interface FormBuilderContainerProps {
 export const FormBuilderContainer = ({
   id,
 }: FormBuilderContainerProps): JSX.Element => {
-  const storeForm = useFormConfigStore((state) => state.form);
-  const setForm = useFormConfigStore((state) => state.setForm);
-  const resetForm = useFormConfigStore((state) => state.resetForm);
+  const formConfig = useFormConfigStore((state) => state.formConfig);
+  const setFormConfig = useFormConfigStore((state) => state.setFormConfig);
+  const resetFormConfig = useFormConfigStore((state) => state.resetFormConfig);
   const resetSidebar = useUIStateStore((state) => state.resetSidebar);
   const [shouldFetch, setShouldFetch] = useState(false);
   const [isReady, setIsReady] = useState(false);
@@ -43,8 +43,8 @@ export const FormBuilderContainer = ({
     // Case 1: New form (no id)
     if (!id) {
       // If stored form has an id, it's from a different form → reset
-      if (storeForm.id) {
-        resetForm();
+      if (formConfig.id) {
+        resetFormConfig();
       }
       // Otherwise use localStorage (new form in progress)
       setIsReady(true);
@@ -52,7 +52,7 @@ export const FormBuilderContainer = ({
     }
 
     // Case 2: Existing form - check if localStorage matches
-    if (storeForm.id === id) {
+    if (formConfig.id === id) {
       // Match → Use localStorage, no fetch needed (instant load)
       setIsReady(true);
       return;
@@ -60,28 +60,28 @@ export const FormBuilderContainer = ({
 
     // Case 3: Mismatch or empty → Fetch from API
     setShouldFetch(true);
-  }, [id, storeForm.id, resetForm]);
+  }, [id, formConfig.id, resetFormConfig]);
 
   // Update store when API data arrives
   useEffect(() => {
     if (data) {
-      setForm(data);
+      setFormConfig(data);
       setShouldFetch(false);
       setIsReady(true);
     }
-  }, [data, setForm]);
+  }, [data, setFormConfig]);
 
   // Apply theme from store
   useEffect(() => {
     if (isReady) {
-      switchTheme(storeForm.theme);
+      switchTheme(formConfig.theme);
     }
 
     return () => {
       resetSidebar();
       switchTheme("");
     };
-  }, [isReady, storeForm.theme, resetSidebar]);
+  }, [isReady, formConfig.theme, resetSidebar]);
 
   if (loading) {
     return (

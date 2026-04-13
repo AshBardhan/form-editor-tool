@@ -10,10 +10,10 @@ import { persist } from "zustand/middleware";
 import { getDefaultProps, generateUniqueKey } from "@/lib/utils/formUtils";
 
 interface FormConfigState {
-  form: FormConfig;
-  setForm: (form: FormConfig) => void;
-  updateForm: (key: string, value: string) => void;
-  resetForm: () => void;
+  formConfig: FormConfig;
+  setFormConfig: (data: FormConfig) => void;
+  updateFormConfig: (key: string, value: string) => void;
+  resetFormConfig: () => void;
   addFormBlock: (type: FormBlockType, index?: number) => string;
   moveFormBlock: (fromIndex: number, toIndex: number) => void;
   updateFormBlock: (id: string, key: string, value: FormBlockValueType) => void;
@@ -38,19 +38,19 @@ const initialFormConfig: FormConfig = {
 export const useFormConfigStore = create<FormConfigState>()(
   persist(
     (set, get) => ({
-      form: initialFormConfig,
-      setForm: (form) => set({ form }),
-      updateForm: (key, value) => {
+      formConfig: initialFormConfig,
+      setFormConfig: (data) => set({ formConfig: data }),
+      updateFormConfig: (key, value) => {
         set((state) => ({
-          form: {
-            ...state.form,
+          formConfig: {
+            ...state.formConfig,
             [key]: value,
           },
         }));
       },
-      resetForm: () => {
+      resetFormConfig: () => {
         set({
-          form: initialFormConfig,
+          formConfig: initialFormConfig,
         });
       },
       addFormBlock: (type, index) => {
@@ -65,7 +65,7 @@ export const useFormConfigStore = create<FormConfigState>()(
             const label =
               typeof labelProp?.value === "string" ? labelProp.value : type;
             // Generate unique key based on current blocks
-            const uniqueKey = generateUniqueKey(label, state.form.blocks);
+            const uniqueKey = generateUniqueKey(label, state.formConfig.blocks);
             return { ...prop, value: uniqueKey };
           }
           return prop;
@@ -79,15 +79,15 @@ export const useFormConfigStore = create<FormConfigState>()(
         };
 
         set((state) => {
-          const updated = [...state.form.blocks];
+          const updated = [...state.formConfig.blocks];
           if (index !== undefined) {
             updated.splice(index, 0, newBlock);
           } else {
             updated.push(newBlock);
           }
           return {
-            form: {
-              ...state.form,
+            formConfig: {
+              ...state.formConfig,
               blocks: updated,
             },
           };
@@ -97,12 +97,12 @@ export const useFormConfigStore = create<FormConfigState>()(
       },
       moveFormBlock: (from, to) => {
         set((state) => {
-          const updated = [...state.form.blocks];
+          const updated = [...state.formConfig.blocks];
           const [moved] = updated.splice(from, 1);
           updated.splice(to, 0, moved);
           return {
-            form: {
-              ...state.form,
+            formConfig: {
+              ...state.formConfig,
               blocks: updated,
             },
           };
@@ -110,9 +110,9 @@ export const useFormConfigStore = create<FormConfigState>()(
       },
       updateFormBlock: (id, key, value) => {
         set((state) => ({
-          form: {
-            ...state.form,
-            blocks: state.form.blocks.map((b) => {
+          formConfig: {
+            ...state.formConfig,
+            blocks: state.formConfig.blocks.map((b) => {
               if (b.id !== id) return b;
 
               // Update the specified prop
@@ -126,7 +126,7 @@ export const useFormConfigStore = create<FormConfigState>()(
                 if (keyProp) {
                   const uniqueKey = generateUniqueKey(
                     value as string,
-                    state.form.blocks,
+                    state.formConfig.blocks,
                     id,
                   );
                   updatedProps = updatedProps.map((p) =>
@@ -145,7 +145,7 @@ export const useFormConfigStore = create<FormConfigState>()(
       },
       cloneFormBlock: (id: string) => {
         set((state) => {
-          const original = state.form.blocks.find((b) => b.id === id);
+          const original = state.formConfig.blocks.find((b) => b.id === id);
           if (!original) return {};
 
           const newId = nanoid();
@@ -161,7 +161,10 @@ export const useFormConfigStore = create<FormConfigState>()(
                 typeof labelProp?.value === "string"
                   ? labelProp.value
                   : original.type;
-              const uniqueKey = generateUniqueKey(label, state.form.blocks);
+              const uniqueKey = generateUniqueKey(
+                label,
+                state.formConfig.blocks,
+              );
               return { ...p, value: uniqueKey };
             }
             return { ...p };
@@ -174,16 +177,18 @@ export const useFormConfigStore = create<FormConfigState>()(
             props: clonedProps,
           };
 
-          const updated = [...state.form.blocks];
-          const originalIndex = state.form.blocks.findIndex((b) => b.id === id);
+          const updated = [...state.formConfig.blocks];
+          const originalIndex = state.formConfig.blocks.findIndex(
+            (b) => b.id === id,
+          );
           const insertAt =
             originalIndex >= 0 ? originalIndex + 1 : updated.length;
 
           updated.splice(insertAt, 0, clonedBlock);
 
           return {
-            form: {
-              ...state.form,
+            formConfig: {
+              ...state.formConfig,
               blocks: updated,
             },
           };
@@ -191,9 +196,9 @@ export const useFormConfigStore = create<FormConfigState>()(
       },
       removeFormBlock: (id) => {
         set((state) => ({
-          form: {
-            ...state.form,
-            blocks: state.form.blocks.filter((b) => b.id !== id),
+          formConfig: {
+            ...state.formConfig,
+            blocks: state.formConfig.blocks.filter((b) => b.id !== id),
           },
         }));
       },

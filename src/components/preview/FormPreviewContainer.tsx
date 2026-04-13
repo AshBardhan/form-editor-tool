@@ -29,11 +29,12 @@ interface FormPreviewContainerProps {
 export const FormPreviewContainer = ({
   id,
 }: FormPreviewContainerProps): JSX.Element => {
-  const storeForm = useFormConfigStore((state) => state.form);
-  const resetForm = useFormConfigStore((state) => state.resetForm);
+  const formConfig = useFormConfigStore((state) => state.formConfig);
+  const setFormConfig = useFormConfigStore((state) => state.setFormConfig);
+  const resetFormConfig = useFormConfigStore((state) => state.resetFormConfig);
   const resetFormData = useFormDataStore((state) => state.resetFormData);
   const [shouldFetch, setShouldFetch] = useState(false);
-  const [formConfig, setFormConfig] = useState<FormConfig | null>(null);
+  const [shouldRender, setShouldRender] = useState(false);
   const [currentDevice, setCurrentDevice] = useState<DeviceType>(
     DeviceType.DESKTOP,
   );
@@ -53,42 +54,33 @@ export const FormPreviewContainer = ({
     // Case 1: New form (no id)
     if (!id) {
       // If stored form has an id, it's from a different form → reset
-      if (storeForm.id) {
-        resetForm();
-        // Wait for next render to get fresh store data
-        setFormConfig(null);
-      } else {
-        // Use localStorage (new form in progress)
-        setFormConfig(storeForm);
+      if (formConfig.id) {
+        resetFormConfig();
       }
+      // Otherwise use localStorage (new form in progress)
+      setShouldRender(true);
       return;
     }
 
     // Case 2: Existing form - check if localStorage matches
-    if (storeForm.id === id) {
+    if (formConfig.id === id) {
       // Match → Use localStorage, no fetch needed (instant load)
-      setFormConfig(storeForm);
+      setShouldRender(true);
       return;
     }
 
     // Case 3: Mismatch or empty → Fetch from API
     setShouldFetch(true);
-  }, [id, storeForm.id, resetForm]);
+  }, [id, formConfig.id, resetFormConfig]);
 
-  // Sync with store after reset (for new forms)
-  useEffect(() => {
-    if (!id && !formConfig && !storeForm.id) {
-      setFormConfig(storeForm);
-    }
-  }, [id, formConfig, storeForm]);
-
-  // Update formConfig when API data arrives
+  // Update store when API data arrives
   useEffect(() => {
     if (data) {
       setFormConfig(data);
       setShouldFetch(false);
+      setShouldRender(true);
     }
-  }, [data]);
+  }, [data, setFormConfig]);
 
   // Apply theme
   useEffect(() => {
@@ -119,8 +111,8 @@ export const FormPreviewContainer = ({
     );
   }
 
-  // No form config available
-  if (!formConfig) {
+  // Not ready to render yet
+  if (!shouldRender) {
     return (
       <div className="flex h-screen w-full items-center justify-center">
         <LoaderCircleIcon className="h-8 w-8 animate-spin text-gray-500" />
