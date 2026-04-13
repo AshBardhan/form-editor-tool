@@ -68,7 +68,7 @@
   }
 
   .form-block {
-    @apply my-2 mx-6;
+    @apply py-2 px-8;
   }
 }
 

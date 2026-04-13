@@ -8,7 +8,7 @@ import { useFetch } from "@/lib/hooks/useFetch";
 import { useFormConfigStore, useFormDataStore } from "@/lib/stores";
 import { Header } from "@/components/layout/Header";
 import { FormPreviewHeader } from "@/components/preview/FormPreviewHeader";
-import { FormPreview } from "@/components/preview/FormPreview";
+import { FormPreviewContent } from "@/components/preview/FormPreviewContent";
 import { PageContent } from "@/components/layout/PageContent";
 
 interface FormPreviewContainerProps {
@@ -129,7 +129,7 @@ export const FormPreviewContainer = ({
         <FormPreviewHeader formTitle={formConfig.title} formId={id} />
       </Header>
       <PageContent>
-        <FormPreview form={formConfig} editable={true} />
+        <FormPreviewContent form={formConfig} editable={true} />
       </PageContent>
     </>
   );

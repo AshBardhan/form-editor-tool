@@ -58,7 +58,7 @@ export const CanvasForm = ({
   return (
     <div className="flex justify-center" ref={setNodeRef}>
       <div
-        className="min-h-[75vh] w-full flex-1 bg-white dark:bg-black shadow dark:shadow-white/80 transition-[colors,max-width]"
+        className="min-h-[75vh] w-full py-6 flex-1 bg-white dark:bg-black shadow dark:shadow-white/80 transition-[colors,max-width]"
         style={{ maxWidth: currentDeviceMeta?.size }}
       >
         <SortableContext

@@ -1,3 +1,3 @@
 export { FormPreviewContainer } from "./FormPreviewContainer";
-export { FormPreview } from "./FormPreview";
+export { FormPreviewContent } from "./FormPreviewContent";
 export { FormPreviewHeader } from "./FormPreviewHeader";

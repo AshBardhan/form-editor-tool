@@ -6,24 +6,24 @@ import { widgetBlockRenderers } from "@/components/form/blocks";
 import { useFormDataStore } from "@/lib/stores";
 import { getFieldKey } from "@/lib/utils/formUtils";
 
-interface FormPreviewProps {
+interface FormPreviewContentProps {
   form: FormConfig;
   editable?: boolean;
 }
 
 /**
- * Form Preview
+ * Form Preview Content
  * - Renders all form blocks in preview mode
  * - Supports both read-only and editable modes
  * - Collects form data on submission
  *
- * @param {FormPreviewProps} props - The props for the component.
+ * @param {FormPreviewContentProps} props - The props for the component.
  * @returns {JSX.Element} The rendered component.
  */
-export const FormPreview = ({
+export const FormPreviewContent = ({
   form,
   editable = false,
-}: FormPreviewProps): JSX.Element => {
+}: FormPreviewContentProps): JSX.Element => {
   const { formData, updateFormData, resetFormData } = useFormDataStore();
 
   /**
@@ -128,7 +128,7 @@ export const FormPreview = ({
           <form
             onSubmit={handleSubmit}
             onReset={handleReset}
-            className="py-8 px-4"
+            className="py-6"
           >
             {form.blocks.map((block) => (
               <div key={block.id} className="form-block-wrapper">
