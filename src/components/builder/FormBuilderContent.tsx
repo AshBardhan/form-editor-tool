@@ -18,10 +18,8 @@ import { useFormConfigStore, useUIStateStore } from "@/lib/stores";
 import { AnimatePresence } from "motion/react";
 import { Widget } from "@/lib/types/widget";
 import { FormBlock } from "@/lib/types/form";
-import { DeviceType } from "@/lib/constants/device";
 import { Sidebar } from "@/components/layout/Sidebar";
 import { MainContent } from "@/components/layout/MainContent";
-import { DeviceSelector } from "@/components/builder/canvas/DeviceSelector";
 import { CanvasDroppable } from "@/components/builder/canvas/CanvasDroppable";
 import { CanvasForm } from "@/components/builder/canvas/CanvasForm";
 import { WidgetPanel } from "@/components/builder/widgets/WidgetPanel";
@@ -37,7 +35,6 @@ interface DragState {
  * Form Builder Content
  * - Renders form with prefilled and empty data
  * - Provides drag-and-drop and configuration for form
- * - Device selection for different screen sizes
  *
  * @returns {JSX.Element} The rendered component.
  */
@@ -54,7 +51,6 @@ export const FormBuilderContent = (): JSX.Element => {
   const isSidebarCollapsed = useUIStateStore(
     (state) => state.isSidebarCollapsed,
   );
-  const [deviceType, setDeviceType] = useState<DeviceType>(DeviceType.DESKTOP);
 
   /**
    * Handles the end of a drag event.
@@ -150,10 +146,10 @@ export const FormBuilderContent = (): JSX.Element => {
           )}
         </AnimatePresence>
 
-        {/* Main Content Area with Canvas and Device Selector */}
+        {/* Main Content Area with Canvas */}
         <MainContent>
           <div
-            className="py-12 px-8 h-full overflow-y-auto"
+            className="form-container"
             onClickCapture={(e) => {
               const target = e.target as HTMLElement;
               if (!target.closest("[data-slot='block']")) {
@@ -161,13 +157,7 @@ export const FormBuilderContent = (): JSX.Element => {
               }
             }}
           >
-            <DeviceSelector
-              currentDevice={deviceType}
-              onDeviceChange={setDeviceType}
-            />
-
             <CanvasForm
-              currentDevice={deviceType}
               overId={dragState.overId}
               activeDragItem={dragState.activeItem as FormBlock}
               dragSource={dragState.source}

@@ -35,7 +35,7 @@ export const DeviceSelector = ({
               "flex items-center justify-center p-3 cursor-pointer",
               currentDevice === device.label && "bg-[#151515]",
               "hover:bg-[#0f0f0f] rounded-none",
-              "focus-visible:outline-none! focus-visible:!ring-0 focus-visible:!border-transparent focus-visible:bg-[#0f0f0f]",
+              "focus-visible:outline-none! focus-visible:ring-0! focus-visible:border-transparent! focus-visible:bg-[#0f0f0f]",
               "transition-all",
             )}
           >

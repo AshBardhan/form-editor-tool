@@ -26,12 +26,12 @@ export const DeviceList: Device[] = [
   {
     label: DeviceType.DESKTOP,
     icon: Monitor,
-    size: 1280,
+    size: 1440,
   },
   {
     label: DeviceType.TABLET,
     icon: Tablet,
-    size: 768,
+    size: 1024,
   },
   {
     label: DeviceType.MOBILE,

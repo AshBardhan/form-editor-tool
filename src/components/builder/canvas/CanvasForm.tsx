@@ -7,7 +7,6 @@ import {
 import { CanvasBlock } from "./CanvasBlock";
 import { useDroppable } from "@dnd-kit/core";
 import { JSX } from "react";
-import { DeviceList, DeviceType } from "@/lib/constants/device";
 import { FormBlock } from "@/lib/types/form";
 import { useFormConfigStore } from "@/lib/stores/formConfigStore";
 
@@ -15,7 +14,6 @@ interface CanvasFormProps {
   overId: string | null;
   activeDragItem: FormBlock | null;
   dragSource: "sidebar" | "canvas" | null;
-  currentDevice: DeviceType;
 }
 
 /**
@@ -46,47 +44,38 @@ export const CanvasForm = ({
   overId,
   activeDragItem,
   dragSource,
-  currentDevice,
 }: CanvasFormProps): JSX.Element => {
   const form = useFormConfigStore((state) => state.form);
   const { setNodeRef } = useDroppable({ id: "canvas" });
   const isOverEnd = overId && !form.blocks.some((f) => f.id === overId);
-  const currentDeviceMeta = DeviceList.find(
-    (device) => device.label === currentDevice,
-  );
 
   return (
-    <div className="flex justify-center" ref={setNodeRef}>
-      <div
-        className="min-h-[75vh] w-full py-6 flex-1 bg-white dark:bg-black shadow dark:shadow-white/80 transition-[colors,max-width]"
-        style={{ maxWidth: currentDeviceMeta?.size }}
+    <div className="form-content" ref={setNodeRef}>
+      <SortableContext
+        items={form.blocks.map((f) => f.id)}
+        strategy={verticalListSortingStrategy}
       >
-        <SortableContext
-          items={form.blocks.map((f) => f.id)}
-          strategy={verticalListSortingStrategy}
-        >
-          {/* Empty canvas state */}
-          {form.blocks.length === 0 && !overId ? (
-            <DropZeroState />
-          ) : (
-            <>
-              {/* Form canvas state with dropped and configured blocks */}
-              {form.blocks.map((block) => (
-                <div className="relative" key={block.id}>
-                  {/* Drop placeholder in the middle of the list */}
-                  {overId === block.id &&
-                    dragSource === "sidebar" &&
-                    activeDragItem?.id !== block.id && <DropPlaceholder />}
-                  <CanvasBlock block={block} />
-                </div>
-              ))}
-            </>
-          )}
+        {/* Empty canvas state */}
+        {form.blocks.length === 0 && !overId ? (
+          <DropZeroState />
+        ) : (
+          <>
+            {/* Form canvas state with dropped and configured blocks */}
+            {form.blocks.map((block) => (
+              <div className="relative" key={block.id}>
+                {/* Drop placeholder in the middle of the list */}
+                {overId === block.id &&
+                  dragSource === "sidebar" &&
+                  activeDragItem?.id !== block.id && <DropPlaceholder />}
+                <CanvasBlock block={block} />
+              </div>
+            ))}
+          </>
+        )}
 
-          {/* Drop placeholder at end of list */}
-          {isOverEnd && dragSource === "sidebar" && <DropPlaceholder />}
-        </SortableContext>
-      </div>
+        {/* Drop placeholder at end of list */}
+        {isOverEnd && dragSource === "sidebar" && <DropPlaceholder />}
+      </SortableContext>
     </div>
   );
 };

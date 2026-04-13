@@ -10,6 +10,8 @@ import { Header } from "@/components/layout/Header";
 import { FormPreviewHeader } from "@/components/preview/FormPreviewHeader";
 import { FormPreviewContent } from "@/components/preview/FormPreviewContent";
 import { PageContent } from "@/components/layout/PageContent";
+import { DeviceSelector } from "@/components/layout/DeviceSelector";
+import { DeviceType } from "@/lib/constants/device";
 
 interface FormPreviewContainerProps {
   id?: string;
@@ -32,6 +34,9 @@ export const FormPreviewContainer = ({
   const resetFormData = useFormDataStore((state) => state.resetFormData);
   const [shouldFetch, setShouldFetch] = useState(false);
   const [formConfig, setFormConfig] = useState<FormConfig | null>(null);
+  const [currentDevice, setCurrentDevice] = useState<DeviceType>(
+    DeviceType.DESKTOP,
+  );
 
   // Conditionally fetch only when needed
   const { data, loading, error } = useFetch<FormConfig>(
@@ -129,7 +134,17 @@ export const FormPreviewContainer = ({
         <FormPreviewHeader formTitle={formConfig.title} formId={id} />
       </Header>
       <PageContent>
-        <FormPreviewContent form={formConfig} editable={true} />
+        <div className="relative w-full h-full">
+          <DeviceSelector
+            currentDevice={currentDevice}
+            onDeviceChange={setCurrentDevice}
+          />
+          <FormPreviewContent
+            form={formConfig}
+            editable={true}
+            currentDevice={currentDevice}
+          />
+        </div>
       </PageContent>
     </>
   );

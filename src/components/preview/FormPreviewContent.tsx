@@ -5,10 +5,12 @@ import { FormConfig, FormBlock, FormBlockValueType } from "@/lib/types/form";
 import { widgetBlockRenderers } from "@/components/form/blocks";
 import { useFormDataStore } from "@/lib/stores";
 import { getFieldKey } from "@/lib/utils/formUtils";
+import { DeviceList, DeviceType } from "@/lib/constants/device";
 
 interface FormPreviewContentProps {
   form: FormConfig;
   editable?: boolean;
+  currentDevice: DeviceType;
 }
 
 /**
@@ -23,8 +25,12 @@ interface FormPreviewContentProps {
 export const FormPreviewContent = ({
   form,
   editable = false,
+  currentDevice,
 }: FormPreviewContentProps): JSX.Element => {
   const { formData, updateFormData, resetFormData } = useFormDataStore();
+  const currentDeviceMeta = DeviceList.find(
+    (device) => device.label === currentDevice,
+  );
 
   /**
    * Handles form field value changes
@@ -112,8 +118,11 @@ export const FormPreviewContent = ({
   };
 
   return (
-    <div className="w-full max-w-4xl mx-auto">
-      <div className="bg-white dark:bg-black shadow dark:shadow-white/80 transition-colors rounded-lg">
+    <div className="form-container">
+      <div
+        className="form-content"
+        style={{ maxWidth: currentDeviceMeta?.size }}
+      >
         {form.blocks.length === 0 ? (
           <div className="min-h-100 flex items-center justify-center text-gray-500 dark:text-gray-400">
             <p className="text-center">
@@ -125,15 +134,9 @@ export const FormPreviewContent = ({
             </p>
           </div>
         ) : (
-          <form
-            onSubmit={handleSubmit}
-            onReset={handleReset}
-            className="py-6"
-          >
+          <form onSubmit={handleSubmit} onReset={handleReset}>
             {form.blocks.map((block) => (
-              <div key={block.id} className="form-block-wrapper">
-                {renderFormBlock(block)}
-              </div>
+              <div key={block.id}>{renderFormBlock(block)}</div>
             ))}
           </form>
         )}
