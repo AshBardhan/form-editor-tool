@@ -9,6 +9,7 @@ interface RadioBlockProps {
   editable?: boolean;
   value?: string;
   onChange?: (value: string) => void;
+  errors?: string[];
 }
 
 /**
@@ -23,6 +24,7 @@ export const RadioBlock = ({
   editable = false,
   value,
   onChange,
+  errors = [],
 }: RadioBlockProps): JSX.Element => {
   const alignment = (getPropValue(block, "alignment") ?? "vertical") as
     | "horizontal"
@@ -32,24 +34,34 @@ export const RadioBlock = ({
   const controlledValue = value ?? defaultValue;
 
   return (
-    <RadioGroup
-      name={`radio-${block.id}`}
-      value={controlledValue}
-      alignment={alignment}
-      className="form-block"
-      onValueChange={onChange}
-    >
-      {options.map((option: string) => (
-        <div key={option} className="flex items-center gap-2">
-          <RadioGroupItem
-            value={option}
-            readOnly={!editable}
-            tabIndex={editable ? 0 : -1}
-            id={`radio-${block.id}-${option}`}
-          ></RadioGroupItem>
-          <Label htmlFor={`radio-${block.id}-${option}`}>{option}</Label>
+    <div className="form-block flex flex-col gap-2">
+      <RadioGroup
+        name={`radio-${block.id}`}
+        value={controlledValue}
+        alignment={alignment}
+        onValueChange={onChange}
+      >
+        {options.map((option: string) => (
+          <div key={option} className="flex items-center gap-2">
+            <RadioGroupItem
+              value={option}
+              readOnly={!editable}
+              tabIndex={editable ? 0 : -1}
+              id={`radio-${block.id}-${option}`}
+            ></RadioGroupItem>
+            <Label htmlFor={`radio-${block.id}-${option}`}>{option}</Label>
+          </div>
+        ))}
+      </RadioGroup>
+      {errors.length > 0 && (
+        <div className="space-y-1">
+          {errors.map((error, index) => (
+            <p key={index} className="text-xs text-red-600 dark:text-red-400">
+              {error}
+            </p>
+          ))}
         </div>
-      ))}
-    </RadioGroup>
+      )}
+    </div>
   );
 };

@@ -9,6 +9,7 @@ interface InputBlockProps {
   editable?: boolean;
   value?: string;
   onChange?: (value: string) => void;
+  errors?: string[];
 }
 
 /**
@@ -23,6 +24,7 @@ export const InputBlock = ({
   editable = false,
   value,
   onChange,
+  errors = [],
 }: InputBlockProps): JSX.Element => {
   const label = getPropValue(block, "label");
   const required = getPropValue(block, "required") || false;
@@ -48,6 +50,15 @@ export const InputBlock = ({
         placeholder={placeholder}
         onChange={(e) => onChange?.(e.target.value)}
       />
+      {errors.length > 0 && (
+        <div className="space-y-1">
+          {errors.map((error, index) => (
+            <p key={index} className="text-xs text-red-600 dark:text-red-400">
+              {error}
+            </p>
+          ))}
+        </div>
+      )}
     </div>
   );
 };
