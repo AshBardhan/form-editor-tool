@@ -28,13 +28,10 @@ export type FormBlockPropType =
   | "list"
   | "select";
 
-export interface FormBlockPropConfig {
-  key: string;
-  label: string;
-  type: FormBlockPropType;
-  value: FormBlockValueType;
-}
-
+/**
+ * Form block prop template - used for widget templates
+ * Contains full metadata including labels, types, options, and default values
+ */
 export interface FormBlockPropTemplate {
   key: string;
   label: string;
@@ -58,11 +55,17 @@ export interface FormBlockPropTemplate {
   required?: boolean;
 }
 
+/**
+ * Form block props - normalized structure
+ * Only stores values, metadata comes from templates
+ */
+export type FormBlockProps = Record<string, FormBlockValueType>;
+
 export interface FormBlock {
   type: FormBlockType;
   id: string;
   name: string;
-  props: FormBlockPropConfig[];
+  props: FormBlockProps;
 }
 
 export interface FormConfig {

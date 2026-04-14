@@ -10,7 +10,7 @@ import {
   SelectValue,
 } from "@/components/ui/Select";
 import { THEME_OPTIONS } from "@/lib/constants/theme";
-import { getFormBlock } from "@/lib/utils/formUtils";
+import { getFormBlock, getFormBlockProps } from "@/lib/utils/formUtils";
 import { ScrollTextIcon } from "lucide-react";
 import { JSX, useEffect, useState, memo } from "react";
 import z from "zod";
@@ -21,7 +21,6 @@ import {
   SelectConfig,
   ListConfig,
 } from "@/components/form/configs";
-import { FormBlockValueType } from "@/lib/types/form";
 import {
   useFormBlockValidationStore,
   useFormConfigStore,
@@ -30,7 +29,6 @@ import {
 import { AnimatePresence, motion } from "motion/react";
 import { visibleContentVariants } from "@/lib/constants/styles";
 import { cn } from "@/lib/utils/styleUtils";
-import { blockPropTemplates } from "@/lib/constants/widgetTemplates";
 import { switchTheme } from "@/lib/utils/domUtils";
 
 /**
@@ -83,11 +81,7 @@ export const ConfigurationPanel = memo(
     const validateProps = () => {
       if (!selected || !schema) return;
 
-      const rawData = Object.fromEntries(
-        selected.props.map((prop) => [prop.key, prop.value]),
-      ) as Record<string, FormBlockValueType>;
-
-      const result = schema.safeParse(rawData);
+      const result = schema.safeParse(selected.props);
 
       if (!result.success) {
         const formBlockErrors = z.flattenError(result.error)
@@ -99,18 +93,15 @@ export const ConfigurationPanel = memo(
         updateFormBlockErrors(selected.id, combined);
       } else {
         // Schema validation passed, now check key uniqueness
-        const keyProp = selected.props.find((p) => p.key === "key");
-        const keyValue = keyProp?.value;
+        const keyValue = selected.props.key;
 
-        if (keyProp && typeof keyValue === "string" && keyValue.trim()) {
+        if (keyValue && typeof keyValue === "string" && keyValue.trim()) {
           // Check if any other block has the same key
-          const isDuplicate = formBlocks.some(
-            (block) =>
-              block.id !== selected.id &&
-              block.props.some((p) => p.key === "key" && p.value === keyValue),
+          const isDuplicateKey = formBlocks.some(
+            (block) => block.id !== selected.id && block.props.key === keyValue,
           );
 
-          if (isDuplicate) {
+          if (isDuplicateKey) {
             const uniquenessError = {
               key: ["Key must be unique across all form blocks"],
             };
@@ -159,7 +150,7 @@ export const ConfigurationPanel = memo(
             <>
               {/* Block Configuration Panel */}
               <div className="p-4 flex flex-col gap-4 dark">
-                {selected.props.map((prop) => {
+                {getFormBlockProps(selected).map((prop) => {
                   const selectedBlockPropKey = `${selected.id}-${prop.key}`;
                   return (
                     <div
@@ -242,11 +233,7 @@ export const ConfigurationPanel = memo(
                           <SelectConfig
                             id={selectedBlockPropKey}
                             value={prop.value}
-                            options={
-                              blockPropTemplates[selected.type].find(
-                                (p) => p.key === prop.key,
-                              )?.options ?? []
-                            }
+                            options={prop.options ?? []}
                             onChange={(value) =>
                               updateFormBlock(selected.id, prop.key, value)
                             }

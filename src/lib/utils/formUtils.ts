@@ -1,6 +1,7 @@
 import {
   FormBlock,
-  FormBlockPropConfig,
+  FormBlockPropTemplate,
+  FormBlockProps,
   FormBlockType,
   FormBlockValueType,
 } from "@/lib/types/form";
@@ -9,12 +10,15 @@ import { widgetPalette } from "@/lib/constants/widgetPalette";
 import { formBlockSchemas } from "@/lib/schema/formBlockSchema";
 
 /**
- * Retrieves the default properties for a given block type.
+ * Retrieves the default properties for a given block type as an object.
  * @param {FormBlockType} type - The type of the block.
- * @returns {FormBlockPropConfig[]} An array of default properties for the block.
+ * @returns {FormBlockProps} An object of default properties for the block.
  */
-export function getDefaultProps(type: FormBlockType): FormBlockPropConfig[] {
-  return blockPropTemplates[type].map((prop) => {
+export function getDefaultProps(type: FormBlockType): FormBlockProps {
+  const templates = blockPropTemplates[type];
+  const props: FormBlockProps = {};
+
+  templates.forEach((prop) => {
     let value;
 
     switch (prop.type) {
@@ -34,13 +38,24 @@ export function getDefaultProps(type: FormBlockType): FormBlockPropConfig[] {
         value = prop.value ?? "";
     }
 
-    const { options: _options, ...rest } = prop;
-
-    return {
-      ...rest,
-      value,
-    };
+    props[prop.key] = value;
   });
+
+  return props;
+}
+
+/**
+ * Gets props with full metadata from templates merged with instance values.
+ * @param {FormBlock} block - The form block.
+ * @returns {FormBlockPropTemplate[]} Array of props with metadata and current values.
+ */
+export function getFormBlockProps(
+  block: FormBlock,
+): FormBlockPropTemplate[] {
+  return blockPropTemplates[block.type].map((template) => ({
+    ...template,
+    value: block.props[template.key] ?? template.value,
+  }));
 }
 
 /**
@@ -53,7 +68,7 @@ export function getPropValue(
   block: FormBlock,
   key: string,
 ): FormBlockValueType {
-  return block.props.find((p) => p.key === key)?.value ?? "";
+  return block.props[key] ?? "";
 }
 
 /**

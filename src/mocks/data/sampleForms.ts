@@ -9,287 +9,107 @@ export const sampleLightForm: FormConfig = {
       id: "n0qBHYAWA8JUIbb_Y-i64",
       type: "heading",
       name: "heading-n0qBHYAWA8JUIbb_Y-i64",
-      props: [
-        {
-          key: "text",
-          label: "Text",
-          type: "string",
-          value: "Profile Settings",
-        },
-        {
-          key: "level",
-          label: "Heading Level",
-          type: "number",
-          value: 1,
-        },
-      ],
+      props: {
+        text: "Profile Settings",
+        level: 1,
+      },
     },
     {
       id: "R2IleROYA6IoQssJEhx9v",
       type: "paragraph",
       name: "paragraph-R2IleROYA6IoQssJEhx9v",
-      props: [
-        {
-          key: "text",
-          label: "Text",
-          type: "long-string",
-          value: "Please enter your personal details",
-        },
-      ],
+      props: {
+        text: "Please enter your personal details",
+      },
     },
     {
       id: "TL6UZhKbJoyMSpjbJeIvx",
       type: "text",
       name: "text-TL6UZhKbJoyMSpjbJeIvx",
-      props: [
-        {
-          key: "label",
-          label: "Label",
-          type: "string",
-          value: "Name",
-        },
-        {
-          key: "key",
-          label: "Key",
-          type: "string",
-          value: "name",
-        },
-        {
-          key: "placeholder",
-          label: "Placeholder",
-          type: "string",
-          value: "",
-        },
-        {
-          key: "maxLength",
-          label: "Max Length",
-          type: "number",
-          value: 100,
-        },
-        {
-          key: "required",
-          label: "Required",
-          type: "boolean",
-          value: true,
-        },
-      ],
+      props: {
+        label: "Name",
+        key: "name",
+        placeholder: "",
+        maxLength: 100,
+        required: true,
+      },
     },
     {
       id: "wui3rL6h-MGuaAVckeVAd",
       type: "number",
       name: "number-wui3rL6h-MGuaAVckeVAd",
-      props: [
-        {
-          key: "label",
-          label: "Label",
-          type: "string",
-          value: "Age",
-        },
-        {
-          key: "key",
-          label: "Key",
-          type: "string",
-          value: "age",
-        },
-        {
-          key: "placeholder",
-          label: "Placeholder",
-          type: "string",
-          value: "",
-        },
-        {
-          key: "min",
-          label: "Minimum",
-          type: "number",
-          value: 1,
-        },
-        {
-          key: "max",
-          label: "Maximum",
-          type: "number",
-          value: 100,
-        },
-        {
-          key: "step",
-          label: "Step",
-          type: "number",
-          value: 1,
-        },
-        {
-          key: "required",
-          label: "Required",
-          type: "boolean",
-          value: true,
-        },
-      ],
+      props: {
+        label: "Age",
+        key: "age",
+        placeholder: "",
+        min: 1,
+        max: 100,
+        step: 1,
+        required: true,
+      },
     },
     {
       id: "kym1XtkOZ8UOCOpJI2eo4",
       type: "select",
       name: "select-kym1XtkOZ8UOCOpJI2eo4",
-      props: [
-        {
-          key: "label",
-          label: "Label",
-          type: "string",
-          value: "Occupation",
-        },
-        {
-          key: "key",
-          label: "Key",
-          type: "string",
-          value: "occupation",
-        },
-        {
-          key: "required",
-          label: "Required",
-          type: "boolean",
-          value: false,
-        },
-        {
-          key: "placeholder",
-          label: "Placeholder",
-          type: "string",
-          value: "Choose from the list",
-        },
-        {
-          key: "options",
-          label: "Options",
-          type: "list",
-          value: ["Developer", "Manager", "Others"],
-        },
-      ],
+      props: {
+        label: "Occupation",
+        key: "occupation",
+        required: false,
+        placeholder: "Choose from the list",
+        options: ["Developer", "Manager", "Others"],
+      },
     },
     {
       id: "hSVirOotZtjb-A_lB7fCX",
       type: "heading",
       name: "heading-hSVirOotZtjb-A_lB7fCX",
-      props: [
-        {
-          key: "text",
-          label: "Text",
-          type: "string",
-          value: "Gender",
-        },
-        {
-          key: "level",
-          label: "Heading Level",
-          type: "number",
-          value: 6,
-        },
-      ],
+      props: {
+        text: "Gender",
+        level: 6,
+      },
     },
     {
       id: "J11-aGpVAvdJMXD514G_j",
       type: "radio",
       name: "radio-J11-aGpVAvdJMXD514G_j",
-      props: [
-        {
-          key: "key",
-          label: "Key",
-          type: "string",
-          value: "gender",
-        },
-        {
-          key: "alignment",
-          label: "Alignment",
-          type: "select",
-          value: "horizontal",
-        },
-        {
-          key: "options",
-          label: "Options",
-          type: "list",
-          value: ["Male", "Female", "Prefer not to say"],
-        },
-      ],
+      props: {
+        key: "gender",
+        alignment: "horizontal",
+        options: ["Male", "Female", "Prefer not to say"],
+      },
     },
     {
       id: "fqkcKVJ7Q69c5SpZ-_J8G",
       type: "separator",
       name: "separator-fqkcKVJ7Q69c5SpZ-_J8G",
-      props: [
-        {
-          key: "spacing",
-          label: "Spacing",
-          type: "number",
-          value: 10,
-        },
-        {
-          key: "divider",
-          label: "Divider",
-          type: "boolean",
-          value: false,
-        },
-      ],
+      props: {
+        spacing: 10,
+        divider: false,
+      },
     },
     {
       id: "NnnyO7bxtc0jw0B9NJKnq",
       type: "checkbox",
       name: "checkbox-NnnyO7bxtc0jw0B9NJKnq",
-      props: [
-        {
-          key: "label",
-          label: "Label",
-          type: "string",
-          value: "I accept terms and conditions",
-        },
-        {
-          key: "key",
-          label: "Key",
-          type: "string",
-          value: "accept-terms",
-        },
-        {
-          key: "required",
-          label: "Required",
-          type: "boolean",
-          value: true,
-        },
-      ],
+      props: {
+        label: "I accept terms and conditions",
+        key: "accept-terms",
+        required: true,
+      },
     },
     {
       id: "UqTdVWeMoF970F8y2O6Pt",
       type: "buttons",
       name: "buttons-UqTdVWeMoF970F8y2O6Pt",
-      props: [
-        {
-          key: "submitLabel",
-          label: "Submit Button Label",
-          type: "string",
-          value: "Submit",
-        },
-        {
-          key: "submitTheme",
-          label: "Submit Button Theme",
-          type: "select",
-          value: "primary",
-        },
-        {
-          key: "resetLabel",
-          label: "Reset Button Label",
-          type: "string",
-          value: "Reset",
-        },
-        {
-          key: "resetTheme",
-          label: "Reset Button Theme",
-          type: "select",
-          value: "outline",
-        },
-        {
-          key: "alignment",
-          label: "Alignment",
-          type: "select",
-          value: "left",
-        },
-        {
-          key: "reverse",
-          label: "Reverse Order",
-          type: "boolean",
-          value: false,
-        },
-      ],
+      props: {
+        submitLabel: "Submit",
+        submitTheme: "primary",
+        resetLabel: "Reset",
+        resetTheme: "outline",
+        alignment: "left",
+        reverse: false,
+      },
     },
   ],
 };
@@ -303,220 +123,90 @@ export const sampleDarkForm: FormConfig = {
       id: "hdr1-dark",
       type: "heading",
       name: "heading-hdr1-dark",
-      props: [
-        {
-          key: "text",
-          label: "Text",
-          type: "string",
-          value: "Dark Mode Preferences",
-        },
-        {
-          key: "level",
-          label: "Heading Level",
-          type: "number",
-          value: 1,
-        },
-      ],
+      props: {
+        text: "Dark Mode Preferences",
+        level: 1,
+      },
     },
     {
       id: "pgh1-dark",
       type: "paragraph",
       name: "paragraph-pgh1-dark",
-      props: [
-        {
-          key: "text",
-          label: "Text",
-          type: "long-string",
-          value: "Customize your experience with dark theme options.",
-        },
-      ],
+      props: {
+        text: "Customize your experience with dark theme options.",
+      },
     },
     {
       id: "sep1-dark",
       type: "separator",
       name: "separator-sep1-dark",
-      props: [
-        {
-          key: "spacing",
-          label: "Spacing",
-          type: "number",
-          value: 10,
-        },
-        {
-          key: "divider",
-          label: "Divider",
-          type: "boolean",
-          value: false,
-        },
-      ],
+      props: {
+        spacing: 10,
+        divider: false,
+      },
     },
     {
       id: "select-contrast",
       type: "select",
       name: "select-contrast",
-      props: [
-        {
-          key: "label",
-          label: "Label",
-          type: "string",
-          value: "Contrast Level",
-        },
-        {
-          key: "key",
-          label: "Key",
-          type: "string",
-          value: "contrast-level",
-        },
-        {
-          key: "placeholder",
-          label: "Placeholder",
-          type: "string",
-          value: "Choose a level",
-        },
-        {
-          key: "options",
-          label: "Options",
-          type: "list",
-          value: ["Low", "Medium", "High"],
-        },
-        {
-          key: "required",
-          label: "Required",
-          type: "boolean",
-          value: true,
-        },
-      ],
+      props: {
+        label: "Contrast Level",
+        key: "contrast-level",
+        placeholder: "Choose a level",
+        options: ["Low", "Medium", "High"],
+        required: true,
+      },
     },
     {
       id: "hdr4-dark",
       type: "heading",
       name: "heading-hdr4-dark",
-      props: [
-        {
-          key: "text",
-          label: "Text",
-          type: "string",
-          value: "Select Size",
-        },
-        {
-          key: "level",
-          label: "Heading Level",
-          type: "number",
-          value: 6,
-        },
-      ],
+      props: {
+        text: "Select Size",
+        level: 6,
+      },
     },
     {
       id: "radio-fontsize",
       type: "radio",
       name: "radio-fontsize",
-      props: [
-        {
-          key: "key",
-          label: "Key",
-          type: "string",
-          value: "font-size",
-        },
-        {
-          key: "alignment",
-          label: "Alignment",
-          type: "select",
-          value: "vertical",
-        },
-        {
-          key: "options",
-          label: "Options",
-          type: "list",
-          value: ["Small", "Default", "Large"],
-        },
-      ],
+      props: {
+        key: "font-size",
+        alignment: "vertical",
+        options: ["Small", "Default", "Large"],
+      },
     },
     {
       id: "sep2-dark",
       type: "separator",
       name: "separator-sep2-dark",
-      props: [
-        {
-          key: "spacing",
-          label: "Spacing",
-          type: "number",
-          value: 20,
-        },
-        {
-          key: "divider",
-          label: "Divider",
-          type: "boolean",
-          value: true,
-        },
-      ],
+      props: {
+        spacing: 20,
+        divider: true,
+      },
     },
     {
       id: "chk-notifications",
       type: "checkbox",
       name: "checkbox-chk-notifications",
-      props: [
-        {
-          key: "label",
-          label: "Label",
-          type: "string",
-          value: "Enable dark mode notifications",
-        },
-        {
-          key: "key",
-          label: "Key",
-          type: "string",
-          value: "enable-notifications",
-        },
-        {
-          key: "required",
-          label: "Required",
-          type: "boolean",
-          value: false,
-        },
-      ],
+      props: {
+        label: "Enable dark mode notifications",
+        key: "enable-notifications",
+        required: false,
+      },
     },
     {
       id: "btn-save",
       type: "buttons",
       name: "buttons-btn-save",
-      props: [
-        {
-          key: "submitLabel",
-          label: "Submit Button Label",
-          type: "string",
-          value: "Save Settings",
-        },
-        {
-          key: "submitTheme",
-          label: "Submit Button Theme",
-          type: "select",
-          value: "primary",
-        },
-        {
-          key: "resetLabel",
-          label: "Reset Button Label",
-          type: "string",
-          value: "Cancel",
-        },
-        {
-          key: "resetTheme",
-          label: "Reset Button Theme",
-          type: "select",
-          value: "secondary",
-        },
-        {
-          key: "alignment",
-          label: "Alignment",
-          type: "select",
-          value: "right",
-        },
-        {
-          key: "reverse",
-          label: "Reverse Order",
-          type: "boolean",
-          value: true,
-        },
-      ],
+      props: {
+        submitLabel: "Save Settings",
+        submitTheme: "primary",
+        resetLabel: "Cancel",
+        resetTheme: "secondary",
+        alignment: "right",
+        reverse: true,
+      },
     },
   ],
 };
