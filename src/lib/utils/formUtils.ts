@@ -4,10 +4,13 @@ import {
   FormBlockProps,
   FormBlockType,
   FormBlockValueType,
+  FormMetric,
+  FormMetrics,
 } from "@/lib/types/form";
 import { blockPropTemplates } from "@/lib/constants/widgetTemplates";
 import { widgetPalette } from "@/lib/constants/widgetPalette";
 import { formBlockSchemas } from "@/lib/schema/formBlockSchema";
+import { formMetricLabel } from "@/lib/constants/form";
 
 /**
  * Retrieves the default properties for a given block type as an object.
@@ -49,9 +52,7 @@ export function getDefaultProps(type: FormBlockType): FormBlockProps {
  * @param {FormBlock} block - The form block.
  * @returns {FormBlockPropTemplate[]} Array of props with metadata and current values.
  */
-export function getFormBlockProps(
-  block: FormBlock,
-): FormBlockPropTemplate[] {
+export function getFormBlockProps(block: FormBlock): FormBlockPropTemplate[] {
   return blockPropTemplates[block.type].map((template) => ({
     ...template,
     value: block.props[template.key] ?? template.value,
@@ -145,4 +146,17 @@ export function getFormBlock(type: FormBlockType) {
   const groups = widgetPalette.flatMap((group) => group.items);
   const item = groups.find((b) => b.type === type);
   return item ? { ...item, schema: formBlockSchemas[type] ?? null } : null;
+}
+
+/**
+ * Converts normalized metrics (object with values only) to array with metadata
+ * @param {FormMetrics} metrics - Object mapping metric keys to values
+ * @returns {FormMetric[]} Array of metrics with labels and values
+ */
+export function getFormMetrics(metrics: FormMetrics): FormMetric[] {
+  return Object.entries(metrics).map(([key, value]) => ({
+    key,
+    label: formMetricLabel[key] || key,
+    value,
+  }));
 }

@@ -77,15 +77,27 @@ export interface FormConfig {
 
 export type FormStatus = "draft" | "published";
 
+/**
+ * Form metric template - used for rendering metrics with labels
+ * Contains full metadata including key, label, and value
+ */
 export interface FormMetric {
   key: string;
   label: string;
   value: string | number;
 }
 
+/**
+ * Form metrics - normalized structure
+ * Only stores values, metadata comes from metricTemplates
+ */
+export type FormMetrics = Record<string, string | number>;
+
 export interface FormListItem {
   id: string;
   name: string;
   status: FormStatus;
-  metrics: FormMetric[];
+  metrics: FormMetrics;
 }
+
+export type FormList = FormListItem[];
