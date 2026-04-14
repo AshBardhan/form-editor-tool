@@ -123,7 +123,7 @@ export const FormPreviewContainer = ({
   return (
     <>
       <Header>
-        <FormPreviewHeader formTitle={formConfig.title} formId={id} />
+        <FormPreviewHeader form={formConfig} />
       </Header>
       <PageContent>
         <div className="relative w-full h-full">

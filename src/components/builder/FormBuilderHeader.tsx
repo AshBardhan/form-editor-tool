@@ -69,6 +69,8 @@ export const FormBuilderHeader = ({
         <Button variant="secondary" size="sm" asChild>
           <Link
             href={formId ? `/forms/${formId}/preview` : "/forms/new/preview"}
+            target="_blank"
+            rel="noopener noreferrer"
           >
             Preview
           </Link>
