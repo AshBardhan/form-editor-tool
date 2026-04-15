@@ -32,7 +32,7 @@ export const FormPreviewContainer = ({
   const formConfig = useFormConfigStore((state) => state.formConfig);
   const setFormConfig = useFormConfigStore((state) => state.setFormConfig);
   const resetFormConfig = useFormConfigStore((state) => state.resetFormConfig);
-  const resetFormData = useFormDataStore((state) => state.resetFormData);
+  const initFormData = useFormDataStore((state) => state.initFormData);
   const [shouldFetch, setShouldFetch] = useState(false);
   const [shouldRender, setShouldRender] = useState(false);
   const [currentDevice, setCurrentDevice] = useState<DeviceType>(
@@ -44,12 +44,22 @@ export const FormPreviewContainer = ({
     shouldFetch && id ? `/api/form/${id}` : "",
   );
 
-  // Reset form data on mount to ensure clean preview state
+  /**
+   * Initialize form data with default values when formConfig changes.
+   * Ensures required select boxes get their first option pre-selected.
+   */
   useEffect(() => {
-    resetFormData();
-  }, []);
+    if (formConfig && formConfig.blocks) {
+      initFormData(formConfig.blocks);
+    }
+  }, [formConfig, initFormData]);
 
-  // Smart loading logic
+  /**
+   * Smart loading orchestration - decides whether to use cache or fetch from API.
+   * Case 1: No id → use localStorage or reset
+   * Case 2: Matching id → use cache (instant load)
+   * Case 3: Mismatched id → trigger API fetch
+   */
   useEffect(() => {
     // Case 1: New form (no id)
     if (!id) {
@@ -73,7 +83,10 @@ export const FormPreviewContainer = ({
     setShouldFetch(true);
   }, [id, formConfig.id, resetFormConfig]);
 
-  // Update store when API data arrives
+  /**
+   * Update store when API fetch completes.
+   * Triggers Effect #1 to initialize form data with the new config.
+   */
   useEffect(() => {
     if (data) {
       setFormConfig(data);
@@ -82,7 +95,10 @@ export const FormPreviewContainer = ({
     }
   }, [data, setFormConfig]);
 
-  // Apply theme
+  /**
+   * Apply visual theme (dark/light mode).
+   * Watches only theme property to avoid unnecessary DOM updates.
+   */
   useEffect(() => {
     if (formConfig) {
       switchTheme(formConfig.theme);

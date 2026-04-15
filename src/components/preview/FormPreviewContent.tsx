@@ -34,7 +34,7 @@ export const FormPreviewContent = ({
 }: FormPreviewContentProps): JSX.Element => {
   const formData = useFormDataStore((state) => state.formData);
   const updateFormData = useFormDataStore((state) => state.updateFormData);
-  const resetFormData = useFormDataStore((state) => state.resetFormData);
+  const initFormData = useFormDataStore((state) => state.initFormData);
   const [blockErrors, setBlockErrors] = useState<Record<string, string[]>>({});
   const currentDeviceMeta = DeviceList.find(
     (device) => device.label === currentDevice,
@@ -116,7 +116,7 @@ export const FormPreviewContent = ({
    */
   const handleReset = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    resetFormData();
+    initFormData(form.blocks);
     setBlockErrors({});
   };
 
