@@ -1,10 +1,10 @@
 "use client";
 
-import React, { JSX } from "react";
+import React, { JSX, useState } from "react";
 import { FormConfig, FormBlock, FormBlockValueType } from "@/lib/types/form";
 import Text from "@/components/ui/Text";
 import { widgetBlockRenderers } from "@/components/form/blocks";
-import { useFormDataStore, useFormBlockValidationStore } from "@/lib/stores";
+import { useFormDataStore } from "@/lib/stores";
 import { getFieldKey } from "@/lib/utils/formUtils";
 import {
   validateFormBlock,
@@ -35,15 +35,7 @@ export const FormPreviewContent = ({
   const formData = useFormDataStore((state) => state.formData);
   const updateFormData = useFormDataStore((state) => state.updateFormData);
   const resetFormData = useFormDataStore((state) => state.resetFormData);
-  const formBlockErrors = useFormBlockValidationStore(
-    (state) => state.formBlockErrors,
-  );
-  const updateFormBlockErrors = useFormBlockValidationStore(
-    (state) => state.updateFormBlockErrors,
-  );
-  const clearAllFormBlockErrors = useFormBlockValidationStore(
-    (state) => state.clearAllFormBlockErrors,
-  );
+  const [blockErrors, setBlockErrors] = useState<Record<string, string[]>>({});
   const currentDeviceMeta = DeviceList.find(
     (device) => device.label === currentDevice,
   );
@@ -76,29 +68,22 @@ export const FormPreviewContent = ({
    * @returns {boolean} True if form is valid, false otherwise.
    */
   const validateForm = (): boolean => {
-    clearAllFormBlockErrors();
+    const errors: Record<string, string[]> = {};
     let isValid = true;
-    const allErrors: string[] = [];
 
     form.blocks.forEach((block) => {
-      const blockErrors = validateBlock(block);
-      if (blockErrors.length > 0) {
+      const blockValidationErrors = validateBlock(block);
+      if (blockValidationErrors.length > 0) {
         isValid = false;
-        updateFormBlockErrors(block.id, blockErrors);
-        allErrors.push(...blockErrors);
+        errors[block.id] = blockValidationErrors;
       }
     });
 
-    // Consolidated error message for toast/notification
+    setBlockErrors(errors);
+
+    // TODO: Show toast/notification if validation fails
     if (!isValid) {
-      console.log("❌ Form validation failed:");
-      console.log(`Found ${allErrors.length} error(s):`);
-      allErrors.forEach((error, index) => {
-        console.log(`  ${index + 1}. ${error}`);
-      });
-      console.log(
-        `⚠️ Please fix ${allErrors.length} error(s) before submitting`,
-      );
+      console.log("Please fix validation errors before submitting");
     }
 
     return isValid;
@@ -116,7 +101,7 @@ export const FormPreviewContent = ({
     }
 
     // Clear any existing errors
-    clearAllFormBlockErrors();
+    setBlockErrors({});
 
     // Form is valid - proceed with submission
     console.log("✅ Form submitted successfully!");
@@ -132,7 +117,7 @@ export const FormPreviewContent = ({
   const handleReset = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     resetFormData();
-    clearAllFormBlockErrors();
+    setBlockErrors({});
   };
 
   /**
@@ -162,7 +147,7 @@ export const FormPreviewContent = ({
 
       const fieldKey = getFieldKey(block);
       const currentValue = formData[fieldKey];
-      const blockErrors = formBlockErrors[block.id] || [];
+      const errors = blockErrors[block.id] || [];
 
       return (
         <InputRenderer
@@ -173,7 +158,7 @@ export const FormPreviewContent = ({
           onChange={(value: FormBlockValueType) =>
             handleFieldChange(fieldKey, value)
           }
-          errors={blockErrors}
+          errors={errors}
         />
       );
     }

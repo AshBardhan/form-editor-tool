@@ -2,6 +2,7 @@
 
 import { FormBlock } from "@/lib/types/form";
 import { Label } from "@/components/ui/Label";
+import { ErrorMessages } from "@/components/form/ErrorMessages";
 import {
   Select,
   SelectContent,
@@ -59,7 +60,7 @@ export const SelectBlock = ({
         >
           <SelectValue placeholder={placeholder} />
         </SelectTrigger>
-        <SelectContent>
+        <SelectContent position="popper">
           {options.map((opt: string, idx: number) => (
             <SelectItem key={idx} value={opt}>
               {opt}
@@ -67,15 +68,7 @@ export const SelectBlock = ({
           ))}
         </SelectContent>
       </Select>
-      {errors.length > 0 && (
-        <div className="space-y-1">
-          {errors.map((error, index) => (
-            <p key={index} className="text-xs text-red-600 dark:text-red-400">
-              {error}
-            </p>
-          ))}
-        </div>
-      )}
+      <ErrorMessages errors={errors} />
     </div>
   );
 };

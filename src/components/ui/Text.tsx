@@ -1,7 +1,7 @@
 "use client";
 
 import { ReactNode, ElementType } from "react";
-import clsx from "clsx";
+import { cn } from "@/lib/utils/styleUtils";
 
 interface TextProps {
   variant?: "h1" | "h2" | "h3" | "h4" | "h5" | "h6" | "p" | "div";
@@ -19,7 +19,7 @@ const Text = ({
 
   return (
     <Component
-      className={clsx(
+      className={cn(
         variant === "h1" && "text-2xl sm:text-3xl font-bold",
         variant === "h2" && "text-xl sm:text-2xl font-bold",
         variant === "h3" && "text-lg sm:text-xl font-semibold",

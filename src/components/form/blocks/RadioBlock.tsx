@@ -2,6 +2,7 @@ import { getPropValue } from "@/lib/utils/formUtils";
 import { FormBlock } from "@/lib/types/form";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/RadioGroup";
 import { Label } from "@/components/ui/Label";
+import { ErrorMessages } from "@/components/form/ErrorMessages";
 import { JSX } from "react";
 
 interface RadioBlockProps {
@@ -53,15 +54,7 @@ export const RadioBlock = ({
           </div>
         ))}
       </RadioGroup>
-      {errors.length > 0 && (
-        <div className="space-y-1">
-          {errors.map((error, index) => (
-            <p key={index} className="text-xs text-red-600 dark:text-red-400">
-              {error}
-            </p>
-          ))}
-        </div>
-      )}
+      <ErrorMessages errors={errors} />
     </div>
   );
 };

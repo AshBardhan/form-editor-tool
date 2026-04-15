@@ -1,6 +1,7 @@
 import { getPropValue } from "@/lib/utils/formUtils";
 import { FormBlock } from "@/lib/types/form";
 import { Label } from "@/components/ui/Label";
+import { ErrorMessages } from "@/components/form/ErrorMessages";
 import { Textarea } from "@/components/ui/Textarea";
 import { JSX } from "react";
 
@@ -52,15 +53,7 @@ export const TextareaBlock = ({
         rows={rows}
         onChange={(e) => onChange?.(e.target.value)}
       />
-      {errors.length > 0 && (
-        <div className="space-y-1">
-          {errors.map((error, index) => (
-            <p key={index} className="text-xs text-red-600 dark:text-red-400">
-              {error}
-            </p>
-          ))}
-        </div>
-      )}
+      <ErrorMessages errors={errors} />
     </div>
   );
 };
