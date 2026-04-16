@@ -253,6 +253,22 @@ export const blockPropTemplates: Record<
       type: "boolean",
       value: false,
     },
+    {
+      key: "options",
+      label: "Options (for group mode)",
+      type: "list",
+      value: [],
+    },
+    {
+      key: "orientation",
+      label: "Orientation",
+      type: "select",
+      options: [
+        { value: "vertical", label: "Vertical" },
+        { value: "horizontal", label: "Horizontal" },
+      ],
+      value: "vertical",
+    },
   ],
   radio: [
     {

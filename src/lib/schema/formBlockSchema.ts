@@ -108,6 +108,8 @@ export const formBlockSchemas: Record<string, z.ZodSchema> = {
     label: requiredString("Label"),
     key: requiredString("Key"),
     required: z.boolean(),
+    options: z.array(requiredString("Checkbox option")).optional(),
+    orientation: z.enum(["vertical", "horizontal"]).optional(),
   }),
 
   radio: z.object({

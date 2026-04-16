@@ -73,11 +73,23 @@ export const sampleLightForm: FormConfig = {
       },
     },
     {
+      id: "chk-group-interests",
+      type: "checkbox",
+      name: "checkbox-chk-group-interests",
+      props: {
+        label: "Select your interests",
+        key: "interests",
+        required: false,
+        orientation: "horizontal",
+        options: ["Sports", "Music", "Art", "Reading"],
+      },
+    },
+    {
       id: "fqkcKVJ7Q69c5SpZ-_J8G",
       type: "separator",
       name: "separator-fqkcKVJ7Q69c5SpZ-_J8G",
       props: {
-        spacing: 10,
+        spacing: 20,
         divider: false,
       },
     },
@@ -160,6 +172,18 @@ export const sampleDarkForm: FormConfig = {
         required: false,
         orientation: "vertical",
         options: ["Small", "Default", "Large"],
+      },
+    },
+    {
+      id: "chk-group-features",
+      type: "checkbox",
+      name: "checkbox-chk-group-features",
+      props: {
+        label: "Enable features",
+        key: "features",
+        required: true,
+        orientation: "vertical",
+        options: ["Auto-save", "Spell check", "Dark theme sync"],
       },
     },
     {
