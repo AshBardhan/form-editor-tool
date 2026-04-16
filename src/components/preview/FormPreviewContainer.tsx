@@ -100,8 +100,9 @@ export const FormPreviewContainer = ({
    * Watches only theme property to avoid unnecessary DOM updates.
    */
   useEffect(() => {
-    if (formConfig) {
-      switchTheme(formConfig.theme);
+    const theme = formConfig?.theme;
+    if (theme) {
+      switchTheme(theme);
     }
     return () => {
       switchTheme("");

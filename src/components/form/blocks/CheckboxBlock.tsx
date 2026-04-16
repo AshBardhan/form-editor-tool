@@ -46,7 +46,7 @@ export const CheckboxBlock = ({
       const newValue = checked
         ? [...controlledValue, option]
         : controlledValue.filter((v) => v !== option);
-      onChange?.(newValue as any);
+      onChange?.(newValue);
     };
 
     return (
@@ -91,7 +91,7 @@ export const CheckboxBlock = ({
           checked={controlledValue}
           id={`checkbox-${block.id}`}
           tabIndex={editable ? 0 : -1}
-          onChange={(e) => onChange?.(e.target.checked as any)}
+          onChange={(e) => onChange?.(e.target.checked)}
         />
         <Label htmlFor={`checkbox-${block.id}`}>
           {label}

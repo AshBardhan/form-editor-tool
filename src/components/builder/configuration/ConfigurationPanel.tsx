@@ -129,7 +129,7 @@ export const ConfigurationPanel = memo(
     /* Validaton check on any property change */
     useEffect(() => {
       validateProps();
-    }, [selected?.props]);
+    }, [selected?.props, validateProps]);
 
     return (
       <AnimatePresence mode="wait">

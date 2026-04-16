@@ -16,7 +16,7 @@ interface FormDataState {
 /**
  * Zustand store for managing form field data in preview/editable mode.
  */
-export const useFormDataStore = create<FormDataState>((set, get) => ({
+export const useFormDataStore = create<FormDataState>((set) => ({
   formData: {},
   initFormData: (blocks) => {
     const initialData: Record<string, FormBlockValueType> = {};

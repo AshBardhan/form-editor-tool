@@ -93,6 +93,7 @@ function AvatarImage({
       className={cn("aspect-square size-full", className)}
       onLoad={handleLoad}
       onError={handleError}
+      alt=""
       {...props}
     />
   );

@@ -32,7 +32,11 @@ export const validateFormBlock = (
   const label = getPropValue(block, "label") || block.name;
 
   // Skip non-input blocks (heading, paragraph, separator, button, buttons)
-  if (!INPUT_BLOCK_TYPES.includes(block.type as any)) {
+  if (
+    !INPUT_BLOCK_TYPES.includes(
+      block.type as (typeof INPUT_BLOCK_TYPES)[number],
+    )
+  ) {
     return errors;
   }
 
@@ -124,5 +128,7 @@ export const validateFormBlock = (
  * @returns {boolean} True if the block type is an input block.
  */
 export const isInputBlockType = (blockType: string): boolean => {
-  return INPUT_BLOCK_TYPES.includes(blockType as any);
+  return INPUT_BLOCK_TYPES.includes(
+    blockType as (typeof INPUT_BLOCK_TYPES)[number],
+  );
 };
