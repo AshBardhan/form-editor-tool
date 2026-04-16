@@ -112,7 +112,7 @@ export const formBlockSchemas: Record<string, z.ZodSchema> = {
 
   radio: z.object({
     key: requiredString("Key"),
-    alignment: z.enum(["vertical", "horizontal"]),
+    orientation: z.enum(["vertical", "horizontal"]),
     options: z
       .array(requiredString("Radio option"))
       .min(2, "At least two radio options are required"),

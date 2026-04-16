@@ -256,14 +256,26 @@ export const blockPropTemplates: Record<
   ],
   radio: [
     {
+      key: "label",
+      label: "Label",
+      type: "string",
+      value: "",
+    },
+    {
       key: "key",
       label: "Key",
       type: "string",
       value: "",
     },
     {
-      key: "alignment",
-      label: "Alignment",
+      key: "required",
+      label: "Required",
+      type: "boolean",
+      value: false,
+    },
+    {
+      key: "orientation",
+      label: "Orientation",
       type: "select",
       options: [
         { value: "vertical", label: "Vertical" },

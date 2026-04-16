@@ -27,7 +27,9 @@ export const RadioBlock = ({
   onChange,
   errors = [],
 }: RadioBlockProps): JSX.Element => {
-  const alignment = (getPropValue(block, "alignment") ?? "vertical") as
+  const label = getPropValue(block, "label");
+  const required = getPropValue(block, "required") || false;
+  const orientation = (getPropValue(block, "orientation") ?? "vertical") as
     | "horizontal"
     | "vertical";
   const options = (getPropValue(block, "options") ?? []) as string[];
@@ -35,11 +37,17 @@ export const RadioBlock = ({
   const controlledValue = value ?? defaultValue;
 
   return (
-    <div className="form-block flex flex-col gap-2">
+    <div className="form-block flex flex-col gap-4">
+      {label && (
+        <Label>
+          {label}
+          {required && <span className="text-red-500 ml-1">*</span>}
+        </Label>
+      )}
       <RadioGroup
         name={`radio-${block.id}`}
         value={controlledValue}
-        alignment={alignment}
+        orientation={orientation}
         onValueChange={onChange}
       >
         {options.map((option: string) => (

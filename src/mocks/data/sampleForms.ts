@@ -61,21 +61,14 @@ export const sampleLightForm: FormConfig = {
       },
     },
     {
-      id: "hSVirOotZtjb-A_lB7fCX",
-      type: "heading",
-      name: "heading-hSVirOotZtjb-A_lB7fCX",
-      props: {
-        text: "Gender",
-        level: 6,
-      },
-    },
-    {
       id: "J11-aGpVAvdJMXD514G_j",
       type: "radio",
       name: "radio-J11-aGpVAvdJMXD514G_j",
       props: {
+        label: "Gender",
         key: "gender",
-        alignment: "horizontal",
+        required: true,
+        orientation: "horizontal",
         options: ["Male", "Female", "Prefer not to say"],
       },
     },
@@ -158,21 +151,14 @@ export const sampleDarkForm: FormConfig = {
       },
     },
     {
-      id: "hdr4-dark",
-      type: "heading",
-      name: "heading-hdr4-dark",
-      props: {
-        text: "Select Size",
-        level: 6,
-      },
-    },
-    {
       id: "radio-fontsize",
       type: "radio",
       name: "radio-fontsize",
       props: {
+        label: "Select Size",
         key: "font-size",
-        alignment: "vertical",
+        required: false,
+        orientation: "vertical",
         options: ["Small", "Default", "Large"],
       },
     },
