@@ -18,8 +18,10 @@ import { useFormConfigStore, useUIStateStore } from "@/lib/stores";
 import { AnimatePresence } from "motion/react";
 import { Widget } from "@/lib/types/widget";
 import { FormBlock } from "@/lib/types/form";
+import { DeviceType, DeviceList } from "@/lib/constants/device";
 import { Sidebar } from "@/components/layout/Sidebar";
 import { MainContent } from "@/components/layout/MainContent";
+import { DeviceSelector } from "@/components/layout/DeviceSelector";
 import { CanvasDroppable } from "@/components/builder/canvas/CanvasDroppable";
 import { CanvasForm } from "@/components/builder/canvas/CanvasForm";
 import { WidgetPanel } from "@/components/builder/widgets/WidgetPanel";
@@ -51,6 +53,7 @@ export const FormBuilderContent = (): JSX.Element => {
   const isSidebarCollapsed = useUIStateStore(
     (state) => state.isSidebarCollapsed,
   );
+  const [deviceType, setDeviceType] = useState<DeviceType>(DeviceType.DESKTOP);
 
   /**
    * Handles the end of a drag event.
@@ -146,10 +149,17 @@ export const FormBuilderContent = (): JSX.Element => {
           )}
         </AnimatePresence>
 
-        {/* Main Content Area with Canvas */}
+        {/* Main Content Area with Canvas and Device Selector */}
         <MainContent>
+          <DeviceSelector
+            currentDevice={deviceType}
+            onDeviceChange={setDeviceType}
+          />
           <div
             className="form-container"
+            style={{
+              maxWidth: `${DeviceList.find((d) => d.label === deviceType)?.size || 1440}px`,
+            }}
             onClickCapture={(e) => {
               const target = e.target as HTMLElement;
               if (!target.closest("[data-slot='block']")) {

@@ -22,7 +22,7 @@ export const DeviceSelector = ({
   onDeviceChange,
 }: DeviceSelectorProps): JSX.Element => {
   return (
-    <div className="absolute z-1 top-1 left-1/2 -translate-x-1/2 bg-[#2a2a2a] rounded overflow-hidden text-white flex">
+    <div className="sticky z-10 top-2 left-1/2 -translate-x-1/2 bg-[#2a2a2a] rounded overflow-hidden text-white inline-flex">
       {DeviceList.map((device) => {
         const Icon = device.icon;
         return (

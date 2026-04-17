@@ -7,6 +7,7 @@ import { switchTheme } from "@/lib/utils/domUtils";
 import { useFetch } from "@/lib/hooks/useFetch";
 import { useFormConfigStore, useFormDataStore } from "@/lib/stores";
 import { Header } from "@/components/layout/Header";
+import { MainContent } from "@/components/layout/MainContent";
 import { FormPreviewHeader } from "@/components/preview/FormPreviewHeader";
 import { FormPreviewContent } from "@/components/preview/FormPreviewContent";
 import { PageContent } from "@/components/layout/PageContent";
@@ -143,7 +144,7 @@ export const FormPreviewContainer = ({
         <FormPreviewHeader form={formConfig} />
       </Header>
       <PageContent>
-        <div className="relative w-full h-full">
+        <MainContent>
           <DeviceSelector
             currentDevice={currentDevice}
             onDeviceChange={setCurrentDevice}
@@ -153,7 +154,7 @@ export const FormPreviewContainer = ({
             editable={true}
             currentDevice={currentDevice}
           />
-        </div>
+        </MainContent>
       </PageContent>
     </>
   );
