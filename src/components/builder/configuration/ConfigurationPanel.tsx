@@ -12,7 +12,7 @@ import {
 import { THEME_OPTIONS } from "@/lib/constants/theme";
 import { getFormBlock, getFormBlockProps } from "@/lib/utils/formUtils";
 import { ScrollTextIcon } from "lucide-react";
-import { JSX, useEffect, useState, memo } from "react";
+import { JSX, useEffect, useState, memo, useCallback } from "react";
 import z from "zod";
 import {
   InputConfig,
@@ -78,7 +78,7 @@ export const ConfigurationPanel = memo(
     /**
      * Validates the properties of the selected block against its schema.
      */
-    const validateProps = () => {
+    const validateProps = useCallback(() => {
       if (!selected || !schema) return;
 
       const result = schema.safeParse(selected.props);
@@ -115,7 +115,13 @@ export const ConfigurationPanel = memo(
         setErrors({});
         clearFormBlockErrors(selected.id);
       }
-    };
+    }, [
+      selected,
+      schema,
+      formBlocks,
+      updateFormBlockErrors,
+      clearFormBlockErrors,
+    ]);
 
     /**
      * Checks if a property has validation errors.
