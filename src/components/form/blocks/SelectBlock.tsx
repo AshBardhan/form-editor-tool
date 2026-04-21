@@ -44,7 +44,7 @@ export const SelectBlock = ({
   const placeholder = (getPropValue(block, "placeholder") ?? "") as string;
 
   return (
-    <div className="form-block flex flex-col gap-2">
+    <div className="form-block flex flex-col gap-1.5 @sm:gap-2">
       {label && (
         <Label htmlFor={`select-${block.id}`}>
           {label}

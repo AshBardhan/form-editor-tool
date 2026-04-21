@@ -50,7 +50,7 @@ export const CheckboxBlock = ({
     };
 
     return (
-      <div className="form-block flex flex-col gap-4">
+      <div className="form-block flex flex-col gap-3 @sm:gap-4">
         {label && (
           <Label>
             {label}
@@ -58,7 +58,11 @@ export const CheckboxBlock = ({
           </Label>
         )}
         <div
-          className={`flex ${orientation === "horizontal" ? "flex-wrap gap-5" : "flex-col gap-3"}`}
+          className={
+            orientation === "horizontal"
+              ? "flex flex-row flex-wrap gap-5"
+              : "flex flex-col gap-3"
+          }
         >
           {options.map((option: string) => (
             <div key={option} className="flex items-center gap-2">
@@ -84,7 +88,7 @@ export const CheckboxBlock = ({
     (value as boolean | undefined) ?? defaultValue ?? false;
 
   return (
-    <div className="form-block flex flex-col gap-2">
+    <div className="form-block flex flex-col gap-1.5 @sm:gap-2">
       <div className="flex gap-2 items-center">
         <Checkbox
           readOnly={!editable}

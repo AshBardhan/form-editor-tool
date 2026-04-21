@@ -43,7 +43,9 @@ export const ButtonBlock = ({ block }: ButtonBlockProps): JSX.Element => {
 
   return (
     <div className={cn("form-block flex", alignmentClass)}>
-      <Button variant={level}>{title}</Button>
+      <Button variant={level} className="w-full @sm:w-auto">
+        {title}
+      </Button>
     </div>
   );
 };

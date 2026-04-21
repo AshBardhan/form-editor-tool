@@ -37,7 +37,7 @@ export const RadioBlock = ({
   const controlledValue = value ?? defaultValue;
 
   return (
-    <div className="form-block flex flex-col gap-4">
+    <div className="form-block flex flex-col gap-3 @sm:gap-4">
       {label && (
         <Label>
           {label}

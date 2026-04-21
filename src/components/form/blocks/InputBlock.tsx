@@ -34,7 +34,7 @@ export const InputBlock = ({
   const controlledValue = value ?? defaultValue ?? "";
 
   return (
-    <div className="form-block flex flex-col gap-2">
+    <div className="form-block flex flex-col gap-1.5 @sm:gap-2">
       {label && (
         <Label htmlFor={`input-${block.id}`}>
           {label}
