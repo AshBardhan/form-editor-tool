@@ -72,11 +72,18 @@
   }
 
   .form-content {
-    @apply bg-white dark:bg-black shadow dark:shadow-white/80 w-full py-6 transition-colors rounded-lg;
+    @apply bg-white dark:bg-black shadow dark:shadow-white/80 w-full transition-colors rounded-lg;
+    /* Enable container queries for child elements */
+    @apply @container;
+    /* Mobile-first responsive padding using container queries */
+    @apply py-4 @sm:py-6 @5xl:py-8;
   }
 
   .form-block {
-    @apply py-2 px-8;
+    /* Mobile-first responsive padding using container queries */
+    @apply px-4 py-1.5;
+    @apply @sm:px-6 @sm:py-2;
+    @apply @5xl:px-8;
   }
 }
 
