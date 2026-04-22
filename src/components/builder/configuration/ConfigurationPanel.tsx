@@ -15,6 +15,7 @@ import { ScrollTextIcon } from "lucide-react";
 import { JSX, useEffect, useState, useMemo, memo, useCallback } from "react";
 import z from "zod";
 import { FormBlock } from "@/lib/types/form";
+import type { FormBlockPropTemplate } from "@/lib/types/form";
 import {
   InputConfig,
   LongTextConfig,
@@ -164,6 +165,128 @@ export const ConfigurationPanel = memo(
       return [];
     }, [selected]);
 
+    // Helper to render each prop config
+    function renderPropConfig(prop: FormBlockPropTemplate) {
+      if (!selected) return null;
+
+      const selectedBlockPropKey = `${selected.id}-${prop.key}`;
+      // Label for non-boolean
+      const label =
+        prop.type !== "boolean" ? (
+          <Label htmlFor={selectedBlockPropKey} className="font-semibold">
+            {prop.label}
+          </Label>
+        ) : null;
+
+      // Error state
+      const shouldShowError = hasErrorProp(prop.key);
+
+      let propInputConfig: JSX.Element | null = null;
+      switch (prop.type) {
+        case "string":
+          propInputConfig = (
+            <InputConfig
+              id={selectedBlockPropKey}
+              value={String(prop.value) ?? ""}
+              className={cn(
+                "focus-visible:ring-0 focus-visible:shadow-none!",
+                shouldShowError && "border-destructive!",
+              )}
+              onChange={(value) =>
+                updateFormBlock(selected.id, prop.key, value)
+              }
+            />
+          );
+          break;
+        case "long-string":
+          propInputConfig = (
+            <LongTextConfig
+              id={selectedBlockPropKey}
+              value={String(prop.value) ?? ""}
+              className={cn(
+                "resize-y focus-visible:ring-0 focus-visible:shadow-none!",
+                shouldShowError && "border-destructive!",
+              )}
+              onChange={(value) =>
+                updateFormBlock(selected.id, prop.key, value)
+              }
+            />
+          );
+          break;
+        case "number":
+          propInputConfig = (
+            <InputConfig
+              type="number"
+              id={selectedBlockPropKey}
+              value={Number(prop.value) ?? 0}
+              className={cn(
+                "focus-visible:ring-0 focus-visible:shadow-none!",
+                shouldShowError && "border-destructive!",
+              )}
+              onChange={(value) =>
+                updateFormBlock(selected.id, prop.key, value)
+              }
+            />
+          );
+          break;
+        case "boolean":
+          propInputConfig = (
+            <CheckboxConfig
+              id={selectedBlockPropKey}
+              label={prop.label}
+              value={Boolean(prop.value)}
+              onChange={(value) =>
+                updateFormBlock(selected.id, prop.key, value)
+              }
+            />
+          );
+          break;
+        case "select":
+          propInputConfig = (
+            <SelectConfig
+              id={selectedBlockPropKey}
+              value={prop.value as string}
+              options={prop.options ?? []}
+              onChange={(value) =>
+                updateFormBlock(selected.id, prop.key, value)
+              }
+            />
+          );
+          break;
+        case "list":
+          propInputConfig = (
+            <ListConfig
+              id={selectedBlockPropKey}
+              value={prop.value as any[]}
+              onChange={(val) => updateFormBlock(selected.id, prop.key, val)}
+            />
+          );
+          break;
+        default:
+          propInputConfig = null;
+      }
+
+      // Error messages
+      const errorMessages = hasErrorProp(prop.key)
+        ? errors[prop.key].map((err, idx) => (
+            <div key={idx} className="text-xs text-destructive">
+              {err}
+            </div>
+          ))
+        : null;
+
+      return (
+        <div
+          className="flex flex-col gap-2 focus-within:shadow-none!"
+          key={selectedBlockPropKey}
+        >
+          {label}
+          {propInputConfig}
+          {errorMessages}
+        </div>
+      );
+    }
+
     return (
       <AnimatePresence mode="wait">
         <motion.div
@@ -183,117 +306,7 @@ export const ConfigurationPanel = memo(
             <>
               {/* Block Configuration Panel */}
               <div className="p-4 flex flex-col gap-4 dark">
-                {visibleProps.map((prop) => {
-                  const selectedBlockPropKey = `${selected.id}-${prop.key}`;
-                  return (
-                    <div
-                      className="flex flex-col gap-2 focus-within:shadow-none!"
-                      key={selectedBlockPropKey}
-                    >
-                      {/* Block Property Label */}
-                      {prop.type !== "boolean" && (
-                        <Label
-                          htmlFor={selectedBlockPropKey}
-                          className="font-semibold"
-                        >
-                          {prop.label}
-                        </Label>
-                      )}
-
-                      {/* Block Property Text Input (Regular and Long String types) */}
-                      {prop.type === "string" &&
-                        typeof prop.value === "string" && (
-                          <InputConfig
-                            id={selectedBlockPropKey}
-                            value={prop.value ?? ""}
-                            className={cn(
-                              "focus-visible:ring-0 focus-visible:shadow-none!",
-                              hasErrorProp(prop.key) && "border-destructive!",
-                            )}
-                            onChange={(value) =>
-                              updateFormBlock(selected.id, prop.key, value)
-                            }
-                          />
-                        )}
-
-                      {prop.type === "long-string" &&
-                        typeof prop.value === "string" && (
-                          <LongTextConfig
-                            id={selectedBlockPropKey}
-                            value={prop.value ?? ""}
-                            className={cn(
-                              "resize-y focus-visible:ring-0 focus-visible:shadow-none!",
-                              hasErrorProp(prop.key) && "border-destructive!",
-                            )}
-                            onChange={(value) =>
-                              updateFormBlock(selected.id, prop.key, value)
-                            }
-                          />
-                        )}
-
-                      {/* Block Property Number Input */}
-                      {prop.type === "number" &&
-                        typeof prop.value === "number" && (
-                          <InputConfig
-                            type="number"
-                            id={selectedBlockPropKey}
-                            value={prop.value ?? 0}
-                            className={cn(
-                              "focus-visible:ring-0 focus-visible:shadow-none!",
-                              hasErrorProp(prop.key) && "border-destructive!",
-                            )}
-                            onChange={(value) =>
-                              updateFormBlock(selected.id, prop.key, value)
-                            }
-                          />
-                        )}
-
-                      {/* Block Property Checkbox */}
-                      {prop.type === "boolean" && (
-                        <CheckboxConfig
-                          id={selectedBlockPropKey}
-                          label={prop.label}
-                          value={Boolean(prop.value)}
-                          onChange={(value) =>
-                            updateFormBlock(selected.id, prop.key, value)
-                          }
-                        />
-                      )}
-
-                      {/* Block Property Selectbox */}
-                      {prop.type === "select" &&
-                        typeof prop.value === "string" && (
-                          <SelectConfig
-                            id={selectedBlockPropKey}
-                            value={prop.value}
-                            options={prop.options ?? []}
-                            onChange={(value) =>
-                              updateFormBlock(selected.id, prop.key, value)
-                            }
-                          />
-                        )}
-
-                      {/* Block Property Listbox */}
-                      {prop.type === "list" && Array.isArray(prop.value) && (
-                        <ListConfig
-                          id={selectedBlockPropKey}
-                          value={prop.value}
-                          onChange={(val) =>
-                            updateFormBlock(selected.id, prop.key, val)
-                          }
-                        />
-                      )}
-
-                      {/* Block Property Validation Error Messages */}
-                      {hasErrorProp(prop.key) > 0 &&
-                        errors[prop.key].map((error, idx) => (
-                          <div key={idx} className="text-xs text-destructive">
-                            {error}
-                          </div>
-                        ))}
-                    </div>
-                  );
-                })}
+                {visibleProps.map(renderPropConfig)}
               </div>
             </>
           ) : (
