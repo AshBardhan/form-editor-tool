@@ -68,10 +68,7 @@ export const ButtonsBlock = ({ block }: ButtonsBlockProps): JSX.Element => {
 
   return (
     <div
-      className={cn(
-        "form-block flex flex-col @sm:flex-row gap-2 @sm:gap-3",
-        alignmentClass,
-      )}
+      className={cn("form-block flex flex-row gap-2 @sm:gap-3", alignmentClass)}
     >
       {reverse ? (
         <>

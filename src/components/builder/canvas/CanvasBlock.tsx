@@ -156,7 +156,7 @@ export const CanvasBlock = ({
             <SeparatorHorizontalIcon size={24} />
           </div>
 
-          <div className="absolute top-1/2 -translate-y-1/2 right-4 flex gap-1 z-1">
+          <div className="absolute top-1/2 -translate-y-1/2 right-2 @sm:right-4 flex gap-1 z-1">
             {/* Clone Block Button */}
             {!isInvalid && (
               <Button
