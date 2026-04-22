@@ -12,8 +12,9 @@ import {
 import { THEME_OPTIONS } from "@/lib/constants/theme";
 import { getFormBlock, getFormBlockProps } from "@/lib/utils/formUtils";
 import { ScrollTextIcon } from "lucide-react";
-import { JSX, useEffect, useState, memo, useCallback } from "react";
+import { JSX, useEffect, useState, useMemo, memo, useCallback } from "react";
 import z from "zod";
+import { FormBlock } from "@/lib/types/form";
 import {
   InputConfig,
   LongTextConfig,
@@ -137,6 +138,32 @@ export const ConfigurationPanel = memo(
       validateProps();
     }, [selected?.props, validateProps]);
 
+    function computeVisibleProps(selected: FormBlock) {
+      let propsArr = getFormBlockProps(selected);
+
+      if (selected.type === "checkbox") {
+        const grouped = Boolean(
+          propsArr.find((p) => p.key === "grouped")?.value,
+        );
+
+        propsArr = propsArr.map((prop) => {
+          if (prop.key === "orientation" || prop.key === "options") {
+            return { ...prop, hidden: !grouped };
+          }
+          return prop;
+        });
+      }
+
+      return propsArr.filter((prop) => !prop.hidden);
+    }
+
+    const visibleProps = useMemo(() => {
+      if (selected) {
+        return computeVisibleProps(selected as FormBlock);
+      }
+      return [];
+    }, [selected]);
+
     return (
       <AnimatePresence mode="wait">
         <motion.div
@@ -156,7 +183,7 @@ export const ConfigurationPanel = memo(
             <>
               {/* Block Configuration Panel */}
               <div className="p-4 flex flex-col gap-4 dark">
-                {getFormBlockProps(selected).map((prop) => {
+                {visibleProps.map((prop) => {
                   const selectedBlockPropKey = `${selected.id}-${prop.key}`;
                   return (
                     <div

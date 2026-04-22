@@ -254,8 +254,14 @@ export const blockPropTemplates: Record<
       value: false,
     },
     {
+      key: "grouped",
+      label: "Grouped",
+      type: "boolean",
+      value: false,
+    },
+    {
       key: "options",
-      label: "Options (for group mode)",
+      label: "Options",
       type: "list",
       value: [],
     },

@@ -110,11 +110,41 @@ export const useFormConfigStore = create<FormConfigState>()(
             blocks: state.formConfig.blocks.map((b) => {
               if (b.id !== id) return b;
 
-              // Update the specified prop
-              const updatedProps = {
+              let updatedProps = {
                 ...b.props,
                 [key]: value,
               };
+
+              // Checkbox grouped logic
+              if (b.type === "checkbox") {
+                // If grouped is toggled
+                if (key === "grouped") {
+                  if (value === true) {
+                    // When switching to grouped, set to default if not already
+                    updatedProps.orientation =
+                      updatedProps.orientation || "vertical";
+                    // Set options to two default options if empty or not an array
+                    if (
+                      !Array.isArray(updatedProps.options) ||
+                      updatedProps.options.length === 0
+                    ) {
+                      updatedProps.options = ["Option 1", "Option 2"];
+                    }
+                  } else {
+                    // Reset orientation and options to default values
+                    updatedProps.orientation = "vertical";
+                    updatedProps.options = [];
+                  }
+                }
+                // If orientation or options are changed while grouped is false, ignore changes
+                if (
+                  (key === "orientation" || key === "options") &&
+                  updatedProps.grouped === false
+                ) {
+                  updatedProps.orientation = "vertical";
+                  updatedProps.options = [];
+                }
+              }
 
               // If label is being updated and key exists, auto-update key
               if (key === "label" && "key" in updatedProps) {

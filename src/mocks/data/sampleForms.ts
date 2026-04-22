@@ -80,6 +80,7 @@ export const sampleLightForm: FormConfig = {
         label: "Select your interests",
         key: "interests",
         required: false,
+        grouped: true,
         orientation: "horizontal",
         options: ["Sports", "Music", "Art", "Reading"],
       },
@@ -89,7 +90,7 @@ export const sampleLightForm: FormConfig = {
       type: "separator",
       name: "separator-fqkcKVJ7Q69c5SpZ-_J8G",
       props: {
-        spacing: 20,
+        spacing: 10,
         divider: false,
       },
     },
@@ -101,6 +102,15 @@ export const sampleLightForm: FormConfig = {
         label: "I accept terms and conditions",
         key: "accept-terms",
         required: true,
+      },
+    },
+    {
+      id: "Kc5SpZtc0jfqkc-_XfA",
+      type: "separator",
+      name: "separator-Kc5SpZtc0jfqkc-_XfA",
+      props: {
+        spacing: 10,
+        divider: false,
       },
     },
     {
@@ -182,6 +192,7 @@ export const sampleDarkForm: FormConfig = {
         label: "Enable features",
         key: "features",
         required: true,
+        grouped: true,
         orientation: "vertical",
         options: ["Auto-save", "Spell check", "Dark theme sync"],
       },
