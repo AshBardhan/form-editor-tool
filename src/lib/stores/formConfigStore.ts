@@ -110,7 +110,7 @@ export const useFormConfigStore = create<FormConfigState>()(
             blocks: state.formConfig.blocks.map((b) => {
               if (b.id !== id) return b;
 
-              let updatedProps = {
+              const updatedProps = {
                 ...b.props,
                 [key]: value,
               };

@@ -181,10 +181,10 @@ export const ConfigurationPanel = memo(
       // Error state
       const shouldShowError = hasErrorProp(prop.key);
 
-      let propInputConfig: JSX.Element | null = null;
+      let propConfig: JSX.Element | null = null;
       switch (prop.type) {
         case "string":
-          propInputConfig = (
+          propConfig = (
             <InputConfig
               id={selectedBlockPropKey}
               value={String(prop.value) ?? ""}
@@ -199,7 +199,7 @@ export const ConfigurationPanel = memo(
           );
           break;
         case "long-string":
-          propInputConfig = (
+          propConfig = (
             <LongTextConfig
               id={selectedBlockPropKey}
               value={String(prop.value) ?? ""}
@@ -214,7 +214,7 @@ export const ConfigurationPanel = memo(
           );
           break;
         case "number":
-          propInputConfig = (
+          propConfig = (
             <InputConfig
               type="number"
               id={selectedBlockPropKey}
@@ -230,7 +230,7 @@ export const ConfigurationPanel = memo(
           );
           break;
         case "boolean":
-          propInputConfig = (
+          propConfig = (
             <CheckboxConfig
               id={selectedBlockPropKey}
               label={prop.label}
@@ -242,7 +242,7 @@ export const ConfigurationPanel = memo(
           );
           break;
         case "select":
-          propInputConfig = (
+          propConfig = (
             <SelectConfig
               id={selectedBlockPropKey}
               value={prop.value as string}
@@ -254,16 +254,18 @@ export const ConfigurationPanel = memo(
           );
           break;
         case "list":
-          propInputConfig = (
+          propConfig = (
             <ListConfig
               id={selectedBlockPropKey}
-              value={prop.value as any[]}
-              onChange={(val) => updateFormBlock(selected.id, prop.key, val)}
+              value={Array.isArray(prop.value) ? (prop.value as string[]) : []}
+              onChange={(val: string[]) =>
+                updateFormBlock(selected.id, prop.key, val)
+              }
             />
           );
           break;
         default:
-          propInputConfig = null;
+          propConfig = null;
       }
 
       // Error messages
@@ -281,7 +283,7 @@ export const ConfigurationPanel = memo(
           key={selectedBlockPropKey}
         >
           {label}
-          {propInputConfig}
+          {propConfig}
           {errorMessages}
         </div>
       );

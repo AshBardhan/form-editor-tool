@@ -1,5 +1,5 @@
 import { getPropValue } from "@/lib/utils/formUtils";
-import { FormBlock } from "@/lib/types/form";
+import { FormBlock, FormBlockOrientation } from "@/lib/types/form";
 import { Checkbox } from "@/components/ui/Checkbox";
 import { Label } from "@/components/ui/Label";
 import { ErrorMessages } from "@/components/form/ErrorMessages";
@@ -31,9 +31,8 @@ export const CheckboxBlock = ({
   const label = getPropValue(block, "label");
   const required = getPropValue(block, "required") || false;
   const options = (getPropValue(block, "options") ?? []) as string[];
-  const orientation = (getPropValue(block, "orientation") ?? "vertical") as
-    | "horizontal"
-    | "vertical";
+  const orientation = (getPropValue(block, "orientation") ??
+    "vertical") as FormBlockOrientation;
 
   // Group mode: has options array
   const isGroup = options.length > 0;
