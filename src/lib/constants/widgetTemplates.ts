@@ -281,7 +281,7 @@ export const blockPropTemplates: Record<
       key: "label",
       label: "Label",
       type: "string",
-      value: "",
+      value: "Radio Label",
     },
     {
       key: "key",
@@ -296,6 +296,12 @@ export const blockPropTemplates: Record<
       value: false,
     },
     {
+      key: "options",
+      label: "Options",
+      type: "list",
+      value: ["Option 1", "Option 2"],
+    },
+    {
       key: "orientation",
       label: "Orientation",
       type: "select",
@@ -304,12 +310,6 @@ export const blockPropTemplates: Record<
         { value: "horizontal", label: "Horizontal" },
       ],
       value: "vertical",
-    },
-    {
-      key: "options",
-      label: "Options",
-      type: "list",
-      value: ["Radio Label 1", "Radio Label 2"],
     },
   ],
   select: [

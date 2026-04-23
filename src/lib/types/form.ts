@@ -78,6 +78,8 @@ export interface FormConfig {
 
 export type FormStatus = "draft" | "published";
 
+export type FormBlockOrientation = "horizontal" | "vertical";
+
 /**
  * Form metric template - used for rendering metrics with labels
  * Contains full metadata including key, label, and value

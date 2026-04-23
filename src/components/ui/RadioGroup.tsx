@@ -3,13 +3,14 @@
 import { CircleIcon } from "lucide-react";
 import * as React from "react";
 import { cn } from "@/lib/utils/styleUtils";
+import { FormBlockOrientation } from "@/lib/types/form";
 
 interface RadioGroupProps extends React.HTMLAttributes<HTMLDivElement> {
   value?: string;
   defaultValue?: string;
   onValueChange?: (value: string) => void;
   name?: string;
-  orientation?: "vertical" | "horizontal";
+  orientation?: FormBlockOrientation;
 }
 
 interface RadioGroupItemProps

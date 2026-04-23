@@ -1,5 +1,5 @@
 import { getPropValue } from "@/lib/utils/formUtils";
-import { FormBlock } from "@/lib/types/form";
+import { FormBlock, FormBlockOrientation } from "@/lib/types/form";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/RadioGroup";
 import { Label } from "@/components/ui/Label";
 import { ErrorMessages } from "@/components/form/ErrorMessages";
@@ -27,12 +27,19 @@ export const RadioBlock = ({
   onChange,
   errors = [],
 }: RadioBlockProps): JSX.Element => {
-  const label = getPropValue(block, "label");
+  // Default values for new blocks
+  const label = getPropValue(block, "label") || "Option";
+  // If key is missing, generate a unique key using block.id (used for group name)
+  const groupName = (getPropValue(block, "key") ||
+    `radio_${block.id}`) as string;
+  // Default options if missing
+  const options = (getPropValue(block, "options") ?? [
+    "Option 1",
+    "Option 2",
+  ]) as string[];
   const required = getPropValue(block, "required") || false;
-  const orientation = (getPropValue(block, "orientation") ?? "vertical") as
-    | "horizontal"
-    | "vertical";
-  const options = (getPropValue(block, "options") ?? []) as string[];
+  const orientation = (getPropValue(block, "orientation") ??
+    "vertical") as FormBlockOrientation;
   const defaultValue = getPropValue(block, "value") as string | undefined;
   const controlledValue = value ?? defaultValue;
 
@@ -45,7 +52,7 @@ export const RadioBlock = ({
         </Label>
       )}
       <RadioGroup
-        name={`radio-${block.id}`}
+        name={groupName}
         value={controlledValue}
         orientation={orientation}
         onValueChange={onChange}
