@@ -1,10 +1,10 @@
 "use client";
 
-import { JSX, useEffect } from "react";
-import { FormData } from "@/lib/types/form";
+import { JSX, useEffect, useState } from "react";
+import { FormConfig } from "@/lib/types/form";
 import { LoaderCircleIcon } from "lucide-react";
 import { switchTheme } from "@/lib/utils/domUtils";
-import { useFormDataStore, useUIStateStore } from "@/lib/stores";
+import { useFormConfigStore, useUIStateStore } from "@/lib/stores";
 import { useFetch } from "@/lib/hooks/useFetch";
 import { Header } from "@/components/layout/Header";
 import { FormBuilderHeader } from "@/components/builder/FormBuilderHeader";
@@ -17,9 +17,9 @@ interface FormBuilderContainerProps {
 
 /**
  * Form Builder Container
- * - Renders the form with prefilled data fetched from API if an 'id' is provided. Otherwise, renders an empty form.
- * - Switches the theme of the page based on the form data.
- * - Handles errors and loading states.
+ * - Smart loading: Uses localStorage when form.id matches route id (instant load)
+ * - Fetches from API only when needed (mismatch, first visit, or direct URL)
+ * - Handles new and existing forms with proper state management
  *
  * @param {FormBuilderContainerProps} props - The props for the component.
  * @returns {JSX.Element} The rendered component.
@@ -27,27 +27,61 @@ interface FormBuilderContainerProps {
 export const FormBuilderContainer = ({
   id,
 }: FormBuilderContainerProps): JSX.Element => {
-  const setForm = useFormDataStore((state) => state.setForm);
-  const resetForm = useFormDataStore((state) => state.resetForm);
+  const formConfig = useFormConfigStore((state) => state.formConfig);
+  const setFormConfig = useFormConfigStore((state) => state.setFormConfig);
+  const resetFormConfig = useFormConfigStore((state) => state.resetFormConfig);
   const resetSidebar = useUIStateStore((state) => state.resetSidebar);
+  const [shouldFetch, setShouldFetch] = useState(false);
+  const [isReady, setIsReady] = useState(false);
 
-  const { data, loading, error } = useFetch<FormData>(
-    id ? `/api/form/${id}` : "",
+  const { data, loading, error } = useFetch<FormConfig>(
+    shouldFetch && id ? `/api/form/${id}` : "",
   );
 
+  // Smart loading logic
   useEffect(() => {
-    console.log("trigger", data);
+    // Case 1: New form (no id)
+    if (!id) {
+      // If stored form has an id, it's from a different form → reset
+      if (formConfig.id) {
+        resetFormConfig();
+      }
+      // Otherwise use localStorage (new form in progress)
+      setIsReady(true);
+      return;
+    }
+
+    // Case 2: Existing form - check if localStorage matches
+    if (formConfig.id === id) {
+      // Match → Use localStorage, no fetch needed (instant load)
+      setIsReady(true);
+      return;
+    }
+
+    // Case 3: Mismatch or empty → Fetch from API
+    setShouldFetch(true);
+  }, [id, formConfig.id, resetFormConfig]);
+
+  // Update store when API data arrives
+  useEffect(() => {
     if (data) {
-      setForm(data);
-      switchTheme(data.theme);
+      setFormConfig(data);
+      setShouldFetch(false);
+      setIsReady(true);
+    }
+  }, [data, setFormConfig]);
+
+  // Apply theme from store
+  useEffect(() => {
+    if (isReady) {
+      switchTheme(formConfig.theme);
     }
 
     return () => {
-      resetForm();
       resetSidebar();
       switchTheme("");
     };
-  }, [data, setForm, resetForm, resetSidebar]);
+  }, [isReady, formConfig.theme, resetSidebar]);
 
   if (loading) {
     return (
@@ -72,7 +106,7 @@ export const FormBuilderContainer = ({
   return (
     <>
       <Header>
-        <FormBuilderHeader />
+        <FormBuilderHeader formId={id} />
       </Header>
       <PageContent>
         <FormBuilderContent />

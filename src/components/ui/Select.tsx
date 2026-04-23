@@ -74,7 +74,9 @@ function Select({
         onOpenChange: handleOpenChange,
       }}
     >
-      <div data-slot="select">{children}</div>
+      <div data-slot="select" className="relative">
+        {children}
+      </div>
     </SelectContext.Provider>
   );
 }
@@ -164,8 +166,9 @@ function SelectContent({
     <div
       data-slot="select-content"
       className={cn(
-        "bg-popover text-popover-foreground relative z-50 max-h-96 min-w-[8rem] overflow-x-hidden overflow-y-auto rounded-md border border-input dark:border-white shadow-md",
-        position === "popper" && "mt-1",
+        "bg-white dark:bg-black text-gray-900 dark:text-white z-50 max-h-96 min-w-[8rem] overflow-x-hidden overflow-y-auto rounded-md border border-input dark:border-white shadow-md",
+        position === "popper" && "absolute left-0 top-full mt-1 w-full",
+        position !== "popper" && "relative",
         className,
       )}
       {...props}
@@ -202,7 +205,7 @@ function SelectItem({ className, children, value, ...props }: SelectItemProps) {
     <div
       data-slot="select-item"
       className={cn(
-        "focus:bg-accent [&_svg:not([class*='text-'])]:text-muted-foreground relative flex w-full cursor-default items-center gap-2 rounded-sm py-1.5 pr-8 pl-2 text-sm outline-hidden select-none hover:bg-accent text-input dark:text-white dark:focus:bg-accent-inverted dark:hover:bg-accent-inverted [&_svg]:pointer-events-none [&_svg]:shrink-0 [&_svg:not([class*='size-'])]:size-4",
+        "relative flex w-full cursor-default items-center gap-2 rounded-sm py-1.5 pr-8 pl-2 text-sm outline-hidden select-none text-gray-900 dark:text-white hover:bg-gray-100 dark:hover:bg-input/20 focus:bg-gray-100 dark:focus:bg-input/20 [&_svg:not([class*='text-'])]:text-gray-500 [&_svg:not([class*='text-'])]:dark:text-gray-400 [&_svg]:pointer-events-none [&_svg]:shrink-0 [&_svg:not([class*='size-'])]:size-4",
         className,
       )}
       onClick={() => context.onValueChange?.(value)}

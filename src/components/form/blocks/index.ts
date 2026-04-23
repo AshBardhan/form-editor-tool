@@ -8,6 +8,7 @@ import { CheckboxBlock } from "./CheckboxBlock";
 import { SelectBlock } from "./SelectBlock";
 import { SeparatorBlock } from "./SeparatorBlock";
 import { ButtonBlock } from "./ButtonBlock";
+import { ButtonsBlock } from "./ButtonsBlock";
 import { RadioBlock } from "./RadioBlock";
 
 /**
@@ -38,4 +39,5 @@ export const widgetBlockRenderers: Record<FormBlockType, WidgetBlockRenderer> =
     radio: RadioBlock,
     separator: SeparatorBlock,
     button: ButtonBlock,
+    buttons: ButtonsBlock,
   };

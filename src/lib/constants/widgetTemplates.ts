@@ -38,6 +38,12 @@ export const blockPropTemplates: Record<
       value: "Text Field",
     },
     {
+      key: "key",
+      label: "Key",
+      type: "string",
+      value: "",
+    },
+    {
       key: "placeholder",
       label: "Placeholder",
       type: "string",
@@ -62,6 +68,12 @@ export const blockPropTemplates: Record<
       label: "Label",
       type: "string",
       value: "Number Field",
+    },
+    {
+      key: "key",
+      label: "Key",
+      type: "string",
+      value: "",
     },
     {
       key: "placeholder",
@@ -102,6 +114,12 @@ export const blockPropTemplates: Record<
       value: "Email Field",
     },
     {
+      key: "key",
+      label: "Key",
+      type: "string",
+      value: "",
+    },
+    {
       key: "placeholder",
       label: "Placeholder",
       type: "string",
@@ -120,6 +138,12 @@ export const blockPropTemplates: Record<
       label: "Label",
       type: "string",
       value: "Password Field",
+    },
+    {
+      key: "key",
+      label: "Key",
+      type: "string",
+      value: "",
     },
     {
       key: "placeholder",
@@ -154,6 +178,12 @@ export const blockPropTemplates: Record<
       value: "URL Field",
     },
     {
+      key: "key",
+      label: "Key",
+      type: "string",
+      value: "",
+    },
+    {
       key: "placeholder",
       label: "Placeholder",
       type: "string",
@@ -172,6 +202,12 @@ export const blockPropTemplates: Record<
       label: "Label",
       type: "string",
       value: "Textarea Field",
+    },
+    {
+      key: "key",
+      label: "Key",
+      type: "string",
+      value: "",
     },
     {
       key: "placeholder",
@@ -206,16 +242,32 @@ export const blockPropTemplates: Record<
       value: "Checkbox Label",
     },
     {
+      key: "key",
+      label: "Key",
+      type: "string",
+      value: "",
+    },
+    {
       key: "required",
       label: "Required",
       type: "boolean",
       value: false,
     },
-  ],
-  radio: [
     {
-      key: "alignment",
-      label: "Alignment",
+      key: "grouped",
+      label: "Grouped",
+      type: "boolean",
+      value: false,
+    },
+    {
+      key: "options",
+      label: "Options",
+      type: "list",
+      value: [],
+    },
+    {
+      key: "orientation",
+      label: "Orientation",
       type: "select",
       options: [
         { value: "vertical", label: "Vertical" },
@@ -223,11 +275,41 @@ export const blockPropTemplates: Record<
       ],
       value: "vertical",
     },
+  ],
+  radio: [
+    {
+      key: "label",
+      label: "Label",
+      type: "string",
+      value: "Radio Label",
+    },
+    {
+      key: "key",
+      label: "Key",
+      type: "string",
+      value: "",
+    },
+    {
+      key: "required",
+      label: "Required",
+      type: "boolean",
+      value: false,
+    },
     {
       key: "options",
       label: "Options",
       type: "list",
-      value: ["Radio Label 1", "Radio Label 2"],
+      value: ["Option 1", "Option 2"],
+    },
+    {
+      key: "orientation",
+      label: "Orientation",
+      type: "select",
+      options: [
+        { value: "vertical", label: "Vertical" },
+        { value: "horizontal", label: "Horizontal" },
+      ],
+      value: "vertical",
     },
   ],
   select: [
@@ -236,6 +318,12 @@ export const blockPropTemplates: Record<
       label: "Label",
       type: "string",
       value: "Select Label",
+    },
+    {
+      key: "key",
+      label: "Key",
+      type: "string",
+      value: "",
     },
     {
       key: "required",
@@ -275,7 +363,7 @@ export const blockPropTemplates: Record<
       key: "title",
       label: "Title",
       type: "string",
-      value: "Buttton",
+      value: "Button",
     },
     {
       key: "level",
@@ -297,6 +385,62 @@ export const blockPropTemplates: Record<
         { value: "right", label: "Right" },
       ],
       value: "left",
+    },
+  ],
+  buttons: [
+    {
+      key: "submitLabel",
+      label: "Submit Button Label",
+      type: "string",
+      value: "Submit",
+    },
+    {
+      key: "submitTheme",
+      label: "Submit Button Theme",
+      type: "select",
+      options: [
+        { value: "primary", label: "Primary" },
+        { value: "secondary", label: "Secondary" },
+        { value: "outline", label: "Outline" },
+        { value: "destructive", label: "Destructive" },
+      ],
+      value: "primary",
+    },
+    {
+      key: "resetLabel",
+      label: "Reset Button Label",
+      type: "string",
+      value: "Reset",
+    },
+    {
+      key: "resetTheme",
+      label: "Reset Button Theme",
+      type: "select",
+      options: [
+        { value: "primary", label: "Primary" },
+        { value: "secondary", label: "Secondary" },
+        { value: "outline", label: "Outline" },
+        { value: "destructive", label: "Destructive" },
+      ],
+      value: "outline",
+    },
+    {
+      key: "alignment",
+      label: "Alignment",
+      type: "select",
+      options: [
+        { value: "left", label: "Left" },
+        { value: "center", label: "Center" },
+        { value: "right", label: "Right" },
+        { value: "justified", label: "Justified" },
+      ],
+      value: "left",
+    },
+    {
+      key: "reverse",
+      label: "Reverse Order",
+      type: "boolean",
+      value: false,
     },
   ],
 };

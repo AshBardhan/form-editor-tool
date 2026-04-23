@@ -1,13 +1,24 @@
+"use client";
+
 import { FileText, Plus } from "lucide-react";
 import Text from "@/components/ui/Text";
 import { Button } from "@/components/ui/Button";
-import Link from "next/link";
+import { useRouter } from "next/navigation";
 
 /**
  * DashboardHeader - Main header for the dashboard page
  * Displays title and create new form button
  */
 export function DashboardHeader() {
+  const router = useRouter();
+
+  const handleCreateNewForm = () => {
+    // Clear any persisted draft from localStorage
+    localStorage.removeItem("form-builder-storage");
+    // Navigate to new form page
+    router.push("/forms/new");
+  };
+
   return (
     <div className="flex items-center justify-between mb-8">
       <div className="flex items-center gap-3">
@@ -23,11 +34,9 @@ export function DashboardHeader() {
           </Text>
         </div>
       </div>
-      <Button asChild size="lg">
-        <Link href="/forms/new" className="gap-2">
-          <Plus className="size-5" />
-          Create Form
-        </Link>
+      <Button onClick={handleCreateNewForm} size="lg" className="gap-2">
+        <Plus className="size-5" />
+        Create Form
       </Button>
     </div>
   );

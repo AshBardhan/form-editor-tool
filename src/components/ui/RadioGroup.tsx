@@ -3,13 +3,14 @@
 import { CircleIcon } from "lucide-react";
 import * as React from "react";
 import { cn } from "@/lib/utils/styleUtils";
+import { FormBlockOrientation } from "@/lib/types/form";
 
 interface RadioGroupProps extends React.HTMLAttributes<HTMLDivElement> {
   value?: string;
   defaultValue?: string;
   onValueChange?: (value: string) => void;
   name?: string;
-  alignment?: "vertical" | "horizontal";
+  orientation?: FormBlockOrientation;
 }
 
 interface RadioGroupItemProps
@@ -31,7 +32,7 @@ const RadioGroup = React.forwardRef<HTMLDivElement, RadioGroupProps>(
       defaultValue,
       onValueChange,
       name,
-      alignment = "vertical",
+      orientation = "vertical",
       ...props
     },
     ref,
@@ -57,7 +58,7 @@ const RadioGroup = React.forwardRef<HTMLDivElement, RadioGroupProps>(
           ref={ref}
           data-slot="radio-group"
           className={cn(
-            `flex ${alignment === "horizontal" ? "flex-wrap gap-5" : "flex-col gap-3"}`,
+            `flex ${orientation === "horizontal" ? "flex-wrap gap-5" : "flex-col gap-3"}`,
             className,
           )}
           role="radiogroup"

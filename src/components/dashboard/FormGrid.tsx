@@ -1,7 +1,7 @@
 "use client";
 
 import { useFetch } from "@/lib/hooks/useFetch";
-import { FormListItem } from "@/lib/types/form";
+import { FormList } from "@/lib/types/form";
 import { FormCard } from "./FormCard";
 import Text from "@/components/ui/Text";
 import { Card, CardContent } from "@/components/ui/Card";
@@ -13,7 +13,7 @@ import { Skeleton } from "@/components/ui/Skeleton";
  * Renders FormCard components in a responsive grid
  */
 export function FormGrid() {
-  const { data, loading, error } = useFetch<FormListItem[]>("/api/forms");
+  const { data, loading, error } = useFetch<FormList>("/api/forms");
 
   if (loading) {
     return (

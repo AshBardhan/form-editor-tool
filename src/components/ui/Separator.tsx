@@ -2,9 +2,10 @@
 
 import * as React from "react";
 import { cn } from "@/lib/utils/styleUtils";
+import { FormBlockOrientation } from "@/lib/types/form";
 
 interface SeparatorProps extends React.HTMLAttributes<HTMLDivElement> {
-  orientation?: "horizontal" | "vertical";
+  orientation?: FormBlockOrientation;
   decorative?: boolean;
 }
 

@@ -14,14 +14,14 @@ import {
 } from "@dnd-kit/core";
 import { JSX, useState } from "react";
 import { hybridKeyboardCoordinates } from "@/lib/utils/keyboardUtils";
-import { useFormDataStore, useUIStateStore } from "@/lib/stores";
+import { useFormConfigStore, useUIStateStore } from "@/lib/stores";
 import { AnimatePresence } from "motion/react";
 import { Widget } from "@/lib/types/widget";
 import { FormBlock } from "@/lib/types/form";
-import { DeviceType } from "@/lib/constants/device";
+import { DeviceType, DeviceList } from "@/lib/constants/device";
 import { Sidebar } from "@/components/layout/Sidebar";
 import { MainContent } from "@/components/layout/MainContent";
-import { DeviceSelector } from "@/components/builder/canvas/DeviceSelector";
+import { DeviceSelector } from "@/components/layout/DeviceSelector";
 import { CanvasDroppable } from "@/components/builder/canvas/CanvasDroppable";
 import { CanvasForm } from "@/components/builder/canvas/CanvasForm";
 import { WidgetPanel } from "@/components/builder/widgets/WidgetPanel";
@@ -37,7 +37,6 @@ interface DragState {
  * Form Builder Content
  * - Renders form with prefilled and empty data
  * - Provides drag-and-drop and configuration for form
- * - Device selection for different screen sizes
  *
  * @returns {JSX.Element} The rendered component.
  */
@@ -47,9 +46,9 @@ export const FormBuilderContent = (): JSX.Element => {
     activeItem: null,
     source: null,
   });
-  const formBlocks = useFormDataStore((state) => state.form.blocks);
-  const moveFormBlock = useFormDataStore((state) => state.moveFormBlock);
-  const addFormBlock = useFormDataStore((state) => state.addFormBlock);
+  const formBlocks = useFormConfigStore((state) => state.formConfig.blocks);
+  const moveFormBlock = useFormConfigStore((state) => state.moveFormBlock);
+  const addFormBlock = useFormConfigStore((state) => state.addFormBlock);
   const selectFormBlock = useUIStateStore((state) => state.selectFormBlock);
   const isSidebarCollapsed = useUIStateStore(
     (state) => state.isSidebarCollapsed,
@@ -152,8 +151,15 @@ export const FormBuilderContent = (): JSX.Element => {
 
         {/* Main Content Area with Canvas and Device Selector */}
         <MainContent>
+          <DeviceSelector
+            currentDevice={deviceType}
+            onDeviceChange={setDeviceType}
+          />
           <div
-            className="py-12 px-8 h-full overflow-y-auto"
+            className="form-container"
+            style={{
+              maxWidth: `${DeviceList.find((d) => d.label === deviceType)?.size || 1440}px`,
+            }}
             onClickCapture={(e) => {
               const target = e.target as HTMLElement;
               if (!target.closest("[data-slot='block']")) {
@@ -161,13 +167,7 @@ export const FormBuilderContent = (): JSX.Element => {
               }
             }}
           >
-            <DeviceSelector
-              currentDevice={deviceType}
-              onDeviceChange={setDeviceType}
-            />
-
             <CanvasForm
-              currentDevice={deviceType}
               overId={dragState.overId}
               activeDragItem={dragState.activeItem as FormBlock}
               dragSource={dragState.source}

@@ -9,7 +9,7 @@ export type InputBlockType =
   | "radio"
   | "checkbox"
   | "select";
-export type MediaBlockType = "button";
+export type MediaBlockType = "button" | "buttons";
 
 export type FormBlockType = TextBlockType | InputBlockType | MediaBlockType;
 
@@ -28,13 +28,10 @@ export type FormBlockPropType =
   | "list"
   | "select";
 
-export interface FormBlockPropConfig {
-  key: string;
-  label: string;
-  type: FormBlockPropType;
-  value: FormBlockValueType;
-}
-
+/**
+ * Form block prop template - used for widget templates
+ * Contains full metadata including labels, types, options, and default values
+ */
 export interface FormBlockPropTemplate {
   key: string;
   label: string;
@@ -50,22 +47,30 @@ export interface FormBlockPropTemplate {
   minLength?: number;
   maxLength?: number;
 
-  // For select blocks
+  // For choice-based blocks
   options?: { value: string; label: string }[];
 
   // Optional UI/UX-based blocks
   placeholder?: string;
   required?: boolean;
+  hidden?: boolean;
 }
+
+/**
+ * Form block props - normalized structure
+ * Only stores values, metadata comes from templates
+ */
+export type FormBlockProps = Record<string, FormBlockValueType>;
 
 export interface FormBlock {
   type: FormBlockType;
   id: string;
   name: string;
-  props: FormBlockPropConfig[];
+  props: FormBlockProps;
 }
 
-export interface FormData {
+export interface FormConfig {
+  id?: string; // Form ID for tracking (undefined for new forms)
   title: string;
   theme: "light" | "dark";
   blocks: FormBlock[];
@@ -73,15 +78,29 @@ export interface FormData {
 
 export type FormStatus = "draft" | "published";
 
+export type FormBlockOrientation = "horizontal" | "vertical";
+
+/**
+ * Form metric template - used for rendering metrics with labels
+ * Contains full metadata including key, label, and value
+ */
 export interface FormMetric {
   key: string;
   label: string;
   value: string | number;
 }
 
+/**
+ * Form metrics - normalized structure
+ * Only stores values, metadata comes from metricTemplates
+ */
+export type FormMetrics = Record<string, string | number>;
+
 export interface FormListItem {
   id: string;
   name: string;
   status: FormStatus;
-  metrics: FormMetric[];
+  metrics: FormMetrics;
 }
+
+export type FormList = FormListItem[];

@@ -7,15 +7,14 @@ import {
 import { CanvasBlock } from "./CanvasBlock";
 import { useDroppable } from "@dnd-kit/core";
 import { JSX } from "react";
-import { DeviceList, DeviceType } from "@/lib/constants/device";
 import { FormBlock } from "@/lib/types/form";
-import { useFormDataStore } from "@/lib/stores/formDataStore";
+import { useFormConfigStore } from "@/lib/stores/formConfigStore";
+import Text from "@/components/ui/Text";
 
 interface CanvasFormProps {
   overId: string | null;
   activeDragItem: FormBlock | null;
   dragSource: "sidebar" | "canvas" | null;
-  currentDevice: DeviceType;
 }
 
 /**
@@ -29,8 +28,11 @@ const DropPlaceholder = (): JSX.Element => (
  * Drop Zero State Content
  */
 const DropZeroState = (): JSX.Element => (
-  <div className="h-full text-gray-500 border dark:text-white shadow dark:shadow-white/80 transition-colors border-dashed flex items-center justify-center text-sm">
-    Drop widgets to create form
+  <div className="h-full text-gray-500 dark:text-white transition-colors flex flex-col items-center justify-center">
+    <Text variant="h3">Empty form</Text>
+    <Text variant="p" className="text-sm">
+      Please drop widgets to create form.
+    </Text>
   </div>
 );
 
@@ -46,47 +48,38 @@ export const CanvasForm = ({
   overId,
   activeDragItem,
   dragSource,
-  currentDevice,
 }: CanvasFormProps): JSX.Element => {
-  const form = useFormDataStore((state) => state.form);
+  const formConfig = useFormConfigStore((state) => state.formConfig);
   const { setNodeRef } = useDroppable({ id: "canvas" });
-  const isOverEnd = overId && !form.blocks.some((f) => f.id === overId);
-  const currentDeviceMeta = DeviceList.find(
-    (device) => device.label === currentDevice,
-  );
+  const isOverEnd = overId && !formConfig.blocks.some((f) => f.id === overId);
 
   return (
-    <div className="flex justify-center" ref={setNodeRef}>
-      <div
-        className="min-h-[75vh] w-full flex-1 bg-white dark:bg-black shadow dark:shadow-white/80 transition-[colors,max-width]"
-        style={{ maxWidth: currentDeviceMeta?.size }}
+    <div className="form-content" ref={setNodeRef}>
+      <SortableContext
+        items={formConfig.blocks.map((f) => f.id)}
+        strategy={verticalListSortingStrategy}
       >
-        <SortableContext
-          items={form.blocks.map((f) => f.id)}
-          strategy={verticalListSortingStrategy}
-        >
-          {/* Empty canvas state */}
-          {form.blocks.length === 0 && !overId ? (
-            <DropZeroState />
-          ) : (
-            <>
-              {/* Form canvas state with dropped and configured blocks */}
-              {form.blocks.map((block) => (
-                <div className="relative" key={block.id}>
-                  {/* Drop placeholder in the middle of the list */}
-                  {overId === block.id &&
-                    dragSource === "sidebar" &&
-                    activeDragItem?.id !== block.id && <DropPlaceholder />}
-                  <CanvasBlock block={block} />
-                </div>
-              ))}
-            </>
-          )}
+        {/* Empty canvas state */}
+        {formConfig.blocks.length === 0 && !overId ? (
+          <DropZeroState />
+        ) : (
+          <>
+            {/* Form canvas state with dropped and configured blocks */}
+            {formConfig.blocks.map((block) => (
+              <div className="relative" key={block.id}>
+                {/* Drop placeholder in the middle of the list */}
+                {overId === block.id &&
+                  dragSource === "sidebar" &&
+                  activeDragItem?.id !== block.id && <DropPlaceholder />}
+                <CanvasBlock block={block} />
+              </div>
+            ))}
+          </>
+        )}
 
-          {/* Drop placeholder at end of list */}
-          {isOverEnd && dragSource === "sidebar" && <DropPlaceholder />}
-        </SortableContext>
-      </div>
+        {/* Drop placeholder at end of list */}
+        {isOverEnd && dragSource === "sidebar" && <DropPlaceholder />}
+      </SortableContext>
     </div>
   );
 };

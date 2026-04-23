@@ -10,10 +10,12 @@ import {
   SelectValue,
 } from "@/components/ui/Select";
 import { THEME_OPTIONS } from "@/lib/constants/theme";
-import { getFormBlock } from "@/lib/utils/formUtils";
+import { getFormBlock, getFormBlockProps } from "@/lib/utils/formUtils";
 import { ScrollTextIcon } from "lucide-react";
-import { JSX, useEffect, useState, memo } from "react";
+import { JSX, useEffect, useState, useMemo, memo, useCallback } from "react";
 import z from "zod";
+import { FormBlock } from "@/lib/types/form";
+import type { FormBlockPropTemplate } from "@/lib/types/form";
 import {
   InputConfig,
   LongTextConfig,
@@ -21,16 +23,14 @@ import {
   SelectConfig,
   ListConfig,
 } from "@/components/form/configs";
-import { FormBlockValueType } from "@/lib/types/form";
 import {
   useFormBlockValidationStore,
-  useFormDataStore,
+  useFormConfigStore,
   useUIStateStore,
 } from "@/lib/stores";
 import { AnimatePresence, motion } from "motion/react";
 import { visibleContentVariants } from "@/lib/constants/styles";
 import { cn } from "@/lib/utils/styleUtils";
-import { blockPropTemplates } from "@/lib/constants/widgetTemplates";
 import { switchTheme } from "@/lib/utils/domUtils";
 
 /**
@@ -42,11 +42,15 @@ import { switchTheme } from "@/lib/utils/domUtils";
  */
 export const ConfigurationPanel = memo(
   function ConfigurationPanel(): JSX.Element {
-    const formTitle = useFormDataStore((state) => state.form.title);
-    const formTheme = useFormDataStore((state) => state.form.theme);
-    const formBlocks = useFormDataStore((state) => state.form.blocks);
-    const updateFormBlock = useFormDataStore((state) => state.updateFormBlock);
-    const updateForm = useFormDataStore((state) => state.updateForm);
+    const formTitle = useFormConfigStore((state) => state.formConfig.title);
+    const formTheme = useFormConfigStore((state) => state.formConfig.theme);
+    const formBlocks = useFormConfigStore((state) => state.formConfig.blocks);
+    const updateFormBlock = useFormConfigStore(
+      (state) => state.updateFormBlock,
+    );
+    const updateFormConfig = useFormConfigStore(
+      (state) => state.updateFormConfig,
+    );
     const updateFormBlockErrors = useFormBlockValidationStore(
       (state) => state.updateFormBlockErrors,
     );
@@ -70,20 +74,16 @@ export const ConfigurationPanel = memo(
      */
     const onThemeChange = (value: string) => {
       switchTheme(value);
-      updateForm("theme", value);
+      updateFormConfig("theme", value);
     };
 
     /**
      * Validates the properties of the selected block against its schema.
      */
-    const validateProps = () => {
+    const validateProps = useCallback(() => {
       if (!selected || !schema) return;
 
-      const rawData = Object.fromEntries(
-        selected.props.map((prop) => [prop.key, prop.value]),
-      ) as Record<string, FormBlockValueType>;
-
-      const result = schema.safeParse(rawData);
+      const result = schema.safeParse(selected.props);
 
       if (!result.success) {
         const formBlockErrors = z.flattenError(result.error)
@@ -94,10 +94,36 @@ export const ConfigurationPanel = memo(
         );
         updateFormBlockErrors(selected.id, combined);
       } else {
+        // Schema validation passed, now check key uniqueness
+        const keyValue = selected.props.key;
+
+        if (keyValue && typeof keyValue === "string" && keyValue.trim()) {
+          // Check if any other block has the same key
+          const isDuplicateKey = formBlocks.some(
+            (block) => block.id !== selected.id && block.props.key === keyValue,
+          );
+
+          if (isDuplicateKey) {
+            const uniquenessError = {
+              key: ["Key must be unique across all form blocks"],
+            };
+            setErrors(uniquenessError);
+            updateFormBlockErrors(selected.id, uniquenessError.key);
+            return;
+          }
+        }
+
+        // All validations passed
         setErrors({});
         clearFormBlockErrors(selected.id);
       }
-    };
+    }, [
+      selected,
+      schema,
+      formBlocks,
+      updateFormBlockErrors,
+      clearFormBlockErrors,
+    ]);
 
     /**
      * Checks if a property has validation errors.
@@ -111,7 +137,157 @@ export const ConfigurationPanel = memo(
     /* Validaton check on any property change */
     useEffect(() => {
       validateProps();
-    }, [selected?.props]);
+    }, [selected?.props, validateProps]);
+
+    function computeVisibleProps(selected: FormBlock) {
+      let propsArr = getFormBlockProps(selected);
+
+      if (selected.type === "checkbox") {
+        const grouped = Boolean(
+          propsArr.find((p) => p.key === "grouped")?.value,
+        );
+
+        propsArr = propsArr.map((prop) => {
+          if (prop.key === "orientation" || prop.key === "options") {
+            return { ...prop, hidden: !grouped };
+          }
+          return prop;
+        });
+      }
+
+      return propsArr.filter((prop) => !prop.hidden);
+    }
+
+    const visibleProps = useMemo(() => {
+      if (selected) {
+        return computeVisibleProps(selected as FormBlock);
+      }
+      return [];
+    }, [selected]);
+
+    // Helper to render each prop config
+    function renderPropConfig(prop: FormBlockPropTemplate) {
+      if (!selected) return null;
+
+      const selectedBlockPropKey = `${selected.id}-${prop.key}`;
+      // Label for non-boolean
+      const label =
+        prop.type !== "boolean" ? (
+          <Label htmlFor={selectedBlockPropKey} className="font-semibold">
+            {prop.label}
+          </Label>
+        ) : null;
+
+      // Error state
+      const shouldShowError = hasErrorProp(prop.key);
+
+      let propConfig: JSX.Element | null = null;
+      switch (prop.type) {
+        case "string":
+          propConfig = (
+            <InputConfig
+              id={selectedBlockPropKey}
+              value={String(prop.value) ?? ""}
+              className={cn(
+                "focus-visible:ring-0 focus-visible:shadow-none!",
+                shouldShowError && "border-destructive!",
+              )}
+              onChange={(value) =>
+                updateFormBlock(selected.id, prop.key, value)
+              }
+            />
+          );
+          break;
+        case "long-string":
+          propConfig = (
+            <LongTextConfig
+              id={selectedBlockPropKey}
+              value={String(prop.value) ?? ""}
+              className={cn(
+                "resize-y focus-visible:ring-0 focus-visible:shadow-none!",
+                shouldShowError && "border-destructive!",
+              )}
+              onChange={(value) =>
+                updateFormBlock(selected.id, prop.key, value)
+              }
+            />
+          );
+          break;
+        case "number":
+          propConfig = (
+            <InputConfig
+              type="number"
+              id={selectedBlockPropKey}
+              value={Number(prop.value) ?? 0}
+              className={cn(
+                "focus-visible:ring-0 focus-visible:shadow-none!",
+                shouldShowError && "border-destructive!",
+              )}
+              onChange={(value) =>
+                updateFormBlock(selected.id, prop.key, value)
+              }
+            />
+          );
+          break;
+        case "boolean":
+          propConfig = (
+            <CheckboxConfig
+              id={selectedBlockPropKey}
+              label={prop.label}
+              value={Boolean(prop.value)}
+              onChange={(value) =>
+                updateFormBlock(selected.id, prop.key, value)
+              }
+            />
+          );
+          break;
+        case "select":
+          propConfig = (
+            <SelectConfig
+              id={selectedBlockPropKey}
+              value={prop.value as string}
+              options={prop.options ?? []}
+              onChange={(value) =>
+                updateFormBlock(selected.id, prop.key, value)
+              }
+            />
+          );
+          break;
+        case "list":
+          propConfig = (
+            <ListConfig
+              id={selectedBlockPropKey}
+              value={Array.isArray(prop.value) ? (prop.value as string[]) : []}
+              onChange={(val: string[]) =>
+                updateFormBlock(selected.id, prop.key, val)
+              }
+            />
+          );
+          break;
+        default:
+          propConfig = null;
+      }
+
+      // Error messages
+      const errorMessages = hasErrorProp(prop.key)
+        ? errors[prop.key].map((err, idx) => (
+            <div key={idx} className="text-xs text-destructive">
+              {err}
+            </div>
+          ))
+        : null;
+
+      return (
+        <div
+          className="flex flex-col gap-2 focus-within:shadow-none!"
+          key={selectedBlockPropKey}
+        >
+          {label}
+          {propConfig}
+          {errorMessages}
+        </div>
+      );
+    }
 
     return (
       <AnimatePresence mode="wait">
@@ -132,121 +308,7 @@ export const ConfigurationPanel = memo(
             <>
               {/* Block Configuration Panel */}
               <div className="p-4 flex flex-col gap-4 dark">
-                {selected.props.map((prop) => {
-                  const selectedBlockPropKey = `${selected.id}-${prop.key}`;
-                  return (
-                    <div
-                      className="flex flex-col gap-2 focus-within:shadow-none!"
-                      key={selectedBlockPropKey}
-                    >
-                      {/* Block Property Label */}
-                      {prop.type !== "boolean" && (
-                        <Label
-                          htmlFor={selectedBlockPropKey}
-                          className="font-semibold"
-                        >
-                          {prop.label}
-                        </Label>
-                      )}
-
-                      {/* Block Property Text Input (Regular and Long String types) */}
-                      {prop.type === "string" &&
-                        typeof prop.value === "string" && (
-                          <InputConfig
-                            id={selectedBlockPropKey}
-                            value={prop.value ?? ""}
-                            className={cn(
-                              "focus-visible:ring-0 focus-visible:shadow-none!",
-                              hasErrorProp(prop.key) && "border-destructive!",
-                            )}
-                            onChange={(value) =>
-                              updateFormBlock(selected.id, prop.key, value)
-                            }
-                          />
-                        )}
-
-                      {prop.type === "long-string" &&
-                        typeof prop.value === "string" && (
-                          <LongTextConfig
-                            id={selectedBlockPropKey}
-                            value={prop.value ?? ""}
-                            className={cn(
-                              "resize-y focus-visible:ring-0 focus-visible:shadow-none!",
-                              hasErrorProp(prop.key) && "border-destructive!",
-                            )}
-                            onChange={(value) =>
-                              updateFormBlock(selected.id, prop.key, value)
-                            }
-                          />
-                        )}
-
-                      {/* Block Property Number Input */}
-                      {prop.type === "number" &&
-                        typeof prop.value === "number" && (
-                          <InputConfig
-                            type="number"
-                            id={selectedBlockPropKey}
-                            value={prop.value ?? 0}
-                            className={cn(
-                              "focus-visible:ring-0 focus-visible:shadow-none!",
-                              hasErrorProp(prop.key) && "border-destructive!",
-                            )}
-                            onChange={(value) =>
-                              updateFormBlock(selected.id, prop.key, value)
-                            }
-                          />
-                        )}
-
-                      {/* Block Property Checkbox */}
-                      {prop.type === "boolean" && (
-                        <CheckboxConfig
-                          id={selectedBlockPropKey}
-                          label={prop.label}
-                          value={Boolean(prop.value)}
-                          onChange={(value) =>
-                            updateFormBlock(selected.id, prop.key, value)
-                          }
-                        />
-                      )}
-
-                      {/* Block Property Selectbox */}
-                      {prop.type === "select" &&
-                        typeof prop.value === "string" && (
-                          <SelectConfig
-                            id={selectedBlockPropKey}
-                            value={prop.value}
-                            options={
-                              blockPropTemplates[selected.type].find(
-                                (p) => p.key === prop.key,
-                              )?.options ?? []
-                            }
-                            onChange={(value) =>
-                              updateFormBlock(selected.id, prop.key, value)
-                            }
-                          />
-                        )}
-
-                      {/* Block Property Listbox */}
-                      {prop.type === "list" && Array.isArray(prop.value) && (
-                        <ListConfig
-                          id={selectedBlockPropKey}
-                          value={prop.value}
-                          onChange={(val) =>
-                            updateFormBlock(selected.id, prop.key, val)
-                          }
-                        />
-                      )}
-
-                      {/* Block Property Validation Error Messages */}
-                      {hasErrorProp(prop.key) > 0 &&
-                        errors[prop.key].map((error, idx) => (
-                          <div key={idx} className="text-xs text-destructive">
-                            {error}
-                          </div>
-                        ))}
-                    </div>
-                  );
-                })}
+                {visibleProps.map(renderPropConfig)}
               </div>
             </>
           ) : (
@@ -261,7 +323,7 @@ export const ConfigurationPanel = memo(
                     id="form-title"
                     value={formTitle}
                     className="focus-visible:ring-0 focus-visible:shadow-none!"
-                    onChange={(e) => updateForm("title", e.target.value)}
+                    onChange={(e) => updateFormConfig("title", e.target.value)}
                   />
                 </div>
 

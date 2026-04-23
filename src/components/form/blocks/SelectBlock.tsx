@@ -2,6 +2,7 @@
 
 import { FormBlock } from "@/lib/types/form";
 import { Label } from "@/components/ui/Label";
+import { ErrorMessages } from "@/components/form/ErrorMessages";
 import {
   Select,
   SelectContent,
@@ -14,6 +15,10 @@ import { getPropValue } from "@/lib/utils/formUtils";
 
 interface SelectBlockProps {
   block: FormBlock;
+  editable?: boolean;
+  value?: string;
+  onChange?: (value: string) => void;
+  errors?: string[];
 }
 
 /**
@@ -23,24 +28,39 @@ interface SelectBlockProps {
  * @param {SelectBlockProps} props - The props for the component.
  * @returns {JSX.Element} The rendered component.
  */
-export const SelectBlock = ({ block }: SelectBlockProps): JSX.Element => {
+export const SelectBlock = ({
+  block,
+  editable = false,
+  value,
+  onChange,
+  errors = [],
+}: SelectBlockProps): JSX.Element => {
   const label = getPropValue(block, "label");
+  const required = getPropValue(block, "required") || false;
   const options = (getPropValue(block, "options") ?? []) as string[];
-  const value = (getPropValue(block, "value") ?? "") as string;
+  const blockValue = (getPropValue(block, "value") ?? "") as string;
+  const defaultValue = required ? blockValue || options[0] || "" : blockValue;
+  const controlledValue = value ?? defaultValue;
   const placeholder = (getPropValue(block, "placeholder") ?? "") as string;
 
   return (
-    <div className="form-block flex flex-col gap-2">
-      {label && <Label htmlFor={`select-${block.id}`}>{label}</Label>}
-      <Select value={value}>
+    <div className="form-block flex flex-col gap-1.5 @sm:gap-2">
+      {label && (
+        <Label htmlFor={`select-${block.id}`}>
+          {label}
+          {required && <span className="text-red-500 ml-1">*</span>}
+        </Label>
+      )}
+      <Select value={controlledValue} onValueChange={onChange}>
         <SelectTrigger
           id={`select-${block.id}`}
           className="w-full"
-          tabIndex={-1}
+          tabIndex={editable ? 0 : -1}
+          disabled={!editable}
         >
           <SelectValue placeholder={placeholder} />
         </SelectTrigger>
-        <SelectContent>
+        <SelectContent position="popper">
           {options.map((opt: string, idx: number) => (
             <SelectItem key={idx} value={opt}>
               {opt}
@@ -48,6 +68,7 @@ export const SelectBlock = ({ block }: SelectBlockProps): JSX.Element => {
           ))}
         </SelectContent>
       </Select>
+      <ErrorMessages errors={errors} />
     </div>
   );
 };

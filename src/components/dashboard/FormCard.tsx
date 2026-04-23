@@ -4,6 +4,7 @@ import Link from "next/link";
 import Text from "@/components/ui/Text";
 import Metric from "@/components/ui/Metric";
 import { Badge } from "@/components/ui/Badge";
+import { getFormMetrics } from "@/lib/utils/formUtils";
 
 interface FormCardProps {
   form: FormListItem;
@@ -35,7 +36,7 @@ export function FormCard({ form }: FormCardProps) {
             {form.name}
           </Text>
           <div className="flex gap-8">
-            {form.metrics.map((metric) => (
+            {getFormMetrics(form.metrics).map((metric) => (
               <Metric
                 key={metric.key}
                 direction="column"
