@@ -37,7 +37,7 @@ export const FormPreviewHeader = ({
   return (
     <div className="flex items-center h-full">
       {/* Back Button */}
-      <div className="shrink-0 w-50 flex items-center gap-2">
+      <div className="shrink-0 w-48 flex items-center gap-2">
         <Button
           variant="ghost"
           onClick={handleBack}
@@ -52,7 +52,7 @@ export const FormPreviewHeader = ({
         <Badge label="Preview" variant="info" size="sm" />
       </div>
       {/* Empty right section for balance */}
-      <div className="shrink-0 w-50" />
+      <div className="shrink-0 w-48" />
     </div>
   );
 };

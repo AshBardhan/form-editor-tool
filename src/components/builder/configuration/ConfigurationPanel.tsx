@@ -187,7 +187,7 @@ export const ConfigurationPanel = memo(
           propConfig = (
             <InputConfig
               id={selectedBlockPropKey}
-              value={String(prop.value) ?? ""}
+              value={prop.value == null ? "" : String(prop.value)}
               className={cn(
                 "focus-visible:ring-0 focus-visible:shadow-none!",
                 shouldShowError && "border-destructive!",
@@ -202,7 +202,7 @@ export const ConfigurationPanel = memo(
           propConfig = (
             <LongTextConfig
               id={selectedBlockPropKey}
-              value={String(prop.value) ?? ""}
+              value={prop.value == null ? "" : String(prop.value)}
               className={cn(
                 "resize-y focus-visible:ring-0 focus-visible:shadow-none!",
                 shouldShowError && "border-destructive!",
@@ -218,7 +218,7 @@ export const ConfigurationPanel = memo(
             <InputConfig
               type="number"
               id={selectedBlockPropKey}
-              value={Number(prop.value) ?? 0}
+              value={typeof prop.value === "number" ? prop.value : 0}
               className={cn(
                 "focus-visible:ring-0 focus-visible:shadow-none!",
                 shouldShowError && "border-destructive!",

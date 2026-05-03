@@ -46,11 +46,9 @@ export const useFormDataStore = create<FormDataState>((set) => ({
       }
     });
 
-    console.log("Initializing form data with defaults:", initialData);
     set({ formData: initialData });
   },
   updateFormData: (key, value) => {
-    console.log("Setting field value:", key, "=", value);
     set((state) => ({
       formData: {
         ...state.formData,

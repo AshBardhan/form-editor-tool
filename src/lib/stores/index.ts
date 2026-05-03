@@ -3,8 +3,8 @@
  *
  * Store Architecture:
  * - FormConfigStore: Manages form configurations and block operations
- * - BlockValidationStore: Manages block validation errors-
- * - UIStateStore: Manages UI state like selections and sidebar state-
+ * - BlockValidationStore: Manages block validation errors
+ * - UIStateStore: Manages UI state like selections and sidebar state
  * - FormDataStore: Manages form data in preview/editable mode
  *
  * Benefits of separation:

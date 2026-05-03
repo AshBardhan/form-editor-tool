@@ -38,8 +38,9 @@ export const CheckboxBlock = ({
   const isGroup = options.length > 0;
 
   if (isGroup) {
-    const defaultValue = (getPropValue(block, "value") ?? []) as string[];
-    const controlledValue = (value as string[] | undefined) ?? defaultValue;
+    const rawDefaultValue = getPropValue(block, "value");
+    const defaultValue = Array.isArray(rawDefaultValue) ? rawDefaultValue : [];
+    const controlledValue = Array.isArray(value) ? value : defaultValue;
 
     const handleCheckboxChange = (option: string, checked: boolean) => {
       const newValue = checked
@@ -82,9 +83,8 @@ export const CheckboxBlock = ({
   }
 
   // Single mode: no options (current behavior)
-  const defaultValue = getPropValue(block, "checked") as boolean | undefined;
-  const controlledValue =
-    (value as boolean | undefined) ?? defaultValue ?? false;
+  const defaultValue = Boolean(getPropValue(block, "value"));
+  const controlledValue = (value as boolean | undefined) ?? defaultValue;
 
   return (
     <div className="form-block flex flex-col gap-1.5 @sm:gap-2">

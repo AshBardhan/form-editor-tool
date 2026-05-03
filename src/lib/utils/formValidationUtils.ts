@@ -50,6 +50,10 @@ export const validateFormBlock = (
     ) {
       errors.push(`${label} is required`);
     }
+    // Special case: Single checkbox (not grouped) must be checked
+    if (block.type === "checkbox" && value === false) {
+      errors.push(`${label} is required`);
+    }
   }
 
   // Type-specific validation (only if value exists)
@@ -85,19 +89,11 @@ export const validateFormBlock = (
       const minLength = getPropValue(block, "minLength");
       const maxLength = getPropValue(block, "maxLength");
 
-      if (
-        minLength &&
-        typeof minLength === "number" &&
-        stringValue.length < minLength
-      ) {
+      if (typeof minLength === "number" && stringValue.length < minLength) {
         errors.push(`${label} must be at least ${minLength} characters`);
       }
 
-      if (
-        maxLength &&
-        typeof maxLength === "number" &&
-        stringValue.length > maxLength
-      ) {
+      if (typeof maxLength === "number" && stringValue.length > maxLength) {
         errors.push(`${label} must be at most ${maxLength} characters`);
       }
     }
@@ -108,11 +104,11 @@ export const validateFormBlock = (
       const max = getPropValue(block, "max");
       const numValue = Number(value);
 
-      if (min && typeof min === "number" && numValue < min) {
+      if (typeof min === "number" && numValue < min) {
         errors.push(`${label} must be at least ${min}`);
       }
 
-      if (max && typeof max === "number" && numValue > max) {
+      if (typeof max === "number" && numValue > max) {
         errors.push(`${label} must be at most ${max}`);
       }
     }
