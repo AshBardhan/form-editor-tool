@@ -2,6 +2,7 @@ import "./globals.css";
 
 import type { Metadata, Viewport } from "next";
 import { MockProvider } from "@/lib/providers/MockProvider";
+import { Toaster } from "@/components/ui/Toast";
 
 export const metadata: Metadata = {
   title: "FormKit - A Visual DnD Form Builder",
@@ -22,6 +23,7 @@ export default function RootLayout({
     <html lang="en" suppressHydrationWarning>
       <body suppressHydrationWarning>
         <MockProvider>{children}</MockProvider>
+        <Toaster />
       </body>
     </html>
   );

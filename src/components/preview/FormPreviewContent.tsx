@@ -11,6 +11,7 @@ import {
   isInputBlockType,
 } from "@/lib/utils/formValidationUtils";
 import { DeviceList, DeviceType } from "@/lib/constants/device";
+import { toast } from "@/components/ui/Toast";
 
 interface FormPreviewContentProps {
   form: FormConfig;
@@ -81,9 +82,16 @@ export const FormPreviewContent = ({
 
     setBlockErrors(errors);
 
-    // TODO: Show toast/notification if validation fails
     if (!isValid) {
-      console.log("Please fix validation errors before submitting");
+      // Count total errors
+      const errorCount = Object.values(errors).reduce(
+        (sum, errs) => sum + errs.length,
+        0,
+      );
+
+      toast.error("Form validation failed", {
+        description: `Please fix ${errorCount} error${errorCount > 1 ? "s" : ""} before submitting.`,
+      });
     }
 
     return isValid;
@@ -103,12 +111,28 @@ export const FormPreviewContent = ({
     // Clear any existing errors
     setBlockErrors({});
 
-    // TODO: Show toast/notification if form submitted successfully
-    console.log("✅ Form submitted successfully!");
-    console.log("Form Data:", formData);
+    try {
+      toast.success("Form submitted successfully!", {
+        description: "Your response has been recorded.",
+      });
 
-    // You could also send this data to an API here
-    // Example: await fetch('/api/submit', { method: 'POST', body: JSON.stringify(formData) })
+      console.log("✅ Form submitted successfully!");
+      console.log("Form Data:", formData);
+
+      // You could also send this data to an API here
+      // Example: 
+      // await fetch('/api/submit', { method: 'POST', body: JSON.stringify(formData) })
+      //   .catch((error) => {
+      //     toast.error("Submission failed", {
+      //       description: "Failed to submit form. Please try again.",
+      //     });
+      //   });
+    } catch (error) {
+      toast.error("Submission failed", {
+        description: "An unexpected error occurred. Please try again.",
+      });
+      console.error("Form submission error:", error);
+    }
   };
 
   /**
@@ -118,6 +142,10 @@ export const FormPreviewContent = ({
     e.preventDefault();
     initFormData(form.blocks);
     setBlockErrors({});
+    
+    toast.info("Form reset", {
+      description: "All fields have been cleared.",
+    });
   };
 
   /**
