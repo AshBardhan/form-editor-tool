@@ -88,6 +88,7 @@ function AvatarImage({
   }
 
   return (
+    // eslint-disable-next-line @next/next/no-img-element
     <img
       data-slot="avatar-image"
       className={cn("aspect-square size-full", className)}

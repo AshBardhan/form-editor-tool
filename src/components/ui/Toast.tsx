@@ -3,13 +3,7 @@
 import * as React from "react";
 import { cn } from "@/lib/utils/styleUtils";
 import { cva } from "class-variance-authority";
-import {
-  CheckCircle,
-  XCircle,
-  AlertTriangle,
-  Info,
-  X,
-} from "lucide-react";
+import { CheckCircle, XCircle, AlertTriangle, Info, X } from "lucide-react";
 
 // Toast Types
 export type ToastType = "default" | "success" | "info" | "warning" | "error";
@@ -82,16 +76,28 @@ export const toast = {
   show: (title: string, options?: Partial<Omit<ToastData, "id" | "title">>) => {
     return addToast({ type: "default", title, ...options });
   },
-  success: (title: string, options?: Partial<Omit<ToastData, "id" | "title" | "type">>) => {
+  success: (
+    title: string,
+    options?: Partial<Omit<ToastData, "id" | "title" | "type">>,
+  ) => {
     return addToast({ type: "success", title, ...options });
   },
-  error: (title: string, options?: Partial<Omit<ToastData, "id" | "title" | "type">>) => {
+  error: (
+    title: string,
+    options?: Partial<Omit<ToastData, "id" | "title" | "type">>,
+  ) => {
     return addToast({ type: "error", title, ...options });
   },
-  info: (title: string, options?: Partial<Omit<ToastData, "id" | "title" | "type">>) => {
+  info: (
+    title: string,
+    options?: Partial<Omit<ToastData, "id" | "title" | "type">>,
+  ) => {
     return addToast({ type: "info", title, ...options });
   },
-  warning: (title: string, options?: Partial<Omit<ToastData, "id" | "title" | "type">>) => {
+  warning: (
+    title: string,
+    options?: Partial<Omit<ToastData, "id" | "title" | "type">>,
+  ) => {
     return addToast({ type: "warning", title, ...options });
   },
   dismiss: (id: string) => {
@@ -134,9 +140,7 @@ const ToastIcon = ({ type }: { type: ToastType }) => {
       );
     case "error":
       return (
-        <XCircle
-          className={cn(iconClass, "text-red-600 dark:text-red-400")}
-        />
+        <XCircle className={cn(iconClass, "text-red-600 dark:text-red-400")} />
       );
     case "warning":
       return (
@@ -146,14 +150,10 @@ const ToastIcon = ({ type }: { type: ToastType }) => {
       );
     case "info":
       return (
-        <Info
-          className={cn(iconClass, "text-blue-600 dark:text-blue-400")}
-        />
+        <Info className={cn(iconClass, "text-blue-600 dark:text-blue-400")} />
       );
     default:
-      return (
-        <Info className={cn(iconClass, "text-foreground/70")} />
-      );
+      return <Info className={cn(iconClass, "text-foreground/70")} />;
   }
 };
 

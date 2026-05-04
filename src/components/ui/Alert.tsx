@@ -48,7 +48,7 @@ function Alert({ className, variant, ...props }: AlertProps) {
   );
 }
 
-interface AlertTitleProps extends React.HTMLAttributes<HTMLHeadingElement> {}
+type AlertTitleProps = React.HTMLAttributes<HTMLHeadingElement>;
 
 function AlertTitle({ className, ...props }: AlertTitleProps) {
   return (
@@ -59,8 +59,7 @@ function AlertTitle({ className, ...props }: AlertTitleProps) {
   );
 }
 
-interface AlertDescriptionProps
-  extends React.HTMLAttributes<HTMLParagraphElement> {}
+type AlertDescriptionProps = React.HTMLAttributes<HTMLParagraphElement>;
 
 function AlertDescription({ className, ...props }: AlertDescriptionProps) {
   return (
@@ -71,7 +70,7 @@ function AlertDescription({ className, ...props }: AlertDescriptionProps) {
   );
 }
 
-interface AlertActionProps extends React.HTMLAttributes<HTMLDivElement> {}
+type AlertActionProps = React.HTMLAttributes<HTMLDivElement>;
 
 function AlertAction({ className, ...props }: AlertActionProps) {
   return (

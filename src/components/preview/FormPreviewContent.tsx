@@ -120,7 +120,7 @@ export const FormPreviewContent = ({
       console.log("Form Data:", formData);
 
       // You could also send this data to an API here
-      // Example: 
+      // Example:
       // await fetch('/api/submit', { method: 'POST', body: JSON.stringify(formData) })
       //   .catch((error) => {
       //     toast.error("Submission failed", {
@@ -142,7 +142,7 @@ export const FormPreviewContent = ({
     e.preventDefault();
     initFormData(form.blocks);
     setBlockErrors({});
-    
+
     toast.info("Form reset", {
       description: "All fields have been cleared.",
     });
