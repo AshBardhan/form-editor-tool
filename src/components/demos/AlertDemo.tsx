@@ -81,8 +81,8 @@ export function AlertDemo() {
               <Info className="size-4" />
               <AlertTitle>New Feature Available</AlertTitle>
               <AlertDescription>
-                We&apos;ve added new customization options to the form builder.
-                Check out the configuration panel to explore them.
+                We've added new customization options to the form builder. Check
+                out the configuration panel to explore them.
               </AlertDescription>
             </Alert>
           </div>
@@ -332,8 +332,7 @@ export function AlertDemo() {
             <AlertTitle>Welcome to the Platform! 🎉</AlertTitle>
             <AlertDescription>
               <p className="mb-2">
-                Get started by creating your first form. Here&apos;s what you
-                can do:
+                Get started by creating your first form. Here's what you can do:
               </p>
               <ol className="list-decimal list-inside space-y-1 mt-2">
                 <li>Choose from pre-built templates</li>
@@ -398,13 +397,10 @@ import { CheckCircle } from "lucide-react";
             <tr>
               <td className="py-3 pr-4 font-mono text-xs">variant</td>
               <td className="py-3 pr-4 font-mono text-xs">
-                &quot;default&quot; | &quot;success&quot; | &quot;info&quot; |
-                &quot;warning&quot; | &quot;error&quot; |
-                &quot;destructive&quot;
+                'default' | 'success' | 'info' | 'warning' | 'error' |
+                'destructive'
               </td>
-              <td className="py-3 pr-4 font-mono text-xs">
-                &quot;default&quot;
-              </td>
+              <td className="py-3 pr-4 font-mono text-xs">'default'</td>
               <td className="py-3">Visual style of the alert</td>
             </tr>
             <tr>

@@ -65,12 +65,11 @@ export function SkeletonDemo() {
         </div>
 
         <div className="flex items-center gap-4 flex-wrap">
-            <Skeleton width={40} height={40} className="rounded-full" />
-            <Skeleton width={60} height={60} className="rounded-full" />
-            <Skeleton width={80} height={80} className="rounded-full" />
-            <Skeleton width={100} height={100} className="rounded-full" />
-          </div>
-
+          <Skeleton width={40} height={40} className="rounded-full" />
+          <Skeleton width={60} height={60} className="rounded-full" />
+          <Skeleton width={80} height={80} className="rounded-full" />
+          <Skeleton width={100} height={100} className="rounded-full" />
+        </div>
       </section>
 
       {/* Real-world Examples */}
@@ -195,45 +194,45 @@ export function SkeletonDemo() {
 
         <div className="space-y-4">
           <Button onClick={() => setIsLoading(!isLoading)}>
-              {isLoading ? "Show Content" : "Show Loading"}
-            </Button>
+            {isLoading ? "Show Content" : "Show Loading"}
+          </Button>
 
-            {isLoading ? (
-              <div className="space-y-4 p-4 border rounded-lg">
-                <div className="flex items-center gap-3">
-                  <Skeleton width={50} height={50} className="rounded-full" />
-                  <div className="flex-1 space-y-2">
-                    <Skeleton width="40%" height={18} />
-                    <Skeleton width="60%" height={14} />
-                  </div>
-                </div>
-                <div className="space-y-2">
-                  <Skeleton width="100%" height={14} />
-                  <Skeleton width="100%" height={14} />
-                  <Skeleton width="80%" height={14} />
+          {isLoading ? (
+            <div className="space-y-4 p-4 border rounded-lg">
+              <div className="flex items-center gap-3">
+                <Skeleton width={50} height={50} className="rounded-full" />
+                <div className="flex-1 space-y-2">
+                  <Skeleton width="40%" height={18} />
+                  <Skeleton width="60%" height={14} />
                 </div>
               </div>
-            ) : (
-              <div className="p-4 border rounded-lg">
-                <div className="flex items-center gap-3 mb-4">
-                  <div className="w-12 h-12 rounded-full bg-blue-500 flex items-center justify-center text-white font-bold">
-                    JD
-                  </div>
-                  <div>
-                    <p className="font-semibold">John Doe</p>
-                    <p className="text-sm text-muted-foreground">
-                      john@example.com
-                    </p>
-                  </div>
-                </div>
-                <p className="text-sm">
-                  This is the actual content that appears after loading is
-                  complete. The skeleton provides a visual placeholder while
-                  data is being fetched.
-                </p>
+              <div className="space-y-2">
+                <Skeleton width="100%" height={14} />
+                <Skeleton width="100%" height={14} />
+                <Skeleton width="80%" height={14} />
               </div>
-            )}
-          </div>
+            </div>
+          ) : (
+            <div className="p-4 border rounded-lg">
+              <div className="flex items-center gap-3 mb-4">
+                <div className="w-12 h-12 rounded-full bg-blue-500 flex items-center justify-center text-white font-bold">
+                  JD
+                </div>
+                <div>
+                  <p className="font-semibold">John Doe</p>
+                  <p className="text-sm text-muted-foreground">
+                    john@example.com
+                  </p>
+                </div>
+              </div>
+              <p className="text-sm">
+                This is the actual content that appears after loading is
+                complete. The skeleton provides a visual placeholder while data
+                is being fetched.
+              </p>
+            </div>
+          )}
+        </div>
       </section>
 
       {/* Usage Example */}
@@ -305,46 +304,38 @@ export function SkeletonDemo() {
 
         <div className="overflow-x-auto">
           <table className="w-full text-sm">
-              <thead>
-                <tr className="border-b">
-                  <th className="text-left py-2 pr-4 font-semibold">Prop</th>
-                  <th className="text-left py-2 pr-4 font-semibold">Type</th>
-                  <th className="text-left py-2 pr-4 font-semibold">Default</th>
-                  <th className="text-left py-2 font-semibold">Description</th>
-                </tr>
-              </thead>
-              <tbody className="divide-y">
-                <tr>
-                  <td className="py-3 pr-4 font-mono text-xs">width</td>
-                  <td className="py-3 pr-4 font-mono text-xs">
-                    number | string
-                  </td>
-                  <td className="py-3 pr-4 font-mono text-xs">
-                    &quot;100%&quot;
-                  </td>
-                  <td className="py-3">Width (px or percentage)</td>
-                </tr>
-                <tr>
-                  <td className="py-3 pr-4 font-mono text-xs">height</td>
-                  <td className="py-3 pr-4 font-mono text-xs">
-                    number | string
-                  </td>
-                  <td className="py-3 pr-4 font-mono text-xs">
-                    &quot;10px&quot;
-                  </td>
-                  <td className="py-3">Height (px or percentage)</td>
-                </tr>
-                <tr>
-                  <td className="py-3 pr-4 font-mono text-xs">className</td>
-                  <td className="py-3 pr-4 font-mono text-xs">string</td>
-                  <td className="py-3 pr-4">-</td>
-                  <td className="py-3">
-                    Additional CSS classes (e.g., rounded-full)
-                  </td>
-                </tr>
-              </tbody>
-            </table>
-          </div>
+            <thead>
+              <tr className="border-b">
+                <th className="text-left py-2 pr-4 font-semibold">Prop</th>
+                <th className="text-left py-2 pr-4 font-semibold">Type</th>
+                <th className="text-left py-2 pr-4 font-semibold">Default</th>
+                <th className="text-left py-2 font-semibold">Description</th>
+              </tr>
+            </thead>
+            <tbody className="divide-y">
+              <tr>
+                <td className="py-3 pr-4 font-mono text-xs">width</td>
+                <td className="py-3 pr-4 font-mono text-xs">number | string</td>
+                <td className="py-3 pr-4 font-mono text-xs">'100%'</td>
+                <td className="py-3">Width (px or percentage)</td>
+              </tr>
+              <tr>
+                <td className="py-3 pr-4 font-mono text-xs">height</td>
+                <td className="py-3 pr-4 font-mono text-xs">number | string</td>
+                <td className="py-3 pr-4 font-mono text-xs">'10px'</td>
+                <td className="py-3">Height (px or percentage)</td>
+              </tr>
+              <tr>
+                <td className="py-3 pr-4 font-mono text-xs">className</td>
+                <td className="py-3 pr-4 font-mono text-xs">string</td>
+                <td className="py-3 pr-4">-</td>
+                <td className="py-3">
+                  Additional CSS classes (e.g. 'rounded-full')
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
       </section>
     </div>
   );

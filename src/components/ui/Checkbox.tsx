@@ -12,7 +12,7 @@ interface CheckboxProps
 const Checkbox = React.forwardRef<HTMLInputElement, CheckboxProps>(
   ({ className, ...props }, ref) => {
     return (
-      <div className="relative inline-flex items-center">
+      <div className="relative inline-flex self-start">
         <input
           type="checkbox"
           ref={ref}

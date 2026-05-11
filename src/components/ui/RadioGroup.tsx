@@ -80,7 +80,7 @@ const RadioGroupItem = React.forwardRef<HTMLInputElement, RadioGroupItemProps>(
     };
 
     return (
-      <div className="relative inline-flex items-center">
+      <div className="relative inline-flex self-start">
         <input
           ref={ref}
           type="radio"

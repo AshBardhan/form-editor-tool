@@ -35,14 +35,14 @@ export function CheckboxDemo() {
         </div>
 
         <div className="space-y-4">
-          <div className="flex items-center gap-2">
+          <div className="flex gap-2">
             <Checkbox id="basic" />
             <Label htmlFor="basic" className="cursor-pointer">
               Accept terms and conditions
             </Label>
           </div>
 
-          <div className="flex items-center gap-2">
+          <div className="flex gap-2">
             <Checkbox id="checked" defaultChecked />
             <Label htmlFor="checked" className="cursor-pointer">
               Checked by default
@@ -61,23 +61,23 @@ export function CheckboxDemo() {
         </div>
 
         <div className="space-y-4">
-            <div className="flex items-center gap-2">
-              <Checkbox
-                id="controlled"
-                checked={checked}
-                onChange={(e) => setChecked(e.target.checked)}
-              />
-              <Label htmlFor="controlled" className="cursor-pointer">
-                Subscribe to newsletter
-              </Label>
-            </div>
-            <p className="text-sm text-muted-foreground">
-              Current state:{" "}
-              <span className="font-medium">
-                {checked ? "Checked" : "Unchecked"}
-              </span>
-            </p>
+          <div className="flex gap-2">
+            <Checkbox
+              id="controlled"
+              checked={checked}
+              onChange={(e) => setChecked(e.target.checked)}
+            />
+            <Label htmlFor="controlled" className="cursor-pointer">
+              Subscribe to newsletter
+            </Label>
           </div>
+          <p className="text-sm text-muted-foreground">
+            Current state:{" "}
+            <span className="font-medium">
+              {checked ? "Checked" : "Unchecked"}
+            </span>
+          </p>
+        </div>
       </section>
 
       {/* States */}
@@ -88,28 +88,28 @@ export function CheckboxDemo() {
         </div>
 
         <div className="space-y-4">
-          <div className="flex items-center gap-2">
+          <div className="flex gap-2">
             <Checkbox id="unchecked" />
             <Label htmlFor="unchecked" className="cursor-pointer">
               Unchecked
             </Label>
           </div>
 
-          <div className="flex items-center gap-2">
+          <div className="flex gap-2">
             <Checkbox id="checked-state" defaultChecked />
             <Label htmlFor="checked-state" className="cursor-pointer">
               Checked
             </Label>
           </div>
 
-          <div className="flex items-center gap-2">
+          <div className="flex gap-2">
             <Checkbox id="disabled" disabled />
             <Label htmlFor="disabled" className="opacity-50 cursor-not-allowed">
               Disabled
             </Label>
           </div>
 
-          <div className="flex items-center gap-2">
+          <div className="flex gap-2">
             <Checkbox id="disabled-checked" disabled defaultChecked />
             <Label
               htmlFor="disabled-checked"
@@ -119,7 +119,7 @@ export function CheckboxDemo() {
             </Label>
           </div>
 
-          <div className="flex items-center gap-2">
+          <div className="flex gap-2">
             <Checkbox id="invalid" aria-invalid="true" />
             <Label htmlFor="invalid" className="cursor-pointer">
               Invalid (with error)
@@ -138,7 +138,7 @@ export function CheckboxDemo() {
         <div className="space-y-4">
           <h4 className="font-semibold">Notification Preferences</h4>
 
-          <div className="flex items-center gap-2">
+          <div className="flex gap-2">
             <Checkbox
               id="email-notif"
               checked={notifications.email}
@@ -154,7 +154,7 @@ export function CheckboxDemo() {
             </Label>
           </div>
 
-          <div className="flex items-center gap-2">
+          <div className="flex gap-2">
             <Checkbox
               id="sms-notif"
               checked={notifications.sms}
@@ -170,7 +170,7 @@ export function CheckboxDemo() {
             </Label>
           </div>
 
-          <div className="flex items-center gap-2">
+          <div className="flex gap-2">
             <Checkbox
               id="push-notif"
               checked={notifications.push}
@@ -208,38 +208,38 @@ export function CheckboxDemo() {
         </div>
 
         <div className="space-y-6">
-          <div className="flex items-start gap-3">
-            <Checkbox id="marketing" className="mt-1" />
-            <div className="flex-1">
+          <div className="flex gap-2">
+            <Checkbox id="marketing" />
+            <div className="flex-1 flex flex-col gap-1">
               <Label htmlFor="marketing" className="cursor-pointer font-medium">
                 Marketing emails
               </Label>
-              <p className="text-sm text-muted-foreground mt-1">
+              <p className="text-sm text-muted-foreground">
                 Receive emails about new products, features, and more.
               </p>
             </div>
           </div>
 
-          <div className="flex items-start gap-3">
-            <Checkbox id="security" className="mt-1" defaultChecked />
-            <div className="flex-1">
+          <div className="flex gap-2">
+            <Checkbox id="security" defaultChecked />
+            <div className="flex-1 flex flex-col gap-1">
               <Label htmlFor="security" className="cursor-pointer font-medium">
                 Security alerts
               </Label>
-              <p className="text-sm text-muted-foreground mt-1">
+              <p className="text-sm text-muted-foreground">
                 Get notified about security updates and suspicious activity on
                 your account.
               </p>
             </div>
           </div>
 
-          <div className="flex items-start gap-3">
-            <Checkbox id="updates" className="mt-1" />
-            <div className="flex-1">
+          <div className="flex gap-2">
+            <Checkbox id="updates" />
+            <div className="flex-1 flex flex-col gap-1">
               <Label htmlFor="updates" className="cursor-pointer font-medium">
                 Product updates
               </Label>
-              <p className="text-sm text-muted-foreground mt-1">
+              <p className="text-sm text-muted-foreground">
                 Stay informed about product changes and new features.
               </p>
             </div>
@@ -262,7 +262,7 @@ export function CheckboxDemo() {
 import { Label } from "@/components/ui/Label";
 
 // Basic checkbox
-<div className="flex items-center gap-2">
+<div className="flex gap-2">
   <Checkbox id="terms" />
   <Label htmlFor="terms">Accept terms</Label>
 </div>
@@ -296,59 +296,55 @@ const [checked, setChecked] = useState(false);
         </div>
 
         <div className="overflow-x-auto">
-            <table className="w-full text-sm">
-              <thead>
-                <tr className="border-b">
-                  <th className="text-left py-2 pr-4 font-semibold">Prop</th>
-                  <th className="text-left py-2 pr-4 font-semibold">Type</th>
-                  <th className="text-left py-2 pr-4 font-semibold">Default</th>
-                  <th className="text-left py-2 font-semibold">Description</th>
-                </tr>
-              </thead>
-              <tbody className="divide-y">
-                <tr>
-                  <td className="py-3 pr-4 font-mono text-xs">checked</td>
-                  <td className="py-3 pr-4 font-mono text-xs">boolean</td>
-                  <td className="py-3 pr-4">-</td>
-                  <td className="py-3">Controlled checked state</td>
-                </tr>
-                <tr>
-                  <td className="py-3 pr-4 font-mono text-xs">
-                    defaultChecked
-                  </td>
-                  <td className="py-3 pr-4 font-mono text-xs">boolean</td>
-                  <td className="py-3 pr-4 font-mono text-xs">false</td>
-                  <td className="py-3">Initial checked state (uncontrolled)</td>
-                </tr>
-                <tr>
-                  <td className="py-3 pr-4 font-mono text-xs">disabled</td>
-                  <td className="py-3 pr-4 font-mono text-xs">boolean</td>
-                  <td className="py-3 pr-4 font-mono text-xs">false</td>
-                  <td className="py-3">Disable the checkbox</td>
-                </tr>
-                <tr>
-                  <td className="py-3 pr-4 font-mono text-xs">onChange</td>
-                  <td className="py-3 pr-4 font-mono text-xs">function</td>
-                  <td className="py-3 pr-4">-</td>
-                  <td className="py-3">Callback when checked state changes</td>
-                </tr>
-                <tr>
-                  <td className="py-3 pr-4 font-mono text-xs">aria-invalid</td>
-                  <td className="py-3 pr-4 font-mono text-xs">
-                    boolean | &quot;true&quot; | &quot;false&quot;
-                  </td>
-                  <td className="py-3 pr-4">-</td>
-                  <td className="py-3">Indicates validation state</td>
-                </tr>
-                <tr>
-                  <td className="py-3 pr-4 font-mono text-xs">className</td>
-                  <td className="py-3 pr-4 font-mono text-xs">string</td>
-                  <td className="py-3 pr-4">-</td>
-                  <td className="py-3">Additional CSS classes</td>
-                </tr>
-              </tbody>
-            </table>
-          </div>
+          <table className="w-full text-sm">
+            <thead>
+              <tr className="border-b">
+                <th className="text-left py-2 pr-4 font-semibold">Prop</th>
+                <th className="text-left py-2 pr-4 font-semibold">Type</th>
+                <th className="text-left py-2 pr-4 font-semibold">Default</th>
+                <th className="text-left py-2 font-semibold">Description</th>
+              </tr>
+            </thead>
+            <tbody className="divide-y">
+              <tr>
+                <td className="py-3 pr-4 font-mono text-xs">checked</td>
+                <td className="py-3 pr-4 font-mono text-xs">boolean</td>
+                <td className="py-3 pr-4">-</td>
+                <td className="py-3">Controlled checked state</td>
+              </tr>
+              <tr>
+                <td className="py-3 pr-4 font-mono text-xs">defaultChecked</td>
+                <td className="py-3 pr-4 font-mono text-xs">boolean</td>
+                <td className="py-3 pr-4 font-mono text-xs">false</td>
+                <td className="py-3">Initial checked state (uncontrolled)</td>
+              </tr>
+              <tr>
+                <td className="py-3 pr-4 font-mono text-xs">disabled</td>
+                <td className="py-3 pr-4 font-mono text-xs">boolean</td>
+                <td className="py-3 pr-4 font-mono text-xs">false</td>
+                <td className="py-3">Disable the checkbox</td>
+              </tr>
+              <tr>
+                <td className="py-3 pr-4 font-mono text-xs">onChange</td>
+                <td className="py-3 pr-4 font-mono text-xs">function</td>
+                <td className="py-3 pr-4">-</td>
+                <td className="py-3">Callback when checked state changes</td>
+              </tr>
+              <tr>
+                <td className="py-3 pr-4 font-mono text-xs">aria-invalid</td>
+                <td className="py-3 pr-4 font-mono text-xs">boolean</td>
+                <td className="py-3 pr-4">false</td>
+                <td className="py-3">Indicates validation state</td>
+              </tr>
+              <tr>
+                <td className="py-3 pr-4 font-mono text-xs">className</td>
+                <td className="py-3 pr-4 font-mono text-xs">string</td>
+                <td className="py-3 pr-4">-</td>
+                <td className="py-3">Additional CSS classes</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
       </section>
     </div>
   );

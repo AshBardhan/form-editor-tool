@@ -305,9 +305,7 @@ const [value, setValue] = useState("");
               <tr>
                 <td className="py-3 pr-4 font-mono text-xs">type</td>
                 <td className="py-3 pr-4 font-mono text-xs">string</td>
-                <td className="py-3 pr-4 font-mono text-xs">
-                  &quot;text&quot;
-                </td>
+                <td className="py-3 pr-4 font-mono text-xs">'text'</td>
                 <td className="py-3">HTML input type</td>
               </tr>
               <tr>
@@ -330,10 +328,8 @@ const [value, setValue] = useState("");
               </tr>
               <tr>
                 <td className="py-3 pr-4 font-mono text-xs">aria-invalid</td>
-                <td className="py-3 pr-4 font-mono text-xs">
-                  boolean | &quot;true&quot; | &quot;false&quot;
-                </td>
-                <td className="py-3 pr-4">-</td>
+                <td className="py-3 pr-4 font-mono text-xs">boolean</td>
+                <td className="py-3 pr-4">false</td>
                 <td className="py-3">Indicates validation state</td>
               </tr>
               <tr>

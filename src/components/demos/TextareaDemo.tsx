@@ -35,13 +35,9 @@ export function TextareaDemo() {
         </div>
 
         <div className="space-y-3">
-            <Label htmlFor="basic">Description</Label>
-            <Textarea
-              id="basic"
-              placeholder="Enter your text here..."
-              rows={4}
-            />
-          </div>
+          <Label htmlFor="basic">Description</Label>
+          <Textarea id="basic" placeholder="Enter your text here..." rows={4} />
+        </div>
       </section>
 
       {/* Controlled Textarea */}
@@ -54,18 +50,18 @@ export function TextareaDemo() {
         </div>
 
         <div className="space-y-3">
-            <Label htmlFor="controlled">Message</Label>
-            <Textarea
-              id="controlled"
-              placeholder="Type your message..."
-              rows={4}
-              value={value}
-              onChange={(e) => setValue(e.target.value)}
-            />
-            <p className="text-sm text-muted-foreground">
-              Character count: {value.length}
-            </p>
-          </div>
+          <Label htmlFor="controlled">Message</Label>
+          <Textarea
+            id="controlled"
+            placeholder="Type your message..."
+            rows={4}
+            value={value}
+            onChange={(e) => setValue(e.target.value)}
+          />
+          <p className="text-sm text-muted-foreground">
+            Character count: {value.length}
+          </p>
+        </div>
       </section>
 
       {/* With Character Limit */}
@@ -78,30 +74,30 @@ export function TextareaDemo() {
         </div>
 
         <div className="space-y-3">
-            <Label htmlFor="limited">Comment (max 500 characters)</Label>
-            <Textarea
-              id="limited"
-              placeholder="Write your comment..."
-              rows={5}
-              maxLength={maxLength}
-              value={comment}
-              onChange={(e) => setComment(e.target.value)}
-            />
-            <div className="flex justify-between text-sm">
-              <p className="text-muted-foreground">
-                {comment.length}/{maxLength} characters
-              </p>
-              <p
-                className={
-                  comment.length >= maxLength * 0.9
-                    ? "text-orange-600"
-                    : "text-muted-foreground"
-                }
-              >
-                {maxLength - comment.length} remaining
-              </p>
-            </div>
+          <Label htmlFor="limited">Comment (max 500 characters)</Label>
+          <Textarea
+            id="limited"
+            placeholder="Write your comment..."
+            rows={5}
+            maxLength={maxLength}
+            value={comment}
+            onChange={(e) => setComment(e.target.value)}
+          />
+          <div className="flex justify-between text-sm">
+            <p className="text-muted-foreground">
+              {comment.length}/{maxLength} characters
+            </p>
+            <p
+              className={
+                comment.length >= maxLength * 0.9
+                  ? "text-orange-600"
+                  : "text-muted-foreground"
+              }
+            >
+              {maxLength - comment.length} remaining
+            </p>
           </div>
+        </div>
       </section>
 
       {/* Different Sizes */}
@@ -303,78 +299,78 @@ const [value, setValue] = useState("");
 
         <div className="overflow-x-auto">
           <table className="w-full text-sm">
-              <thead>
-                <tr className="border-b">
-                  <th className="text-left py-2 pr-4 font-semibold">Prop</th>
-                  <th className="text-left py-2 pr-4 font-semibold">Type</th>
-                  <th className="text-left py-2 pr-4 font-semibold">Default</th>
-                  <th className="text-left py-2 font-semibold">Description</th>
-                </tr>
-              </thead>
-              <tbody className="divide-y">
-                <tr>
-                  <td className="py-3 pr-4 font-mono text-xs">value</td>
-                  <td className="py-3 pr-4 font-mono text-xs">string</td>
-                  <td className="py-3 pr-4">-</td>
-                  <td className="py-3">Controlled value</td>
-                </tr>
-                <tr>
-                  <td className="py-3 pr-4 font-mono text-xs">defaultValue</td>
-                  <td className="py-3 pr-4 font-mono text-xs">string</td>
-                  <td className="py-3 pr-4">-</td>
-                  <td className="py-3">Initial value (uncontrolled)</td>
-                </tr>
-                <tr>
-                  <td className="py-3 pr-4 font-mono text-xs">placeholder</td>
-                  <td className="py-3 pr-4 font-mono text-xs">string</td>
-                  <td className="py-3 pr-4">-</td>
-                  <td className="py-3">Placeholder text</td>
-                </tr>
-                <tr>
-                  <td className="py-3 pr-4 font-mono text-xs">rows</td>
-                  <td className="py-3 pr-4 font-mono text-xs">number</td>
-                  <td className="py-3 pr-4">-</td>
-                  <td className="py-3">Number of visible text rows</td>
-                </tr>
-                <tr>
-                  <td className="py-3 pr-4 font-mono text-xs">maxLength</td>
-                  <td className="py-3 pr-4 font-mono text-xs">number</td>
-                  <td className="py-3 pr-4">-</td>
-                  <td className="py-3">Maximum character count</td>
-                </tr>
-                <tr>
-                  <td className="py-3 pr-4 font-mono text-xs">disabled</td>
-                  <td className="py-3 pr-4 font-mono text-xs">boolean</td>
-                  <td className="py-3 pr-4 font-mono text-xs">false</td>
-                  <td className="py-3">Disable the textarea</td>
-                </tr>
-                <tr>
-                  <td className="py-3 pr-4 font-mono text-xs">readOnly</td>
-                  <td className="py-3 pr-4 font-mono text-xs">boolean</td>
-                  <td className="py-3 pr-4 font-mono text-xs">false</td>
-                  <td className="py-3">Make textarea read-only</td>
-                </tr>
-                <tr>
-                  <td className="py-3 pr-4 font-mono text-xs">onChange</td>
-                  <td className="py-3 pr-4 font-mono text-xs">function</td>
-                  <td className="py-3 pr-4">-</td>
-                  <td className="py-3">Callback when value changes</td>
-                </tr>
-                <tr>
-                  <td className="py-3 pr-4 font-mono text-xs">aria-invalid</td>
-                  <td className="py-3 pr-4 font-mono text-xs">boolean</td>
-                  <td className="py-3 pr-4">-</td>
-                  <td className="py-3">Indicates validation state</td>
-                </tr>
-                <tr>
-                  <td className="py-3 pr-4 font-mono text-xs">className</td>
-                  <td className="py-3 pr-4 font-mono text-xs">string</td>
-                  <td className="py-3 pr-4">-</td>
-                  <td className="py-3">Additional CSS classes</td>
-                </tr>
-              </tbody>
-            </table>
-          </div>
+            <thead>
+              <tr className="border-b">
+                <th className="text-left py-2 pr-4 font-semibold">Prop</th>
+                <th className="text-left py-2 pr-4 font-semibold">Type</th>
+                <th className="text-left py-2 pr-4 font-semibold">Default</th>
+                <th className="text-left py-2 font-semibold">Description</th>
+              </tr>
+            </thead>
+            <tbody className="divide-y">
+              <tr>
+                <td className="py-3 pr-4 font-mono text-xs">value</td>
+                <td className="py-3 pr-4 font-mono text-xs">string</td>
+                <td className="py-3 pr-4">-</td>
+                <td className="py-3">Controlled value</td>
+              </tr>
+              <tr>
+                <td className="py-3 pr-4 font-mono text-xs">defaultValue</td>
+                <td className="py-3 pr-4 font-mono text-xs">string</td>
+                <td className="py-3 pr-4">-</td>
+                <td className="py-3">Initial value (uncontrolled)</td>
+              </tr>
+              <tr>
+                <td className="py-3 pr-4 font-mono text-xs">placeholder</td>
+                <td className="py-3 pr-4 font-mono text-xs">string</td>
+                <td className="py-3 pr-4">-</td>
+                <td className="py-3">Placeholder text</td>
+              </tr>
+              <tr>
+                <td className="py-3 pr-4 font-mono text-xs">rows</td>
+                <td className="py-3 pr-4 font-mono text-xs">number</td>
+                <td className="py-3 pr-4">-</td>
+                <td className="py-3">Number of visible text rows</td>
+              </tr>
+              <tr>
+                <td className="py-3 pr-4 font-mono text-xs">maxLength</td>
+                <td className="py-3 pr-4 font-mono text-xs">number</td>
+                <td className="py-3 pr-4">-</td>
+                <td className="py-3">Maximum character count</td>
+              </tr>
+              <tr>
+                <td className="py-3 pr-4 font-mono text-xs">disabled</td>
+                <td className="py-3 pr-4 font-mono text-xs">boolean</td>
+                <td className="py-3 pr-4 font-mono text-xs">false</td>
+                <td className="py-3">Disable the textarea</td>
+              </tr>
+              <tr>
+                <td className="py-3 pr-4 font-mono text-xs">readOnly</td>
+                <td className="py-3 pr-4 font-mono text-xs">boolean</td>
+                <td className="py-3 pr-4 font-mono text-xs">false</td>
+                <td className="py-3">Make textarea read-only</td>
+              </tr>
+              <tr>
+                <td className="py-3 pr-4 font-mono text-xs">onChange</td>
+                <td className="py-3 pr-4 font-mono text-xs">function</td>
+                <td className="py-3 pr-4">-</td>
+                <td className="py-3">Callback when value changes</td>
+              </tr>
+              <tr>
+                <td className="py-3 pr-4 font-mono text-xs">aria-invalid</td>
+                <td className="py-3 pr-4 font-mono text-xs">boolean</td>
+                <td className="py-3 pr-4">-</td>
+                <td className="py-3">Indicates validation state</td>
+              </tr>
+              <tr>
+                <td className="py-3 pr-4 font-mono text-xs">className</td>
+                <td className="py-3 pr-4 font-mono text-xs">string</td>
+                <td className="py-3 pr-4">-</td>
+                <td className="py-3">Additional CSS classes</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
       </section>
     </div>
   );

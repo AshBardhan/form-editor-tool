@@ -60,21 +60,21 @@ export function SwitchDemo() {
         </div>
 
         <div className="space-y-4">
-            <div className="flex items-center gap-3">
-              <Switch
-                id="controlled"
-                checked={enabled}
-                onChange={(e) => setEnabled(e.target.checked)}
-              />
-              <Label htmlFor="controlled" className="cursor-pointer">
-                Airplane mode
-              </Label>
-            </div>
-            <p className="text-sm text-muted-foreground">
-              Status:{" "}
-              <span className="font-medium">{enabled ? "On" : "Off"}</span>
-            </p>
+          <div className="flex items-center gap-3">
+            <Switch
+              id="controlled"
+              checked={enabled}
+              onChange={(e) => setEnabled(e.target.checked)}
+            />
+            <Label htmlFor="controlled" className="cursor-pointer">
+              Airplane mode
+            </Label>
           </div>
+          <p className="text-sm text-muted-foreground">
+            Status:{" "}
+            <span className="font-medium">{enabled ? "On" : "Off"}</span>
+          </p>
+        </div>
       </section>
 
       {/* States */}
@@ -365,50 +365,48 @@ const [enabled, setEnabled] = useState(false);
 
         <div className="overflow-x-auto">
           <table className="w-full text-sm">
-              <thead>
-                <tr className="border-b">
-                  <th className="text-left py-2 pr-4 font-semibold">Prop</th>
-                  <th className="text-left py-2 pr-4 font-semibold">Type</th>
-                  <th className="text-left py-2 pr-4 font-semibold">Default</th>
-                  <th className="text-left py-2 font-semibold">Description</th>
-                </tr>
-              </thead>
-              <tbody className="divide-y">
-                <tr>
-                  <td className="py-3 pr-4 font-mono text-xs">checked</td>
-                  <td className="py-3 pr-4 font-mono text-xs">boolean</td>
-                  <td className="py-3 pr-4">-</td>
-                  <td className="py-3">Controlled checked state</td>
-                </tr>
-                <tr>
-                  <td className="py-3 pr-4 font-mono text-xs">
-                    defaultChecked
-                  </td>
-                  <td className="py-3 pr-4 font-mono text-xs">boolean</td>
-                  <td className="py-3 pr-4 font-mono text-xs">false</td>
-                  <td className="py-3">Initial checked state (uncontrolled)</td>
-                </tr>
-                <tr>
-                  <td className="py-3 pr-4 font-mono text-xs">disabled</td>
-                  <td className="py-3 pr-4 font-mono text-xs">boolean</td>
-                  <td className="py-3 pr-4 font-mono text-xs">false</td>
-                  <td className="py-3">Disable the switch</td>
-                </tr>
-                <tr>
-                  <td className="py-3 pr-4 font-mono text-xs">onChange</td>
-                  <td className="py-3 pr-4 font-mono text-xs">function</td>
-                  <td className="py-3 pr-4">-</td>
-                  <td className="py-3">Callback when checked state changes</td>
-                </tr>
-                <tr>
-                  <td className="py-3 pr-4 font-mono text-xs">className</td>
-                  <td className="py-3 pr-4 font-mono text-xs">string</td>
-                  <td className="py-3 pr-4">-</td>
-                  <td className="py-3">Additional CSS classes</td>
-                </tr>
-              </tbody>
-            </table>
-          </div>
+            <thead>
+              <tr className="border-b">
+                <th className="text-left py-2 pr-4 font-semibold">Prop</th>
+                <th className="text-left py-2 pr-4 font-semibold">Type</th>
+                <th className="text-left py-2 pr-4 font-semibold">Default</th>
+                <th className="text-left py-2 font-semibold">Description</th>
+              </tr>
+            </thead>
+            <tbody className="divide-y">
+              <tr>
+                <td className="py-3 pr-4 font-mono text-xs">checked</td>
+                <td className="py-3 pr-4 font-mono text-xs">boolean</td>
+                <td className="py-3 pr-4">-</td>
+                <td className="py-3">Controlled checked state</td>
+              </tr>
+              <tr>
+                <td className="py-3 pr-4 font-mono text-xs">defaultChecked</td>
+                <td className="py-3 pr-4 font-mono text-xs">boolean</td>
+                <td className="py-3 pr-4 font-mono text-xs">false</td>
+                <td className="py-3">Initial checked state (uncontrolled)</td>
+              </tr>
+              <tr>
+                <td className="py-3 pr-4 font-mono text-xs">disabled</td>
+                <td className="py-3 pr-4 font-mono text-xs">boolean</td>
+                <td className="py-3 pr-4 font-mono text-xs">false</td>
+                <td className="py-3">Disable the switch</td>
+              </tr>
+              <tr>
+                <td className="py-3 pr-4 font-mono text-xs">onChange</td>
+                <td className="py-3 pr-4 font-mono text-xs">function</td>
+                <td className="py-3 pr-4">-</td>
+                <td className="py-3">Callback when checked state changes</td>
+              </tr>
+              <tr>
+                <td className="py-3 pr-4 font-mono text-xs">className</td>
+                <td className="py-3 pr-4 font-mono text-xs">string</td>
+                <td className="py-3 pr-4">-</td>
+                <td className="py-3">Additional CSS classes</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
       </section>
     </div>
   );

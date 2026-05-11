@@ -149,53 +149,53 @@ export function ButtonDemo() {
         </div>
 
         <div className="flex flex-wrap gap-4">
-            <Button disabled>
-              <svg
-                className="animate-spin size-4"
-                xmlns="http://www.w3.org/2000/svg"
-                fill="none"
-                viewBox="0 0 24 24"
-              >
-                <circle
-                  className="opacity-25"
-                  cx="12"
-                  cy="12"
-                  r="10"
-                  stroke="currentColor"
-                  strokeWidth="4"
-                ></circle>
-                <path
-                  className="opacity-75"
-                  fill="currentColor"
-                  d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"
-                ></path>
-              </svg>
-              Processing...
-            </Button>
-            <Button variant="outline" disabled>
-              <svg
-                className="animate-spin size-4"
-                xmlns="http://www.w3.org/2000/svg"
-                fill="none"
-                viewBox="0 0 24 24"
-              >
-                <circle
-                  className="opacity-25"
-                  cx="12"
-                  cy="12"
-                  r="10"
-                  stroke="currentColor"
-                  strokeWidth="4"
-                ></circle>
-                <path
-                  className="opacity-75"
-                  fill="currentColor"
-                  d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"
-                ></path>
-              </svg>
-              Saving...
-            </Button>
-          </div>
+          <Button disabled>
+            <svg
+              className="animate-spin size-4"
+              xmlns="http://www.w3.org/2000/svg"
+              fill="none"
+              viewBox="0 0 24 24"
+            >
+              <circle
+                className="opacity-25"
+                cx="12"
+                cy="12"
+                r="10"
+                stroke="currentColor"
+                strokeWidth="4"
+              ></circle>
+              <path
+                className="opacity-75"
+                fill="currentColor"
+                d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"
+              ></path>
+            </svg>
+            Processing...
+          </Button>
+          <Button variant="outline" disabled>
+            <svg
+              className="animate-spin size-4"
+              xmlns="http://www.w3.org/2000/svg"
+              fill="none"
+              viewBox="0 0 24 24"
+            >
+              <circle
+                className="opacity-25"
+                cx="12"
+                cy="12"
+                r="10"
+                stroke="currentColor"
+                strokeWidth="4"
+              ></circle>
+              <path
+                className="opacity-75"
+                fill="currentColor"
+                d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"
+              ></path>
+            </svg>
+            Saving...
+          </Button>
+        </div>
       </section>
 
       {/* Usage Example */}
@@ -247,54 +247,48 @@ import { Mail } from "lucide-react";
         </div>
 
         <div className="overflow-x-auto">
-            <table className="w-full text-sm">
-              <thead>
-                <tr className="border-b">
-                  <th className="text-left py-2 pr-4 font-semibold">Prop</th>
-                  <th className="text-left py-2 pr-4 font-semibold">Type</th>
-                  <th className="text-left py-2 pr-4 font-semibold">Default</th>
-                  <th className="text-left py-2 font-semibold">Description</th>
-                </tr>
-              </thead>
-              <tbody className="divide-y">
-                <tr>
-                  <td className="py-3 pr-4 font-mono text-xs">variant</td>
-                  <td className="py-3 pr-4 font-mono text-xs">
-                    &quot;default&quot; | &quot;destructive&quot; |
-                    &quot;outline&quot; | &quot;secondary&quot; |
-                    &quot;ghost&quot; | &quot;link&quot;
-                  </td>
-                  <td className="py-3 pr-4 font-mono text-xs">
-                    &quot;default&quot;
-                  </td>
-                  <td className="py-3">Visual style of the button</td>
-                </tr>
-                <tr>
-                  <td className="py-3 pr-4 font-mono text-xs">size</td>
-                  <td className="py-3 pr-4 font-mono text-xs">
-                    &quot;default&quot; | &quot;sm&quot; | &quot;lg&quot; |
-                    &quot;icon&quot;
-                  </td>
-                  <td className="py-3 pr-4 font-mono text-xs">
-                    &quot;default&quot;
-                  </td>
-                  <td className="py-3">Size of the button</td>
-                </tr>
-                <tr>
-                  <td className="py-3 pr-4 font-mono text-xs">asChild</td>
-                  <td className="py-3 pr-4 font-mono text-xs">boolean</td>
-                  <td className="py-3 pr-4 font-mono text-xs">false</td>
-                  <td className="py-3">Render as child element</td>
-                </tr>
-                <tr>
-                  <td className="py-3 pr-4 font-mono text-xs">disabled</td>
-                  <td className="py-3 pr-4 font-mono text-xs">boolean</td>
-                  <td className="py-3 pr-4 font-mono text-xs">false</td>
-                  <td className="py-3">Disable the button</td>
-                </tr>
-              </tbody>
-            </table>
-          </div>
+          <table className="w-full text-sm">
+            <thead>
+              <tr className="border-b">
+                <th className="text-left py-2 pr-4 font-semibold">Prop</th>
+                <th className="text-left py-2 pr-4 font-semibold">Type</th>
+                <th className="text-left py-2 pr-4 font-semibold">Default</th>
+                <th className="text-left py-2 font-semibold">Description</th>
+              </tr>
+            </thead>
+            <tbody className="divide-y">
+              <tr>
+                <td className="py-3 pr-4 font-mono text-xs">variant</td>
+                <td className="py-3 pr-4 font-mono text-xs">
+                  'default' | 'destructive' | 'outline' | 'secondary' | 'ghost'
+                  | 'link'
+                </td>
+                <td className="py-3 pr-4 font-mono text-xs">'default'</td>
+                <td className="py-3">Visual style of the button</td>
+              </tr>
+              <tr>
+                <td className="py-3 pr-4 font-mono text-xs">size</td>
+                <td className="py-3 pr-4 font-mono text-xs">
+                  'default' | 'sm' | 'lg' | 'icon'
+                </td>
+                <td className="py-3 pr-4 font-mono text-xs">'default'</td>
+                <td className="py-3">Size of the button</td>
+              </tr>
+              <tr>
+                <td className="py-3 pr-4 font-mono text-xs">asChild</td>
+                <td className="py-3 pr-4 font-mono text-xs">boolean</td>
+                <td className="py-3 pr-4 font-mono text-xs">false</td>
+                <td className="py-3">Render as child element</td>
+              </tr>
+              <tr>
+                <td className="py-3 pr-4 font-mono text-xs">disabled</td>
+                <td className="py-3 pr-4 font-mono text-xs">boolean</td>
+                <td className="py-3 pr-4 font-mono text-xs">false</td>
+                <td className="py-3">Disable the button</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
       </section>
     </div>
   );

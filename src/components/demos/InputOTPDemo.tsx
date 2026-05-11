@@ -147,51 +147,48 @@ export function InputOTPDemo() {
           </div>
 
           <div className="space-y-4">
-              <Label htmlFor="verification">Verification Code</Label>
-              <InputOTP
-                maxLength={6}
-                value={verificationCode}
-                onChange={setVerificationCode}
+            <Label htmlFor="verification">Verification Code</Label>
+            <InputOTP
+              maxLength={6}
+              value={verificationCode}
+              onChange={setVerificationCode}
+            >
+              <InputOTPGroup>
+                <InputOTPSlot index={0} />
+                <InputOTPSlot index={1} />
+                <InputOTPSlot index={2} />
+              </InputOTPGroup>
+              <InputOTPSeparator />
+              <InputOTPGroup>
+                <InputOTPSlot index={3} />
+                <InputOTPSlot index={4} />
+                <InputOTPSlot index={5} />
+              </InputOTPGroup>
+            </InputOTP>
+
+            <div className="flex gap-2">
+              <Button
+                disabled={verificationCode.length !== 6}
+                onClick={() => {
+                  alert(`Verifying code: ${verificationCode}`);
+                  setVerificationCode("");
+                }}
               >
-                <InputOTPGroup>
-                  <InputOTPSlot index={0} />
-                  <InputOTPSlot index={1} />
-                  <InputOTPSlot index={2} />
-                </InputOTPGroup>
-                <InputOTPSeparator />
-                <InputOTPGroup>
-                  <InputOTPSlot index={3} />
-                  <InputOTPSlot index={4} />
-                  <InputOTPSlot index={5} />
-                </InputOTPGroup>
-              </InputOTP>
-
-              <div className="flex gap-2">
-                <Button
-                  disabled={verificationCode.length !== 6}
-                  onClick={() => {
-                    alert(`Verifying code: ${verificationCode}`);
-                    setVerificationCode("");
-                  }}
-                >
-                  Verify
-                </Button>
-                <Button
-                  variant="outline"
-                  onClick={() => setVerificationCode("")}
-                >
-                  Clear
-                </Button>
-              </div>
-
-              <p className="text-xs text-muted-foreground">
-                Didn&apos;t receive a code?{" "}
-                <button className="text-primary hover:underline">
-                  Resend code
-                </button>
-              </p>
+                Verify
+              </Button>
+              <Button variant="outline" onClick={() => setVerificationCode("")}>
+                Clear
+              </Button>
             </div>
+
+            <p className="text-xs text-muted-foreground">
+              Didn't receive a code?{" "}
+              <button className="text-primary hover:underline">
+                Resend code
+              </button>
+            </p>
           </div>
+        </div>
       </section>
 
       {/* Multiple Formats */}
@@ -323,55 +320,55 @@ const [value, setValue] = useState("");
         </div>
 
         <div className="overflow-x-auto">
-            <table className="w-full text-sm">
-              <thead>
-                <tr className="border-b">
-                  <th className="text-left py-2 pr-4 font-semibold">Prop</th>
-                  <th className="text-left py-2 pr-4 font-semibold">Type</th>
-                  <th className="text-left py-2 pr-4 font-semibold">Default</th>
-                  <th className="text-left py-2 font-semibold">Description</th>
-                </tr>
-              </thead>
-              <tbody className="divide-y">
-                <tr>
-                  <td className="py-3 pr-4 font-mono text-xs">maxLength</td>
-                  <td className="py-3 pr-4 font-mono text-xs">number</td>
-                  <td className="py-3 pr-4">-</td>
-                  <td className="py-3">Maximum number of characters</td>
-                </tr>
-                <tr>
-                  <td className="py-3 pr-4 font-mono text-xs">value</td>
-                  <td className="py-3 pr-4 font-mono text-xs">string</td>
-                  <td className="py-3 pr-4">-</td>
-                  <td className="py-3">Controlled value</td>
-                </tr>
-                <tr>
-                  <td className="py-3 pr-4 font-mono text-xs">onChange</td>
-                  <td className="py-3 pr-4 font-mono text-xs">function</td>
-                  <td className="py-3 pr-4">-</td>
-                  <td className="py-3">Callback when value changes</td>
-                </tr>
-                <tr>
-                  <td className="py-3 pr-4 font-mono text-xs">pattern</td>
-                  <td className="py-3 pr-4 font-mono text-xs">string</td>
-                  <td className="py-3 pr-4">-</td>
-                  <td className="py-3">Regex pattern for validation</td>
-                </tr>
-                <tr>
-                  <td className="py-3 pr-4 font-mono text-xs">disabled</td>
-                  <td className="py-3 pr-4 font-mono text-xs">boolean</td>
-                  <td className="py-3 pr-4 font-mono text-xs">false</td>
-                  <td className="py-3">Disable the input</td>
-                </tr>
-                <tr>
-                  <td className="py-3 pr-4 font-mono text-xs">className</td>
-                  <td className="py-3 pr-4 font-mono text-xs">string</td>
-                  <td className="py-3 pr-4">-</td>
-                  <td className="py-3">Additional CSS classes</td>
-                </tr>
-              </tbody>
-            </table>
-          </div>
+          <table className="w-full text-sm">
+            <thead>
+              <tr className="border-b">
+                <th className="text-left py-2 pr-4 font-semibold">Prop</th>
+                <th className="text-left py-2 pr-4 font-semibold">Type</th>
+                <th className="text-left py-2 pr-4 font-semibold">Default</th>
+                <th className="text-left py-2 font-semibold">Description</th>
+              </tr>
+            </thead>
+            <tbody className="divide-y">
+              <tr>
+                <td className="py-3 pr-4 font-mono text-xs">maxLength</td>
+                <td className="py-3 pr-4 font-mono text-xs">number</td>
+                <td className="py-3 pr-4">-</td>
+                <td className="py-3">Maximum number of characters</td>
+              </tr>
+              <tr>
+                <td className="py-3 pr-4 font-mono text-xs">value</td>
+                <td className="py-3 pr-4 font-mono text-xs">string</td>
+                <td className="py-3 pr-4">-</td>
+                <td className="py-3">Controlled value</td>
+              </tr>
+              <tr>
+                <td className="py-3 pr-4 font-mono text-xs">onChange</td>
+                <td className="py-3 pr-4 font-mono text-xs">function</td>
+                <td className="py-3 pr-4">-</td>
+                <td className="py-3">Callback when value changes</td>
+              </tr>
+              <tr>
+                <td className="py-3 pr-4 font-mono text-xs">pattern</td>
+                <td className="py-3 pr-4 font-mono text-xs">string</td>
+                <td className="py-3 pr-4">-</td>
+                <td className="py-3">Regex pattern for validation</td>
+              </tr>
+              <tr>
+                <td className="py-3 pr-4 font-mono text-xs">disabled</td>
+                <td className="py-3 pr-4 font-mono text-xs">boolean</td>
+                <td className="py-3 pr-4 font-mono text-xs">false</td>
+                <td className="py-3">Disable the input</td>
+              </tr>
+              <tr>
+                <td className="py-3 pr-4 font-mono text-xs">className</td>
+                <td className="py-3 pr-4 font-mono text-xs">string</td>
+                <td className="py-3 pr-4">-</td>
+                <td className="py-3">Additional CSS classes</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
       </section>
     </div>
   );

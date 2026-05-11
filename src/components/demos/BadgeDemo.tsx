@@ -159,17 +159,17 @@ export function BadgeDemo() {
               <tr>
                 <td className="py-3 pr-4 font-mono text-xs">variant</td>
                 <td className="py-3 pr-4 font-mono text-xs">
-                  &quot;success&quot; | &quot;warning&quot; | &quot;error&quot; | &quot;info&quot; | &quot;neutral&quot;
+                  'success' | 'warning' | 'error' | 'info' | 'neutral'
                 </td>
-                <td className="py-3 pr-4 font-mono text-xs">&quot;neutral&quot;</td>
+                <td className="py-3 pr-4 font-mono text-xs">'neutral'</td>
                 <td className="py-3">Color scheme of the badge</td>
               </tr>
               <tr>
                 <td className="py-3 pr-4 font-mono text-xs">size</td>
                 <td className="py-3 pr-4 font-mono text-xs">
-                  &quot;sm&quot; | &quot;md&quot; | &quot;lg&quot;
+                  'sm' | 'md' | 'lg'
                 </td>
-                <td className="py-3 pr-4 font-mono text-xs">&quot;md&quot;</td>
+                <td className="py-3 pr-4 font-mono text-xs">'md'</td>
                 <td className="py-3">Size of the badge</td>
               </tr>
               <tr>

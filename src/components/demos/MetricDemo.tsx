@@ -132,25 +132,25 @@ export function MetricDemo() {
           <div className="p-6 border rounded-lg">
             <h4 className="text-sm font-semibold mb-4">Dashboard Overview</h4>
             <div className="grid grid-cols-1 md:grid-cols-4 gap-6">
-              <div className="p-4 border rounded-lg">
+              <div>
                 <Metric label="Total Revenue" value="$892,450" size="lg" />
                 <p className="text-sm text-green-600 mt-2">
                   ↑ 12.5% from last month
                 </p>
               </div>
-              <div className="p-4 border rounded-lg">
+              <div>
                 <Metric label="New Customers" value="1,245" size="lg" />
                 <p className="text-sm text-green-600 mt-2">
                   ↑ 8.3% from last month
                 </p>
               </div>
-              <div className="p-4 border rounded-lg">
+              <div>
                 <Metric label="Active Users" value="8,532" size="lg" />
                 <p className="text-sm text-red-600 mt-2">
                   ↓ 2.1% from last month
                 </p>
               </div>
-              <div className="p-4 border rounded-lg">
+              <div>
                 <Metric label="Avg. Order Value" value="$127" size="lg" />
                 <p className="text-sm text-green-600 mt-2">
                   ↑ 5.7% from last month
@@ -177,8 +177,8 @@ export function MetricDemo() {
           {/* Sales Metrics */}
           <div className="p-6 border rounded-lg">
             <h4 className="text-sm font-semibold mb-4">Sales Performance</h4>
-            <div className="space-y-4">
-              <div className="flex items-center justify-between p-3 border-b">
+            <div>
+              <div className="flex items-center justify-between py-3 first:pt-0 last:pb-0 border-b last:border-0">
                 <Metric
                   label="Today's Sales"
                   value="$12,450"
@@ -187,7 +187,7 @@ export function MetricDemo() {
                 />
                 <span className="text-sm text-green-600">+15%</span>
               </div>
-              <div className="flex items-center justify-between p-3 border-b">
+              <div className="flex items-center justify-between py-3 first:pt-0 last:pb-0 border-b last:border-0">
                 <Metric
                   label="This Week"
                   value="$84,320"
@@ -196,7 +196,7 @@ export function MetricDemo() {
                 />
                 <span className="text-sm text-green-600">+8%</span>
               </div>
-              <div className="flex items-center justify-between p-3 border-b">
+              <div className="flex items-center justify-between py-3 first:pt-0 last:pb-0 border-b last:border-0">
                 <Metric
                   label="This Month"
                   value="$324,180"
@@ -205,7 +205,7 @@ export function MetricDemo() {
                 />
                 <span className="text-sm text-red-600">-3%</span>
               </div>
-              <div className="flex items-center justify-between p-3">
+              <div className="flex items-center justify-between py-3 first:pt-0 last:pb-0 border-b last:border-0">
                 <Metric
                   label="This Year"
                   value="$3.2M"
@@ -220,8 +220,8 @@ export function MetricDemo() {
           {/* Server Status */}
           <div className="p-6 border rounded-lg">
             <h4 className="text-sm font-semibold mb-4">Server Status</h4>
-            <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-              <div className="text-center p-4 border rounded-lg">
+            <div className="grid grid-cols-2 md:grid-cols-4 gap-4 md:gap-6">
+              <div>
                 <Metric label="CPU Usage" value="42%" />
                 <div className="mt-2 w-full bg-gray-200 rounded-full h-2">
                   <div
@@ -230,7 +230,7 @@ export function MetricDemo() {
                   ></div>
                 </div>
               </div>
-              <div className="text-center p-4 border rounded-lg">
+              <div>
                 <Metric label="Memory" value="6.2GB" />
                 <div className="mt-2 w-full bg-gray-200 rounded-full h-2">
                   <div
@@ -239,7 +239,7 @@ export function MetricDemo() {
                   ></div>
                 </div>
               </div>
-              <div className="text-center p-4 border rounded-lg">
+              <div>
                 <Metric label="Disk Space" value="234GB" />
                 <div className="mt-2 w-full bg-gray-200 rounded-full h-2">
                   <div
@@ -248,7 +248,7 @@ export function MetricDemo() {
                   ></div>
                 </div>
               </div>
-              <div className="text-center p-4 border rounded-lg">
+              <div>
                 <Metric label="Network" value="1.2Gbps" />
                 <div className="mt-2 w-full bg-gray-200 rounded-full h-2">
                   <div
@@ -310,7 +310,7 @@ export function MetricDemo() {
 />
 
 // In a card with additional info
-<div className="p-4 border rounded-lg">
+<div>
   <Metric label="Revenue" value="$892,450" size="lg" />
   <p className="text-sm text-green-600 mt-2">
     ↑ 12.5% from last month
