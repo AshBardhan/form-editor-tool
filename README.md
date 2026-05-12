@@ -4,7 +4,7 @@ View Demo: [https://my-formkit-ui.netlify.app](https://my-formkit-ui.netlify.app
 
 ## Overview
 
-The application is crafted using `Next.js` and `React` to build scalable and reusable components.
+The application is crafted using `Next.js` and `React` to build scalable and reusable components, with `Prisma ORM` and `PostgreSQL` for data persistence.
 
 - Components are categorised for reusability and scalability.
   - **Builder**: Page-specific components for the form builder consisting of
@@ -88,6 +88,12 @@ As per given requirements
   - MSW (Mock Service Worker) for API mocking during development.
   - Custom `useFetch` hook for data fetching with loading and error states.
   - Sample forms data for testing and demonstration.
+- **Database Integration**
+  - Prisma ORM with PostgreSQL for data persistence.
+  - Type-safe database queries with auto-generated Prisma Client.
+  - Database migrations for schema version control.
+  - Supports both local PostgreSQL and cloud database connections.
+  - Test page at `/test` route to verify database connectivity.
 
 ## Tech Stack and Rationale
 
@@ -103,6 +109,8 @@ As per given requirements
 - **Framer Motion**: Animations for drag-and-drop and other UI feedback.
 - **Class Variance Authority (CVA)**: Manage component variants and styling combinations in a type-safe and reusable way.
 - **Lucide React**: Lightweight, modern SVG icon library for clean, scalable icons.
+- **Prisma ORM**: Type-safe database ORM with auto-generated client and migration system for PostgreSQL.
+- **PostgreSQL**: Robust relational database for data persistence with ACID compliance.
 
 ## Application Routes
 
@@ -127,6 +135,10 @@ The application uses Next.js App Router with the following route structure:
   - Preview saved form
   - Read-only view of the form
   - Test form interactions
+- **`/test`** - Database connection test page
+  - Verify PostgreSQL database connectivity
+  - Display users from database
+  - Error and loading states for database operations
 
 ## Key Design Decisions
 
@@ -161,15 +173,29 @@ The application uses Next.js App Router with the following route structure:
 - **Code Organization**: Logical grouping reduces bundle size
 - **Lazy Imports**: Dynamic imports for heavy components (where applicable)
 
+### Database Architecture
+
+- **Prisma ORM**: Type-safe database access with auto-generated TypeScript types
+- **Schema Management**: Version-controlled database schema with migrations
+- **Connection Pooling**: Efficient database connections using `pg` adapter
+- **Singleton Pattern**: Prisma Client singleton to prevent connection exhaustion
+- **Environment-based Configuration**: Separate database URLs for development/production
+- **SSL Configuration**: Secure connections for cloud databases, disabled for local development
+
 ## File Structure
 
 ```text
 form-editor-tool/
+├─ prisma/
+│  ├─ migrations/                    # Database migration history
+│  ├─ schema.prisma                  # Database schema definition
+│  └─ seed.ts                        # Database seeding script
 ├─ src/
 │  ├─ app/                           # App-router directory
 │  │  ├─ forms/                      # Forms routes
 │  │  │  ├─ [formId]/                # Dynamic form editor route
 │  │  │  └─ new/                     # New form creation route
+│  │  ├─ test/                       # Database test page
 │  │  ├─ page.tsx                    # Main dashboard page
 │  │  ├─ layout.tsx                  # Root layout
 │  │  └─ globals.css                 # Global styles
@@ -192,7 +218,8 @@ form-editor-tool/
 │  │  ├─ schema/                     # Zod validation schemas
 │  │  ├─ stores/                     # Zustand state management
 │  │  ├─ types/                      # TypeScript type definitions
-│  │  └─ utils/                      # Utility functions
+│  │  ├─ utils/                      # Utility functions
+│  │  └─ prisma.ts                   # Prisma Client singleton
 │  └─ mocks/
 │     ├─ data/                       # Mock data (sample forms)
 │     ├─ handlers.ts                 # MSW request handlers
@@ -202,59 +229,134 @@ form-editor-tool/
 ├─ instructions/                      # Project documentation
 ├─ screenshots/                       # Screenshots for README
 ├─ .env.sample                        # Environment variables template
+├─ prisma.config.ts                   # Prisma configuration
 └─ [config files]                     # Next.js, TypeScript, ESLint, Tailwind configs
 ```
 
 ## Setup Instructions
 
-1. **Prerequisites**
-   - Node.js 18+ (recommended 20+)
-   - npm 9+
+### Prerequisites
 
-2. **Install dependencies**
+- **Node.js 22+** (required for Prisma 7)
+- **npm 9+**
+- **PostgreSQL 14+** (local or cloud instance)
 
-   ```bash
-     npm install
-   ```
+### 1. Install Dependencies
 
-3. **Setup environment variables**
-   Copy the `.env.sample` file into `.env.development` and update the environment variables to enable `MSW`.
+```bash
+npm install
+```
 
-   ```bash
-   cp .env.sample .env.development
-   ```
+### 2. Database Setup
 
-   Update `.env.development`:
+Choose either **Local PostgreSQL** or **Cloud Database** setup:
 
-   ```bash
-   NEXT_PUBLIC_API_MOCKING=enabled
-   ```
+#### Option A: Local PostgreSQL (Recommended for Development)
 
-   For production, create `.env.production`:
+**Install PostgreSQL:**
 
-   ```bash
-   NEXT_PUBLIC_API_MOCKING=disabled
-   ```
+```bash
+# Ubuntu/Debian
+sudo apt update
+sudo apt install postgresql postgresql-contrib
 
-4. **Start development server**
+# macOS (Homebrew)
+brew install postgresql@16
+brew services start postgresql@16
+```
 
-   ```bash
-     npm run dev
-   ```
+**Create Database and User:**
 
-   Open the your browser at `http://localhost:3000/`.
+```bash
+# Access PostgreSQL
+sudo -u postgres psql
 
-5. **Build for production server (Optional)**
+# Create database and user
+CREATE DATABASE your_db_name;
+CREATE USER your_username WITH PASSWORD 'your_password';
+GRANT ALL PRIVILEGES ON DATABASE your_db_name TO your_username;
+\q
+```
 
-   ```bash
-     npm run build && npm run start
-   ```
+**Configure Environment:**
 
-6. **Linting codebase (Optional)**
+Create `.env` file:
 
-   ```bash
-     npm run lint
-   ```
+```bash
+cp .env.sample .env
+```
+
+Update `.env`:
+
+```text
+NEXT_PUBLIC_API_MOCKING=enabled
+DATABASE_URL="postgresql://your_username:your_password@localhost:5432/your_db_name?sslmode=disable"
+```
+
+#### Option B: Cloud Database (Prisma Cloud, Supabase, etc.)
+
+**Get Database URL from your provider and update `.env`:**
+
+```text
+NEXT_PUBLIC_API_MOCKING=enabled
+DATABASE_URL="postgresql://username:password@host:5432/database?sslmode=require"
+```
+
+### 3. Run Database Migrations
+
+```bash
+# Generate Prisma Client
+npx prisma generate
+
+# Run migrations to create database tables
+npx prisma migrate deploy
+
+# Optional: Open Prisma Studio to view database
+npx prisma studio
+```
+
+### 4. Start Development Server
+
+```bash
+npm run dev
+```
+
+Open your browser at `http://localhost:3000/`
+
+### 5. Verify Database Connection
+
+Visit `http://localhost:3000/test` to verify database connectivity.
+
+### 6. Build for Production (Optional)
+
+```bash
+npm run build && npm run start
+```
+
+### 7. Linting Codebase (Optional)
+
+```bash
+npm run lint
+```
+
+### Database Management Commands
+
+```bash
+# Generate Prisma Client after schema changes
+npx prisma generate
+
+# Create new migration
+npx prisma migrate dev --name migration_name
+
+# Apply migrations in production
+npx prisma migrate deploy
+
+# Open Prisma Studio (database GUI)
+npx prisma studio
+
+# Reset database (WARNING: deletes all data)
+npx prisma migrate reset
+```
 
 ## Future Improvements
 
@@ -286,10 +388,11 @@ form-editor-tool/
 
 ### Medium Priority - Backend Integration & Data
 
-- **Real Backend Integration**: Connect to actual backend service
-  - Replace MSW with real API calls via `REST` or `GraphQL`
-  - Implement authentication and authorization
-  - Handle real-time data synchronization
+- **Form Data Persistence**: Integrate forms with database
+  - Create Form and FormSubmission models in Prisma schema
+  - Implement server actions for form CRUD operations
+  - Replace MSW handlers with real database queries
+  - Persist form builder changes to PostgreSQL
 - **Form State Management**: Add advanced form status tracking
   - Draft vs Published states
   - Version control for forms
