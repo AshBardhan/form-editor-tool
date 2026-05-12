@@ -116,9 +116,6 @@ export const FormPreviewContent = ({
         description: "Your response has been recorded.",
       });
 
-      console.log("✅ Form submitted successfully!");
-      console.log("Form Data:", formData);
-
       // You could also send this data to an API here
       // Example:
       // await fetch('/api/submit', { method: 'POST', body: JSON.stringify(formData) })
