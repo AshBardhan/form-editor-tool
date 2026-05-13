@@ -25,18 +25,8 @@ export const useFormDataStore = create<FormDataState>((set) => ({
       const fieldKey = getFieldKey(block);
       const blockValue = getPropValue(block, "value");
 
-      // Initialize all blocks with their value (or empty string)
+      // Initialize all blocks with their value (defaults to empty string or appropriate empty value)
       initialData[fieldKey] = blockValue;
-
-      // Override with first option for required select fields if value is empty
-      if (!blockValue && block.type === "select") {
-        const required = getPropValue(block, "required") || false;
-        const options = (getPropValue(block, "options") ?? []) as string[];
-
-        if (required && options.length > 0) {
-          initialData[fieldKey] = options[0];
-        }
-      }
     });
 
     set({ formData: initialData });

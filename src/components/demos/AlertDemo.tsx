@@ -1,6 +1,6 @@
 "use client";
 
-import * as React from "react";
+import { useState } from "react";
 import {
   Alert,
   AlertTitle,
@@ -21,9 +21,9 @@ import {
  * Showcases all variants, props, and use cases for the Alert component
  */
 export function AlertDemo() {
-  const [showDismissable1, setShowDismissable1] = React.useState(true);
-  const [showDismissable2, setShowDismissable2] = React.useState(true);
-  const [showDismissable3, setShowDismissable3] = React.useState(true);
+  const [showDismissable1, setShowDismissable1] = useState(true);
+  const [showDismissable2, setShowDismissable2] = useState(true);
+  const [showDismissable3, setShowDismissable3] = useState(true);
 
   return (
     <div className="space-y-12">

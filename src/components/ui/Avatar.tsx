@@ -1,25 +1,33 @@
 "use client";
 
-import * as React from "react";
+import {
+  createContext,
+  useState,
+  useContext,
+  useEffect,
+  useCallback,
+  HTMLAttributes,
+  ImgHTMLAttributes,
+} from "react";
 import { cn } from "@/lib/utils/styleUtils";
 
-interface AvatarProps extends React.HTMLAttributes<HTMLDivElement> {
+interface AvatarProps extends HTMLAttributes<HTMLDivElement> {
   className?: string;
 }
 
-interface AvatarImageProps extends React.ImgHTMLAttributes<HTMLImageElement> {
+interface AvatarImageProps extends ImgHTMLAttributes<HTMLImageElement> {
   className?: string;
   onLoadingStatusChange?: (
     status: "idle" | "loading" | "loaded" | "error",
   ) => void;
 }
 
-interface AvatarFallbackProps extends React.HTMLAttributes<HTMLDivElement> {
+interface AvatarFallbackProps extends HTMLAttributes<HTMLDivElement> {
   className?: string;
   delayMs?: number;
 }
 
-const AvatarContext = React.createContext<{
+const AvatarContext = createContext<{
   imageLoadingStatus: "idle" | "loading" | "loaded" | "error";
   onImageLoadingStatusChange: (
     status: "idle" | "loading" | "loaded" | "error",
@@ -30,7 +38,7 @@ const AvatarContext = React.createContext<{
 });
 
 function Avatar({ className, ...props }: AvatarProps) {
-  const [imageLoadingStatus, setImageLoadingStatus] = React.useState<
+  const [imageLoadingStatus, setImageLoadingStatus] = useState<
     "idle" | "loading" | "loaded" | "error"
   >("idle");
 
@@ -58,12 +66,12 @@ function AvatarImage({
   onLoadingStatusChange,
   ...props
 }: AvatarImageProps) {
-  const { onImageLoadingStatusChange } = React.useContext(AvatarContext);
-  const [loadingStatus, setLoadingStatus] = React.useState<
+  const { onImageLoadingStatusChange } = useContext(AvatarContext);
+  const [loadingStatus, setLoadingStatus] = useState<
     "idle" | "loading" | "loaded" | "error"
   >("idle");
 
-  React.useEffect(() => {
+  useEffect(() => {
     if (props.src) {
       setLoadingStatus("loading");
       onImageLoadingStatusChange("loading");
@@ -71,13 +79,13 @@ function AvatarImage({
     }
   }, [props.src, onImageLoadingStatusChange, onLoadingStatusChange]);
 
-  const handleLoad = React.useCallback(() => {
+  const handleLoad = useCallback(() => {
     setLoadingStatus("loaded");
     onImageLoadingStatusChange("loaded");
     onLoadingStatusChange?.("loaded");
   }, [onImageLoadingStatusChange, onLoadingStatusChange]);
 
-  const handleError = React.useCallback(() => {
+  const handleError = useCallback(() => {
     setLoadingStatus("error");
     onImageLoadingStatusChange("error");
     onLoadingStatusChange?.("error");
@@ -106,10 +114,10 @@ function AvatarFallback({
   children,
   ...props
 }: AvatarFallbackProps) {
-  const { imageLoadingStatus } = React.useContext(AvatarContext);
-  const [canRender, setCanRender] = React.useState(delayMs === 0);
+  const { imageLoadingStatus } = useContext(AvatarContext);
+  const [canRender, setCanRender] = useState(delayMs === 0);
 
-  React.useEffect(() => {
+  useEffect(() => {
     if (delayMs > 0) {
       const timer = setTimeout(() => setCanRender(true), delayMs);
       return () => clearTimeout(timer);

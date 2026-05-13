@@ -1,15 +1,15 @@
 "use client";
 
 import { CheckIcon } from "lucide-react";
-import * as React from "react";
+import { forwardRef, InputHTMLAttributes } from "react";
 import { cn } from "@/lib/utils/styleUtils";
 
 interface CheckboxProps
-  extends Omit<React.InputHTMLAttributes<HTMLInputElement>, "type"> {
+  extends Omit<InputHTMLAttributes<HTMLInputElement>, "type"> {
   className?: string;
 }
 
-const Checkbox = React.forwardRef<HTMLInputElement, CheckboxProps>(
+const Checkbox = forwardRef<HTMLInputElement, CheckboxProps>(
   ({ className, ...props }, ref) => {
     return (
       <div className="relative inline-flex self-start">

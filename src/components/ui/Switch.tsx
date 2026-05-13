@@ -1,14 +1,14 @@
 "use client";
 
-import * as React from "react";
+import { forwardRef, InputHTMLAttributes } from "react";
 import { cn } from "@/lib/utils/styleUtils";
 
 interface SwitchProps
-  extends Omit<React.InputHTMLAttributes<HTMLInputElement>, "type"> {
+  extends Omit<InputHTMLAttributes<HTMLInputElement>, "type"> {
   className?: string;
 }
 
-const Switch = React.forwardRef<HTMLInputElement, SwitchProps>(
+const Switch = forwardRef<HTMLInputElement, SwitchProps>(
   ({ className, ...props }, ref) => {
     return (
       <label className="relative inline-flex items-center cursor-pointer">

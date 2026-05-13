@@ -55,7 +55,7 @@ export const sampleLightForm: FormConfig = {
       props: {
         label: "Occupation",
         key: "occupation",
-        required: false,
+        required: true,
         placeholder: "Choose from the list",
         options: ["Developer", "Manager", "Others"],
       },

@@ -1,6 +1,6 @@
 "use client";
 
-import * as React from "react";
+import { useState } from "react";
 import { toast } from "@/components/ui/Toast";
 import { Button } from "@/components/ui/Button";
 import { Input } from "@/components/ui/Input";
@@ -11,11 +11,11 @@ import { Label } from "@/components/ui/Label";
  * Showcases all variants, props, and use cases for the Toast component
  */
 export function ToastDemo() {
-  const [customTitle, setCustomTitle] = React.useState("Custom message");
-  const [customDescription, setCustomDescription] = React.useState(
+  const [customTitle, setCustomTitle] = useState("Custom message");
+  const [customDescription, setCustomDescription] = useState(
     "This is a custom toast notification",
   );
-  const [customDuration, setCustomDuration] = React.useState("5000");
+  const [customDuration, setCustomDuration] = useState("5000");
 
   return (
     <div className="space-y-12">

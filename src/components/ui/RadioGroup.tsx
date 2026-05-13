@@ -1,11 +1,19 @@
 "use client";
 
 import { CircleIcon } from "lucide-react";
-import * as React from "react";
+import {
+  createContext,
+  forwardRef,
+  useState,
+  useCallback,
+  useContext,
+  HTMLAttributes,
+  InputHTMLAttributes,
+} from "react";
 import { cn } from "@/lib/utils/styleUtils";
 import { FormBlockOrientation } from "@/lib/types/form";
 
-interface RadioGroupProps extends React.HTMLAttributes<HTMLDivElement> {
+interface RadioGroupProps extends HTMLAttributes<HTMLDivElement> {
   value?: string;
   defaultValue?: string;
   onValueChange?: (value: string) => void;
@@ -14,17 +22,17 @@ interface RadioGroupProps extends React.HTMLAttributes<HTMLDivElement> {
 }
 
 interface RadioGroupItemProps
-  extends Omit<React.InputHTMLAttributes<HTMLInputElement>, "type"> {
+  extends Omit<InputHTMLAttributes<HTMLInputElement>, "type"> {
   value: string;
 }
 
-const RadioGroupContext = React.createContext<{
+const RadioGroupContext = createContext<{
   value?: string;
   onValueChange?: (value: string) => void;
   name?: string;
 }>({});
 
-const RadioGroup = React.forwardRef<HTMLDivElement, RadioGroupProps>(
+const RadioGroup = forwardRef<HTMLDivElement, RadioGroupProps>(
   (
     {
       className,
@@ -37,10 +45,10 @@ const RadioGroup = React.forwardRef<HTMLDivElement, RadioGroupProps>(
     },
     ref,
   ) => {
-    const [internalValue, setInternalValue] = React.useState(defaultValue);
+    const [internalValue, setInternalValue] = useState(defaultValue);
     const actualValue = value ?? internalValue;
 
-    const handleValueChange = React.useCallback(
+    const handleValueChange = useCallback(
       (newValue: string) => {
         if (value === undefined) {
           setInternalValue(newValue);
@@ -70,9 +78,9 @@ const RadioGroup = React.forwardRef<HTMLDivElement, RadioGroupProps>(
 );
 RadioGroup.displayName = "RadioGroup";
 
-const RadioGroupItem = React.forwardRef<HTMLInputElement, RadioGroupItemProps>(
+const RadioGroupItem = forwardRef<HTMLInputElement, RadioGroupItemProps>(
   ({ className, value, ...props }, ref) => {
-    const context = React.useContext(RadioGroupContext);
+    const context = useContext(RadioGroupContext);
     const isChecked = context.value === value;
 
     const handleChange = () => {

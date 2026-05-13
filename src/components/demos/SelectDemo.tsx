@@ -1,6 +1,6 @@
 "use client";
 
-import * as React from "react";
+import { useState } from "react";
 import {
   Select,
   SelectTrigger,
@@ -14,8 +14,9 @@ import {
 import { Label } from "@/components/ui/Label";
 
 export function SelectDemo() {
-  const [country, setCountry] = React.useState("");
-  const [framework, setFramework] = React.useState("react");
+  const [fruit, setFruit] = useState("");
+  const [country, setCountry] = useState("");
+  const [framework, setFramework] = useState("react");
 
   return (
     <div className="space-y-12">
@@ -38,9 +39,9 @@ export function SelectDemo() {
         </div>
 
         <div className="space-y-3 max-w-xs">
-          <Label htmlFor="basic">Choose a fruit</Label>
-          <Select>
-            <SelectTrigger id="basic">
+          <Label htmlFor="select-basic">Choose a fruit</Label>
+          <Select value={fruit} onValueChange={setFruit}>
+            <SelectTrigger id="select-basic">
               <SelectValue placeholder="Select a fruit" />
             </SelectTrigger>
             <SelectContent>
@@ -63,9 +64,9 @@ export function SelectDemo() {
 
         <div className="space-y-4 max-w-xs">
           <div className="space-y-3">
-            <Label htmlFor="controlled">Select Country</Label>
+            <Label htmlFor="select-controlled">Select Country</Label>
             <Select value={country} onValueChange={setCountry}>
-              <SelectTrigger id="controlled">
+              <SelectTrigger id="select-controlled">
                 <SelectValue placeholder="Choose a country" />
               </SelectTrigger>
               <SelectContent>
@@ -95,9 +96,9 @@ export function SelectDemo() {
         </div>
 
         <div className="space-y-3 max-w-xs">
-          <Label htmlFor="grouped">Choose a framework</Label>
+          <Label htmlFor="select-grouped">Choose a framework</Label>
           <Select value={framework} onValueChange={setFramework}>
-            <SelectTrigger id="grouped">
+            <SelectTrigger id="select-grouped">
               <SelectValue />
             </SelectTrigger>
             <SelectContent>

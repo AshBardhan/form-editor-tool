@@ -1,5 +1,5 @@
 import { cva, VariantProps } from "class-variance-authority";
-import * as React from "react";
+import { forwardRef, HTMLAttributes } from "react";
 import { cn } from "@/lib/utils/styleUtils";
 
 // Alert Types
@@ -35,7 +35,7 @@ const alertVariants = cva(
 );
 
 interface AlertProps
-  extends React.HTMLAttributes<HTMLDivElement>,
+  extends HTMLAttributes<HTMLDivElement>,
     VariantProps<typeof alertVariants> {}
 
 function Alert({ className, variant, ...props }: AlertProps) {
@@ -48,7 +48,7 @@ function Alert({ className, variant, ...props }: AlertProps) {
   );
 }
 
-type AlertTitleProps = React.HTMLAttributes<HTMLHeadingElement>;
+type AlertTitleProps = HTMLAttributes<HTMLHeadingElement>;
 
 function AlertTitle({ className, ...props }: AlertTitleProps) {
   return (
@@ -59,7 +59,7 @@ function AlertTitle({ className, ...props }: AlertTitleProps) {
   );
 }
 
-type AlertDescriptionProps = React.HTMLAttributes<HTMLParagraphElement>;
+type AlertDescriptionProps = HTMLAttributes<HTMLParagraphElement>;
 
 function AlertDescription({ className, ...props }: AlertDescriptionProps) {
   return (
@@ -70,7 +70,7 @@ function AlertDescription({ className, ...props }: AlertDescriptionProps) {
   );
 }
 
-type AlertActionProps = React.HTMLAttributes<HTMLDivElement>;
+type AlertActionProps = HTMLAttributes<HTMLDivElement>;
 
 function AlertAction({ className, ...props }: AlertActionProps) {
   return (

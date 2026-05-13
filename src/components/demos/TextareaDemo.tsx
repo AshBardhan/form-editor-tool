@@ -1,6 +1,6 @@
 "use client";
 
-import * as React from "react";
+import { useState } from "react";
 import { Textarea } from "@/components/ui/Textarea";
 import { Label } from "@/components/ui/Label";
 import { Button } from "@/components/ui/Button";
@@ -10,8 +10,8 @@ import { Button } from "@/components/ui/Button";
  * Showcases various use cases for multi-line text input
  */
 export function TextareaDemo() {
-  const [value, setValue] = React.useState("");
-  const [comment, setComment] = React.useState("");
+  const [value, setValue] = useState("");
+  const [comment, setComment] = useState("");
   const maxLength = 500;
 
   return (
@@ -35,8 +35,12 @@ export function TextareaDemo() {
         </div>
 
         <div className="space-y-3">
-          <Label htmlFor="basic">Description</Label>
-          <Textarea id="basic" placeholder="Enter your text here..." rows={4} />
+          <Label htmlFor="textarea-basic">Description</Label>
+          <Textarea
+            id="textarea-basic"
+            placeholder="Enter your text here..."
+            rows={4}
+          />
         </div>
       </section>
 
@@ -50,9 +54,9 @@ export function TextareaDemo() {
         </div>
 
         <div className="space-y-3">
-          <Label htmlFor="controlled">Message</Label>
+          <Label htmlFor="textarea-controlled">Message</Label>
           <Textarea
-            id="controlled"
+            id="textarea-controlled"
             placeholder="Type your message..."
             rows={4}
             value={value}
@@ -74,9 +78,9 @@ export function TextareaDemo() {
         </div>
 
         <div className="space-y-3">
-          <Label htmlFor="limited">Comment (max 500 characters)</Label>
+          <Label htmlFor="textarea-limited">Comment (max 500 characters)</Label>
           <Textarea
-            id="limited"
+            id="textarea-limited"
             placeholder="Write your comment..."
             rows={5}
             maxLength={maxLength}
@@ -111,18 +115,30 @@ export function TextareaDemo() {
 
         <div className="space-y-6">
           <div className="space-y-3">
-            <Label htmlFor="small">Small (3 rows)</Label>
-            <Textarea id="small" placeholder="Small textarea..." rows={3} />
+            <Label htmlFor="textarea-small">Small (3 rows)</Label>
+            <Textarea
+              id="textarea-small"
+              placeholder="Small textarea..."
+              rows={3}
+            />
           </div>
 
           <div className="space-y-3">
-            <Label htmlFor="medium">Medium (5 rows)</Label>
-            <Textarea id="medium" placeholder="Medium textarea..." rows={5} />
+            <Label htmlFor="textarea-medium">Medium (5 rows)</Label>
+            <Textarea
+              id="textarea-medium"
+              placeholder="Medium textarea..."
+              rows={5}
+            />
           </div>
 
           <div className="space-y-3">
-            <Label htmlFor="large">Large (8 rows)</Label>
-            <Textarea id="large" placeholder="Large textarea..." rows={8} />
+            <Label htmlFor="textarea-large">Large (8 rows)</Label>
+            <Textarea
+              id="textarea-large"
+              placeholder="Large textarea..."
+              rows={8}
+            />
           </div>
         </div>
       </section>
@@ -136,16 +152,20 @@ export function TextareaDemo() {
 
         <div className="space-y-6">
           <div className="space-y-3">
-            <Label htmlFor="normal">Normal</Label>
-            <Textarea id="normal" placeholder="Normal state..." rows={3} />
+            <Label htmlFor="textarea-normal">Normal</Label>
+            <Textarea
+              id="textarea-normal"
+              placeholder="Normal state..."
+              rows={3}
+            />
           </div>
 
           <div className="space-y-3">
-            <Label htmlFor="disabled" className="opacity-50">
+            <Label htmlFor="textarea-disabled" className="opacity-50">
               Disabled
             </Label>
             <Textarea
-              id="disabled"
+              id="textarea-disabled"
               placeholder="Disabled state..."
               rows={3}
               disabled
@@ -154,9 +174,9 @@ export function TextareaDemo() {
           </div>
 
           <div className="space-y-3">
-            <Label htmlFor="readonly">Read Only</Label>
+            <Label htmlFor="textarea-readonly">Read Only</Label>
             <Textarea
-              id="readonly"
+              id="textarea-readonly"
               rows={3}
               readOnly
               value="This textarea is read-only and cannot be edited"
@@ -164,9 +184,9 @@ export function TextareaDemo() {
           </div>
 
           <div className="space-y-3">
-            <Label htmlFor="invalid">Invalid (with error)</Label>
+            <Label htmlFor="textarea-invalid">Invalid (with error)</Label>
             <Textarea
-              id="invalid"
+              id="textarea-invalid"
               placeholder="This field is required..."
               rows={3}
               aria-invalid="true"
@@ -188,9 +208,9 @@ export function TextareaDemo() {
             <h4 className="text-sm font-semibold mb-4">Feedback Form</h4>
             <div className="space-y-4">
               <div className="space-y-3">
-                <Label htmlFor="feedback">What can we improve?</Label>
+                <Label htmlFor="textarea-feedback">What can we improve?</Label>
                 <Textarea
-                  id="feedback"
+                  id="textarea-feedback"
                   placeholder="Tell us what you think..."
                   rows={4}
                 />
@@ -203,9 +223,9 @@ export function TextareaDemo() {
             <h4 className="text-sm font-semibold mb-4">Comment Section</h4>
             <div className="space-y-4">
               <div className="space-y-3">
-                <Label htmlFor="comment-1">Add a comment</Label>
+                <Label htmlFor="textarea-comment">Add a comment</Label>
                 <Textarea
-                  id="comment-1"
+                  id="textarea-comment"
                   placeholder="Share your thoughts..."
                   rows={4}
                 />
@@ -221,9 +241,9 @@ export function TextareaDemo() {
             <h4 className="text-sm font-semibold mb-4">Support Ticket</h4>
             <div className="space-y-4">
               <div className="space-y-3">
-                <Label htmlFor="issue">Describe your issue</Label>
+                <Label htmlFor="textarea-issue">Describe your issue</Label>
                 <Textarea
-                  id="issue"
+                  id="textarea-issue"
                   placeholder="Please provide as much detail as possible..."
                   rows={6}
                 />
@@ -265,8 +285,8 @@ const [value, setValue] = useState("");
 
 // With label
 <div className="space-y-3">
-  <Label htmlFor="message">Message</Label>
-  <Textarea id="message" placeholder="Your message..." rows={4} />
+  <Label htmlFor="textarea-message">Message</Label>
+  <Textarea id="textarea-message" placeholder="Your message..." rows={4} />
 </div>
 
 // With character limit

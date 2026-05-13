@@ -1,6 +1,6 @@
 "use client";
 
-import * as React from "react";
+import { forwardRef, useState, useEffect } from "react";
 import { cn } from "@/lib/utils/styleUtils";
 import { cva } from "class-variance-authority";
 import { CheckCircle, XCircle, AlertTriangle, Info, X } from "lucide-react";
@@ -162,7 +162,7 @@ interface ToastItemProps extends ToastData {
   onRemove: (id: string) => void;
 }
 
-const ToastItem = React.forwardRef<HTMLDivElement, ToastItemProps>(
+const ToastItem = forwardRef<HTMLDivElement, ToastItemProps>(
   (
     { id, type, title, description, dismissible = true, action, onRemove },
     ref,
@@ -224,9 +224,9 @@ interface ToasterProps {
 }
 
 export function Toaster({ position = "bottom-right" }: ToasterProps = {}) {
-  const [toastList, setToastList] = React.useState<ToastData[]>([]);
+  const [toastList, setToastList] = useState<ToastData[]>([]);
 
-  React.useEffect(() => {
+  useEffect(() => {
     return subscribe(setToastList);
   }, []);
 
@@ -235,7 +235,7 @@ export function Toaster({ position = "bottom-right" }: ToasterProps = {}) {
   return (
     <div
       className={cn(
-        "fixed z-[100] flex max-h-screen w-full p-4 md:max-w-[420px] pointer-events-none",
+        "fixed z-100 flex max-h-screen w-full p-4 md:max-w-[420px] pointer-events-none",
         positionStyles[position],
       )}
     >
