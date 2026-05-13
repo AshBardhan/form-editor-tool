@@ -33,7 +33,7 @@ export const FormPreviewContainer = ({
   const formConfig = useFormConfigStore((state) => state.formConfig);
   const setFormConfig = useFormConfigStore((state) => state.setFormConfig);
   const resetFormConfig = useFormConfigStore((state) => state.resetFormConfig);
-  const initFormData = useFormDataStore((state) => state.initFormData);
+  const resetFormData = useFormDataStore((state) => state.resetFormData);
   const [shouldFetch, setShouldFetch] = useState(false);
   const [shouldRender, setShouldRender] = useState(false);
   const [currentDevice, setCurrentDevice] = useState<DeviceType>(
@@ -46,14 +46,12 @@ export const FormPreviewContainer = ({
   );
 
   /**
-   * Initialize form data with default values when formConfig changes.
-   * Ensures required select boxes get their first option pre-selected.
+   * Reset form data when preview page opens or form changes.
+   * Form data is ephemeral - always starts fresh.
    */
   useEffect(() => {
-    if (formConfig && formConfig.blocks) {
-      initFormData(formConfig.blocks);
-    }
-  }, [formConfig, initFormData]);
+    resetFormData();
+  }, [id, resetFormData]);
 
   /**
    * Smart loading orchestration - decides whether to use cache or fetch from API.
