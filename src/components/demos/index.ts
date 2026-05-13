@@ -7,6 +7,7 @@ export { CheckboxDemo } from "./CheckboxDemo";
 export { InputDemo } from "./InputDemo";
 export { InputOTPDemo } from "./InputOTPDemo";
 export { MetricDemo } from "./MetricDemo";
+export { ModalDemo } from "./ModalDemo";
 export { RadioGroupDemo } from "./RadioGroupDemo";
 export { SelectDemo } from "./SelectDemo";
 export { SkeletonDemo } from "./SkeletonDemo";
