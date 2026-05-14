@@ -17,6 +17,7 @@ import { cn } from "@/lib/utils/styleUtils";
 interface CanvasBlockProps {
   block: FormBlock;
   isGhostMode?: boolean;
+  onDeleteBlock?: (blockId: string) => void;
 }
 
 /**
@@ -30,9 +31,9 @@ interface CanvasBlockProps {
 export const CanvasBlock = ({
   block,
   isGhostMode = false,
+  onDeleteBlock,
 }: CanvasBlockProps): JSX.Element => {
   const cloneBlock = useFormConfigStore((state) => state.cloneFormBlock);
-  const removeBlock = useFormConfigStore((state) => state.removeFormBlock);
   const selectedBlockId = useUIStateStore((state) => state.selectedFormBlockId);
   const hoveredBlockId = useUIStateStore((state) => state.hoveredFormBlockId);
   const selectBlock = useUIStateStore((state) => state.selectFormBlock);
@@ -179,7 +180,7 @@ export const CanvasBlock = ({
               className="cursor-pointer rounded-full p-1.5 text-gray-500 dark:text-gray-300 hover:text-black dark:hover:text-white hover:bg-black/10 dark:hover:bg-white/10 transition-colors"
               onClick={(e) => {
                 e.stopPropagation();
-                removeBlock(block.id);
+                onDeleteBlock?.(block.id);
                 clearBlockErrors(block.id);
               }}
               title="Delete Block"

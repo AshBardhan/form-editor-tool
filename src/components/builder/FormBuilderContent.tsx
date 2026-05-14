@@ -14,7 +14,11 @@ import {
 } from "@dnd-kit/core";
 import { JSX, useState } from "react";
 import { hybridKeyboardCoordinates } from "@/lib/utils/keyboardUtils";
-import { useFormConfigStore, useUIStateStore } from "@/lib/stores";
+import {
+  useFormConfigStore,
+  useUIStateStore,
+  useFormBlockValidationStore,
+} from "@/lib/stores";
 import { AnimatePresence } from "motion/react";
 import { Widget } from "@/lib/types/widget";
 import { FormBlock } from "@/lib/types/form";
@@ -26,6 +30,16 @@ import { CanvasDroppable } from "@/components/builder/canvas/CanvasDroppable";
 import { CanvasForm } from "@/components/builder/canvas/CanvasForm";
 import { WidgetPanel } from "@/components/builder/widgets/WidgetPanel";
 import { ConfigurationPanel } from "@/components/builder/configuration/ConfigurationPanel";
+import {
+  Modal,
+  ModalContent,
+  ModalHeader,
+  ModalTitle,
+  ModalDescription,
+  ModalFooter,
+} from "@/components/ui/Modal";
+import { Button } from "@/components/ui/Button";
+import { AlertTriangle } from "lucide-react";
 
 interface DragState {
   overId: string | null;
@@ -49,11 +63,44 @@ export const FormBuilderContent = (): JSX.Element => {
   const formBlocks = useFormConfigStore((state) => state.formConfig.blocks);
   const moveFormBlock = useFormConfigStore((state) => state.moveFormBlock);
   const addFormBlock = useFormConfigStore((state) => state.addFormBlock);
+  const removeFormBlock = useFormConfigStore((state) => state.removeFormBlock);
   const selectFormBlock = useUIStateStore((state) => state.selectFormBlock);
   const isSidebarCollapsed = useUIStateStore(
     (state) => state.isSidebarCollapsed,
   );
+  const clearFormBlockErrors = useFormBlockValidationStore(
+    (state) => state.clearFormBlockErrors,
+  );
   const [deviceType, setDeviceType] = useState<DeviceType>(DeviceType.DESKTOP);
+  const [deleteConfirmation, setDeleteConfirmation] = useState<{
+    isOpen: boolean;
+    blockId: string | null;
+  }>({ isOpen: false, blockId: null });
+
+  /**
+   * Opens delete confirmation modal for a specific block.
+   */
+  const handleDeleteRequest = (blockId: string) => {
+    setDeleteConfirmation({ isOpen: true, blockId });
+  };
+
+  /**
+   * Handles the confirmation of block deletion.
+   */
+  const handleConfirmDelete = () => {
+    if (deleteConfirmation.blockId) {
+      removeFormBlock(deleteConfirmation.blockId);
+      clearFormBlockErrors(deleteConfirmation.blockId);
+      setDeleteConfirmation({ isOpen: false, blockId: null });
+    }
+  };
+
+  /**
+   * Closes the delete confirmation modal.
+   */
+  const handleCancelDelete = () => {
+    setDeleteConfirmation({ isOpen: false, blockId: null });
+  };
 
   /**
    * Handles the end of a drag event.
@@ -172,6 +219,7 @@ export const FormBuilderContent = (): JSX.Element => {
               overId={dragState.overId}
               activeDragItem={dragState.activeItem as FormBlock}
               dragSource={dragState.source}
+              onDeleteBlock={handleDeleteRequest}
             />
           </div>
         </MainContent>
@@ -180,11 +228,40 @@ export const FormBuilderContent = (): JSX.Element => {
         <AnimatePresence>
           {!isSidebarCollapsed.right && (
             <Sidebar position="right">
-              <ConfigurationPanel />
+              <ConfigurationPanel onDeleteBlock={handleDeleteRequest} />
             </Sidebar>
           )}
         </AnimatePresence>
       </DndContext>
+
+      {/* Delete Confirmation Modal */}
+      <Modal
+        open={deleteConfirmation.isOpen}
+        onOpenChange={(open) => !open && handleCancelDelete()}
+      >
+        <ModalContent size="sm">
+          <ModalHeader className="pb-2">
+            <div className="flex gap-3">
+              <AlertTriangle className="shrink-0 h-6 w-6 text-red-600 dark:text-red-500" />
+              <div className="flex-1 flex flex-col gap-2">
+                <ModalTitle>Delete Block</ModalTitle>
+                <ModalDescription>
+                  Are you sure you want to delete this block? This action cannot
+                  be undone.
+                </ModalDescription>
+              </div>
+            </div>
+          </ModalHeader>
+          <ModalFooter>
+            <Button variant="outline" onClick={handleCancelDelete}>
+              Cancel
+            </Button>
+            <Button variant="destructive" onClick={handleConfirmDelete}>
+              Delete
+            </Button>
+          </ModalFooter>
+        </ModalContent>
+      </Modal>
     </>
   );
 };
