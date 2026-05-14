@@ -19,7 +19,7 @@ The application is crafted using `Next.js` and `React` to build scalable and reu
   - **Block Configs**: Configuration components for editing block properties
   - **Demos**: Comprehensive showcase of all UI primitives with usage examples
   - **UI**: Primitive components (Button, Input, Select, Alert, Toast, etc.) used across the application
-    - 15+ reusable UI primitives built with Radix UI and Tailwind CSS
+    - 15+ reusable UI primitives built with Tailwind CSS
   - **Layout**: Wrapper components for consistent page structure and responsive design
 - **TailwindCSS** with container queries for responsive form layouts.
   - A set of commonly used colors and design tokens.
@@ -121,7 +121,6 @@ As per given requirements
 - **Zustand**: Lightweight state management alternative to `Redux` with simplicity and ease of use.
 - **TailwindCSS v4**: Utility-first styling with theme tokens, responsive support, and container queries.
 - **@dnd-kit**: Modern drag-and-drop toolkit for React with accessibility features.
-- **Radix UI Primitives**: Accessible, unstyled components for building complex UI (Slot component).
 - **Zod**: Type-safe client-side validation with schema-based approach for both builder and preview modes.
 - **Framer Motion**: Animations for drag-and-drop, toast notifications, and other UI feedback.
 - **Class Variance Authority (CVA)**: Manage component variants and styling combinations in a type-safe and reusable way.

@@ -1,7 +1,6 @@
 import { cva, VariantProps } from "class-variance-authority";
-import { forwardRef, ComponentProps } from "react";
+import { ComponentProps, ReactElement, cloneElement } from "react";
 import { cn } from "@/lib/utils/styleUtils";
-import { Slot } from "@radix-ui/react-slot";
 
 const buttonVariants = cva(
   "inline-flex items-center justify-center gap-2 whitespace-nowrap rounded-md text-sm font-medium cursor-pointer transition-all disabled:pointer-events-none disabled:opacity-50 [&_svg]:pointer-events-none [&_svg:not([class*='size-'])]:size-4 shrink-0 [&_svg]:shrink-0 outline-none focus-visible:border-ring focus-visible:ring-ring/50 focus-visible:ring-[3px] aria-invalid:ring-destructive/20 dark:aria-invalid:ring-destructive/40 aria-invalid:border-destructive",
@@ -37,19 +36,32 @@ function Button({
   variant,
   size,
   asChild = false,
+  children,
   ...props
 }: ComponentProps<"button"> &
   VariantProps<typeof buttonVariants> & {
     asChild?: boolean;
   }) {
-  const Comp = asChild ? Slot : "button";
+  const buttonClassName = cn(buttonVariants({ variant, size, className }));
+
+  if (asChild && children) {
+    const child = children as ReactElement<
+      Record<string, unknown> & {
+        className?: string;
+      }
+    >;
+    return cloneElement(child, {
+      ...props,
+      ...child.props,
+      "data-slot": "button",
+      className: cn(buttonClassName, child.props.className),
+    } as Record<string, unknown>);
+  }
 
   return (
-    <Comp
-      data-slot="button"
-      className={cn(buttonVariants({ variant, size, className }))}
-      {...props}
-    />
+    <button data-slot="button" className={buttonClassName} {...props}>
+      {children}
+    </button>
   );
 }
 
