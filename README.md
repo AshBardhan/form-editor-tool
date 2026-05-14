@@ -73,18 +73,17 @@ As per given requirements
 - **Form Builder Header**
   - Toggle buttons to expand and collapse both sidebars.
   - Form title at the center configured via Configuration Panel.
-  - Preview button navigating to preview mode (opens in new tab).
+  - Preview button that opens a modal with fully functional form preview.
   - Publish button (currently for presentation purposes).
 - **Form Preview Mode**
-  - Dedicated preview routes for both new and existing forms.
-  - Full-screen preview of the form as end-users would see it.
+  - Preview modal accessible from the form builder header.
   - **Fully functional forms** with editable inputs, validation, and submission.
   - **Client-side validation** with inline error messages below fields.
   - **Submit and Reset** buttons with proper form handling.
   - **Toast notifications** for form submission success/error feedback.
-  - Preview header with back navigation and form title.
-  - Supports all device modes (desktop, tablet, mobile) with container queries.
-  - Opens in new tab for better user experience.
+  - **Device selector** within modal to preview desktop, tablet, and mobile views.
+  - Modal design allows testing forms without leaving the builder context.
+  - Supports all device modes with container queries for responsive preview.
 - **UI Component Demos**
   - Dedicated `/demo` route with comprehensive UI component showcase.
   - Interactive demos for all 17 UI primitives (Alert, Toast, Button, Input, Select, Checkbox, Radio, Switch, Textarea, Badge, Card, Skeleton, Metric, Avatar, InputOTP, and Text).
@@ -149,16 +148,7 @@ The application uses Next.js App Router with the following route structure:
   - Loads form data from API (via MSW)
   - Edit and modify existing form blocks
   - Same builder interface as new form
-- **`/forms/new/preview`** - Preview new form
-  - **Fully functional form** with validation and submission
-  - Opens in new tab for better UX
-  - Editable inputs with real-time validation
-  - Submit/reset functionality with toast notifications
-  - Responsive preview with container queries
-- **`/forms/[formId]/preview`** - Preview existing form
-  - Same functional preview as new forms
-  - Test actual form behavior before publishing
-  - Full validation and error handling
+  - Preview button opens modal with fully functional form preview
 
 ## Key Design Decisions
 
@@ -302,10 +292,11 @@ form-editor-tool/
 
 ### High Priority - User Experience & Features
 
-- **Modal System**: Add Dialog/Modal components for user interactions
+- **Modal System Enhancements**: Expand modal functionality
   - Confirmation dialogs for delete operations
   - Form builder help/documentation modals
   - Widget property help tooltips
+  - Success modal showing form submission data
 - **Form Lifecycle Management**: Implement save/discard/publish workflow
   - Save draft (persist to backend/localStorage)
   - Discard changes (revert to last saved version)
