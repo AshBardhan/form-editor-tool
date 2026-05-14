@@ -4,6 +4,7 @@ export { BadgeDemo } from "./BadgeDemo";
 export { ButtonDemo } from "./ButtonDemo";
 export { CardDemo } from "./CardDemo";
 export { CheckboxDemo } from "./CheckboxDemo";
+export { DropdownMenuDemo } from "./DropdownMenuDemo";
 export { InputDemo } from "./InputDemo";
 export { InputOTPDemo } from "./InputOTPDemo";
 export { MetricDemo } from "./MetricDemo";
