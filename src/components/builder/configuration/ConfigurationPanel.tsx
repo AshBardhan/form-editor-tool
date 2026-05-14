@@ -31,7 +31,7 @@ import {
 import { AnimatePresence, motion } from "motion/react";
 import { visibleContentVariants } from "@/lib/constants/styles";
 import { cn } from "@/lib/utils/styleUtils";
-import { switchTheme } from "@/lib/utils/domUtils";
+import { switchFormTheme } from "@/lib/utils/domUtils";
 
 /**
  * Configuration Panel (Right Sidebar)
@@ -73,7 +73,7 @@ export const ConfigurationPanel = memo(
      * @param {string} value - The selected theme value.
      */
     const onThemeChange = (value: string) => {
-      switchTheme(value);
+      switchFormTheme(value);
       updateFormConfig("theme", value);
     };
 

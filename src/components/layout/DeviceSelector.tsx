@@ -8,6 +8,7 @@ import { cn } from "@/lib/utils/styleUtils";
 interface DeviceSelectorProps {
   currentDevice: DeviceType;
   onDeviceChange: (newDeviceName: DeviceType) => void;
+  sticky?: boolean;
 }
 
 /**
@@ -20,9 +21,15 @@ interface DeviceSelectorProps {
 export const DeviceSelector = ({
   currentDevice,
   onDeviceChange,
+  sticky = false,
 }: DeviceSelectorProps): JSX.Element => {
   return (
-    <div className="sticky z-10 top-2 left-1/2 -translate-x-1/2 bg-[#2a2a2a] rounded overflow-hidden text-white inline-flex">
+    <div
+      className={cn(
+        "bg-[#2a2a2a] rounded overflow-hidden text-white inline-flex",
+        sticky && "sticky z-10 top-2 left-1/2 -translate-x-1/2 ",
+      )}
+    >
       {DeviceList.map((device) => {
         const Icon = device.icon;
         return (

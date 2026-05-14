@@ -26,8 +26,8 @@ export function ModalDemo() {
       <div>
         <h2 className="text-3xl font-bold mb-3">Modal Component</h2>
         <p className="text-lg text-muted-foreground">
-          Display content in a dialog overlay with backdrop, headers, footers, and
-          customizable actions.
+          Display content in a dialog overlay with backdrop, headers, footers,
+          and customizable actions.
         </p>
       </div>
 
@@ -104,7 +104,8 @@ export function ModalDemo() {
               </ModalHeader>
               <div className="px-6 py-4">
                 <p className="text-sm text-muted-foreground">
-                  This modal is perfect for quick yes/no confirmations or brief messages.
+                  This modal is perfect for quick yes/no confirmations or brief
+                  messages.
                 </p>
               </div>
               <ModalFooter>
@@ -130,8 +131,8 @@ export function ModalDemo() {
               </ModalHeader>
               <div className="px-6 py-4">
                 <p className="text-sm text-muted-foreground mb-4">
-                  This is the default modal size, ideal for most use cases including forms,
-                  settings, and moderate content.
+                  This is the default modal size, ideal for most use cases
+                  including forms, settings, and moderate content.
                 </p>
                 <div className="grid gap-3">
                   <Input placeholder="Email address" />
@@ -161,8 +162,9 @@ export function ModalDemo() {
               </ModalHeader>
               <div className="px-6 py-4">
                 <p className="text-sm text-muted-foreground mb-4">
-                  Large modals work well for detailed forms, data tables, rich content
-                  previews, or any complex interface that needs more screen space.
+                  Large modals work well for detailed forms, data tables, rich
+                  content previews, or any complex interface that needs more
+                  screen space.
                 </p>
                 <div className="grid grid-cols-2 gap-4">
                   <div>
@@ -175,7 +177,11 @@ export function ModalDemo() {
                   </div>
                   <div className="col-span-2">
                     <Label htmlFor="modal-large-3">Email</Label>
-                    <Input id="modal-large-3" type="email" placeholder="john.doe@example.com" />
+                    <Input
+                      id="modal-large-3"
+                      type="email"
+                      placeholder="john.doe@example.com"
+                    />
                   </div>
                 </div>
               </div>
@@ -231,8 +237,8 @@ export function ModalDemo() {
                   laboris nisi ut aliquip ex ea commodo consequat.
                 </p>
                 <p>
-                  Duis aute irure dolor in reprehenderit in voluptate velit
-                  esse cillum dolore eu fugiat nulla pariatur. Excepteur sint
+                  Duis aute irure dolor in reprehenderit in voluptate velit esse
+                  cillum dolore eu fugiat nulla pariatur. Excepteur sint
                   occaecat cupidatat non proident, sunt in culpa qui officia
                   deserunt mollit anim id est laborum.
                 </p>
@@ -335,7 +341,11 @@ function ControlledModalExample() {
               </div>
             </div>
             <ModalFooter>
-              <Button type="button" variant="outline" onClick={() => setIsOpen(false)}>
+              <Button
+                type="button"
+                variant="outline"
+                onClick={() => setIsOpen(false)}
+              >
                 Cancel
               </Button>
               <Button type="submit">Send Message</Button>

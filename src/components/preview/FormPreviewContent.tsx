@@ -1,6 +1,6 @@
 "use client";
 
-import React, { JSX, useState } from "react";
+import React, { JSX, useState, useEffect } from "react";
 import { FormConfig, FormBlock, FormBlockValueType } from "@/lib/types/form";
 import Text from "@/components/ui/Text";
 import { widgetBlockRenderers } from "@/components/form/blocks";
@@ -12,6 +12,7 @@ import {
 } from "@/lib/utils/formValidationUtils";
 import { DeviceList, DeviceType } from "@/lib/constants/device";
 import { toast } from "@/components/ui/Toast";
+import { switchFormTheme } from "@/lib/utils/domUtils";
 
 interface FormPreviewContentProps {
   form: FormConfig;
@@ -40,6 +41,13 @@ export const FormPreviewContent = ({
   const currentDeviceMeta = DeviceList.find(
     (device) => device.label === currentDevice,
   );
+
+  /**
+   * Apply theme when component mounts or theme changes
+   */
+  useEffect(() => {
+    switchFormTheme(form.theme);
+  }, [form.theme]);
 
   /**
    * Handles form field value changes

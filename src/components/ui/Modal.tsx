@@ -1,9 +1,16 @@
 "use client";
 
-import { ComponentProps, forwardRef, HTMLAttributes } from "react";
+import {
+  forwardRef,
+  HTMLAttributes,
+  createContext,
+  useContext,
+  useState,
+  useEffect,
+} from "react";
+import { createPortal } from "react-dom";
 import { X } from "lucide-react";
 import { cn } from "@/lib/utils/styleUtils";
-import { Button } from "./Button";
 
 // ==================== Modal Root ====================
 
@@ -30,8 +37,6 @@ function Modal({ children, open, onOpenChange }: ModalProps) {
 }
 
 // ==================== Modal Context ====================
-
-import { createContext, useContext, useState } from "react";
 
 interface ModalContextValue {
   open: boolean;
@@ -96,7 +101,9 @@ const ModalTrigger = forwardRef<HTMLButtonElement, ModalTriggerProps>(
 
     if (asChild && children) {
       // Clone child and add onClick
-      const child = children as React.ReactElement<any>;
+      const child = children as React.ReactElement<{
+        onClick?: React.MouseEventHandler<HTMLButtonElement>;
+      }>;
       return (
         <child.type
           {...child.props}
@@ -151,9 +158,9 @@ interface ModalContentProps extends HTMLAttributes<HTMLDivElement> {
 }
 
 const modalSizeClasses = {
-  sm: "max-w-sm",   // 384px (24rem)
-  md: "max-w-2xl",  // 672px (42rem) - default
-  lg: "max-w-6xl",  // 1152px (72rem)
+  sm: "max-w-sm", // 384px (24rem)
+  md: "max-w-2xl", // 672px (42rem) - default
+  lg: "max-w-6xl", // 1152px (72rem)
 };
 
 /**
@@ -163,17 +170,22 @@ const modalSizeClasses = {
 const ModalContent = forwardRef<HTMLDivElement, ModalContentProps>(
   ({ className, children, showClose = true, size = "md", ...props }, ref) => {
     const { open, setOpen } = useModalContext();
+    const [mounted, setMounted] = useState(false);
 
-    if (!open) return null;
+    useEffect(() => {
+      setMounted(true);
+    }, []);
 
-    return (
+    if (!open || !mounted) return null;
+
+    const modalContent = (
       <>
         <ModalOverlay onClick={() => setOpen(false)} />
         <div className="fixed inset-0 z-50 flex items-center justify-center p-4">
           <div
             ref={ref}
             className={cn(
-              "relative w-full bg-white dark:bg-gray-950 rounded-lg shadow-lg",
+              "relative w-full bg-white dark:bg-gray-950 rounded-lg shadow-lg overflow-hidden",
               modalSizeClasses[size],
               "border border-gray-200 dark:border-gray-800",
               "data-[state=open]:animate-in data-[state=closed]:animate-out",
@@ -198,6 +210,8 @@ const ModalContent = forwardRef<HTMLDivElement, ModalContentProps>(
         </div>
       </>
     );
+
+    return createPortal(modalContent, document.body);
   },
 );
 ModalContent.displayName = "ModalContent";
@@ -212,7 +226,7 @@ const ModalHeader = forwardRef<HTMLDivElement, HTMLAttributes<HTMLDivElement>>(
     <div
       ref={ref}
       className={cn(
-        "flex flex-col space-y-1.5 text-center sm:text-left px-6 pt-6",
+        "flex flex-col space-y-1.5 px-6 pt-6",
         className,
       )}
       {...props}
@@ -252,7 +266,7 @@ const ModalTitle = forwardRef<
   <h2
     ref={ref}
     className={cn(
-      "text-lg font-semibold leading-none tracking-tight text-gray-950 dark:text-gray-50",
+      "text-xl font-semibold leading-none tracking-tight text-gray-950 dark:text-gray-50",
       className,
     )}
     {...props}
@@ -297,7 +311,9 @@ const ModalClose = forwardRef<HTMLButtonElement, ModalCloseProps>(
     };
 
     if (asChild && children) {
-      const child = children as React.ReactElement<any>;
+      const child = children as React.ReactElement<{
+        onClick?: React.MouseEventHandler<HTMLButtonElement>;
+      }>;
       return (
         <child.type
           {...child.props}

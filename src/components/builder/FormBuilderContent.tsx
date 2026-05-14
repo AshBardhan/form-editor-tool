@@ -154,6 +154,7 @@ export const FormBuilderContent = (): JSX.Element => {
           <DeviceSelector
             currentDevice={deviceType}
             onDeviceChange={setDeviceType}
+            sticky={true}
           />
           <div
             className="form-container"

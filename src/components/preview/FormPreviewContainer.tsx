@@ -3,7 +3,7 @@
 import { JSX, useEffect, useState } from "react";
 import { FormConfig } from "@/lib/types/form";
 import { LoaderCircleIcon } from "lucide-react";
-import { switchTheme } from "@/lib/utils/domUtils";
+import { switchFormTheme } from "@/lib/utils/domUtils";
 import { useFetch } from "@/lib/hooks/useFetch";
 import { useFormConfigStore, useFormDataStore } from "@/lib/stores";
 import { Header } from "@/components/layout/Header";
@@ -101,10 +101,10 @@ export const FormPreviewContainer = ({
   useEffect(() => {
     const theme = formConfig?.theme;
     if (theme) {
-      switchTheme(theme);
+      switchFormTheme(theme);
     }
     return () => {
-      switchTheme("");
+      switchFormTheme("");
     };
   }, [formConfig?.theme]);
 
@@ -146,6 +146,7 @@ export const FormPreviewContainer = ({
           <DeviceSelector
             currentDevice={currentDevice}
             onDeviceChange={setCurrentDevice}
+            sticky={true}
           />
           <FormPreviewContent
             form={formConfig}

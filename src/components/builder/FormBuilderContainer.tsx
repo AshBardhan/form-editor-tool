@@ -3,7 +3,7 @@
 import { JSX, useEffect, useState } from "react";
 import { FormConfig } from "@/lib/types/form";
 import { LoaderCircleIcon } from "lucide-react";
-import { switchTheme } from "@/lib/utils/domUtils";
+import { switchFormTheme } from "@/lib/utils/domUtils";
 import { useFormConfigStore, useUIStateStore } from "@/lib/stores";
 import { useFetch } from "@/lib/hooks/useFetch";
 import { Header } from "@/components/layout/Header";
@@ -74,12 +74,12 @@ export const FormBuilderContainer = ({
   // Apply theme from store
   useEffect(() => {
     if (isReady) {
-      switchTheme(formConfig.theme);
+      switchFormTheme(formConfig.theme);
     }
 
     return () => {
       resetSidebar();
-      switchTheme("");
+      switchFormTheme("");
     };
   }, [isReady, formConfig.theme, resetSidebar]);
 
