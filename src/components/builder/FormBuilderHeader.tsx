@@ -2,37 +2,32 @@
 
 import { Button } from "@/components/ui/Button";
 import { ChevronLeftIcon, PanelLeft, PanelRight } from "lucide-react";
-import { JSX, useState } from "react";
+import { JSX, useState, useEffect } from "react";
 import { useFormConfigStore, useUIStateStore } from "@/lib/stores";
 import { cn } from "@/lib/utils/styleUtils";
-import Link from "next/link";
+import { switchFormTheme } from "@/lib/utils/domUtils";
+import { useRouter } from "next/navigation";
 import {
   Modal,
   ModalContent,
   ModalHeader,
   ModalTitle,
-  ModalDescription,
 } from "@/components/ui/Modal";
 import { FormPreviewContent } from "@/components/preview";
 import { DeviceSelector } from "@/components/layout/DeviceSelector";
 import { DeviceType } from "@/lib/constants/device";
-
-interface FormBuilderHeaderProps {
-  formId?: string;
-}
 
 /**
  * Form Builder Header
  * - Controls the toggling of left/right sidebars
  * - Render buttons for previewing and publishing the form.
  *
- * @param {FormBuilderHeaderProps} props - The props for the component.
  * @returns {JSX.Element} The rendered component.
  */
-export const FormBuilderHeader = ({
-  formId,
-}: FormBuilderHeaderProps): JSX.Element => {
+export const FormBuilderHeader = (): JSX.Element => {
+  const router = useRouter();
   const formTitle = useFormConfigStore((state) => state.formConfig.title);
+  const formTheme = useFormConfigStore((state) => state.formConfig.theme);
   const formConfig = useFormConfigStore((state) => state.formConfig);
   const isSidebarCollapsed = useUIStateStore(
     (state) => state.isSidebarCollapsed,
@@ -45,15 +40,30 @@ export const FormBuilderHeader = ({
     DeviceType.DESKTOP,
   );
 
+  const handleNavigateBack = () => {
+    router.push("/");
+  };
+
+  // Apply theme when preview modal is open
+  useEffect(() => {
+    if (isPreviewOpen) {
+      switchFormTheme(formTheme);
+      return () => switchFormTheme("");
+    }
+  }, [isPreviewOpen, formTheme]);
+
   return (
     <>
       <div className="flex items-center h-full">
         {/* Toggle collapse/expand Sidebar Control */}
         <div className="shrink-0 w-48 flex items-center gap-2">
-          <Button variant="ghost" asChild className="hover:bg-[#1f1f1f]">
-            <Link href="/">
-              <ChevronLeftIcon size={20} />
-            </Link>
+          <Button
+            variant="ghost"
+            className="hover:bg-[#1f1f1f]"
+            onClick={handleNavigateBack}
+            title="Back to Dashboard"
+          >
+            <ChevronLeftIcon size={20} />
           </Button>
           <Button
             variant="ghost"

@@ -1,9 +1,8 @@
 "use client";
 
-import { JSX, useEffect, useState } from "react";
+import { JSX, useEffect } from "react";
 import { FormConfig } from "@/lib/types/form";
 import { LoaderCircleIcon } from "lucide-react";
-import { switchFormTheme } from "@/lib/utils/domUtils";
 import { useFormConfigStore, useUIStateStore } from "@/lib/stores";
 import { useFetch } from "@/lib/hooks/useFetch";
 import { Header } from "@/components/layout/Header";
@@ -15,11 +14,24 @@ interface FormBuilderContainerProps {
   id?: string;
 }
 
+const FormLoading = () => (
+  <div className="empty-content gap-4">
+    <LoaderCircleIcon className="size-10 animate-spin" />
+    <span className="text-2xl">Loading Form...</span>
+  </div>
+);
+
+const FormError = () => (
+  <div className="empty-content flex-col gap-3">
+    <h2 className="text-lg font-semibold">Unable to load form</h2>
+    <p className="text-sm">Please check the form ID or go back to home page.</p>
+  </div>
+);
+
 /**
  * Form Builder Container
- * - Smart loading: Uses localStorage when form.id matches route id (instant load)
- * - Fetches from API only when needed (mismatch, first visit, or direct URL)
- * - Handles new and existing forms with proper state management
+ * - Fetches form from API when route id doesn't match store id
+ * - Handles new and existing forms with simple in-memory state
  *
  * @param {FormBuilderContainerProps} props - The props for the component.
  * @returns {JSX.Element} The rendered component.
@@ -27,86 +39,46 @@ interface FormBuilderContainerProps {
 export const FormBuilderContainer = ({
   id,
 }: FormBuilderContainerProps): JSX.Element => {
-  const formConfig = useFormConfigStore((state) => state.formConfig);
+  const formId = useFormConfigStore((state) => state.formConfig.id);
   const setFormConfig = useFormConfigStore((state) => state.setFormConfig);
   const resetFormConfig = useFormConfigStore((state) => state.resetFormConfig);
   const resetSidebar = useUIStateStore((state) => state.resetSidebar);
-  const [shouldFetch, setShouldFetch] = useState(false);
-  const [isReady, setIsReady] = useState(false);
 
+  // Fetch when route id doesn't match store id
+  const needsFetch = id && formId !== id;
   const { data, loading, error } = useFetch<FormConfig>(
-    shouldFetch && id ? `/api/form/${id}` : "",
+    needsFetch ? `/api/form/${id}` : "",
   );
 
-  // Smart loading logic
+  // Initialize or update form data
   useEffect(() => {
-    // Case 1: New form (no id)
-    if (!id) {
-      // If stored form has an id, it's from a different form → reset
-      if (formConfig.id) {
-        resetFormConfig();
-      }
-      // Otherwise use localStorage (new form in progress)
-      setIsReady(true);
+    // New form: reset if store has stale data
+    if (!id && formId) {
+      resetFormConfig();
       return;
     }
 
-    // Case 2: Existing form - check if localStorage matches
-    if (formConfig.id === id) {
-      // Match → Use localStorage, no fetch needed (instant load)
-      setIsReady(true);
-      return;
-    }
-
-    // Case 3: Mismatch or empty → Fetch from API
-    setShouldFetch(true);
-  }, [id, formConfig.id, resetFormConfig]);
-
-  // Update store when API data arrives
-  useEffect(() => {
+    // Update store when API data arrives
     if (data) {
       setFormConfig(data);
-      setShouldFetch(false);
-      setIsReady(true);
     }
-  }, [data, setFormConfig]);
+  }, [id, data, formId]);
 
-  // Apply theme from store
+  // Cleanup on unmount
   useEffect(() => {
-    if (isReady) {
-      switchFormTheme(formConfig.theme);
-    }
-
     return () => {
+      resetFormConfig();
       resetSidebar();
-      switchFormTheme("");
     };
-  }, [isReady, formConfig.theme, resetSidebar]);
+  }, []);
 
-  if (loading) {
-    return (
-      <div className="empty-content gap-4">
-        <LoaderCircleIcon className="size-10 animate-spin" />
-        <span className="text-2xl">Loading Form...</span>
-      </div>
-    );
-  }
-
-  if (error) {
-    return (
-      <div className="empty-content flex-col gap-3">
-        <h2 className="text-lg font-semibold">Unable to load form</h2>
-        <p className="text-sm">
-          Please check the form ID or go back to home page.
-        </p>
-      </div>
-    );
-  }
+  if (loading) return <FormLoading />;
+  if (error) return <FormError />;
 
   return (
     <>
       <Header>
-        <FormBuilderHeader formId={id} />
+        <FormBuilderHeader />
       </Header>
       <PageContent>
         <FormBuilderContent />

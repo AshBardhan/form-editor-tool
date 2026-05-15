@@ -12,8 +12,9 @@ import {
   useSensor,
   useSensors,
 } from "@dnd-kit/core";
-import { JSX, useState } from "react";
+import { JSX, useState, useEffect } from "react";
 import { hybridKeyboardCoordinates } from "@/lib/utils/keyboardUtils";
+import { switchFormTheme } from "@/lib/utils/domUtils";
 import {
   useFormConfigStore,
   useUIStateStore,
@@ -61,6 +62,7 @@ export const FormBuilderContent = (): JSX.Element => {
     source: null,
   });
   const formBlocks = useFormConfigStore((state) => state.formConfig.blocks);
+  const formTheme = useFormConfigStore((state) => state.formConfig.theme);
   const moveFormBlock = useFormConfigStore((state) => state.moveFormBlock);
   const addFormBlock = useFormConfigStore((state) => state.addFormBlock);
   const removeFormBlock = useFormConfigStore((state) => state.removeFormBlock);
@@ -142,6 +144,12 @@ export const FormBuilderContent = (): JSX.Element => {
       coordinateGetter: hybridKeyboardCoordinates,
     }),
   );
+
+  // Apply theme to form container
+  useEffect(() => {
+    switchFormTheme(formTheme);
+    return () => switchFormTheme("");
+  }, [formTheme]);
 
   return (
     <>
