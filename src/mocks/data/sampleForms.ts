@@ -102,6 +102,7 @@ export const sampleLightForm: FormConfig = {
         label: "I accept terms and conditions",
         key: "accept-terms",
         required: true,
+        grouped: false,
       },
     },
     {
@@ -214,6 +215,7 @@ export const sampleDarkForm: FormConfig = {
         label: "Enable dark mode notifications",
         key: "enable-notifications",
         required: false,
+        grouped: false,
       },
     },
     {

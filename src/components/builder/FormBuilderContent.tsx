@@ -188,10 +188,12 @@ export const FormBuilderContent = (): JSX.Element => {
         {/* Drag Placeholder Overlay */}
         <DragOverlay>
           {dragState.activeItem && (
-            <CanvasDroppable
-              item={dragState.activeItem}
-              source={dragState.source}
-            />
+            <div className={formTheme === "dark" ? "dark" : ""}>
+              <CanvasDroppable
+                item={dragState.activeItem}
+                source={dragState.source}
+              />
+            </div>
           )}
         </DragOverlay>
 
@@ -206,16 +208,8 @@ export const FormBuilderContent = (): JSX.Element => {
 
         {/* Main Content Area with Canvas and Device Selector */}
         <MainContent>
-          <DeviceSelector
-            currentDevice={deviceType}
-            onDeviceChange={setDeviceType}
-            sticky={true}
-          />
           <div
-            className="form-container"
-            style={{
-              maxWidth: `${DeviceList.find((d) => d.label === deviceType)?.size || 1440}px`,
-            }}
+            className="h-full"
             onClickCapture={(e) => {
               const target = e.target as HTMLElement;
               if (!target.closest("[data-slot='block']")) {
@@ -223,12 +217,24 @@ export const FormBuilderContent = (): JSX.Element => {
               }
             }}
           >
-            <CanvasForm
-              overId={dragState.overId}
-              activeDragItem={dragState.activeItem as FormBlock}
-              dragSource={dragState.source}
-              onDeleteBlock={handleDeleteRequest}
+            <DeviceSelector
+              currentDevice={deviceType}
+              onDeviceChange={setDeviceType}
+              sticky={true}
             />
+            <div
+              className="form-container"
+              style={{
+                maxWidth: `${DeviceList.find((d) => d.label === deviceType)?.size || 1440}px`,
+              }}
+            >
+              <CanvasForm
+                overId={dragState.overId}
+                activeDragItem={dragState.activeItem as FormBlock}
+                dragSource={dragState.source}
+                onDeleteBlock={handleDeleteRequest}
+              />
+            </div>
           </div>
         </MainContent>
 

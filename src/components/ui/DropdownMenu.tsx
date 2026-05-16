@@ -66,7 +66,9 @@ function DropdownMenu({ children, open, onOpenChange }: DropdownMenuProps) {
   };
 
   return (
-    <DropdownMenuContext.Provider value={{ open: actualOpen, setOpen, triggerRef }}>
+    <DropdownMenuContext.Provider
+      value={{ open: actualOpen, setOpen, triggerRef }}
+    >
       {children}
     </DropdownMenuContext.Provider>
   );
@@ -265,11 +267,7 @@ function DropdownMenuGroup({
   ...props
 }: DropdownMenuGroupProps) {
   return (
-    <div
-      role="group"
-      className={cn("py-1", className)}
-      {...props}
-    >
+    <div role="group" className={cn("py-1", className)} {...props}>
       {children}
     </div>
   );
@@ -386,10 +384,7 @@ function DropdownMenuSeparator({
   return (
     <div
       role="separator"
-      className={cn(
-        "-mx-1 my-1 h-px bg-gray-200 dark:bg-gray-700",
-        className,
-      )}
+      className={cn("-mx-1 my-1 h-px bg-gray-200 dark:bg-gray-700", className)}
       {...props}
     />
   );

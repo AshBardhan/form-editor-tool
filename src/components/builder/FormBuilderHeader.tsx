@@ -48,7 +48,6 @@ export const FormBuilderHeader = (): JSX.Element => {
   useEffect(() => {
     if (isPreviewOpen) {
       switchFormTheme(formTheme);
-      return () => switchFormTheme("");
     }
   }, [isPreviewOpen, formTheme]);
 

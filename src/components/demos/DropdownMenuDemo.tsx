@@ -34,8 +34,8 @@ export function DropdownMenuDemo() {
       <div>
         <h2 className="text-3xl font-bold mb-3">DropdownMenu Component</h2>
         <p className="text-lg text-muted-foreground">
-          Context menus that display a list of actions or options when triggered,
-          with support for icons, separators, and multiple groups.
+          Context menus that display a list of actions or options when
+          triggered, with support for icons, separators, and multiple groups.
         </p>
       </div>
 
