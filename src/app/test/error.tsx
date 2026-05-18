@@ -35,7 +35,7 @@ export default function Error({
           </div>
           <div className="ml-3 flex-1">
             <h3 className="text-lg font-medium text-red-800 mb-2">
-              ✗ Database Connection Failed
+              Database Connection Failed
             </h3>
             <p className="text-sm text-red-700 mb-4">
               {error.message || "An unexpected error occurred"}

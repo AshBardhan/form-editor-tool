@@ -1,8 +1,14 @@
 import prisma from "@/lib/prisma";
 
+interface User {
+  id: number;
+  email: string;
+  name: string | null;
+}
+
 export default async function TestPage() {
   // Fetch all users from the database
-  const users = await prisma.user.findMany({
+  const users: User[] = await prisma.user.findMany({
     orderBy: {
       id: "asc",
     },
@@ -31,7 +37,7 @@ export default async function TestPage() {
               </tr>
             </thead>
             <tbody className="bg-white divide-y divide-gray-200">
-              {users.map((user) => (
+              {users.map((user: User) => (
                 <tr key={user.id}>
                   <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
                     {user.id}
@@ -51,7 +57,7 @@ export default async function TestPage() {
 
       <div className="mt-6 p-4 bg-green-50 border border-green-200 rounded-lg">
         <p className="text-green-800">
-          ✓ Database connection successful! Connected to PostgreSQL.
+          Connected successfully to PostgreSQL database.
         </p>
       </div>
     </>
