@@ -116,13 +116,13 @@ export function TextDemo() {
         <div className="space-y-6">
           <div>
             <p className="text-sm font-semibold mb-3">
-              Container Query Mode (insideFormContainer=true)
+              Container Query Mode (insideContainer=true)
             </p>
             <div className="border rounded p-4 bg-muted/30">
-              <Text variant="h2" insideFormContainer>
+              <Text variant="h2" insideContainer>
                 Responsive Heading
               </Text>
-              <Text variant="p" insideFormContainer className="mt-2">
+              <Text variant="p" insideContainer className="mt-2">
                 This text adapts based on container size using container
                 queries. Resize your browser to see it scale smoothly.
               </Text>
@@ -253,7 +253,7 @@ export function TextDemo() {
 </Text>
 
 // Container query mode (adapts to container size)
-<Text variant="h2" insideFormContainer>
+<Text variant="h2" insideContainer>
   Container-responsive heading
 </Text>
 
@@ -290,13 +290,11 @@ export function TextDemo() {
                 <td className="py-3 pr-4 font-mono text-xs">
                   h1 | h2 | h3 | h4 | h5 | h6 | p | div
                 </td>
-                <td className="py-3 pr-4 font-mono text-xs">p</td>
+                <td className="py-3 pr-4 font-mono text-xs">div</td>
                 <td className="py-3">The HTML element and style variant</td>
               </tr>
               <tr>
-                <td className="py-3 pr-4 font-mono text-xs">
-                  insideFormContainer
-                </td>
+                <td className="py-3 pr-4 font-mono text-xs">insideContainer</td>
                 <td className="py-3 pr-4 font-mono text-xs">boolean</td>
                 <td className="py-3 pr-4 font-mono text-xs">false</td>
                 <td className="py-3">

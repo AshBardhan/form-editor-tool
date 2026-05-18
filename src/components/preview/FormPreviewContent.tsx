@@ -38,6 +38,8 @@ export const FormPreviewContent = ({
   const updateFormData = useFormDataStore((state) => state.updateFormData);
   const resetFormData = useFormDataStore((state) => state.resetFormData);
   const [blockErrors, setBlockErrors] = useState<Record<string, string[]>>({});
+  const [hasSubmitted, setHasSubmitted] = useState(false);
+
   const currentDeviceMeta = DeviceList.find(
     (device) => device.label === currentDevice,
   );
@@ -50,6 +52,16 @@ export const FormPreviewContent = ({
   }, [form.theme]);
 
   /**
+   * Cleanup form data and errors when component unmounts to prevent stale data on next preview
+   */
+  useEffect(() => {
+    return () => {
+      resetFormData();
+      setBlockErrors({});
+    };
+  }, []);
+
+  /**
    * Handles form field value changes
    *
    * @param {string} key - The field key.
@@ -57,6 +69,18 @@ export const FormPreviewContent = ({
    */
   const handleFieldChange = (key: string, value: FormBlockValueType) => {
     updateFormData(key, value);
+
+    // After first submit attempt, revalidate only the changed field in real-time
+    if (hasSubmitted) {
+      const block = form.blocks.find((b) => getFieldKey(b) === key);
+      if (block) {
+        const fieldErrors = validateFormBlock(block, value);
+        setBlockErrors((prev) => ({
+          ...prev,
+          [block.id]: fieldErrors,
+        }));
+      }
+    }
   };
 
   /**
@@ -110,6 +134,7 @@ export const FormPreviewContent = ({
    */
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
+    setHasSubmitted(true);
 
     // Validate form before submission
     if (!validateForm()) {

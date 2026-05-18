@@ -7,6 +7,7 @@ import {
   useContext,
   useState,
   useEffect,
+  useMemo,
 } from "react";
 import { createPortal } from "react-dom";
 import { X } from "lucide-react";
@@ -41,6 +42,10 @@ function Modal({ children, open, onOpenChange }: ModalProps) {
 interface ModalContextValue {
   open: boolean;
   setOpen: (open: boolean) => void;
+  titleId?: string;
+  descriptionId?: string;
+  setTitleId: (id: string) => void;
+  setDescriptionId: (id: string) => void;
 }
 
 const ModalContext = createContext<ModalContextValue | undefined>(undefined);
@@ -63,6 +68,8 @@ function ModalProvider({
   onOpenChange?: (open: boolean) => void;
 }) {
   const [uncontrolledOpen, setUncontrolledOpen] = useState(false);
+  const [titleId, setTitleId] = useState<string>();
+  const [descriptionId, setDescriptionId] = useState<string>();
 
   const open = controlledOpen ?? uncontrolledOpen;
   const setOpen = (newOpen: boolean) => {
@@ -74,7 +81,16 @@ function ModalProvider({
   };
 
   return (
-    <ModalContext.Provider value={{ open, setOpen }}>
+    <ModalContext.Provider
+      value={{
+        open,
+        setOpen,
+        titleId,
+        descriptionId,
+        setTitleId,
+        setDescriptionId,
+      }}
+    >
       {children}
     </ModalContext.Provider>
   );
@@ -153,7 +169,6 @@ ModalOverlay.displayName = "ModalOverlay";
 // ==================== Modal Content ====================
 
 interface ModalContentProps extends HTMLAttributes<HTMLDivElement> {
-  showClose?: boolean;
   size?: "sm" | "md" | "lg";
 }
 
@@ -168,13 +183,39 @@ const modalSizeClasses = {
  * @param size - Modal width: sm (384px), md (672px, default), lg (1152px)
  */
 const ModalContent = forwardRef<HTMLDivElement, ModalContentProps>(
-  ({ className, children, showClose = true, size = "md", ...props }, ref) => {
-    const { open, setOpen } = useModalContext();
+  ({ className, children, size = "md", ...props }, ref) => {
+    const { open, setOpen, titleId, descriptionId } = useModalContext();
     const [mounted, setMounted] = useState(false);
 
     useEffect(() => {
       setMounted(true);
     }, []);
+
+    // Prevent body scroll when modal is open
+    useEffect(() => {
+      if (!open) return;
+
+      const originalOverflow = document.body.style.overflow;
+      document.body.style.overflow = "hidden";
+
+      return () => {
+        document.body.style.overflow = originalOverflow;
+      };
+    }, [open]);
+
+    // Handle Escape key to close modal
+    useEffect(() => {
+      if (!open) return;
+
+      const handleEscape = (e: KeyboardEvent) => {
+        if (e.key === "Escape") {
+          setOpen(false);
+        }
+      };
+
+      document.addEventListener("keydown", handleEscape);
+      return () => document.removeEventListener("keydown", handleEscape);
+    }, [open]);
 
     if (!open || !mounted) return null;
 
@@ -196,16 +237,16 @@ const ModalContent = forwardRef<HTMLDivElement, ModalContentProps>(
             )}
             role="dialog"
             aria-modal="true"
+            aria-labelledby={titleId}
+            aria-describedby={descriptionId}
             data-state={open ? "open" : "closed"}
             {...props}
           >
             {children}
-            {showClose && (
-              <ModalClose className="absolute right-4 top-4 rounded-sm opacity-70 ring-offset-white transition-opacity hover:opacity-100 focus:outline-none focus:ring-2 focus:ring-gray-950 focus:ring-offset-2 disabled:pointer-events-none data-[state=open]:bg-gray-100 data-[state=open]:text-gray-500 dark:ring-offset-gray-950 dark:focus:ring-gray-300 dark:data-[state=open]:bg-gray-800 dark:data-[state=open]:text-gray-400">
-                <X className="h-4 w-4" />
-                <span className="sr-only">Close</span>
-              </ModalClose>
-            )}
+            <ModalClose className="absolute right-4 top-4 rounded-sm opacity-70 ring-offset-white transition-opacity hover:opacity-100 focus:outline-none focus:ring-2 focus:ring-gray-950 focus:ring-offset-2 disabled:pointer-events-none data-[state=open]:bg-gray-100 data-[state=open]:text-gray-500 dark:ring-offset-gray-950 dark:focus:ring-gray-300 dark:data-[state=open]:bg-gray-800 dark:data-[state=open]:text-gray-400">
+              <X className="h-4 w-4" />
+              <span className="sr-only">Close</span>
+            </ModalClose>
           </div>
         </div>
       </>
@@ -259,16 +300,29 @@ ModalFooter.displayName = "ModalFooter";
 const ModalTitle = forwardRef<
   HTMLHeadingElement,
   React.HTMLAttributes<HTMLHeadingElement>
->(({ className, ...props }, ref) => (
-  <h2
-    ref={ref}
-    className={cn(
-      "text-xl font-semibold leading-none tracking-tight text-gray-950 dark:text-gray-50",
-      className,
-    )}
-    {...props}
-  />
-));
+>(({ className, id, ...props }, ref) => {
+  const { setTitleId } = useModalContext();
+  const titleId = useMemo(
+    () => id || `modal-title-${Math.random().toString(36).substr(2, 9)}`,
+    [id],
+  );
+
+  useEffect(() => {
+    setTitleId(titleId);
+  }, [titleId]);
+
+  return (
+    <h2
+      ref={ref}
+      id={titleId}
+      className={cn(
+        "text-xl font-semibold leading-none tracking-tight text-gray-950 dark:text-gray-50",
+        className,
+      )}
+      {...props}
+    />
+  );
+});
 ModalTitle.displayName = "ModalTitle";
 
 // ==================== Modal Description ====================
@@ -279,13 +333,26 @@ ModalTitle.displayName = "ModalTitle";
 const ModalDescription = forwardRef<
   HTMLParagraphElement,
   React.HTMLAttributes<HTMLParagraphElement>
->(({ className, ...props }, ref) => (
-  <p
-    ref={ref}
-    className={cn("text-sm text-gray-500 dark:text-gray-400", className)}
-    {...props}
-  />
-));
+>(({ className, id, ...props }, ref) => {
+  const { setDescriptionId } = useModalContext();
+  const descriptionId = useMemo(
+    () => id || `modal-description-${Math.random().toString(36).substr(2, 9)}`,
+    [id],
+  );
+
+  useEffect(() => {
+    setDescriptionId(descriptionId);
+  }, [descriptionId]);
+
+  return (
+    <p
+      ref={ref}
+      id={descriptionId}
+      className={cn("text-sm text-gray-500 dark:text-gray-400", className)}
+      {...props}
+    />
+  );
+});
 ModalDescription.displayName = "ModalDescription";
 
 // ==================== Modal Close ====================

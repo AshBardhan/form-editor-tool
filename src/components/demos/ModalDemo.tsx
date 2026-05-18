@@ -262,12 +262,13 @@ export function ModalDemo() {
         </Modal>
       </section>
 
-      {/* No Close Button Modal */}
+      {/* Confirmation Modal */}
       <section>
         <div className="mb-6">
           <h3 className="text-2xl font-semibold mb-2">No Close Button</h3>
           <p className="text-muted-foreground">
-            Force user action by hiding the X button (showClose=false)
+            Force user action by hiding the X button and only providing explicit
+            action buttons
           </p>
         </div>
 
@@ -275,7 +276,7 @@ export function ModalDemo() {
           <ModalTrigger asChild>
             <Button variant="outline">Confirm Action</Button>
           </ModalTrigger>
-          <ModalContent size="sm" showClose={false}>
+          <ModalContent size="sm">
             <ModalHeader>
               <ModalTitle>Are you absolutely sure?</ModalTitle>
               <ModalDescription>

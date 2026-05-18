@@ -2,11 +2,12 @@ import { z } from "zod";
 
 /**
  * Creates a Zod schema for a required string with a custom label.
+ * Trims whitespace and ensures the value is not blank.
  * @param {string} [label="This block"] - The label for the block.
  * @returns {z.ZodString} A Zod schema for a required string.
  */
 const requiredString = (label = "This block") =>
-  z.string().min(1, `${label} is required`);
+  z.string().trim().min(1, `${label} is required`);
 
 /** Zod schemas for primitive data types. */
 const optionalString = z.string().optional();

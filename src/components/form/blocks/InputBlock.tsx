@@ -8,8 +8,8 @@ import { JSX } from "react";
 interface InputBlockProps {
   block: FormBlock;
   editable?: boolean;
-  value?: string;
-  onChange?: (value: string) => void;
+  value?: string | number;
+  onChange?: (value: string | number) => void;
   errors?: string[];
 }
 
@@ -33,6 +33,12 @@ export const InputBlock = ({
   const defaultValue = getPropValue(block, "value") as string | undefined;
   const controlledValue = value ?? defaultValue ?? "";
 
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const value =
+      block.type === "number" ? e.target.valueAsNumber : e.target.value;
+    onChange?.(value);
+  };
+
   return (
     <div className="form-block flex flex-col gap-1.5 @sm:gap-2">
       {label && (
@@ -49,7 +55,7 @@ export const InputBlock = ({
         tabIndex={editable ? 0 : -1}
         required={Boolean(required)}
         placeholder={placeholder}
-        onChange={(e) => onChange?.(e.target.value)}
+        onChange={handleChange}
       />
       <ErrorMessages errors={errors} />
     </div>

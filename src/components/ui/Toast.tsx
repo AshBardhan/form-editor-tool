@@ -168,10 +168,17 @@ const ToastItem = forwardRef<HTMLDivElement, ToastItemProps>(
     ref,
   ) => {
     const variant = type;
+    // Use 'alert' for errors/warnings, 'status' for others
+    const role = type === "error" || type === "warning" ? "alert" : "status";
+    const ariaLive =
+      type === "error" || type === "warning" ? "assertive" : "polite";
 
     return (
       <div
         ref={ref}
+        role={role}
+        aria-live={ariaLive}
+        aria-atomic="true"
         className={cn(toastVariants({ variant }))}
         data-state="open"
       >

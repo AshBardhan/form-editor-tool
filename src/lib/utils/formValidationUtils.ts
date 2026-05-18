@@ -45,7 +45,7 @@ export const validateFormBlock = (
     if (
       value === undefined ||
       value === null ||
-      value === "" ||
+      (typeof value === "string" && value.trim() === "") ||
       (Array.isArray(value) && value.length === 0)
     ) {
       errors.push(`${label} is required`);
@@ -57,7 +57,11 @@ export const validateFormBlock = (
   }
 
   // Type-specific validation (only if value exists)
-  if (value !== undefined && value !== null && value !== "") {
+  if (
+    value !== undefined &&
+    value !== null &&
+    !(typeof value === "string" && value.trim() === "")
+  ) {
     const stringValue = String(value);
 
     switch (block.type) {

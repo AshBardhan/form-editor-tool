@@ -58,9 +58,11 @@ export const CheckboxBlock = ({
           </Label>
         )}
         <div
+          role="group"
+          data-slot="checkbox-group"
           className={
             orientation === "horizontal"
-              ? "flex flex-row flex-wrap gap-5"
+              ? "flex flex-row flex-wrap gap-x-5 gap-y-3"
               : "flex flex-col gap-3"
           }
         >

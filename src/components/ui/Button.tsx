@@ -36,6 +36,7 @@ function Button({
   variant,
   size,
   asChild = false,
+  type = "button",
   children,
   ...props
 }: ComponentProps<"button"> &
@@ -59,7 +60,12 @@ function Button({
   }
 
   return (
-    <button data-slot="button" className={buttonClassName} {...props}>
+    <button
+      type={type}
+      data-slot="button"
+      className={buttonClassName}
+      {...props}
+    >
       {children}
     </button>
   );

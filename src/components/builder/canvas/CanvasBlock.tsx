@@ -41,9 +41,6 @@ export const CanvasBlock = ({
   const blockErrors = useFormBlockValidationStore(
     (state) => state.formBlockErrors,
   );
-  const clearBlockErrors = useFormBlockValidationStore(
-    (state) => state.clearFormBlockErrors,
-  );
 
   const isSelected = selectedBlockId === block.id;
   const isHovered = hoveredBlockId === block.id;
@@ -181,7 +178,6 @@ export const CanvasBlock = ({
               onClick={(e) => {
                 e.stopPropagation();
                 onDeleteBlock?.(block.id);
-                clearBlockErrors(block.id);
               }}
               title="Delete Block"
             >

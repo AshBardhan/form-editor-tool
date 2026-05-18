@@ -9,11 +9,14 @@ interface SwitchProps
 }
 
 const Switch = forwardRef<HTMLInputElement, SwitchProps>(
-  ({ className, ...props }, ref) => {
+  ({ className, checked, ...props }, ref) => {
     return (
       <label className="relative inline-flex items-center cursor-pointer">
         <input
           type="checkbox"
+          role="switch"
+          aria-checked={checked}
+          checked={checked}
           ref={ref}
           data-slot="switch"
           className={cn("peer sr-only", className)}

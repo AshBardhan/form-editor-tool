@@ -29,7 +29,7 @@ export const ErrorMessages = ({ errors }: ErrorMessagesProps) => {
       {errors.map((error, index) => (
         <Text
           key={index}
-          insideFormContainer={true}
+          insideContainer={true}
           className="text-xs @sm:text-xs @5xl:text-sm text-red-600 dark:text-red-400"
         >
           {error}

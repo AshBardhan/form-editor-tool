@@ -64,12 +64,12 @@ const RadioGroup = forwardRef<HTMLDivElement, RadioGroupProps>(
       >
         <div
           ref={ref}
+          role="radiogroup"
           data-slot="radio-group"
           className={cn(
-            `flex ${orientation === "horizontal" ? "flex-wrap gap-5" : "flex-col gap-3"}`,
+            `flex ${orientation === "horizontal" ? "flex-wrap gap-x-5 gap-y-3" : "flex-col gap-3"}`,
             className,
           )}
-          role="radiogroup"
           {...props}
         />
       </RadioGroupContext.Provider>

@@ -109,6 +109,8 @@ function DropdownMenuTrigger({
     return (
       <child.type
         {...child.props}
+        aria-expanded={open}
+        aria-haspopup="menu"
         ref={(node: HTMLElement) => {
           triggerRef.current = node;
           // Handle forwarded refs from child
