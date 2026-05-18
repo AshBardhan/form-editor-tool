@@ -2,11 +2,12 @@ import { z } from "zod";
 
 /**
  * Creates a Zod schema for a required string with a custom label.
+ * Trims whitespace and ensures the value is not blank.
  * @param {string} [label="This block"] - The label for the block.
  * @returns {z.ZodString} A Zod schema for a required string.
  */
 const requiredString = (label = "This block") =>
-  z.string().min(1, `${label} is required`);
+  z.string().trim().min(1, `${label} is required`);
 
 /** Zod schemas for primitive data types. */
 const optionalString = z.string().optional();
@@ -34,6 +35,7 @@ export const formBlockSchemas: Record<string, z.ZodSchema> = {
 
   text: z.object({
     label: requiredString("Label"),
+    key: requiredString("Key"),
     placeholder: optionalString,
     maxLength: nonNegativeOptionalNumber,
     required: z.boolean(),
@@ -42,6 +44,7 @@ export const formBlockSchemas: Record<string, z.ZodSchema> = {
   number: z
     .object({
       label: requiredString("Label"),
+      key: requiredString("Key"),
       placeholder: optionalString,
       min: optionalNumber,
       max: optionalNumber,
@@ -61,6 +64,7 @@ export const formBlockSchemas: Record<string, z.ZodSchema> = {
 
   email: z.object({
     label: requiredString("Label"),
+    key: requiredString("Key"),
     placeholder: optionalString,
     required: z.boolean(),
   }),
@@ -68,6 +72,7 @@ export const formBlockSchemas: Record<string, z.ZodSchema> = {
   password: z
     .object({
       label: requiredString("Label"),
+      key: requiredString("Key"),
       placeholder: optionalString,
       minLength: nonNegativeOptionalNumber,
       maxLength: z.number().min(1).optional(),
@@ -86,12 +91,14 @@ export const formBlockSchemas: Record<string, z.ZodSchema> = {
 
   url: z.object({
     label: requiredString("Label"),
+    key: requiredString("Key"),
     placeholder: optionalString,
     required: z.boolean(),
   }),
 
   textarea: z.object({
     label: requiredString("Label"),
+    key: requiredString("Key"),
     placeholder: optionalString,
     rows: nonNegativeOptionalNumber,
     maxLength: nonNegativeOptionalNumber,
@@ -100,18 +107,26 @@ export const formBlockSchemas: Record<string, z.ZodSchema> = {
 
   checkbox: z.object({
     label: requiredString("Label"),
+    key: requiredString("Key"),
     required: z.boolean(),
+    grouped: z.boolean(),
+    options: z.array(requiredString("Checkbox option")).optional(),
+    orientation: z.enum(["vertical", "horizontal"]).optional(),
   }),
 
   radio: z.object({
-    alignment: z.enum(["vertical", "horizontal"]),
+    label: requiredString("Label"),
+    key: requiredString("Key"),
+    required: z.boolean(),
     options: z
       .array(requiredString("Radio option"))
       .min(2, "At least two radio options are required"),
+    orientation: z.enum(["vertical", "horizontal"]),
   }),
 
   select: z.object({
     label: requiredString("Label"),
+    key: requiredString("Key"),
     required: z.boolean(),
     placeholder: optionalString,
     options: z
@@ -128,5 +143,14 @@ export const formBlockSchemas: Record<string, z.ZodSchema> = {
     title: requiredString("Title"),
     level: z.enum(["primary", "secondary"]),
     position: z.enum(["left", "center", "right"]),
+  }),
+
+  buttons: z.object({
+    submitLabel: requiredString("Submit button label"),
+    submitTheme: z.enum(["primary", "secondary", "outline", "destructive"]),
+    resetLabel: requiredString("Reset button label"),
+    resetTheme: z.enum(["primary", "secondary", "outline", "destructive"]),
+    alignment: z.enum(["left", "center", "right", "justified"]),
+    reverse: z.boolean(),
   }),
 };

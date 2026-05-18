@@ -1,20 +1,27 @@
 import {
   FormBlock,
-  FormBlockPropConfig,
+  FormBlockPropTemplate,
+  FormBlockProps,
   FormBlockType,
   FormBlockValueType,
+  FormMetric,
+  FormMetrics,
 } from "@/lib/types/form";
 import { blockPropTemplates } from "@/lib/constants/widgetTemplates";
 import { widgetPalette } from "@/lib/constants/widgetPalette";
 import { formBlockSchemas } from "@/lib/schema/formBlockSchema";
+import { formMetricLabel } from "@/lib/constants/form";
 
 /**
- * Retrieves the default properties for a given block type.
+ * Retrieves the default properties for a given block type as an object.
  * @param {FormBlockType} type - The type of the block.
- * @returns {FormBlockPropConfig[]} An array of default properties for the block.
+ * @returns {FormBlockProps} An object of default properties for the block.
  */
-export function getDefaultProps(type: FormBlockType): FormBlockPropConfig[] {
-  return blockPropTemplates[type].map((prop) => {
+export function getDefaultProps(type: FormBlockType): FormBlockProps {
+  const templates = blockPropTemplates[type];
+  const props: FormBlockProps = {};
+
+  templates.forEach((prop) => {
     let value;
 
     switch (prop.type) {
@@ -34,13 +41,22 @@ export function getDefaultProps(type: FormBlockType): FormBlockPropConfig[] {
         value = prop.value ?? "";
     }
 
-    const { options: _options, ...rest } = prop;
-
-    return {
-      ...rest,
-      value,
-    };
+    props[prop.key] = value;
   });
+
+  return props;
+}
+
+/**
+ * Gets props with full metadata from templates merged with instance values.
+ * @param {FormBlock} block - The form block.
+ * @returns {FormBlockPropTemplate[]} Array of props with metadata and current values.
+ */
+export function getFormBlockProps(block: FormBlock): FormBlockPropTemplate[] {
+  return blockPropTemplates[block.type].map((template) => ({
+    ...template,
+    value: block.props[template.key] ?? template.value,
+  }));
 }
 
 /**
@@ -53,7 +69,72 @@ export function getPropValue(
   block: FormBlock,
   key: string,
 ): FormBlockValueType {
-  return block.props.find((p) => p.key === key)?.value ?? "";
+  return block.props[key] ?? "";
+}
+
+/**
+ * Converts a string to kebab-case.
+ * @param {string} str - The string to convert.
+ * @returns {string} The kebab-cased string.
+ */
+export function toKebabCase(str: string): string {
+  return str
+    .trim()
+    .toLowerCase()
+    .replace(/[^a-z0-9]+/g, "-") // Replace non-alphanumeric with hyphens
+    .replace(/^-+|-+$/g, ""); // Remove leading/trailing hyphens
+}
+
+/**
+ * Generates a unique key based on a label and existing blocks.
+ * Ensures uniqueness by appending a number if the key already exists.
+ * @param {string} label - The label to convert to a key.
+ * @param {FormBlock[]} existingBlocks - Array of existing form blocks.
+ * @param {string} currentBlockId - ID of the current block (to exclude from uniqueness check).
+ * @returns {string} A unique key in kebab-case.
+ */
+export function generateUniqueKey(
+  label: string,
+  existingBlocks: FormBlock[],
+  currentBlockId?: string,
+): string {
+  const baseKey = toKebabCase(label);
+
+  // Get all existing keys except the current block
+  const existingKeys = existingBlocks
+    .filter((b) => b.id !== currentBlockId)
+    .map((b) => getPropValue(b, "key") as string)
+    .filter(Boolean);
+
+  // If base key doesn't exist, use it
+  if (!existingKeys.includes(baseKey)) {
+    return baseKey;
+  }
+
+  // Otherwise, append a number to make it unique
+  let counter = 1;
+  let uniqueKey = `${baseKey}-${counter}`;
+  while (existingKeys.includes(uniqueKey)) {
+    counter++;
+    uniqueKey = `${baseKey}-${counter}`;
+  }
+
+  return uniqueKey;
+}
+
+/**
+ * Derives a key from a form block.
+ * Uses the stored key if available, otherwise falls back to type-id.
+ * @param {FormBlock} block - The form block.
+ * @returns {string} The key in kebab-case.
+ */
+export function getFieldKey(block: FormBlock): string {
+  const key = getPropValue(block, "key");
+  if (key && typeof key === "string" && key.trim()) {
+    return key;
+  }
+  // Fallback: use type and first 8 chars of id
+  return `${block.type}-${block.id.substring(0, 8)}`;
 }
 
 /**
@@ -65,4 +146,17 @@ export function getFormBlock(type: FormBlockType) {
   const groups = widgetPalette.flatMap((group) => group.items);
   const item = groups.find((b) => b.type === type);
   return item ? { ...item, schema: formBlockSchemas[type] ?? null } : null;
+}
+
+/**
+ * Converts normalized metrics (object with values only) to array with metadata
+ * @param {FormMetrics} metrics - Object mapping metric keys to values
+ * @returns {FormMetric[]} Array of metrics with labels and values
+ */
+export function getFormMetrics(metrics: FormMetrics): FormMetric[] {
+  return Object.entries(metrics).map(([key, value]) => ({
+    key,
+    label: formMetricLabel[key] || key,
+    value,
+  }));
 }

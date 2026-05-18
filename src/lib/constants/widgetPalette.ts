@@ -31,7 +31,7 @@ export const widgetPalette: WidgetCategory[] = [
   {
     category: "control-widget",
     label: "Media and Control",
-    items: [{ type: "button", label: "Button", icon: MousePointerClickIcon }],
+    items: [{ type: "buttons", label: "Buttons", icon: MousePointerClickIcon }],
   },
   {
     category: "input-widget",

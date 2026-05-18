@@ -16,7 +16,7 @@ interface ParagraphBlockProps {
 export const ParagraphBlock = ({ block }: ParagraphBlockProps): JSX.Element => {
   return (
     <div className="form-block text-paragraph dark:text-white transition-colors">
-      <p>{getPropValue(block, "text")}</p>
+      <p className="text-sm @sm:text-base">{getPropValue(block, "text")}</p>
     </div>
   );
 };

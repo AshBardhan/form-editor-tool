@@ -1,14 +1,15 @@
 "use client";
 
-import * as React from "react";
+import { forwardRef, HTMLAttributes } from "react";
 import { cn } from "@/lib/utils/styleUtils";
+import { FormBlockOrientation } from "@/lib/types/form";
 
-interface SeparatorProps extends React.HTMLAttributes<HTMLDivElement> {
-  orientation?: "horizontal" | "vertical";
+interface SeparatorProps extends HTMLAttributes<HTMLDivElement> {
+  orientation?: FormBlockOrientation;
   decorative?: boolean;
 }
 
-const Separator = React.forwardRef<HTMLDivElement, SeparatorProps>(
+const Separator = forwardRef<HTMLDivElement, SeparatorProps>(
   (
     { className, orientation = "horizontal", decorative = true, ...props },
     ref,

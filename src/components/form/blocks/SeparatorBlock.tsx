@@ -20,7 +20,7 @@ export const SeparatorBlock = ({ block }: SeparatorBlockProps): JSX.Element => {
 
   return (
     <div
-      className="mx-6"
+      className="mx-4 @sm:mx-6 @5xl:mx-8"
       style={{ paddingTop: spacing, paddingBottom: spacing }}
     >
       {divider && <Separator />}

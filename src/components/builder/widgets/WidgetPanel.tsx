@@ -82,7 +82,7 @@ export const WidgetPanel = memo(function WidgetPanel(): JSX.Element {
     <>
       {/* Sidebar Header */}
       <div className="p-4 flex flex-col gap-4 border-b border-b-[#2d2d2d]">
-        <h2 className="font-semibold flex items-center gap-2">
+        <h2 className="text-sm font-semibold flex items-center gap-2">
           <ComponentIcon size={20} />
           Form Widgets
         </h2>
@@ -102,7 +102,7 @@ export const WidgetPanel = memo(function WidgetPanel(): JSX.Element {
 
       {/* Filtered Results of Ungrouped Widgets */}
       {isSearching ? (
-        <div className="p-4">
+        <div className="px-4 py-3">
           {filteredComponents.length > 0 ? (
             <div className="grid grid-cols-2 gap-3">
               {filteredComponents.map((widget) => (
@@ -110,7 +110,7 @@ export const WidgetPanel = memo(function WidgetPanel(): JSX.Element {
               ))}
             </div>
           ) : (
-            <div className="text-sm text-center pt-4">No widgets found</div>
+            <div className="text-xs text-center pt-4">No widgets found</div>
           )}
         </div>
       ) : (
@@ -123,14 +123,14 @@ export const WidgetPanel = memo(function WidgetPanel(): JSX.Element {
               <div
                 key={group.category}
                 data-slot="component-category"
-                className="border-b border-b-[#2d2d2d] p-4 flex flex-col gap-4"
+                className="border-b border-b-[#2d2d2d] px-4 py-3 flex flex-col gap-3"
               >
                 <div className="flex items-center justify-between w-full">
-                  <h3 className="text-sm font-semibold">{group.label}</h3>
+                  <h3 className="text-xs font-semibold">{group.label}</h3>
                   <div
                     role="button"
                     onClick={() => toggleCategory(group.category)}
-                    className="p-2 cursor-pointer"
+                    className="cursor-pointer"
                   >
                     <ChevronDown
                       size={20}

@@ -1,18 +1,22 @@
-export const sampleFormList = [
+import { FormList } from "@/lib/types/form";
+
+export const sampleFormList: FormList = [
   {
     id: "123",
     name: "Profile Settings Form",
     status: "published",
-    metrics: [
-      { key: "fields", label: "Blocks", value: 12 },
-      { key: "submissions", label: "Submissions", value: 245 },
-      { key: "completion", label: "Completion", value: "66.7%" },
-    ],
+    metrics: {
+      fields: 12,
+      submissions: 245,
+      completion: "66.7%",
+    },
   },
   {
     id: "666",
     name: "Dark Settings Form",
     status: "draft",
-    metrics: [{ key: "fields", label: "Blocks", value: 8 }],
+    metrics: {
+      fields: 8,
+    },
   },
 ];

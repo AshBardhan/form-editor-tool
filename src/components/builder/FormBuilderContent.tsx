@@ -12,20 +12,35 @@ import {
   useSensor,
   useSensors,
 } from "@dnd-kit/core";
-import { JSX, useState } from "react";
+import { JSX, useState, useEffect } from "react";
 import { hybridKeyboardCoordinates } from "@/lib/utils/keyboardUtils";
-import { useFormDataStore, useUIStateStore } from "@/lib/stores";
+import { switchFormTheme } from "@/lib/utils/domUtils";
+import {
+  useFormConfigStore,
+  useUIStateStore,
+  useFormBlockValidationStore,
+} from "@/lib/stores";
 import { AnimatePresence } from "motion/react";
 import { Widget } from "@/lib/types/widget";
 import { FormBlock } from "@/lib/types/form";
-import { DeviceType } from "@/lib/constants/device";
+import { DeviceType, DeviceList } from "@/lib/constants/device";
 import { Sidebar } from "@/components/layout/Sidebar";
 import { MainContent } from "@/components/layout/MainContent";
-import { DeviceSelector } from "@/components/builder/canvas/DeviceSelector";
+import { DeviceSelector } from "@/components/layout/DeviceSelector";
 import { CanvasDroppable } from "@/components/builder/canvas/CanvasDroppable";
 import { CanvasForm } from "@/components/builder/canvas/CanvasForm";
 import { WidgetPanel } from "@/components/builder/widgets/WidgetPanel";
 import { ConfigurationPanel } from "@/components/builder/configuration/ConfigurationPanel";
+import {
+  Modal,
+  ModalContent,
+  ModalHeader,
+  ModalTitle,
+  ModalDescription,
+  ModalFooter,
+} from "@/components/ui/Modal";
+import { Button } from "@/components/ui/Button";
+import { AlertTriangle } from "lucide-react";
 
 interface DragState {
   overId: string | null;
@@ -37,7 +52,6 @@ interface DragState {
  * Form Builder Content
  * - Renders form with prefilled and empty data
  * - Provides drag-and-drop and configuration for form
- * - Device selection for different screen sizes
  *
  * @returns {JSX.Element} The rendered component.
  */
@@ -47,14 +61,48 @@ export const FormBuilderContent = (): JSX.Element => {
     activeItem: null,
     source: null,
   });
-  const formBlocks = useFormDataStore((state) => state.form.blocks);
-  const moveFormBlock = useFormDataStore((state) => state.moveFormBlock);
-  const addFormBlock = useFormDataStore((state) => state.addFormBlock);
+  const formBlocks = useFormConfigStore((state) => state.formConfig.blocks);
+  const formTheme = useFormConfigStore((state) => state.formConfig.theme);
+  const moveFormBlock = useFormConfigStore((state) => state.moveFormBlock);
+  const addFormBlock = useFormConfigStore((state) => state.addFormBlock);
+  const removeFormBlock = useFormConfigStore((state) => state.removeFormBlock);
   const selectFormBlock = useUIStateStore((state) => state.selectFormBlock);
   const isSidebarCollapsed = useUIStateStore(
     (state) => state.isSidebarCollapsed,
   );
+  const clearFormBlockErrors = useFormBlockValidationStore(
+    (state) => state.clearFormBlockErrors,
+  );
   const [deviceType, setDeviceType] = useState<DeviceType>(DeviceType.DESKTOP);
+  const [deleteConfirmation, setDeleteConfirmation] = useState<{
+    isOpen: boolean;
+    blockId: string | null;
+  }>({ isOpen: false, blockId: null });
+
+  /**
+   * Opens delete confirmation modal for a specific block.
+   */
+  const handleDeleteRequest = (blockId: string) => {
+    setDeleteConfirmation({ isOpen: true, blockId });
+  };
+
+  /**
+   * Handles the confirmation of block deletion.
+   */
+  const handleConfirmDelete = () => {
+    if (deleteConfirmation.blockId) {
+      removeFormBlock(deleteConfirmation.blockId);
+      clearFormBlockErrors(deleteConfirmation.blockId);
+      setDeleteConfirmation({ isOpen: false, blockId: null });
+    }
+  };
+
+  /**
+   * Closes the delete confirmation modal.
+   */
+  const handleCancelDelete = () => {
+    setDeleteConfirmation({ isOpen: false, blockId: null });
+  };
 
   /**
    * Handles the end of a drag event.
@@ -97,6 +145,12 @@ export const FormBuilderContent = (): JSX.Element => {
     }),
   );
 
+  // Apply theme to form container
+  useEffect(() => {
+    switchFormTheme(formTheme);
+    return () => switchFormTheme("");
+  }, [formTheme]);
+
   return (
     <>
       {/* Drag Context Container */}
@@ -134,10 +188,12 @@ export const FormBuilderContent = (): JSX.Element => {
         {/* Drag Placeholder Overlay */}
         <DragOverlay>
           {dragState.activeItem && (
-            <CanvasDroppable
-              item={dragState.activeItem}
-              source={dragState.source}
-            />
+            <div className={formTheme === "dark" ? "dark" : ""}>
+              <CanvasDroppable
+                item={dragState.activeItem}
+                source={dragState.source}
+              />
+            </div>
           )}
         </DragOverlay>
 
@@ -153,7 +209,7 @@ export const FormBuilderContent = (): JSX.Element => {
         {/* Main Content Area with Canvas and Device Selector */}
         <MainContent>
           <div
-            className="py-12 px-8 h-full overflow-y-auto"
+            className="h-full"
             onClickCapture={(e) => {
               const target = e.target as HTMLElement;
               if (!target.closest("[data-slot='block']")) {
@@ -164,14 +220,21 @@ export const FormBuilderContent = (): JSX.Element => {
             <DeviceSelector
               currentDevice={deviceType}
               onDeviceChange={setDeviceType}
+              sticky={true}
             />
-
-            <CanvasForm
-              currentDevice={deviceType}
-              overId={dragState.overId}
-              activeDragItem={dragState.activeItem as FormBlock}
-              dragSource={dragState.source}
-            />
+            <div
+              className="form-container"
+              style={{
+                maxWidth: `${DeviceList.find((d) => d.label === deviceType)?.size || 1440}px`,
+              }}
+            >
+              <CanvasForm
+                overId={dragState.overId}
+                activeDragItem={dragState.activeItem as FormBlock}
+                dragSource={dragState.source}
+                onDeleteBlock={handleDeleteRequest}
+              />
+            </div>
           </div>
         </MainContent>
 
@@ -179,11 +242,40 @@ export const FormBuilderContent = (): JSX.Element => {
         <AnimatePresence>
           {!isSidebarCollapsed.right && (
             <Sidebar position="right">
-              <ConfigurationPanel />
+              <ConfigurationPanel onDeleteBlock={handleDeleteRequest} />
             </Sidebar>
           )}
         </AnimatePresence>
       </DndContext>
+
+      {/* Delete Confirmation Modal */}
+      <Modal
+        open={deleteConfirmation.isOpen}
+        onOpenChange={(open) => !open && handleCancelDelete()}
+      >
+        <ModalContent size="sm">
+          <ModalHeader className="pb-2">
+            <div className="flex gap-3">
+              <AlertTriangle className="shrink-0 h-6 w-6 text-red-600 dark:text-red-500" />
+              <div className="flex-1 flex flex-col gap-2">
+                <ModalTitle>Delete Block</ModalTitle>
+                <ModalDescription>
+                  Are you sure you want to delete this block? This action cannot
+                  be undone.
+                </ModalDescription>
+              </div>
+            </div>
+          </ModalHeader>
+          <ModalFooter>
+            <Button variant="outline" onClick={handleCancelDelete}>
+              Cancel
+            </Button>
+            <Button variant="destructive" onClick={handleConfirmDelete}>
+              Delete
+            </Button>
+          </ModalFooter>
+        </ModalContent>
+      </Modal>
     </>
   );
 };

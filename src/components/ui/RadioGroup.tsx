@@ -1,29 +1,38 @@
 "use client";
 
 import { CircleIcon } from "lucide-react";
-import * as React from "react";
+import {
+  createContext,
+  forwardRef,
+  useState,
+  useCallback,
+  useContext,
+  HTMLAttributes,
+  InputHTMLAttributes,
+} from "react";
 import { cn } from "@/lib/utils/styleUtils";
+import { FormBlockOrientation } from "@/lib/types/form";
 
-interface RadioGroupProps extends React.HTMLAttributes<HTMLDivElement> {
+interface RadioGroupProps extends HTMLAttributes<HTMLDivElement> {
   value?: string;
   defaultValue?: string;
   onValueChange?: (value: string) => void;
   name?: string;
-  alignment?: "vertical" | "horizontal";
+  orientation?: FormBlockOrientation;
 }
 
 interface RadioGroupItemProps
-  extends Omit<React.InputHTMLAttributes<HTMLInputElement>, "type"> {
+  extends Omit<InputHTMLAttributes<HTMLInputElement>, "type"> {
   value: string;
 }
 
-const RadioGroupContext = React.createContext<{
+const RadioGroupContext = createContext<{
   value?: string;
   onValueChange?: (value: string) => void;
   name?: string;
 }>({});
 
-const RadioGroup = React.forwardRef<HTMLDivElement, RadioGroupProps>(
+const RadioGroup = forwardRef<HTMLDivElement, RadioGroupProps>(
   (
     {
       className,
@@ -31,15 +40,15 @@ const RadioGroup = React.forwardRef<HTMLDivElement, RadioGroupProps>(
       defaultValue,
       onValueChange,
       name,
-      alignment = "vertical",
+      orientation = "vertical",
       ...props
     },
     ref,
   ) => {
-    const [internalValue, setInternalValue] = React.useState(defaultValue);
+    const [internalValue, setInternalValue] = useState(defaultValue);
     const actualValue = value ?? internalValue;
 
-    const handleValueChange = React.useCallback(
+    const handleValueChange = useCallback(
       (newValue: string) => {
         if (value === undefined) {
           setInternalValue(newValue);
@@ -55,12 +64,12 @@ const RadioGroup = React.forwardRef<HTMLDivElement, RadioGroupProps>(
       >
         <div
           ref={ref}
+          role="radiogroup"
           data-slot="radio-group"
           className={cn(
-            `flex ${alignment === "horizontal" ? "flex-wrap gap-5" : "flex-col gap-3"}`,
+            `flex ${orientation === "horizontal" ? "flex-wrap gap-x-5 gap-y-3" : "flex-col gap-3"}`,
             className,
           )}
-          role="radiogroup"
           {...props}
         />
       </RadioGroupContext.Provider>
@@ -69,9 +78,9 @@ const RadioGroup = React.forwardRef<HTMLDivElement, RadioGroupProps>(
 );
 RadioGroup.displayName = "RadioGroup";
 
-const RadioGroupItem = React.forwardRef<HTMLInputElement, RadioGroupItemProps>(
+const RadioGroupItem = forwardRef<HTMLInputElement, RadioGroupItemProps>(
   ({ className, value, ...props }, ref) => {
-    const context = React.useContext(RadioGroupContext);
+    const context = useContext(RadioGroupContext);
     const isChecked = context.value === value;
 
     const handleChange = () => {
@@ -79,7 +88,7 @@ const RadioGroupItem = React.forwardRef<HTMLInputElement, RadioGroupItemProps>(
     };
 
     return (
-      <div className="relative inline-flex items-center">
+      <div className="relative inline-flex self-start">
         <input
           ref={ref}
           type="radio"

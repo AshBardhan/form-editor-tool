@@ -8,6 +8,7 @@ import { cn } from "@/lib/utils/styleUtils";
 interface DeviceSelectorProps {
   currentDevice: DeviceType;
   onDeviceChange: (newDeviceName: DeviceType) => void;
+  sticky?: boolean;
 }
 
 /**
@@ -20,9 +21,15 @@ interface DeviceSelectorProps {
 export const DeviceSelector = ({
   currentDevice,
   onDeviceChange,
+  sticky = false,
 }: DeviceSelectorProps): JSX.Element => {
   return (
-    <div className="absolute z-1 top-1 left-1/2 -translate-x-1/2 bg-[#2a2a2a] rounded overflow-hidden text-white flex">
+    <div
+      className={cn(
+        "bg-[#2a2a2a] rounded overflow-hidden text-white inline-flex",
+        sticky && "sticky z-10 top-2 left-1/2 -translate-x-1/2 ",
+      )}
+    >
       {DeviceList.map((device) => {
         const Icon = device.icon;
         return (
@@ -35,7 +42,7 @@ export const DeviceSelector = ({
               "flex items-center justify-center p-3 cursor-pointer",
               currentDevice === device.label && "bg-[#151515]",
               "hover:bg-[#0f0f0f] rounded-none",
-              "focus-visible:outline-none! focus-visible:!ring-0 focus-visible:!border-transparent focus-visible:bg-[#0f0f0f]",
+              "focus-visible:outline-none! focus-visible:ring-0! focus-visible:border-transparent! focus-visible:bg-[#0f0f0f]",
               "transition-all",
             )}
           >

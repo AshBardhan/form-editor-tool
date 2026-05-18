@@ -9,7 +9,7 @@ import { Button } from "@/components/ui/Button";
 import { CSSProperties, JSX } from "react";
 import {
   useFormBlockValidationStore,
-  useFormDataStore,
+  useFormConfigStore,
   useUIStateStore,
 } from "@/lib/stores";
 import { cn } from "@/lib/utils/styleUtils";
@@ -17,6 +17,7 @@ import { cn } from "@/lib/utils/styleUtils";
 interface CanvasBlockProps {
   block: FormBlock;
   isGhostMode?: boolean;
+  onDeleteBlock?: (blockId: string) => void;
 }
 
 /**
@@ -30,18 +31,15 @@ interface CanvasBlockProps {
 export const CanvasBlock = ({
   block,
   isGhostMode = false,
+  onDeleteBlock,
 }: CanvasBlockProps): JSX.Element => {
-  const cloneBlock = useFormDataStore((state) => state.cloneFormBlock);
-  const removeBlock = useFormDataStore((state) => state.removeFormBlock);
+  const cloneBlock = useFormConfigStore((state) => state.cloneFormBlock);
   const selectedBlockId = useUIStateStore((state) => state.selectedFormBlockId);
   const hoveredBlockId = useUIStateStore((state) => state.hoveredFormBlockId);
   const selectBlock = useUIStateStore((state) => state.selectFormBlock);
   const hoverBlock = useUIStateStore((state) => state.hoverFormBlock);
   const blockErrors = useFormBlockValidationStore(
     (state) => state.formBlockErrors,
-  );
-  const clearBlockErrors = useFormBlockValidationStore(
-    (state) => state.clearFormBlockErrors,
   );
 
   const isSelected = selectedBlockId === block.id;
@@ -156,7 +154,7 @@ export const CanvasBlock = ({
             <SeparatorHorizontalIcon size={24} />
           </div>
 
-          <div className="absolute top-1/2 -translate-y-1/2 right-4 flex gap-1 z-1">
+          <div className="absolute top-1/2 -translate-y-1/2 right-2 @sm:right-4 flex gap-1 z-1">
             {/* Clone Block Button */}
             {!isInvalid && (
               <Button
@@ -179,8 +177,7 @@ export const CanvasBlock = ({
               className="cursor-pointer rounded-full p-1.5 text-gray-500 dark:text-gray-300 hover:text-black dark:hover:text-white hover:bg-black/10 dark:hover:bg-white/10 transition-colors"
               onClick={(e) => {
                 e.stopPropagation();
-                removeBlock(block.id);
-                clearBlockErrors(block.id);
+                onDeleteBlock?.(block.id);
               }}
               title="Delete Block"
             >

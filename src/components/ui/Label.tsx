@@ -1,9 +1,9 @@
 "use client";
 
-import * as React from "react";
+import { type LabelHTMLAttributes } from "react";
 import { cn } from "@/lib/utils/styleUtils";
 
-interface LabelProps extends React.LabelHTMLAttributes<HTMLLabelElement> {
+interface LabelProps extends LabelHTMLAttributes<HTMLLabelElement> {
   className?: string;
 }
 
