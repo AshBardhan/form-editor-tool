@@ -273,127 +273,212 @@ form-editor-tool/
 
 ## Setup Instructions
 
-### Prerequisites
+### 0: Prerequisites
 
 - **Node.js 22+** (required for Prisma 7)
 - **npm 9+**
-- **PostgreSQL 14+** (local or cloud instance)
+- **PostgreSQL 14+** (only if using local PostgreSQL)
 
-### 1. Install Dependencies
+### 1: Install Dependencies
 
 ```bash
 npm install
 ```
 
-### 2. Database Setup
+Continue to **Step 2** for first-time setup, otherwise skip to **Step 3**.
 
-Choose either **Local PostgreSQL** or **Cloud Database** setup:
+### 2: Database Setup (First Time Only)
 
-#### Option A: Local PostgreSQL (Recommended for Development)
+Choose the database option that fits your use case:
 
-**Install PostgreSQL:**
+| Option | Best For | Persistence | Setup Time |
+| ------ | -------- | ----------- | ---------- |
+| **Local PostgreSQL** | Solo development, offline work | Persistent | 5-10 min |
+| **Prisma Dev** | Quick prototyping, testing | Ephemeral | 10 seconds |
+| **Prisma Cloud** | Team collaboration, staging | Persistent | 1-2 min |
+| **Other Cloud** | Production, advanced features | Persistent | 2-5 min |
 
-```bash
-# Ubuntu/Debian
-sudo apt update
-sudo apt install postgresql postgresql-contrib
+**Quick Guide:** Solo offline development → Local PostgreSQL | Quick prototyping → Prisma Dev | Team collaboration or production → Cloud
 
-# macOS (Homebrew)
-brew install postgresql@16
-brew services start postgresql@16
-```
-
-**Create Database and User:**
+#### Option A: Local PostgreSQL
 
 ```bash
-# Access PostgreSQL
+# Install PostgreSQL
+sudo apt update && sudo apt install postgresql postgresql-contrib  # Ubuntu
+brew install postgresql@16                                         # macOS
+
+# Start PostgreSQL
+sudo systemctl start postgresql  # Ubuntu
+brew services start postgresql@16  # macOS
+
+# Create database
 sudo -u postgres psql
-
-# Create database and user
-CREATE DATABASE your_db_name;
-CREATE USER your_username WITH PASSWORD 'your_password';
-GRANT ALL PRIVILEGES ON DATABASE your_db_name TO your_username;
+CREATE DATABASE formkit_dev;
+CREATE USER formkit_user WITH PASSWORD 'your_password';
+GRANT ALL PRIVILEGES ON DATABASE formkit_dev TO formkit_user;
 \q
-```
 
-**Configure Environment:**
-
-Create `.env` file:
-
-```bash
+# Configure environment
 cp .env.sample .env
-```
+# Edit .env: DATABASE_URL="postgresql://formkit_user:your_password@localhost:5432/formkit_dev?sslmode=disable"
 
-Update `.env`:
-
-```text
-NEXT_PUBLIC_API_MOCKING=enabled
-DATABASE_URL="postgresql://your_username:your_password@localhost:5432/your_db_name?sslmode=disable"
-```
-
-#### Option B: Cloud Database (Prisma Cloud, Supabase, etc.)
-
-**Get Database URL from your provider and update `.env`:**
-
-```text
-NEXT_PUBLIC_API_MOCKING=enabled
-DATABASE_URL="postgresql://username:password@host:5432/database?sslmode=require"
-```
-
-### 3. Run Database Migrations
-
-```bash
-# Generate Prisma Client
+# Run migrations
 npx prisma generate
-
-# Run migrations to create database tables
 npx prisma migrate deploy
 
-# Optional: Open Prisma Studio to view database
-npx prisma studio
+# Optional: Seed database with sample data (first time only)
+npx prisma db seed
 ```
 
-### 4. Start Development Server
+#### Option B: Prisma Dev (Ephemeral)
+
+**⚠️ Data deleted when stopped. For prototyping only.**
+
+```bash
+# Terminal 1: Start ephemeral database
+npx prisma dev
+
+# Terminal 2: Wait 5 seconds, then run
+npx prisma generate
+npx prisma db push
+```
+
+**Note:** Keep Terminal 1 running. No `.env` setup needed—`DATABASE_URL` is set automatically.
+
+#### Option C: Prisma Cloud
+
+```bash
+# Create free cloud database
+npx create-db
+# Copy the DATABASE_URL shown
+
+# Configure environment
+cp .env.sample .env
+# Edit .env and paste the DATABASE_URL
+
+# Run migrations
+npx prisma generate
+npx prisma migrate deploy
+
+# Optional: Seed database with sample data (first time only)
+npx prisma db seed
+```
+
+#### Option D: Other Cloud (Supabase, Railway, Neon)
+
+```bash
+# 1. Create database on provider's website, copy connection string
+
+# Configure environment
+cp .env.sample .env
+# Edit .env: DATABASE_URL="postgresql://user:password@host:5432/database?sslmode=require"
+
+# Run migrations
+npx prisma generate
+npx prisma migrate deploy
+
+# Optional: Seed database with sample data (first time only)
+npx prisma db seed
+```
+
+### 3: Running Database (Existing Setup)
+
+**Local PostgreSQL:**
+
+```bash
+sudo systemctl start postgresql      # Ubuntu
+brew services start postgresql@16    # macOS
+
+npx prisma migrate deploy           # Run new migrations (if any)
+```
+
+**Prisma Dev:**
+
+```bash
+# Terminal 1
+npx prisma dev
+
+# Terminal 2
+npx prisma db push
+```
+
+**Cloud (Prisma/Other):**
+
+```bash
+npx prisma migrate deploy  # Run new migrations (if any)
+```
+
+### 4: Start Development
 
 ```bash
 npm run dev
 ```
 
-Open your browser at `http://localhost:3000/`
+**Verify:**
 
-### 5. Verify Database Connection
+- Dashboard: `http://localhost:3000/`
+- Database: `http://localhost:3000/test`
+- Form builder: `http://localhost:3000/forms/new`
+- UI demos: `http://localhost:3000/demo`
 
-Visit `http://localhost:3000/test` to verify database connectivity.
+### Additional Commands
 
-### 6. Build for Production (Optional)
+**Database Management:**
 
 ```bash
-npm run build && npm run start
+npx prisma generate              # Generate Prisma Client
+npx prisma migrate dev           # Create new migration
+npx prisma migrate deploy        # Apply migrations
+npx prisma db push               # Sync schema (no migration files)
+npx prisma studio                # Open database GUI
+npx prisma db seed               # Seed database with sample data
+npx prisma db pull               # Pull schema from database
+npx prisma migrate reset         # Reset database (deletes all data)
 ```
 
-### 7. Linting Codebase (Optional)
+**Next.js Application:**
 
 ```bash
-npm run lint
+npm run dev                      # Start development server
+npm run build                    # Build for production
+npm run start                    # Start production server
+npm run lint                     # Run ESLint
 ```
 
-### Database Management Commands
+### Troubleshooting
+
+**Database connection error:**
 
 ```bash
-# Generate Prisma Client after schema changes
+# Check PostgreSQL is running (local)
+sudo systemctl status postgresql
+
+# Regenerate Prisma Client
 npx prisma generate
 
-# Create new migration
-npx prisma migrate dev --name migration_name
+# Verify DATABASE_URL in .env
+```
 
-# Apply migrations in production
-npx prisma migrate deploy
+**Port 3000 already in use:**
 
-# Open Prisma Studio (database GUI)
-npx prisma studio
+```bash
+npm run dev -- -p 3001
+```
 
-# Reset database (WARNING: deletes all data)
-npx prisma migrate reset
+**Prisma Dev connection timeout:**
+
+```bash
+# Wait 5-10 seconds after starting npx prisma dev
+# Use npx prisma db push instead of migrate
+```
+
+**Role/database does not exist (local PostgreSQL):**
+
+```bash
+sudo -u postgres psql
+CREATE DATABASE formkit_dev;
+CREATE USER formkit_user WITH PASSWORD 'your_password';
+GRANT ALL PRIVILEGES ON DATABASE formkit_dev TO formkit_user;
 ```
 
 ## Future Improvements
