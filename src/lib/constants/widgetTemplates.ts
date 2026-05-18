@@ -358,35 +358,6 @@ export const blockPropTemplates: Record<
       value: false,
     },
   ],
-  button: [
-    {
-      key: "title",
-      label: "Title",
-      type: "string",
-      value: "Button",
-    },
-    {
-      key: "level",
-      label: "Level",
-      type: "select",
-      options: [
-        { value: "primary", label: "Primary" },
-        { value: "secondary", label: "Secondary" },
-      ],
-      value: "primary",
-    },
-    {
-      key: "position",
-      label: "Position",
-      type: "select",
-      options: [
-        { value: "left", label: "Left" },
-        { value: "center", label: "Center" },
-        { value: "right", label: "Right" },
-      ],
-      value: "left",
-    },
-  ],
   buttons: [
     {
       key: "submitLabel",

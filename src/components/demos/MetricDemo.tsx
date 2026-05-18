@@ -1,6 +1,5 @@
 "use client";
 
-import * as React from "react";
 import Metric from "@/components/ui/Metric";
 
 /**

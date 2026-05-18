@@ -1,6 +1,6 @@
 "use client";
 
-import * as React from "react";
+import { useState } from "react";
 import { Switch } from "@/components/ui/Switch";
 import { Label } from "@/components/ui/Label";
 
@@ -9,8 +9,8 @@ import { Label } from "@/components/ui/Label";
  * Showcases various use cases and states for the Switch component
  */
 export function SwitchDemo() {
-  const [enabled, setEnabled] = React.useState(false);
-  const [settings, setSettings] = React.useState({
+  const [enabled, setEnabled] = useState(false);
+  const [settings, setSettings] = useState({
     notifications: true,
     darkMode: false,
     autoSave: true,
@@ -37,15 +37,15 @@ export function SwitchDemo() {
 
         <div className="space-y-4">
           <div className="flex items-center gap-3">
-            <Switch id="basic" />
-            <Label htmlFor="basic" className="cursor-pointer">
+            <Switch id="switch-basic" />
+            <Label htmlFor="switch-basic" className="cursor-pointer">
               Enable feature
             </Label>
           </div>
 
           <div className="flex items-center gap-3">
-            <Switch id="checked" defaultChecked />
-            <Label htmlFor="checked" className="cursor-pointer">
+            <Switch id="switch-checked" defaultChecked />
+            <Label htmlFor="switch-checked" className="cursor-pointer">
               Enabled by default
             </Label>
           </div>
@@ -62,11 +62,11 @@ export function SwitchDemo() {
         <div className="space-y-4">
           <div className="flex items-center gap-3">
             <Switch
-              id="controlled"
+              id="switch-controlled"
               checked={enabled}
               onChange={(e) => setEnabled(e.target.checked)}
             />
-            <Label htmlFor="controlled" className="cursor-pointer">
+            <Label htmlFor="switch-controlled" className="cursor-pointer">
               Airplane mode
             </Label>
           </div>
@@ -86,23 +86,23 @@ export function SwitchDemo() {
 
         <div className="space-y-4">
           <div className="flex items-center gap-3">
-            <Switch id="off" />
-            <Label htmlFor="off" className="cursor-pointer">
+            <Switch id="switch-off" />
+            <Label htmlFor="switch-off" className="cursor-pointer">
               Off
             </Label>
           </div>
 
           <div className="flex items-center gap-3">
-            <Switch id="on" defaultChecked />
-            <Label htmlFor="on" className="cursor-pointer">
+            <Switch id="switch-on" defaultChecked />
+            <Label htmlFor="switch-on" className="cursor-pointer">
               On
             </Label>
           </div>
 
           <div className="flex items-center gap-3">
-            <Switch id="disabled-off" disabled />
+            <Switch id="switch-disabled-off" disabled />
             <Label
-              htmlFor="disabled-off"
+              htmlFor="switch-disabled-off"
               className="opacity-50 cursor-not-allowed"
             >
               Disabled (Off)
@@ -110,9 +110,9 @@ export function SwitchDemo() {
           </div>
 
           <div className="flex items-center gap-3">
-            <Switch id="disabled-on" disabled defaultChecked />
+            <Switch id="switch-disabled-on" disabled defaultChecked />
             <Label
-              htmlFor="disabled-on"
+              htmlFor="switch-disabled-on"
               className="opacity-50 cursor-not-allowed"
             >
               Disabled (On)
@@ -134,11 +134,11 @@ export function SwitchDemo() {
           <h4 className="font-semibold">User Settings</h4>
 
           <div className="flex items-center justify-between">
-            <Label htmlFor="notif-switch" className="cursor-pointer">
+            <Label htmlFor="switch-notif" className="cursor-pointer">
               Push Notifications
             </Label>
             <Switch
-              id="notif-switch"
+              id="switch-notif"
               checked={settings.notifications}
               onChange={(e) =>
                 setSettings((prev) => ({
@@ -150,11 +150,11 @@ export function SwitchDemo() {
           </div>
 
           <div className="flex items-center justify-between">
-            <Label htmlFor="dark-switch" className="cursor-pointer">
+            <Label htmlFor="switch-dark" className="cursor-pointer">
               Dark Mode
             </Label>
             <Switch
-              id="dark-switch"
+              id="switch-dark"
               checked={settings.darkMode}
               onChange={(e) =>
                 setSettings((prev) => ({
@@ -166,11 +166,11 @@ export function SwitchDemo() {
           </div>
 
           <div className="flex items-center justify-between">
-            <Label htmlFor="autosave-switch" className="cursor-pointer">
+            <Label htmlFor="switch-autosave" className="cursor-pointer">
               Auto-save
             </Label>
             <Switch
-              id="autosave-switch"
+              id="switch-autosave"
               checked={settings.autoSave}
               onChange={(e) =>
                 setSettings((prev) => ({
@@ -182,11 +182,11 @@ export function SwitchDemo() {
           </div>
 
           <div className="flex items-center justify-between">
-            <Label htmlFor="public-switch" className="cursor-pointer">
+            <Label htmlFor="switch-public" className="cursor-pointer">
               Public Profile
             </Label>
             <Switch
-              id="public-switch"
+              id="switch-public"
               checked={settings.publicProfile}
               onChange={(e) =>
                 setSettings((prev) => ({
@@ -222,7 +222,7 @@ export function SwitchDemo() {
           <div className="flex items-start justify-between gap-4">
             <div className="flex-1">
               <Label
-                htmlFor="marketing-switch"
+                htmlFor="switch-marketing"
                 className="cursor-pointer font-medium"
               >
                 Marketing Communications
@@ -231,13 +231,13 @@ export function SwitchDemo() {
                 Receive emails about new products, features, and special offers.
               </p>
             </div>
-            <Switch id="marketing-switch" className="mt-1" />
+            <Switch id="switch-marketing" className="mt-1" />
           </div>
 
           <div className="flex items-start justify-between gap-4">
             <div className="flex-1">
               <Label
-                htmlFor="security-switch"
+                htmlFor="switch-security"
                 className="cursor-pointer font-medium"
               >
                 Security Alerts
@@ -246,13 +246,13 @@ export function SwitchDemo() {
                 Get notified about unusual activity and security updates.
               </p>
             </div>
-            <Switch id="security-switch" className="mt-1" defaultChecked />
+            <Switch id="switch-security" className="mt-1" defaultChecked />
           </div>
 
           <div className="flex items-start justify-between gap-4">
             <div className="flex-1">
               <Label
-                htmlFor="analytics-switch"
+                htmlFor="switch-analytics"
                 className="cursor-pointer font-medium"
               >
                 Usage Analytics
@@ -261,7 +261,7 @@ export function SwitchDemo() {
                 Help us improve by sharing anonymous usage data.
               </p>
             </div>
-            <Switch id="analytics-switch" className="mt-1" />
+            <Switch id="switch-analytics" className="mt-1" />
           </div>
         </div>
       </section>

@@ -1,6 +1,6 @@
 "use client";
 
-import React, { JSX, useState } from "react";
+import React, { JSX, useState, useEffect } from "react";
 import { FormConfig, FormBlock, FormBlockValueType } from "@/lib/types/form";
 import Text from "@/components/ui/Text";
 import { widgetBlockRenderers } from "@/components/form/blocks";
@@ -12,6 +12,7 @@ import {
 } from "@/lib/utils/formValidationUtils";
 import { DeviceList, DeviceType } from "@/lib/constants/device";
 import { toast } from "@/components/ui/Toast";
+import { switchFormTheme } from "@/lib/utils/domUtils";
 
 interface FormPreviewContentProps {
   form: FormConfig;
@@ -35,11 +36,30 @@ export const FormPreviewContent = ({
 }: FormPreviewContentProps): JSX.Element => {
   const formData = useFormDataStore((state) => state.formData);
   const updateFormData = useFormDataStore((state) => state.updateFormData);
-  const initFormData = useFormDataStore((state) => state.initFormData);
+  const resetFormData = useFormDataStore((state) => state.resetFormData);
   const [blockErrors, setBlockErrors] = useState<Record<string, string[]>>({});
+  const [hasSubmitted, setHasSubmitted] = useState(false);
+
   const currentDeviceMeta = DeviceList.find(
     (device) => device.label === currentDevice,
   );
+
+  /**
+   * Apply theme when component mounts or theme changes
+   */
+  useEffect(() => {
+    switchFormTheme(form.theme);
+  }, [form.theme]);
+
+  /**
+   * Cleanup form data and errors when component unmounts to prevent stale data on next preview
+   */
+  useEffect(() => {
+    return () => {
+      resetFormData();
+      setBlockErrors({});
+    };
+  }, []);
 
   /**
    * Handles form field value changes
@@ -49,6 +69,18 @@ export const FormPreviewContent = ({
    */
   const handleFieldChange = (key: string, value: FormBlockValueType) => {
     updateFormData(key, value);
+
+    // After first submit attempt, revalidate only the changed field in real-time
+    if (hasSubmitted) {
+      const block = form.blocks.find((b) => getFieldKey(b) === key);
+      if (block) {
+        const fieldErrors = validateFormBlock(block, value);
+        setBlockErrors((prev) => ({
+          ...prev,
+          [block.id]: fieldErrors,
+        }));
+      }
+    }
   };
 
   /**
@@ -102,6 +134,7 @@ export const FormPreviewContent = ({
    */
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
+    setHasSubmitted(true);
 
     // Validate form before submission
     if (!validateForm()) {
@@ -115,9 +148,6 @@ export const FormPreviewContent = ({
       toast.success("Form submitted successfully!", {
         description: "Your response has been recorded.",
       });
-
-      console.log("✅ Form submitted successfully!");
-      console.log("Form Data:", formData);
 
       // You could also send this data to an API here
       // Example:
@@ -140,7 +170,7 @@ export const FormPreviewContent = ({
    */
   const handleReset = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    initFormData(form.blocks);
+    resetFormData();
     setBlockErrors({});
 
     toast.info("Form reset", {

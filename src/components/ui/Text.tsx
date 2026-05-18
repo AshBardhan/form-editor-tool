@@ -7,7 +7,7 @@ interface TextProps {
   variant?: "h1" | "h2" | "h3" | "h4" | "h5" | "h6" | "p" | "div";
   className?: string;
   children: ReactNode;
-  insideFormContainer?: boolean;
+  insideContainer?: boolean;
 }
 
 const variantClasses = {
@@ -49,12 +49,12 @@ const Text = ({
   variant = "div",
   className = "",
   children,
-  insideFormContainer = false,
+  insideContainer = false,
   ...props
 }: TextProps) => {
   const Component = variant as ElementType;
   const responsiveClass =
-    variantClasses[variant][insideFormContainer ? "container" : "viewport"];
+    variantClasses[variant][insideContainer ? "container" : "viewport"];
 
   return (
     <Component className={cn(responsiveClass, className)} {...props}>

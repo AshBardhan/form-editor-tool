@@ -14,16 +14,17 @@ The application is crafted using `Next.js` and `React` to build scalable and reu
     - Configuration Panel - Form/block property editor with real-time validation
     - Form Builder Header - Header with sidebar toggles and action buttons
   - **Dashboard**: Components for the main landing page
-  - **Preview**: Components for form preview mode
-  - **Form Blocks**: Renderable form components displayed on the canvas
+  - **Preview**: Components for fully functional form preview mode with validation
+  - **Form Blocks**: Renderable, editable form components with real-time validation
   - **Block Configs**: Configuration components for editing block properties
-  - **UI**: Primitive components (Button, Input, Select, etc.) used across the application
-    - 15+ reusable UI primitives built with Radix UI and Tailwind CSS
-  - **Layout**: Wrapper components for consistent page structure
-- **TailwindCSS** has been used maintaining styling of multiple components.
+  - **Demos**: Comprehensive showcase of all UI primitives with usage examples
+  - **UI**: Primitive components (Button, Input, Select, Alert, Toast, etc.) used across the application
+    - 15+ reusable UI primitives built with Tailwind CSS
+  - **Layout**: Wrapper components for consistent page structure and responsive design
+- **TailwindCSS** with container queries for responsive form layouts.
   - A set of commonly used colors and design tokens.
   - Dark and Light themed classes with CSS variables.
-  - Responsive utilities for all device sizes.
+  - Container query utilities for component-level responsiveness.
 - Optimised performance to minimise redundant re-renders and computations, by managing
   - In-build `useMemo` and `useCallback` hooks.
   - Selector-based `zustand` stores (states and actions).
@@ -72,18 +73,40 @@ As per given requirements
 - **Form Builder Header**
   - Toggle buttons to expand and collapse both sidebars.
   - Form title at the center configured via Configuration Panel.
-  - Preview button navigating to preview mode.
+  - Preview button that opens a modal with fully functional form preview.
   - Publish button (currently for presentation purposes).
 - **Form Preview Mode**
-  - Dedicated preview routes for both new and existing forms.
-  - Full-screen preview of the form as end-users would see it.
-  - Renders all form blocks as functional form elements.
-  - Preview header with back navigation and form title.
-  - Supports all device modes (desktop, tablet, mobile).
+  - Preview modal accessible from the form builder header.
+  - **Fully functional forms** with editable inputs, validation, and submission.
+  - **Client-side validation** with inline error messages below fields.
+  - **Submit and Reset** buttons with proper form handling.
+  - **Toast notifications** for form submission success/error feedback.
+  - **Device selector** within modal to preview desktop, tablet, and mobile views.
+  - Modal design allows testing forms without leaving the builder context.
+  - Supports all device modes with container queries for responsive preview.
+- **UI Component Demos**
+  - Dedicated `/demo` route with comprehensive UI component showcase.
+  - Interactive demos for all 17 UI primitives (Alert, Toast, Button, Input, Select, Checkbox, Radio, Switch, Textarea, Badge, Card, Skeleton, Metric, Avatar, InputOTP, and Text).
+  - Props documentation and usage examples for each component.
+  - Live code snippets showing implementation patterns.
+  - Organized sections with variations and use cases.
+- **Error Handling & Validation**
+  - **ErrorMessages component** for displaying validation errors inline.
+  - **Alert component** for contextual feedback (success, error, warning, info).
+  - **Toast notifications** for form submission feedback with auto-dismiss.
+  - Client-side validation using Zod schemas.
+  - Required field indicators with red asterisk (\*).
+  - Real-time validation in both builder and preview modes.
 - **State Management**
   - Zustand stores for form data, form configuration, UI state, and validation.
   - Optimized selector-based subscriptions to minimize re-renders.
   - Separate stores for different concerns (separation of concerns pattern).
+- **Form Validation & Error Handling**
+  - Real-time validation during form interactions.
+  - Inline error messages below invalid fields.
+  - Required field validation with visual indicators (red asterisk).
+  - Type-specific validation (email, number ranges, text length, etc.).
+  - Prevents submission with validation errors.
 - **Data Fetching**
   - MSW (Mock Service Worker) for API mocking during development.
   - Custom `useFetch` hook for data fetching with loading and error states.
@@ -102,11 +125,10 @@ As per given requirements
 - **TypeScript**: Ensures strong typing for props, state, and domain models, reducing runtime errors.
 - **MSW**: Mock HTTP requests during development without external services for realistic API simulation.
 - **Zustand**: Lightweight state management alternative to `Redux` with simplicity and ease of use.
-- **TailwindCSS v4**: Utility-first styling with theme tokens and responsive support.
+- **TailwindCSS v4**: Utility-first styling with theme tokens, responsive support, and container queries.
 - **@dnd-kit**: Modern drag-and-drop toolkit for React with accessibility features.
-- **Radix UI Primitives**: Accessible, unstyled components for building complex UI (Slot component).
-- **Zod**: Type-safe client-side validation with schema-based approach.
-- **Framer Motion**: Animations for drag-and-drop and other UI feedback.
+- **Zod**: Type-safe client-side validation with schema-based approach for both builder and preview modes.
+- **Framer Motion**: Animations for drag-and-drop, toast notifications, and other UI feedback.
 - **Class Variance Authority (CVA)**: Manage component variants and styling combinations in a type-safe and reusable way.
 - **Lucide React**: Lightweight, modern SVG icon library for clean, scalable icons.
 - **Prisma ORM**: Type-safe database ORM with auto-generated client and migration system for PostgreSQL.
@@ -120,21 +142,20 @@ The application uses Next.js App Router with the following route structure:
   - Displays all forms in a responsive grid
   - "Create New Form" button to start building
   - Form cards with title, description, and status
+- **`/demo`** - UI Component Showcase
+  - Interactive demos of all 15+ UI primitives
+  - Component documentation with props and usage examples
+  - Live code snippets and variations
+  - Useful for developers to explore available components
 - **`/forms/new`** - New form builder
   - Empty canvas to create a new form from scratch
   - Full form builder interface with all features
+  - Real-time validation and error feedback
 - **`/forms/[formId]`** - Edit existing form
   - Loads form data from API (via MSW)
   - Edit and modify existing form blocks
   - Same builder interface as new form
-- **`/forms/new/preview`** - Preview new form
-  - Preview the form being created
-  - Full-screen preview mode
-  - Functional form elements
-- **`/forms/[formId]/preview`** - Preview existing form
-  - Preview saved form
-  - Read-only view of the form
-  - Test form interactions
+  - Preview button opens modal with fully functional form preview
 - **`/test`** - Database connection test page
   - Verify PostgreSQL database connectivity
   - Display users from database
@@ -151,6 +172,7 @@ The application uses Next.js App Router with the following route structure:
   - `formBlockValidationStore` - Validation errors per block
 - **Selector Pattern**: Used throughout to minimize re-renders
 - **Immutable Updates**: State updates follow immutability patterns
+- **Initialization Logic**: Smart defaults for form fields (e.g., first option for required selects)
 
 ### Component Architecture
 
@@ -158,13 +180,27 @@ The application uses Next.js App Router with the following route structure:
 - **Separation of Concerns**: Clear separation between presentational and container components
 - **Single Responsibility**: Each component has a focused responsibility
 - **Reusability**: UI primitives shared across the application
+- **Container Queries**: Component-level responsive design for better flexibility
+- **Error Boundaries**: Proper error handling and display with dedicated ErrorMessages component
+- **Toast System**: Non-blocking notifications for user feedback with Framer Motion animations
+
+### Responsive Design
+
+- **Container Queries**: Modern CSS container queries for component-level responsiveness
+- **Mobile-First Approach**: Forms adapt from mobile to desktop seamlessly
+- **Device Preview**: Toggle between desktop, tablet, and mobile views in builder
+- **Flexible Layouts**: Form blocks adjust based on container width, not viewport
+- **Typography Scaling**: Text sizes adapt to different container sizes (@sm, @md, @lg breakpoints)
 
 ### Validation Strategy
 
 - **Zod Schemas**: Type-safe validation schemas for each block type
-- **Real-time Validation**: Validation on every configuration change
-- **Error Display**: Context-aware error messages below each field
-- **Visual Feedback**: Error states reflected in block UI
+- **Builder Validation**: Real-time validation on configuration changes in builder mode
+- **Preview Validation**: Form submission validation with inline error messages
+- **Error Display**: Context-aware error messages below invalid fields
+- **Visual Feedback**: Error states reflected in block UI (red borders, asterisks)
+- **Required Fields**: Visual indicators (red asterisk) for required fields
+- **Type-Specific Rules**: Email format, number ranges, text length constraints
 
 ### Performance Optimizations
 
@@ -172,6 +208,7 @@ The application uses Next.js App Router with the following route structure:
 - **Selective Re-renders**: Zustand selectors prevent unnecessary renders
 - **Code Organization**: Logical grouping reduces bundle size
 - **Lazy Imports**: Dynamic imports for heavy components (where applicable)
+- **Optimized Form Rendering**: Efficient block updates and validation checks
 
 ### Database Architecture
 
@@ -192,6 +229,7 @@ form-editor-tool/
 │  └─ seed.ts                        # Database seeding script
 ├─ src/
 │  ├─ app/                           # App-router directory
+│  │  ├─ demo/                       # UI components showcase
 │  │  ├─ forms/                      # Forms routes
 │  │  │  ├─ [formId]/                # Dynamic form editor route
 │  │  │  └─ new/                     # New form creation route
@@ -200,11 +238,12 @@ form-editor-tool/
 │  │  ├─ layout.tsx                  # Root layout
 │  │  └─ globals.css                 # Global styles
 │  ├─ components/
-│  │  ├─ builder/                    # Form builder components
-│  │  │  ├─ canvas/                  # Canvas drag-drop components
-│  │  │  ├─ configuration/           # Configuration panel
+│  │  ├─ builder/                    # Form builder
+│  │  │  ├─ canvas/                  # Drag-drop canvas
+│  │  │  ├─ configuration/           # Property editor
 │  │  │  └─ widgets/                 # Widget palette
 │  │  ├─ dashboard/                  # Dashboard components
+│  │  ├─ demos/                      # UI component demos
 │  │  ├─ form/                       # Form rendering components
 │  │  │  ├─ blocks/                  # Form blocks (Input, Checkbox, etc.)
 │  │  │  └─ configs/                 # Block configuration components
@@ -226,11 +265,10 @@ form-editor-tool/
 │     └─ browser.ts                  # MSW browser worker
 ├─ public/
 │  └─ mockServiceWorker.js           # MSW service worker
-├─ instructions/                      # Project documentation
-├─ screenshots/                       # Screenshots for README
-├─ .env.sample                        # Environment variables template
-├─ prisma.config.ts                   # Prisma configuration
-└─ [config files]                     # Next.js, TypeScript, ESLint, Tailwind configs
+├─ screenshots/                      # Screenshots for README
+├─ .env.sample                       # Environment variables template
+├─ prisma.config.ts                  # Prisma configuration
+└─ [config files]                    # Next.js, TypeScript, ESLint, Tailwind configs
 ```
 
 ## Setup Instructions
@@ -362,22 +400,11 @@ npx prisma migrate reset
 
 ### High Priority - User Experience & Features
 
-- **Modal System**: Add Dialog/Modal components for user interactions
-  - Success modal showing form submission data
-  - Error modal displaying validation failures
+- **Modal System Enhancements**: Expand modal functionality
   - Confirmation dialogs for delete operations
-- **Notification System**: Implement Toast notifications for user feedback
-  - Success/error messages for save, publish, delete actions
-  - Real-time feedback for widget operations
-  - Auto-dismissing notifications
-- **Loading States**: Add comprehensive loading indicators
-  - Skeleton loaders for form data fetching (currently implemented for dashboard)
-  - Spinner components for async operations
-  - Loading states for all user actions
-- **Form Submission**: Implement functional form submission
-  - Enable form submission with validation in preview mode
-  - Display success/error results with submitted data
-  - Form data collection and processing
+  - Form builder help/documentation modals
+  - Widget property help tooltips
+  - Success modal showing form submission data
 - **Form Lifecycle Management**: Implement save/discard/publish workflow
   - Save draft (persist to backend/localStorage)
   - Discard changes (revert to last saved version)
@@ -385,6 +412,14 @@ npx prisma migrate reset
   - Track form status (draft vs published)
   - Auto-save functionality with periodic saves
   - "Last saved" timestamp indicator
+- **Enhanced Toast System**: Extend toast notifications
+  - Success/error messages for save, publish, delete actions
+  - Real-time feedback for widget operations
+  - Action undo functionality in toasts
+- **Loading States**: Add comprehensive loading indicators
+  - Skeleton loaders for form preview loading
+  - Spinner components for async operations
+  - Loading states for save/publish actions
 
 ### Medium Priority - Backend Integration & Data
 
@@ -393,6 +428,11 @@ npx prisma migrate reset
   - Implement server actions for form CRUD operations
   - Replace MSW handlers with real database queries
   - Persist form builder changes to PostgreSQL
+- **Real Backend Integration**: Connect to actual backend service
+  - Replace MSW with real API calls via `REST` or `GraphQL`
+  - Implement authentication and authorization
+  - Handle real-time data synchronization
+  - Store form submissions in database
 - **Form State Management**: Add advanced form status tracking
   - Draft vs Published states
   - Version control for forms
@@ -438,16 +478,26 @@ npx prisma migrate reset
   - Restore previous versions
   - Compare version differences
   - Branch and merge forms
+- **Conditional Logic**: Dynamic form behavior
+  - Show/hide fields based on other field values
+  - Conditional validation rules
+  - Branching form flows
+  - Skip logic for surveys
 - **Form Templates**: Pre-built form templates
   - Contact forms, surveys, registration forms
   - Custom template creation and sharing
   - Template marketplace/gallery
   - Template categories and search
 - **Advanced Validation**: Enhanced validation capabilities
-  - Conditional validation rules
   - Cross-field validation
   - Custom validation functions
   - Async validation (API-based checks)
+  - Regex pattern validation
+- **File Upload**: Add file upload widget
+  - Single/multiple file upload
+  - File type and size restrictions
+  - Image preview functionality
+  - Drag-and-drop file uploads
 - **Internationalization**: Multi-language support
   - UI translation support
   - Form field label translations

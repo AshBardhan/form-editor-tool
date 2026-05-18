@@ -1,6 +1,6 @@
 "use client";
 
-import * as React from "react";
+import { useState } from "react";
 import { Button } from "@/components/ui/Button";
 import { Download, Mail, Plus, Trash2, Settings } from "lucide-react";
 
@@ -9,7 +9,7 @@ import { Download, Mail, Plus, Trash2, Settings } from "lucide-react";
  * Showcases all variants, sizes, and use cases for the Button component
  */
 export function ButtonDemo() {
-  const [loading, setLoading] = React.useState(false);
+  const [loading, setLoading] = useState(false);
 
   return (
     <div className="space-y-12">

@@ -42,7 +42,7 @@ export const WidgetItem = memo(function WidgetItem({
     >
       {Icon && (
         <div className="p-1 border border-[#2d2d2d] rounded inline-flex">
-          <Icon size={14} />
+          <Icon size={12} />
         </div>
       )}
       <span className="text-xs font-medium">{widget.label}</span>

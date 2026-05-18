@@ -8,9 +8,11 @@ import {
   ButtonDemo,
   CardDemo,
   CheckboxDemo,
+  DropdownMenuDemo,
   InputDemo,
   InputOTPDemo,
   MetricDemo,
+  ModalDemo,
   RadioGroupDemo,
   SelectDemo,
   SkeletonDemo,
@@ -34,7 +36,9 @@ export default function DemoPage() {
     { id: "switch", name: "Switch" },
     { id: "radiogroup", name: "RadioGroup" },
     { id: "select", name: "Select" },
+    { id: "dropdownmenu", name: "DropdownMenu" },
     { id: "inputotp", name: "InputOTP" },
+    { id: "modal", name: "Modal" },
     { id: "badge", name: "Badge" },
     { id: "avatar", name: "Avatar" },
     { id: "card", name: "Card" },
@@ -153,9 +157,23 @@ export default function DemoPage() {
 
             <Separator className="my-16" />
 
+            {/* DropdownMenu Demo */}
+            <section id="dropdownmenu" className="scroll-mt-8">
+              <DropdownMenuDemo />
+            </section>
+
+            <Separator className="my-16" />
+
             {/* InputOTP Demo */}
             <section id="inputotp" className="scroll-mt-8">
               <InputOTPDemo />
+            </section>
+
+            <Separator className="my-16" />
+
+            {/* Modal Demo */}
+            <section id="modal" className="scroll-mt-8">
+              <ModalDemo />
             </section>
 
             <Separator className="my-16" />

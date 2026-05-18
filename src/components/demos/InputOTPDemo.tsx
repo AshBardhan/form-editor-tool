@@ -1,6 +1,6 @@
 "use client";
 
-import * as React from "react";
+import { useState } from "react";
 import {
   InputOTP,
   InputOTPGroup,
@@ -15,9 +15,9 @@ import { Button } from "@/components/ui/Button";
  * Showcases various use cases for OTP (One-Time Password) input
  */
 export function InputOTPDemo() {
-  const [value, setValue] = React.useState("");
-  const [sixDigit, setSixDigit] = React.useState("");
-  const [verificationCode, setVerificationCode] = React.useState("");
+  const [value, setValue] = useState("");
+  const [sixDigit, setSixDigit] = useState("");
+  const [verificationCode, setVerificationCode] = useState("");
 
   return (
     <div className="space-y-12">
@@ -38,7 +38,7 @@ export function InputOTPDemo() {
         </div>
 
         <div className="space-y-4">
-          <Label htmlFor="basic-otp">Enter 4-digit code</Label>
+          <Label htmlFor="otp-basic">Enter 4-digit code</Label>
           <InputOTP maxLength={4} value={value} onChange={setValue}>
             <InputOTPGroup>
               <InputOTPSlot index={0} />
@@ -63,7 +63,7 @@ export function InputOTPDemo() {
         </div>
 
         <div className="space-y-4">
-          <Label htmlFor="six-digit">Enter 6-digit verification code</Label>
+          <Label htmlFor="otp-six-digit">Enter 6-digit verification code</Label>
           <InputOTP maxLength={6} value={sixDigit} onChange={setSixDigit}>
             <InputOTPGroup>
               <InputOTPSlot index={0} />
@@ -93,7 +93,7 @@ export function InputOTPDemo() {
         </div>
 
         <div className="space-y-4">
-          <Label htmlFor="numeric">Numeric code only</Label>
+          <Label htmlFor="otp-numeric">Numeric code only</Label>
           <InputOTP maxLength={4} pattern="[0-9]*">
             <InputOTPGroup>
               <InputOTPSlot index={0} />
@@ -116,7 +116,7 @@ export function InputOTPDemo() {
         </div>
 
         <div className="space-y-4">
-          <Label htmlFor="disabled">Disabled OTP input</Label>
+          <Label htmlFor="otp-disabled">Disabled OTP input</Label>
           <InputOTP maxLength={4} disabled value="1234">
             <InputOTPGroup>
               <InputOTPSlot index={0} />
@@ -147,7 +147,7 @@ export function InputOTPDemo() {
           </div>
 
           <div className="space-y-4">
-            <Label htmlFor="verification">Verification Code</Label>
+            <Label htmlFor="otp-verification">Verification Code</Label>
             <InputOTP
               maxLength={6}
               value={verificationCode}

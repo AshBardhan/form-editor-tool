@@ -1,4 +1,4 @@
-import { getPropValue } from "@/lib/utils/formUtils";
+import { getPropValue, toKebabCase } from "@/lib/utils/formUtils";
 import { FormBlock, FormBlockOrientation } from "@/lib/types/form";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/RadioGroup";
 import { Label } from "@/components/ui/Label";
@@ -57,17 +57,20 @@ export const RadioBlock = ({
         orientation={orientation}
         onValueChange={onChange}
       >
-        {options.map((option: string) => (
-          <div key={option} className="flex items-center gap-2">
-            <RadioGroupItem
-              value={option}
-              readOnly={!editable}
-              tabIndex={editable ? 0 : -1}
-              id={`radio-${block.id}-${option}`}
-            ></RadioGroupItem>
-            <Label htmlFor={`radio-${block.id}-${option}`}>{option}</Label>
-          </div>
-        ))}
+        {options.map((option: string) => {
+          const optionId = `radio-${block.id}-${toKebabCase(option)}`;
+          return (
+            <div key={option} className="flex items-center gap-2">
+              <RadioGroupItem
+                value={option}
+                disabled={!editable}
+                tabIndex={editable ? 0 : -1}
+                id={optionId}
+              ></RadioGroupItem>
+              <Label htmlFor={optionId}>{option}</Label>
+            </div>
+          );
+        })}
       </RadioGroup>
       <ErrorMessages errors={errors} />
     </div>

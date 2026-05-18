@@ -1,14 +1,13 @@
 import { create } from "zustand";
-import { FormBlock, FormBlockValueType } from "@/lib/types/form";
-import { getFieldKey, getPropValue } from "@/lib/utils/formUtils";
+import { FormBlockValueType } from "@/lib/types/form";
 
 /**
  * Form Data State
  * - Stores user input for form field data in preview/editable mode
+ * - No persistence: data resets on navigation or page refresh
  */
 interface FormDataState {
   formData: Record<string, FormBlockValueType>;
-  initFormData: (blocks: FormBlock[]) => void;
   updateFormData: (key: string, value: FormBlockValueType) => void;
   resetFormData: () => void;
 }
@@ -18,36 +17,6 @@ interface FormDataState {
  */
 export const useFormDataStore = create<FormDataState>((set) => ({
   formData: {},
-  initFormData: (blocks) => {
-    const initialData: Record<string, FormBlockValueType> = {};
-
-    blocks.forEach((block) => {
-      const fieldKey = getFieldKey(block);
-      const blockValue = getPropValue(block, "value");
-
-      // Initialize blocks with explicit values
-      if (
-        blockValue !== "" &&
-        blockValue !== null &&
-        blockValue !== undefined
-      ) {
-        initialData[fieldKey] = blockValue;
-        return;
-      }
-
-      // Initialize required select fields with first option
-      if (block.type === "select") {
-        const required = getPropValue(block, "required") || false;
-        const options = (getPropValue(block, "options") ?? []) as string[];
-
-        if (required && options.length > 0) {
-          initialData[fieldKey] = options[0];
-        }
-      }
-    });
-
-    set({ formData: initialData });
-  },
   updateFormData: (key, value) => {
     set((state) => ({
       formData: {

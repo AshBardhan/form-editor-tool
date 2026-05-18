@@ -1,6 +1,6 @@
 "use client";
 
-import * as React from "react";
+import { useState } from "react";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/RadioGroup";
 import { Label } from "@/components/ui/Label";
 
@@ -9,8 +9,8 @@ import { Label } from "@/components/ui/Label";
  * Showcases various use cases for radio button groups
  */
 export function RadioGroupDemo() {
-  const [plan, setPlan] = React.useState("free");
-  const [notification, setNotification] = React.useState("email");
+  const [plan, setPlan] = useState("free");
+  const [notification, setNotification] = useState("email");
 
   return (
     <div className="space-y-12">
@@ -34,20 +34,20 @@ export function RadioGroupDemo() {
 
         <RadioGroup defaultValue="option1">
           <div className="flex gap-2">
-            <RadioGroupItem value="option1" id="option1" />
-            <Label htmlFor="option1" className="cursor-pointer">
+            <RadioGroupItem value="option1" id="radio-option1" />
+            <Label htmlFor="radio-option1" className="cursor-pointer">
               Option 1
             </Label>
           </div>
           <div className="flex gap-2">
-            <RadioGroupItem value="option2" id="option2" />
-            <Label htmlFor="option2" className="cursor-pointer">
+            <RadioGroupItem value="option2" id="radio-option2" />
+            <Label htmlFor="radio-option2" className="cursor-pointer">
               Option 2
             </Label>
           </div>
           <div className="flex gap-2">
-            <RadioGroupItem value="option3" id="option3" />
-            <Label htmlFor="option3" className="cursor-pointer">
+            <RadioGroupItem value="option3" id="radio-option3" />
+            <Label htmlFor="radio-option3" className="cursor-pointer">
               Option 3
             </Label>
           </div>
@@ -68,20 +68,20 @@ export function RadioGroupDemo() {
         <div className="flex flex-col gap-3">
           <RadioGroup value={plan} onValueChange={setPlan}>
             <div className="flex gap-2">
-              <RadioGroupItem value="free" id="plan-free" />
-              <Label htmlFor="plan-free" className="cursor-pointer">
+              <RadioGroupItem value="free" id="radio-plan-free" />
+              <Label htmlFor="radio-plan-free" className="cursor-pointer">
                 Free Plan
               </Label>
             </div>
             <div className="flex gap-2">
-              <RadioGroupItem value="pro" id="plan-pro" />
-              <Label htmlFor="plan-pro" className="cursor-pointer">
+              <RadioGroupItem value="pro" id="radio-plan-pro" />
+              <Label htmlFor="radio-plan-pro" className="cursor-pointer">
                 Pro Plan - $29/month
               </Label>
             </div>
             <div className="flex gap-2">
-              <RadioGroupItem value="enterprise" id="plan-enterprise" />
-              <Label htmlFor="plan-enterprise" className="cursor-pointer">
+              <RadioGroupItem value="enterprise" id="radio-plan-enterprise" />
+              <Label htmlFor="radio-plan-enterprise" className="cursor-pointer">
                 Enterprise Plan - Contact Sales
               </Label>
             </div>
@@ -103,10 +103,10 @@ export function RadioGroupDemo() {
 
         <RadioGroup value={notification} onValueChange={setNotification}>
           <div className="flex gap-2 pb-3 border-b">
-            <RadioGroupItem value="email" id="notif-email" />
+            <RadioGroupItem value="email" id="radio-notif-email" />
             <div className="flex-1 flex flex-col gap-1">
               <Label
-                htmlFor="notif-email"
+                htmlFor="radio-notif-email"
                 className="cursor-pointer font-medium"
               >
                 Email Notifications
@@ -119,9 +119,12 @@ export function RadioGroupDemo() {
           </div>
 
           <div className="flex gap-2 py-4 border-b">
-            <RadioGroupItem value="sms" id="notif-sms" />
+            <RadioGroupItem value="sms" id="radio-notif-sms" />
             <div className="flex-1 flex flex-col gap-1">
-              <Label htmlFor="notif-sms" className="cursor-pointer font-medium">
+              <Label
+                htmlFor="radio-notif-sms"
+                className="cursor-pointer font-medium"
+              >
                 SMS Notifications
               </Label>
               <p className="text-sm text-muted-foreground">
@@ -132,10 +135,10 @@ export function RadioGroupDemo() {
           </div>
 
           <div className="flex gap-2 pt-4">
-            <RadioGroupItem value="push" id="notif-push" />
+            <RadioGroupItem value="push" id="radio-notif-push" />
             <div className="flex-1 flex flex-col gap-1">
               <Label
-                htmlFor="notif-push"
+                htmlFor="radio-notif-push"
                 className="cursor-pointer font-medium"
               >
                 Push Notifications
@@ -162,32 +165,32 @@ export function RadioGroupDemo() {
           <Label>Select Size</Label>
           <RadioGroup defaultValue="m" orientation="horizontal">
             <div className="flex gap-2">
-              <RadioGroupItem value="xs" id="size-xs" />
-              <Label htmlFor="size-xs" className="cursor-pointer">
+              <RadioGroupItem value="xs" id="radio-size-xs" />
+              <Label htmlFor="radio-size-xs" className="cursor-pointer">
                 XS
               </Label>
             </div>
             <div className="flex gap-2">
-              <RadioGroupItem value="s" id="size-s" />
-              <Label htmlFor="size-s" className="cursor-pointer">
+              <RadioGroupItem value="s" id="radio-size-s" />
+              <Label htmlFor="radio-size-s" className="cursor-pointer">
                 S
               </Label>
             </div>
             <div className="flex gap-2">
-              <RadioGroupItem value="m" id="size-m" />
-              <Label htmlFor="size-m" className="cursor-pointer">
+              <RadioGroupItem value="m" id="radio-size-m" />
+              <Label htmlFor="radio-size-m" className="cursor-pointer">
                 M
               </Label>
             </div>
             <div className="flex gap-2">
-              <RadioGroupItem value="l" id="size-l" />
-              <Label htmlFor="size-l" className="cursor-pointer">
+              <RadioGroupItem value="l" id="radio-size-l" />
+              <Label htmlFor="radio-size-l" className="cursor-pointer">
                 L
               </Label>
             </div>
             <div className="flex gap-2">
-              <RadioGroupItem value="xl" id="size-xl" />
-              <Label htmlFor="size-xl" className="cursor-pointer">
+              <RadioGroupItem value="xl" id="radio-size-xl" />
+              <Label htmlFor="radio-size-xl" className="cursor-pointer">
                 XL
               </Label>
             </div>
@@ -204,26 +207,33 @@ export function RadioGroupDemo() {
 
         <RadioGroup defaultValue="available">
           <div className="flex gap-2">
-            <RadioGroupItem value="available" id="status-available" />
-            <Label htmlFor="status-available" className="cursor-pointer">
+            <RadioGroupItem value="available" id="radio-status-available" />
+            <Label htmlFor="radio-status-available" className="cursor-pointer">
               Available
             </Label>
           </div>
           <div className="flex gap-2">
-            <RadioGroupItem value="busy" id="status-busy" />
-            <Label htmlFor="status-busy" className="cursor-pointer">
+            <RadioGroupItem value="busy" id="radio-status-busy" />
+            <Label htmlFor="radio-status-busy" className="cursor-pointer">
               Busy
             </Label>
           </div>
           <div className="flex gap-2 opacity-50">
-            <RadioGroupItem value="away" id="status-away" disabled />
-            <Label htmlFor="status-away" className="cursor-not-allowed">
+            <RadioGroupItem value="away" id="radio-status-away" disabled />
+            <Label htmlFor="radio-status-away" className="cursor-not-allowed">
               Away (Disabled)
             </Label>
           </div>
           <div className="flex gap-2 opacity-50">
-            <RadioGroupItem value="offline" id="status-offline" disabled />
-            <Label htmlFor="status-offline" className="cursor-not-allowed">
+            <RadioGroupItem
+              value="offline"
+              id="radio-status-offline"
+              disabled
+            />
+            <Label
+              htmlFor="radio-status-offline"
+              className="cursor-not-allowed"
+            >
               Offline (Disabled)
             </Label>
           </div>
@@ -243,10 +253,10 @@ export function RadioGroupDemo() {
             <RadioGroup defaultValue="standard">
               <div className="flex items-center justify-between p-3 border rounded-lg">
                 <div className="flex gap-3">
-                  <RadioGroupItem value="standard" id="ship-standard" />
+                  <RadioGroupItem value="standard" id="radio-ship-standard" />
                   <div className="flex flex-col gap-1">
                     <Label
-                      htmlFor="ship-standard"
+                      htmlFor="radio-ship-standard"
                       className="cursor-pointer font-medium"
                     >
                       Standard Shipping
@@ -261,10 +271,10 @@ export function RadioGroupDemo() {
 
               <div className="flex items-center justify-between p-3 border rounded-lg">
                 <div className="flex gap-3">
-                  <RadioGroupItem value="express" id="ship-express" />
+                  <RadioGroupItem value="express" id="radio-ship-express" />
                   <div className="flex flex-col gap-1">
                     <Label
-                      htmlFor="ship-express"
+                      htmlFor="radio-ship-express"
                       className="cursor-pointer font-medium"
                     >
                       Express Shipping
@@ -279,10 +289,10 @@ export function RadioGroupDemo() {
 
               <div className="flex items-center justify-between p-3 border rounded-lg">
                 <div className="flex gap-3">
-                  <RadioGroupItem value="overnight" id="ship-overnight" />
+                  <RadioGroupItem value="overnight" id="radio-ship-overnight" />
                   <div className="flex flex-col gap-1">
                     <Label
-                      htmlFor="ship-overnight"
+                      htmlFor="radio-ship-overnight"
                       className="cursor-pointer font-medium"
                     >
                       Overnight Shipping
@@ -328,32 +338,32 @@ export function RadioGroupDemo() {
             </p>
             <RadioGroup>
               <div className="flex gap-2">
-                <RadioGroupItem value="5" id="rating-5" />
-                <Label htmlFor="rating-5" className="cursor-pointer">
+                <RadioGroupItem value="5" id="radio-rating-5" />
+                <Label htmlFor="radio-rating-5" className="cursor-pointer">
                   ⭐⭐⭐⭐⭐ Very Satisfied
                 </Label>
               </div>
               <div className="flex gap-2">
-                <RadioGroupItem value="4" id="rating-4" />
-                <Label htmlFor="rating-4" className="cursor-pointer">
+                <RadioGroupItem value="4" id="radio-rating-4" />
+                <Label htmlFor="radio-rating-4" className="cursor-pointer">
                   ⭐⭐⭐⭐ Satisfied
                 </Label>
               </div>
               <div className="flex gap-2">
-                <RadioGroupItem value="3" id="rating-3" />
-                <Label htmlFor="rating-3" className="cursor-pointer">
+                <RadioGroupItem value="3" id="radio-rating-3" />
+                <Label htmlFor="radio-rating-3" className="cursor-pointer">
                   ⭐⭐⭐ Neutral
                 </Label>
               </div>
               <div className="flex gap-2">
-                <RadioGroupItem value="2" id="rating-2" />
-                <Label htmlFor="rating-2" className="cursor-pointer">
+                <RadioGroupItem value="2" id="radio-rating-2" />
+                <Label htmlFor="radio-rating-2" className="cursor-pointer">
                   ⭐⭐ Dissatisfied
                 </Label>
               </div>
               <div className="flex gap-2">
-                <RadioGroupItem value="1" id="rating-1" />
-                <Label htmlFor="rating-1" className="cursor-pointer">
+                <RadioGroupItem value="1" id="radio-rating-1" />
+                <Label htmlFor="radio-rating-1" className="cursor-pointer">
                   ⭐ Very Dissatisfied
                 </Label>
               </div>
@@ -379,12 +389,12 @@ import { Label } from "@/components/ui/Label";
 // Basic radio group
 <RadioGroup defaultValue="option1">
   <div className="flex gap-2">
-    <RadioGroupItem value="option1" id="opt1" />
-    <Label htmlFor="opt1">Option 1</Label>
+    <RadioGroupItem value="option1" id="radio-opt1" />
+    <Label htmlFor="radio-opt1">Option 1</Label>
   </div>
   <div className="flex gap-2">
-    <RadioGroupItem value="option2" id="opt2" />
-    <Label htmlFor="opt2">Option 2</Label>
+    <RadioGroupItem value="option2" id="radio-opt2" />
+    <Label htmlFor="radio-opt2">Option 2</Label>
   </div>
 </RadioGroup>
 
@@ -392,31 +402,31 @@ import { Label } from "@/components/ui/Label";
 const [value, setValue] = useState("default");
 <RadioGroup value={value} onValueChange={setValue}>
   <div className="flex gap-2">
-    <RadioGroupItem value="default" id="r1" />
-    <Label htmlFor="r1">Default</Label>
+    <RadioGroupItem value="default" id="radio-r1" />
+    <Label htmlFor="radio-r1">Default</Label>
   </div>
 </RadioGroup>
 
 // Horizontal layout
 <RadioGroup orientation="horizontal" defaultValue="m">
   <div className="flex gap-2">
-    <RadioGroupItem value="s" id="s" />
-    <Label htmlFor="s">S</Label>
+    <RadioGroupItem value="s" id="radio-s" />
+    <Label htmlFor="radio-s">S</Label>
   </div>
   <div className="flex gap-2">
-    <RadioGroupItem value="m" id="m" />
-    <Label htmlFor="m">M</Label>
+    <RadioGroupItem value="m" id="radio-m" />
+    <Label htmlFor="radio-m">M</Label>
   </div>
 </RadioGroup>
 
 // Disabled option
-<RadioGroupItem value="disabled" id="dis" disabled />
+<RadioGroupItem value="disabled" id="radio-dis" disabled />
 
 // With description
 <div className="flex items-start gap-3">
-  <RadioGroupItem value="opt" id="opt" className="mt-1" />
+  <RadioGroupItem value="opt" id="radio-opt" className="mt-1" />
   <div>
-    <Label htmlFor="opt">Option Title</Label>
+    <Label htmlFor="radio-opt">Option Title</Label>
     <p className="text-sm text-muted-foreground">
       Detailed description here
     </p>

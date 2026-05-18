@@ -4,6 +4,7 @@ import { FileText, Plus } from "lucide-react";
 import Text from "@/components/ui/Text";
 import { Button } from "@/components/ui/Button";
 import { useRouter } from "next/navigation";
+import { useFormConfigStore } from "@/lib/stores";
 
 /**
  * DashboardHeader - Main header for the dashboard page
@@ -11,11 +12,10 @@ import { useRouter } from "next/navigation";
  */
 export function DashboardHeader() {
   const router = useRouter();
+  const resetFormConfig = useFormConfigStore((state) => state.resetFormConfig);
 
   const handleCreateNewForm = () => {
-    // Clear any persisted draft from localStorage
-    localStorage.removeItem("form-builder-storage");
-    // Navigate to new form page
+    resetFormConfig();
     router.push("/forms/new");
   };
 

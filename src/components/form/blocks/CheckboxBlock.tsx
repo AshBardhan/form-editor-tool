@@ -1,4 +1,4 @@
-import { getPropValue } from "@/lib/utils/formUtils";
+import { getPropValue, toKebabCase } from "@/lib/utils/formUtils";
 import { FormBlock, FormBlockOrientation } from "@/lib/types/form";
 import { Checkbox } from "@/components/ui/Checkbox";
 import { Label } from "@/components/ui/Label";
@@ -58,24 +58,31 @@ export const CheckboxBlock = ({
           </Label>
         )}
         <div
+          role="group"
+          data-slot="checkbox-group"
           className={
             orientation === "horizontal"
-              ? "flex flex-row flex-wrap gap-5"
+              ? "flex flex-row flex-wrap gap-x-5 gap-y-3"
               : "flex flex-col gap-3"
           }
         >
-          {options.map((option: string) => (
-            <div key={option} className="flex items-center gap-2">
-              <Checkbox
-                readOnly={!editable}
-                checked={controlledValue.includes(option)}
-                id={`checkbox-${block.id}-${option}`}
-                tabIndex={editable ? 0 : -1}
-                onChange={(e) => handleCheckboxChange(option, e.target.checked)}
-              />
-              <Label htmlFor={`checkbox-${block.id}-${option}`}>{option}</Label>
-            </div>
-          ))}
+          {options.map((option: string) => {
+            const optionId = `checkbox-${block.id}-${toKebabCase(option)}`;
+            return (
+              <div key={option} className="flex items-center gap-2">
+                <Checkbox
+                  disabled={!editable}
+                  checked={controlledValue.includes(option)}
+                  id={optionId}
+                  tabIndex={editable ? 0 : -1}
+                  onChange={(e) =>
+                    handleCheckboxChange(option, e.target.checked)
+                  }
+                />
+                <Label htmlFor={optionId}>{option}</Label>
+              </div>
+            );
+          })}
         </div>
         <ErrorMessages errors={errors} />
       </div>
@@ -90,7 +97,7 @@ export const CheckboxBlock = ({
     <div className="form-block flex flex-col gap-1.5 @sm:gap-2">
       <div className="flex gap-2 items-center">
         <Checkbox
-          readOnly={!editable}
+          disabled={!editable}
           checked={controlledValue}
           id={`checkbox-${block.id}`}
           tabIndex={editable ? 0 : -1}

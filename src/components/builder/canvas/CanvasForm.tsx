@@ -15,6 +15,7 @@ interface CanvasFormProps {
   overId: string | null;
   activeDragItem: FormBlock | null;
   dragSource: "sidebar" | "canvas" | null;
+  onDeleteBlock: (blockId: string) => void;
 }
 
 /**
@@ -48,6 +49,7 @@ export const CanvasForm = ({
   overId,
   activeDragItem,
   dragSource,
+  onDeleteBlock,
 }: CanvasFormProps): JSX.Element => {
   const formConfig = useFormConfigStore((state) => state.formConfig);
   const { setNodeRef } = useDroppable({ id: "canvas" });
@@ -71,7 +73,7 @@ export const CanvasForm = ({
                 {overId === block.id &&
                   dragSource === "sidebar" &&
                   activeDragItem?.id !== block.id && <DropPlaceholder />}
-                <CanvasBlock block={block} />
+                <CanvasBlock block={block} onDeleteBlock={onDeleteBlock} />
               </div>
             ))}
           </>

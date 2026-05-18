@@ -55,7 +55,7 @@ export const sampleLightForm: FormConfig = {
       props: {
         label: "Occupation",
         key: "occupation",
-        required: false,
+        required: true,
         placeholder: "Choose from the list",
         options: ["Developer", "Manager", "Others"],
       },
@@ -102,6 +102,7 @@ export const sampleLightForm: FormConfig = {
         label: "I accept terms and conditions",
         key: "accept-terms",
         required: true,
+        grouped: false,
       },
     },
     {
@@ -214,6 +215,7 @@ export const sampleDarkForm: FormConfig = {
         label: "Enable dark mode notifications",
         key: "enable-notifications",
         required: false,
+        grouped: false,
       },
     },
     {

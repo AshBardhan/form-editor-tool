@@ -1,6 +1,6 @@
 "use client";
 
-import * as React from "react";
+import { useState } from "react";
 import { Checkbox } from "@/components/ui/Checkbox";
 import { Label } from "@/components/ui/Label";
 
@@ -9,8 +9,8 @@ import { Label } from "@/components/ui/Label";
  * Showcases various use cases and states for the Checkbox component
  */
 export function CheckboxDemo() {
-  const [checked, setChecked] = React.useState(false);
-  const [notifications, setNotifications] = React.useState({
+  const [checked, setChecked] = useState(false);
+  const [notifications, setNotifications] = useState({
     email: true,
     sms: false,
     push: true,
@@ -36,15 +36,15 @@ export function CheckboxDemo() {
 
         <div className="space-y-4">
           <div className="flex gap-2">
-            <Checkbox id="basic" />
-            <Label htmlFor="basic" className="cursor-pointer">
+            <Checkbox id="checkbox-basic" />
+            <Label htmlFor="checkbox-basic" className="cursor-pointer">
               Accept terms and conditions
             </Label>
           </div>
 
           <div className="flex gap-2">
-            <Checkbox id="checked" defaultChecked />
-            <Label htmlFor="checked" className="cursor-pointer">
+            <Checkbox id="checkbox-checked" defaultChecked />
+            <Label htmlFor="checkbox-checked" className="cursor-pointer">
               Checked by default
             </Label>
           </div>
@@ -63,11 +63,11 @@ export function CheckboxDemo() {
         <div className="space-y-4">
           <div className="flex gap-2">
             <Checkbox
-              id="controlled"
+              id="checkbox-controlled"
               checked={checked}
               onChange={(e) => setChecked(e.target.checked)}
             />
-            <Label htmlFor="controlled" className="cursor-pointer">
+            <Label htmlFor="checkbox-controlled" className="cursor-pointer">
               Subscribe to newsletter
             </Label>
           </div>
@@ -89,30 +89,33 @@ export function CheckboxDemo() {
 
         <div className="space-y-4">
           <div className="flex gap-2">
-            <Checkbox id="unchecked" />
-            <Label htmlFor="unchecked" className="cursor-pointer">
+            <Checkbox id="checkbox-unchecked" />
+            <Label htmlFor="checkbox-unchecked" className="cursor-pointer">
               Unchecked
             </Label>
           </div>
 
           <div className="flex gap-2">
-            <Checkbox id="checked-state" defaultChecked />
-            <Label htmlFor="checked-state" className="cursor-pointer">
+            <Checkbox id="checkbox-checked-state" defaultChecked />
+            <Label htmlFor="checkbox-checked-state" className="cursor-pointer">
               Checked
             </Label>
           </div>
 
           <div className="flex gap-2">
-            <Checkbox id="disabled" disabled />
-            <Label htmlFor="disabled" className="opacity-50 cursor-not-allowed">
+            <Checkbox id="checkbox-disabled" disabled />
+            <Label
+              htmlFor="checkbox-disabled"
+              className="opacity-50 cursor-not-allowed"
+            >
               Disabled
             </Label>
           </div>
 
           <div className="flex gap-2">
-            <Checkbox id="disabled-checked" disabled defaultChecked />
+            <Checkbox id="checkbox-disabled-checked" disabled defaultChecked />
             <Label
-              htmlFor="disabled-checked"
+              htmlFor="checkbox-disabled-checked"
               className="opacity-50 cursor-not-allowed"
             >
               Disabled & Checked
@@ -120,8 +123,8 @@ export function CheckboxDemo() {
           </div>
 
           <div className="flex gap-2">
-            <Checkbox id="invalid" aria-invalid="true" />
-            <Label htmlFor="invalid" className="cursor-pointer">
+            <Checkbox id="checkbox-invalid" aria-invalid="true" />
+            <Label htmlFor="checkbox-invalid" className="cursor-pointer">
               Invalid (with error)
             </Label>
           </div>
@@ -140,7 +143,7 @@ export function CheckboxDemo() {
 
           <div className="flex gap-2">
             <Checkbox
-              id="email-notif"
+              id="checkbox-email-notif"
               checked={notifications.email}
               onChange={(e) =>
                 setNotifications((prev) => ({
@@ -149,14 +152,14 @@ export function CheckboxDemo() {
                 }))
               }
             />
-            <Label htmlFor="email-notif" className="cursor-pointer">
+            <Label htmlFor="checkbox-email-notif" className="cursor-pointer">
               Email notifications
             </Label>
           </div>
 
           <div className="flex gap-2">
             <Checkbox
-              id="sms-notif"
+              id="checkbox-sms-notif"
               checked={notifications.sms}
               onChange={(e) =>
                 setNotifications((prev) => ({
@@ -165,14 +168,14 @@ export function CheckboxDemo() {
                 }))
               }
             />
-            <Label htmlFor="sms-notif" className="cursor-pointer">
+            <Label htmlFor="checkbox-sms-notif" className="cursor-pointer">
               SMS notifications
             </Label>
           </div>
 
           <div className="flex gap-2">
             <Checkbox
-              id="push-notif"
+              id="checkbox-push-notif"
               checked={notifications.push}
               onChange={(e) =>
                 setNotifications((prev) => ({
@@ -181,7 +184,7 @@ export function CheckboxDemo() {
                 }))
               }
             />
-            <Label htmlFor="push-notif" className="cursor-pointer">
+            <Label htmlFor="checkbox-push-notif" className="cursor-pointer">
               Push notifications
             </Label>
           </div>
@@ -209,9 +212,12 @@ export function CheckboxDemo() {
 
         <div className="space-y-6">
           <div className="flex gap-2">
-            <Checkbox id="marketing" />
+            <Checkbox id="checkbox-marketing" />
             <div className="flex-1 flex flex-col gap-1">
-              <Label htmlFor="marketing" className="cursor-pointer font-medium">
+              <Label
+                htmlFor="checkbox-marketing"
+                className="cursor-pointer font-medium"
+              >
                 Marketing emails
               </Label>
               <p className="text-sm text-muted-foreground">
@@ -221,9 +227,12 @@ export function CheckboxDemo() {
           </div>
 
           <div className="flex gap-2">
-            <Checkbox id="security" defaultChecked />
+            <Checkbox id="checkbox-security" defaultChecked />
             <div className="flex-1 flex flex-col gap-1">
-              <Label htmlFor="security" className="cursor-pointer font-medium">
+              <Label
+                htmlFor="checkbox-security"
+                className="cursor-pointer font-medium"
+              >
                 Security alerts
               </Label>
               <p className="text-sm text-muted-foreground">
@@ -234,9 +243,12 @@ export function CheckboxDemo() {
           </div>
 
           <div className="flex gap-2">
-            <Checkbox id="updates" />
+            <Checkbox id="checkbox-updates" />
             <div className="flex-1 flex flex-col gap-1">
-              <Label htmlFor="updates" className="cursor-pointer font-medium">
+              <Label
+                htmlFor="checkbox-updates"
+                className="cursor-pointer font-medium"
+              >
                 Product updates
               </Label>
               <p className="text-sm text-muted-foreground">
@@ -263,8 +275,8 @@ import { Label } from "@/components/ui/Label";
 
 // Basic checkbox
 <div className="flex gap-2">
-  <Checkbox id="terms" />
-  <Label htmlFor="terms">Accept terms</Label>
+  <Checkbox id="checkbox-terms" />
+  <Label htmlFor="checkbox-terms">Accept terms</Label>
 </div>
 
 // Controlled checkbox

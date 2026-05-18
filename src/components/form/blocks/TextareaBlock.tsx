@@ -45,7 +45,7 @@ export const TextareaBlock = ({
       <Textarea
         id={`textarea-${block.id}`}
         className="resize-y"
-        readOnly={!editable}
+        disabled={!editable}
         tabIndex={editable ? 0 : -1}
         value={controlledValue}
         placeholder={placeholder}

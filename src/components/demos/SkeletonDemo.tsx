@@ -1,6 +1,6 @@
 "use client";
 
-import * as React from "react";
+import { useState } from "react";
 import { Skeleton } from "@/components/ui/Skeleton";
 import { Button } from "@/components/ui/Button";
 
@@ -9,7 +9,7 @@ import { Button } from "@/components/ui/Button";
  * Showcases various use cases for loading skeletons
  */
 export function SkeletonDemo() {
-  const [isLoading, setIsLoading] = React.useState(true);
+  const [isLoading, setIsLoading] = useState(true);
 
   return (
     <div className="space-y-12">
