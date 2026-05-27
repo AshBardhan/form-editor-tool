@@ -1,3 +1,13 @@
+// Shared enums for form theme and status
+export enum FormTheme {
+  Light = "light",
+  Dark = "dark",
+}
+
+export enum FormStatus {
+  Draft = "draft",
+  Published = "published",
+}
 /**
  * Form Metric Labels
  * Maps metric keys to their display labels

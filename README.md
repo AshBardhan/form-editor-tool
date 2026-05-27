@@ -322,7 +322,7 @@ GRANT ALL PRIVILEGES ON DATABASE formkit_dev TO formkit_user;
 cp .env.sample .env
 # Edit .env: DATABASE_URL="postgresql://formkit_user:your_password@localhost:5432/formkit_dev?sslmode=disable"
 
-# Run migrations
+# Generate Prisma Client and Run migrations
 npx prisma generate
 npx prisma migrate deploy
 
@@ -434,6 +434,12 @@ npx prisma studio                # Open database GUI
 npx prisma db seed               # Seed database with sample data
 npx prisma db pull               # Pull schema from database
 npx prisma migrate reset         # Reset database (deletes all data)
+
+# Connect to PostgreSQL via terminal (local database only)
+psql -U formkit_user -d formkit_dev -h localhost -p 5432
+# Or using DATABASE_URL from .env:
+# psql "postgresql://formkit_user:your_password@localhost:5432/formkit_dev"
+# Useful psql commands: \l (list databases), \dt (list tables), \d table_name (describe table), \q (quit)
 ```
 
 **Next.js Application:**
