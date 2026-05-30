@@ -1,13 +1,19 @@
 import { FormBuilderContainer } from "@/components/builder/FormBuilderContainer";
-import { JSX } from "react";
+import { FormConfig } from "@/lib/types/form";
+
+const emptyForm: FormConfig = {
+  title: "Untitled Form",
+  theme: "light",
+  blocks: [],
+};
 
 /**
  * New Form Builder Page
  * Route: /forms/new
- * Creates a new form with an empty builder
+ * Creates a new form with empty builder
  *
  * @returns {JSX.Element} The rendered page component.
  */
-export default function NewFormPage(): JSX.Element {
-  return <FormBuilderContainer />;
+export default function NewFormPage() {
+  return <FormBuilderContainer form={emptyForm} />;
 }

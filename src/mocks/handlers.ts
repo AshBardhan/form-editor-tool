@@ -7,7 +7,7 @@ export const handlers = [
     await delay(1000);
     return HttpResponse.json(sampleFormList);
   }),
-  http.get("*/api/form/:id", async ({ params }) => {
+  http.get("*/api/forms/:id", async ({ params }) => {
     await delay(2000);
 
     const { id } = params;

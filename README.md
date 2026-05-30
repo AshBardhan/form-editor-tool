@@ -46,7 +46,7 @@ As per given requirements
   - The main container that wraps all the components related to form building.
   - Renders the form with prefilled data fetched from API if an `id` is provided. Otherwise, renders an empty form.
   - Supports creating new forms at `/forms/new` route.
-  - Supports editing existing forms at `/forms/[formId]` route.
+  - Supports editing existing forms at `/forms/[id]` route.
 - **Widget Panel**
   - Widgets are grouped under categories (Input Fields, Content, Layout).
   - Every category can be collapsed/expanded by a caret icon next to category heading.
@@ -151,7 +151,7 @@ The application uses Next.js App Router with the following route structure:
   - Empty canvas to create a new form from scratch
   - Full form builder interface with all features
   - Real-time validation and error feedback
-- **`/forms/[formId]`** - Edit existing form
+- **`/forms/[id]`** - Edit existing form
   - Loads form data from API (via MSW)
   - Edit and modify existing form blocks
   - Same builder interface as new form
@@ -231,7 +231,7 @@ form-editor-tool/
 │  ├─ app/                           # App-router directory
 │  │  ├─ demo/                       # UI components showcase
 │  │  ├─ forms/                      # Forms routes
-│  │  │  ├─ [formId]/                # Dynamic form editor route
+│  │  │  ├─ [id]/                    # Dynamic form editor route
 │  │  │  └─ new/                     # New form creation route
 │  │  ├─ test/                       # Database test page
 │  │  ├─ page.tsx                    # Main dashboard page
