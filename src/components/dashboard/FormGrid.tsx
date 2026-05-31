@@ -1,72 +1,23 @@
 "use client";
 
-import { useFetch } from "@/lib/hooks/useFetch";
 import { FormList } from "@/lib/types/form";
 import { FormCard } from "./FormCard";
 import Text from "@/components/ui/Text";
-import { Card, CardContent } from "@/components/ui/Card";
-import { Skeleton } from "@/components/ui/Skeleton";
+
+interface FormGridProps {
+  forms: FormList | null;
+}
 
 /**
- * FormGrid - Grid layout for displaying forms
- * Handles data fetching, loading, and error states
- * Renders FormCard components in a responsive grid
+ * FormGrid 
+ * - Displays a grid of form cards
+ * - Handles empty state when no forms are available
+ *
+ * @param {FormGridProps} props - The component props containing the list of forms.
+ * @returns {JSX.Element} The rendered grid of form cards or an empty state message.
  */
-export function FormGrid() {
-  const { data, loading, error } = useFetch<FormList>("/api/forms");
-
-  if (loading) {
-    return (
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-        {[1, 2, 3, 4, 5, 6].map((i) => (
-          <Card key={i} className="h-full relative">
-            {/* Badge skeleton */}
-            <Skeleton
-              className="absolute top-3 right-3"
-              width={60}
-              height={15}
-            />
-
-            <CardContent className="px-6 space-y-2">
-              {/* Title skeleton */}
-              <Skeleton width="70%" height={20} />
-
-              {/* Metrics skeletons */}
-              <div className="flex gap-8 pt-2">
-                <div className="space-y-1">
-                  <Skeleton width={40} height={20} />
-                  <Skeleton width={60} height={10} />
-                </div>
-                <div className="space-y-1">
-                  <Skeleton width={40} height={20} />
-                  <Skeleton width={60} height={10} />
-                </div>
-                <div className="space-y-1">
-                  <Skeleton width={40} height={20} />
-                  <Skeleton width={60} height={10} />
-                </div>
-              </div>
-            </CardContent>
-          </Card>
-        ))}
-      </div>
-    );
-  }
-
-  if (error) {
-    return (
-      <div className="text-center py-12">
-        <Text variant="h4" className="mb-1">
-          Unable to load forms
-        </Text>
-        <Text variant="p" className="text-sm text-muted-foreground">
-          Please check try again later.
-        </Text>
-      </div>
-    );
-  }
-
-  if (!data || data.length === 0) {
+export function FormGrid({forms}: FormGridProps) {
+  if (!forms || forms.length === 0) {
     return (
       <div className="text-center py-12">
         <Text variant="h4" className="mb-2">
@@ -81,7 +32,7 @@ export function FormGrid() {
 
   return (
     <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-      {data.map((form) => (
+      {forms.map((form) => (
         <FormCard key={form.id} form={form} />
       ))}
     </div>

@@ -1,13 +1,13 @@
 import { JSX } from "react";
 
 /**
- * Forms Layout
- * - Provides a layout structure for the forms pages.
+ * Builder Layout
+ * Provides a layout structure for the form builder pages.
  *
  * @param {React.ReactNode} props.children - The child components to be rendered within the layout.
  * @returns {JSX.Element} The rendered component.
  */
-export default function FormsLayout({
+export default function BuilderLayout({
   children,
 }: Readonly<{
   children: React.ReactNode;

@@ -1,21 +1,18 @@
-"use client";
+"use client"
 
 import { FileText, Plus } from "lucide-react";
 import Text from "@/components/ui/Text";
 import { Button } from "@/components/ui/Button";
 import { useRouter } from "next/navigation";
-import { useFormConfigStore } from "@/lib/stores";
 
 /**
- * DashboardHeader - Main header for the dashboard page
+ * FormsHeader - Main header for the dashboard page
  * Displays title and create new form button
  */
-export function DashboardHeader() {
+export function FormsHeader() {
   const router = useRouter();
-  const resetFormConfig = useFormConfigStore((state) => state.resetFormConfig);
 
   const handleCreateNewForm = () => {
-    resetFormConfig();
     router.push("/forms/new");
   };
 
@@ -27,7 +24,7 @@ export function DashboardHeader() {
         </div>
         <div>
           <Text variant="h1" className="mb-0.5 sm:mb-1">
-            FormKit GUI Builder
+            FormKit
           </Text>
           <Text variant="p" className="text-muted-foreground">
             Create and manage your forms
