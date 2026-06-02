@@ -1,10 +1,10 @@
 "use client";
 
 import React, { JSX, useState, useEffect } from "react";
-import { FormConfig, FormBlock, FormBlockValueType } from "@/lib/types/form";
+import { FormBlock, FormBlockValueType } from "@/lib/types/form";
 import Text from "@/components/ui/Text";
 import { widgetBlockRenderers } from "@/components/form/blocks";
-import { useFormDataStore } from "@/lib/stores";
+import { useFormConfigStore, useFormDataStore } from "@/lib/stores";
 import { getFieldKey } from "@/lib/utils/formUtils";
 import {
   validateFormBlock,
@@ -15,7 +15,6 @@ import { toast } from "@/components/ui/Toast";
 import { switchFormTheme } from "@/lib/utils/domUtils";
 
 interface FormPreviewContentProps {
-  form: FormConfig;
   editable?: boolean;
   currentDevice: DeviceType;
 }
@@ -30,10 +29,10 @@ interface FormPreviewContentProps {
  * @returns {JSX.Element} The rendered component.
  */
 export const FormPreviewContent = ({
-  form,
   editable = false,
   currentDevice,
 }: FormPreviewContentProps): JSX.Element => {
+  const form = useFormConfigStore((state) => state.formConfig);
   const formData = useFormDataStore((state) => state.formData);
   const updateFormData = useFormDataStore((state) => state.updateFormData);
   const resetFormData = useFormDataStore((state) => state.resetFormData);

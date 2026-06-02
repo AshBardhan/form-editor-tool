@@ -101,6 +101,51 @@ export const FormBuilderContainer = ({
     }
   };
 
+  const handleDelete = async () => {
+    if (!formConfig.id) {
+      toast.error("Delete unavailable", {
+        description: "Save this form first before deleting it.",
+      });
+      return;
+    }
+
+    setPersistMessage("Deleting form...");
+    setIsPersisting(true);
+
+    try {
+      const response = await fetch(`/api/forms/${formConfig.id}`, {
+        method: "DELETE",
+      });
+
+      const result = (await response.json()) as ApiResponse<{ id: string }>;
+      if (!response.ok) {
+        throw new Error(
+          result.error?.message || "Unable to delete form right now.",
+        );
+      }
+
+      if (!result.success) {
+        throw new Error("Unexpected response from server.");
+      }
+
+      router.push("/forms");
+      toast.success("Form permanently deleted", {
+        description: "The form and its submission reports were removed.",
+      });
+    } catch (error) {
+      const message =
+        error instanceof Error
+          ? error.message
+          : "We could not delete the form. Please try again.";
+
+      toast.error("Delete failed", {
+        description: message,
+      });
+      setIsPersisting(false);
+      setPersistMessage("");
+    }
+  };
+
   useEffect(() => {
     setFormConfig(form);
     return () => {
@@ -115,6 +160,7 @@ export const FormBuilderContainer = ({
         <FormBuilderHeader
           onSave={handleSave}
           onCancel={handleCancel}
+          onDelete={handleDelete}
           isSubmitting={isPersisting}
         />
       </Header>

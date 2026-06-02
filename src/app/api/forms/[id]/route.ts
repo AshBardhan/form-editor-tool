@@ -15,9 +15,9 @@ function toSlug(value: string): string {
 
 export async function GET(
   request: NextRequest,
-  { params }: { params: { id: string } },
+  { params }: { params: Promise<{ id: string }> },
 ) {
-  const { id } = params;
+  const { id } = await params;
   if (!id) {
     return NextResponse.json({ error: "Form ID is required" }, { status: 400 });
   }
@@ -43,10 +43,10 @@ export async function GET(
 
 export async function PUT(
   request: NextRequest,
-  { params }: { params: { id: string } },
+  { params }: { params: Promise<{ id: string }> },
 ) {
   return apiHandler(async () => {
-    const { id } = params;
+    const { id } = await params;
     if (!id) {
       throw new ValidationError("Form ID is required");
     }
@@ -105,5 +105,30 @@ export async function PUT(
     });
 
     return NextResponse.json({ success: true, data: form }, { status: 200 });
+  });
+}
+
+export async function DELETE(
+  request: NextRequest,
+  { params }: { params: Promise<{ id: string }> },
+) {
+  return apiHandler(async () => {
+    const { id } = await params;
+    if (!id) {
+      throw new ValidationError("Form ID is required");
+    }
+
+    const existing = await prisma.form.findUnique({
+      where: { id },
+      select: { id: true },
+    });
+
+    if (!existing) {
+      throw new NotFoundError("Form not found");
+    }
+
+    await prisma.form.delete({ where: { id } });
+
+    return NextResponse.json({ success: true, data: { id } }, { status: 200 });
   });
 }
