@@ -2,8 +2,8 @@ import { NextRequest, NextResponse } from "next/server";
 import { Prisma } from "@prisma/client";
 import prisma from "@/lib/prisma";
 import { apiHandler } from "@/lib/utils/apiUtils";
-import { NotFoundError, ValidationError } from "@/lib/errors";
 import { CreateFormSchema } from "@/lib/schema/formSchema";
+import { ValidationError, InternalServerError } from "@/lib/errors";
 
 function toSlug(value: string): string {
   const normalized = value
@@ -13,46 +13,11 @@ function toSlug(value: string): string {
   return normalized || "untitled-form";
 }
 
-export async function GET(
-  request: NextRequest,
-  { params }: { params: { id: string } },
-) {
-  const { id } = params;
-  if (!id) {
-    return NextResponse.json({ error: "Form ID is required" }, { status: 400 });
-  }
-
-  try {
-    const form = await prisma.form.findUnique({
-      where: { id },
-      include: {
-        blocks: true,
-      },
-    });
-    if (!form) {
-      return NextResponse.json({ error: "Form not found" }, { status: 404 });
-    }
-    return NextResponse.json(form);
-  } catch (error) {
-    return NextResponse.json(
-      { error: "Failed to fetch form" },
-      { status: 500 },
-    );
-  }
-}
-
-export async function PUT(
-  request: NextRequest,
-  { params }: { params: { id: string } },
-) {
+export async function POST(request: NextRequest) {
   return apiHandler(async () => {
-    const { id } = params;
-    if (!id) {
-      throw new ValidationError("Form ID is required");
-    }
-
     const body = await request.json();
     const parsed = CreateFormSchema.safeParse(body);
+
     if (!parsed.success) {
       throw new ValidationError(
         parsed.error.issues[0]?.message || "Invalid request body",
@@ -61,34 +26,36 @@ export async function PUT(
 
     const { title, theme, blocks, description, slug } = parsed.data;
 
-    // --- Check form exists ---
-    const existing = await prisma.form.findUnique({ where: { id } });
-    if (!existing) {
-      throw new NotFoundError("Form not found");
+    // Phase 1 single-user fallback.
+    const user = await prisma.user.findFirst({
+      orderBy: { id: "asc" },
+      select: { id: true },
+    });
+
+    if (!user) {
+      throw new InternalServerError("No user found. Run seed first.");
     }
 
+    // Auto-generate slug if not provided.
     const generatedSlug = toSlug(slug?.trim() || title);
 
-    const duplicateForm = await prisma.form.findFirst({
-      where: {
-        slug: generatedSlug,
-        NOT: { id },
-      },
+    // Check for slug uniqueness.
+    const existingForm = await prisma.form.findUnique({
+      where: { slug: generatedSlug },
     });
-    if (duplicateForm) {
+    if (existingForm) {
       throw new ValidationError("Slug already exists");
     }
 
-    // Replace the whole form payload in the same style as POST.
-    const form = await prisma.form.update({
-      where: { id },
+    // Create form with blocks.
+    const form = await prisma.form.create({
       data: {
         title,
         theme,
         description: description ?? null,
         slug: generatedSlug,
+        userId: user.id,
         blocks: {
-          deleteMany: {},
           create: blocks.map((block, idx) => ({
             type: block.type,
             name: block.name,

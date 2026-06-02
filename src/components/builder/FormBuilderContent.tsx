@@ -55,7 +55,15 @@ interface DragState {
  *
  * @returns {JSX.Element} The rendered component.
  */
-export const FormBuilderContent = (): JSX.Element => {
+interface FormBuilderContentProps {
+  isPersisting?: boolean;
+  persistMessage?: string;
+}
+
+export const FormBuilderContent = ({
+  isPersisting = false,
+  persistMessage = "",
+}: FormBuilderContentProps): JSX.Element => {
   const [dragState, setDragState] = useState<DragState>({
     overId: null,
     activeItem: null,
@@ -153,6 +161,14 @@ export const FormBuilderContent = (): JSX.Element => {
 
   return (
     <>
+      {isPersisting && (
+        <div className="absolute inset-0 z-40 bg-black/30 backdrop-blur-[1px] flex items-center justify-center pt-4">
+          <div className="text-white text-3xl font-medium">
+            {persistMessage}
+          </div>
+        </div>
+      )}
+
       {/* Drag Context Container */}
       <DndContext
         sensors={sensors}

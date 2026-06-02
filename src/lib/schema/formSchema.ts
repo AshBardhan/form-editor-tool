@@ -154,3 +154,67 @@ export const formBlockSchemas: Record<string, z.ZodSchema> = {
     reverse: z.boolean(),
   }),
 };
+
+const nonEmptyString = z.string().trim().min(1);
+const formThemeSchema = z.enum(["light", "dark"]);
+const formStatusSchema = z.enum(["draft", "published"]);
+
+/**
+ * Form block request schema.
+ * Validates the shared block metadata first, then uses `superRefine` to apply
+ * the correct `props` schema for the selected block type.
+ */
+const formBlockInputSchema = z
+  .object({
+    id: nonEmptyString.optional(),
+    type: nonEmptyString,
+    name: nonEmptyString,
+    props: z.record(z.string(), z.unknown()).default({}),
+  })
+  .superRefine((block, ctx) => {
+    const blockSchema = formBlockSchemas[block.type];
+    if (!blockSchema) {
+      ctx.addIssue({
+        code: z.ZodIssueCode.custom,
+        path: ["type"],
+        message: `Unsupported block type: ${block.type}`,
+      });
+      return;
+    }
+
+    const validation = blockSchema.safeParse(block.props);
+    if (!validation.success) {
+      for (const issue of validation.error.issues) {
+        ctx.addIssue({
+          code: z.ZodIssueCode.custom,
+          path: ["props", ...issue.path],
+          message: issue.message,
+        });
+      }
+    }
+  });
+
+export const CreateFormSchema = z.object({
+  title: nonEmptyString,
+  theme: formThemeSchema.default("light"),
+  description: z.string().trim().optional().nullable(),
+  slug: z.string().trim().optional().nullable(),
+  blocks: z.array(formBlockInputSchema).default([]),
+});
+
+/**
+ * Schema for partial form updates.
+ * Allows updating one or more top-level form fields and/or the blocks array.
+ */
+export const UpdateFormSchema = z
+  .object({
+    title: nonEmptyString.optional(),
+    theme: formThemeSchema.optional(),
+    description: z.string().trim().optional().nullable(),
+    slug: z.string().trim().optional().nullable(),
+    status: formStatusSchema.optional(),
+    blocks: z.array(formBlockInputSchema).optional(),
+  })
+  .refine((data) => Object.keys(data).length > 0, {
+    message: "At least one field is required for update",
+  });

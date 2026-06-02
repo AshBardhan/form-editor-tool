@@ -9,7 +9,7 @@ import {
 } from "@/lib/types/form";
 import { blockPropTemplates } from "@/lib/constants/widgetTemplates";
 import { widgetPalette } from "@/lib/constants/widgetPalette";
-import { formBlockSchemas } from "@/lib/schema/formBlockSchema";
+import { formBlockSchemas } from "@/lib/schema/formSchema";
 import { formMetricLabel } from "@/lib/constants/form";
 
 /**

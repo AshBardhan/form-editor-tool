@@ -23,7 +23,7 @@ export default function RootLayout({
     <html lang="en" suppressHydrationWarning>
       <body suppressHydrationWarning>
         <MockProvider>{children}</MockProvider>
-        <Toaster />
+        <Toaster position="bottom-center" />
       </body>
     </html>
   );

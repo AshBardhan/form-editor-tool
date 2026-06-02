@@ -9,14 +9,14 @@ interface FormGridProps {
 }
 
 /**
- * FormGrid 
+ * FormGrid
  * - Displays a grid of form cards
  * - Handles empty state when no forms are available
  *
  * @param {FormGridProps} props - The component props containing the list of forms.
  * @returns {JSX.Element} The rendered grid of form cards or an empty state message.
  */
-export function FormGrid({forms}: FormGridProps) {
+export function FormGrid({ forms }: FormGridProps) {
   if (!forms || forms.length === 0) {
     return (
       <div className="text-center py-12">

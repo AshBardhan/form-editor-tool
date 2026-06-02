@@ -25,7 +25,7 @@ export default async function FormsPage(): Promise<JSX.Element> {
   // Map to FormListItem[]
   const formList: FormList = forms.map((form) => ({
     id: form.id,
-    name: form.title,
+    title: form.title,
     status: form.status,
     metrics: {
       blocks: form._count.blocks,

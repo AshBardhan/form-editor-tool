@@ -33,7 +33,7 @@ export function FormCard({ form }: FormCardProps) {
             variant="h4"
             className="truncate group-hover:text-primary transition-colors"
           >
-            {form.name}
+            {form.title}
           </Text>
           <div className="flex gap-8">
             {getFormMetrics(form.metrics).map((metric) => (

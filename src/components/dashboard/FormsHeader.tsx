@@ -1,4 +1,4 @@
-"use client"
+"use client";
 
 import { FileText, Plus } from "lucide-react";
 import Text from "@/components/ui/Text";
