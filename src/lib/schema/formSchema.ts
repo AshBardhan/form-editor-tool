@@ -203,6 +203,13 @@ export const CreateFormSchema = z.object({
 });
 
 /**
+ * Schema for toggling form publish status.
+ */
+export const PatchFormStatusSchema = z.object({
+  status: formStatusSchema,
+});
+
+/**
  * Schema for partial form updates.
  * Allows updating one or more top-level form fields and/or the blocks array.
  */

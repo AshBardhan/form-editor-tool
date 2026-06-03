@@ -5,7 +5,7 @@ import { FormGrid } from "@/components/dashboard/FormGrid";
 import { JSX } from "react";
 
 export default async function FormsPage(): Promise<JSX.Element> {
-  let forms: any[] | null = null;
+  let forms = null;
   let error = false;
   try {
     forms = await prisma.form.findMany({

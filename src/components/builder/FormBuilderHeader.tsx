@@ -1,11 +1,13 @@
 "use client";
 
 import { Button } from "@/components/ui/Button";
+import { Badge } from "@/components/ui/Badge";
 import { AlertTriangle, PanelLeft, PanelRight } from "lucide-react";
 import { JSX, useState, useEffect } from "react";
 import { useFormConfigStore, useUIStateStore } from "@/lib/stores";
 import { cn } from "@/lib/utils/styleUtils";
 import { switchFormTheme } from "@/lib/utils/domUtils";
+import { FormStatus } from "@/lib/types/form";
 import {
   Modal,
   ModalContent,
@@ -37,6 +39,7 @@ interface FormBuilderHeaderProps {
   onSave: () => void;
   onCancel: () => void;
   onDelete: () => void;
+  onUpdateFormStatus: (nextStatus: FormStatus) => void;
   isSubmitting: boolean;
 }
 
@@ -44,11 +47,14 @@ export const FormBuilderHeader = ({
   onSave,
   onCancel,
   onDelete,
+  onUpdateFormStatus,
   isSubmitting,
 }: FormBuilderHeaderProps): JSX.Element => {
+  const formId = useFormConfigStore((state) => state.formConfig.id);
   const formTitle = useFormConfigStore((state) => state.formConfig.title);
   const formTheme = useFormConfigStore((state) => state.formConfig.theme);
-  const canDelete = useFormConfigStore((state) => !!state.formConfig.id);
+  const formStatus = useFormConfigStore((state) => state.formConfig.status);
+  const isNewForm = !formId;
   const isSidebarCollapsed = useUIStateStore(
     (state) => state.isSidebarCollapsed,
   );
@@ -57,9 +63,23 @@ export const FormBuilderHeader = ({
   const isRightCollapsed = isSidebarCollapsed.right;
   const [isPreviewOpen, setIsPreviewOpen] = useState(false);
   const [isDeleteConfirmOpen, setIsDeleteConfirmOpen] = useState(false);
+  const [isUnpublishConfirmOpen, setIsUnpublishConfirmOpen] = useState(false);
   const [currentDevice, setCurrentDevice] = useState<DeviceType>(
     DeviceType.DESKTOP,
   );
+
+  const currentStatus: FormStatus =
+    formStatus === "published" ? "published" : "draft";
+  const statusVariant = currentStatus === "published" ? "success" : "warning";
+  const statusLabel = currentStatus === "published" ? "Published" : "Draft";
+
+  const handlePublishAction = () => {
+    if (currentStatus === "published") {
+      setIsUnpublishConfirmOpen(true);
+      return;
+    }
+    onUpdateFormStatus("published");
+  };
 
   // Apply theme when preview modal is open
   useEffect(() => {
@@ -106,7 +126,12 @@ export const FormBuilderHeader = ({
         </div>
         {/* Form Title */}
         <div className="flex-1 px-8 flex items-center justify-between">
-          <div className="font-semibold text-xl">{formTitle}</div>
+          <div className="flex items-center gap-3">
+            <div className="font-semibold text-xl">{formTitle}</div>
+            {!isNewForm && (
+              <Badge label={statusLabel} variant={statusVariant} size="sm" />
+            )}
+          </div>
           <div className="flex gap-4">
             <Button variant="positive" onClick={onSave} disabled={isSubmitting}>
               Save
@@ -137,8 +162,12 @@ export const FormBuilderHeader = ({
               <DropdownMenuItem onSelect={() => setIsPreviewOpen(true)}>
                 Preview
               </DropdownMenuItem>
-              <DropdownMenuItem onSelect={() => {}}>Publish</DropdownMenuItem>
-              {canDelete && (
+              {!isNewForm && (
+                <DropdownMenuItem onSelect={handlePublishAction}>
+                  {currentStatus === "published" ? "Unpublish" : "Publish"}
+                </DropdownMenuItem>
+              )}
+              {!isNewForm && (
                 <DropdownMenuItem
                   onSelect={() => setIsDeleteConfirmOpen(true)}
                   className="text-red-600 dark:text-red-400"
@@ -199,6 +228,46 @@ export const FormBuilderHeader = ({
               disabled={isSubmitting}
             >
               Delete permanently
+            </Button>
+          </ModalFooter>
+        </ModalContent>
+      </Modal>
+
+      {/* Unpublish Confirmation Modal */}
+      <Modal
+        open={isUnpublishConfirmOpen}
+        onOpenChange={setIsUnpublishConfirmOpen}
+      >
+        <ModalContent size="sm">
+          <ModalHeader className="pb-2">
+            <div className="flex gap-3">
+              <AlertTriangle className="shrink-0 h-6 w-6 text-amber-600 dark:text-amber-500" />
+              <div className="flex-1 flex flex-col gap-2">
+                <ModalTitle>Unpublish this form?</ModalTitle>
+                <ModalDescription>
+                  Unpublishing will take this form offline immediately and pause
+                  new submissions until it is published again.
+                </ModalDescription>
+              </div>
+            </div>
+          </ModalHeader>
+          <ModalFooter>
+            <Button
+              variant="outline"
+              onClick={() => setIsUnpublishConfirmOpen(false)}
+              disabled={isSubmitting}
+            >
+              Keep published
+            </Button>
+            <Button
+              variant="destructive"
+              onClick={() => {
+                setIsUnpublishConfirmOpen(false);
+                onUpdateFormStatus("draft");
+              }}
+              disabled={isSubmitting}
+            >
+              Unpublish form
             </Button>
           </ModalFooter>
         </ModalContent>

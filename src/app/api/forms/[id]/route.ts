@@ -3,7 +3,10 @@ import { Prisma } from "@prisma/client";
 import prisma from "@/lib/prisma";
 import { apiHandler } from "@/lib/utils/apiUtils";
 import { NotFoundError, ValidationError } from "@/lib/errors";
-import { CreateFormSchema } from "@/lib/schema/formSchema";
+import {
+  CreateFormSchema,
+  PatchFormStatusSchema,
+} from "@/lib/schema/formSchema";
 
 function toSlug(value: string): string {
   const normalized = value
@@ -130,5 +133,54 @@ export async function DELETE(
     await prisma.form.delete({ where: { id } });
 
     return NextResponse.json({ success: true, data: { id } }, { status: 200 });
+  });
+}
+
+export async function PATCH(
+  request: NextRequest,
+  { params }: { params: Promise<{ id: string }> },
+) {
+  return apiHandler(async () => {
+    const { id } = await params;
+    if (!id) {
+      throw new ValidationError("Form ID is required");
+    }
+
+    const body = await request.json();
+    const parsed = PatchFormStatusSchema.safeParse(body);
+    if (!parsed.success) {
+      throw new ValidationError(
+        parsed.error.issues[0]?.message || "Invalid request body",
+      );
+    }
+
+    const { status } = parsed.data;
+
+    const existing = await prisma.form.findUnique({
+      where: { id },
+      select: { id: true, status: true },
+    });
+
+    if (!existing) {
+      throw new NotFoundError("Form not found");
+    }
+
+    const form = await prisma.form.update({
+      where: { id },
+      data: {
+        status,
+        publishedAt:
+          status === "published" && existing.status !== "published"
+            ? new Date()
+            : status === "draft"
+              ? null
+              : undefined,
+      },
+      include: {
+        blocks: true,
+      },
+    });
+
+    return NextResponse.json({ success: true, data: form }, { status: 200 });
   });
 }

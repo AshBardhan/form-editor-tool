@@ -1,7 +1,8 @@
 "use client";
 
 import { JSX, useEffect, useState } from "react";
-import { FormConfig } from "@/lib/types/form";
+import { FormConfig, FormStatus } from "@/lib/types/form";
+import { FORM_STATUS_UPDATE_MESSAGES } from "@/lib/constants/form";
 import { useFormConfigStore, useUIStateStore } from "@/lib/stores";
 import { Header } from "@/components/layout/Header";
 import { FormBuilderHeader } from "@/components/builder/FormBuilderHeader";
@@ -146,6 +147,52 @@ export const FormBuilderContainer = ({
     }
   };
 
+  const handleUpdateFormStatus = async (nextStatus: FormStatus) => {
+    if (!formConfig.id) {
+      toast.error("Publish unavailable", {
+        description: "Save this form first before changing publish status.",
+      });
+      return;
+    }
+
+    const messages = FORM_STATUS_UPDATE_MESSAGES[nextStatus];
+    setPersistMessage(messages.transitioning);
+    setIsPersisting(true);
+
+    try {
+      const response = await fetch(`/api/forms/${formConfig.id}`, {
+        method: "PATCH",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ status: nextStatus }),
+      });
+
+      const result = (await response.json()) as ApiResponse<FormConfig>;
+      if (!response.ok) {
+        throw new Error(result.error?.message || messages.error.description);
+      }
+
+      if (!result.success || !result.data) {
+        throw new Error("Unexpected response from server.");
+      }
+
+      setFormConfig(result.data);
+
+      toast.success(messages.success.title, {
+        description: messages.success.description,
+      });
+    } catch (error) {
+      const message =
+        error instanceof Error ? error.message : messages.error.description;
+
+      toast.error(messages.error.title, {
+        description: message,
+      });
+    } finally {
+      setIsPersisting(false);
+      setPersistMessage("");
+    }
+  };
+
   useEffect(() => {
     setFormConfig(form);
     return () => {
@@ -161,6 +208,7 @@ export const FormBuilderContainer = ({
           onSave={handleSave}
           onCancel={handleCancel}
           onDelete={handleDelete}
+          onUpdateFormStatus={handleUpdateFormStatus}
           isSubmitting={isPersisting}
         />
       </Header>

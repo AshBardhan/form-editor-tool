@@ -5,6 +5,7 @@ import Text from "@/components/ui/Text";
 import Metric from "@/components/ui/Metric";
 import { Badge } from "@/components/ui/Badge";
 import { getFormMetrics } from "@/lib/utils/formUtils";
+import { formStatusLabel, formStatusVariant } from "@/lib/constants/form";
 
 interface FormCardProps {
   form: FormListItem;
@@ -16,8 +17,8 @@ interface FormCardProps {
  * Future: Add metrics (widget count, submission count)
  */
 export function FormCard({ form }: FormCardProps) {
-  const statusVariant = form.status === "published" ? "success" : "warning";
-  const statusLabel = form.status === "published" ? "Published" : "Draft";
+  const statusVariant = formStatusVariant[form.status] ?? "neutral";
+  const statusLabel = formStatusLabel[form.status];
 
   return (
     <Link href={`/forms/${form.id}`} className="block group">

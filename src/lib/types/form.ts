@@ -28,6 +28,10 @@ export type FormBlockPropType =
   | "list"
   | "select";
 
+export type FormStatus = "draft" | "published";
+
+export type FormBlockOrientation = "horizontal" | "vertical";
+
 /**
  * Form block prop template - used for widget templates
  * Contains full metadata including labels, types, options, and default values
@@ -72,13 +76,10 @@ export interface FormBlock {
 export interface FormConfig {
   id?: string; // Form ID for tracking (undefined for new forms)
   title: string;
+  status?: FormStatus;
   theme: "light" | "dark";
   blocks: FormBlock[];
 }
-
-export type FormStatus = "draft" | "published";
-
-export type FormBlockOrientation = "horizontal" | "vertical";
 
 /**
  * Form metric template - used for rendering metrics with labels
@@ -104,3 +105,19 @@ export interface FormListItem {
 }
 
 export type FormList = FormListItem[];
+
+/**
+ * Messages for form status transitions.
+ * Structure for success and error messages when updating form status.
+ */
+export interface FormStatusUpdateMessage {
+  transitioning: string;
+  success: {
+    title: string;
+    description: string;
+  };
+  error: {
+    title: string;
+    description: string;
+  };
+}
