@@ -20,28 +20,25 @@ export async function GET(
   request: NextRequest,
   { params }: { params: Promise<{ id: string }> },
 ) {
-  const { id } = await params;
-  if (!id) {
-    return NextResponse.json({ error: "Form ID is required" }, { status: 400 });
-  }
+  return apiHandler(async () => {
+    const { id } = await params;
+    if (!id) {
+      throw new ValidationError("Form ID is required");
+    }
 
-  try {
     const form = await prisma.form.findUnique({
       where: { id },
       include: {
         blocks: true,
       },
     });
+
     if (!form) {
-      return NextResponse.json({ error: "Form not found" }, { status: 404 });
+      throw new NotFoundError("Form not found");
     }
-    return NextResponse.json(form);
-  } catch (error) {
-    return NextResponse.json(
-      { error: "Failed to fetch form" },
-      { status: 500 },
-    );
-  }
+
+    return NextResponse.json({ success: true, data: form }, { status: 200 });
+  });
 }
 
 export async function PUT(
@@ -177,7 +174,9 @@ export async function PATCH(
               : undefined,
       },
       include: {
-        blocks: true,
+        blocks: {
+           orderBy: { order: "asc" },
+         },
       },
     });
 

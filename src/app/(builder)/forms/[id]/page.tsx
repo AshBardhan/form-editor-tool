@@ -13,7 +13,9 @@ export default async function FormPage({ params }: FormPageProps) {
   const form = (await prisma.form.findUnique({
     where: { id },
     include: {
-      blocks: true,
+       blocks: {
+         orderBy: { order: "asc" },
+       },
     },
   })) as FormConfig | null;
 

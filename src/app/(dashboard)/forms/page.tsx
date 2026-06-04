@@ -17,7 +17,7 @@ export default async function FormsPage(): Promise<JSX.Element> {
         _count: { select: { blocks: true, submissions: true } },
       },
     });
-  } catch (e) {
+  } catch (_) {
     error = true;
   }
   if (error || !forms) return notFound();
