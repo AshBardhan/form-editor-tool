@@ -3,6 +3,7 @@ import { FormConfig } from "@/lib/types/form";
 export const sampleLightForm: FormConfig = {
   id: "123",
   title: "Profile Settings Form",
+  slug: "profile-settings",
   theme: "light",
   blocks: [
     {
@@ -133,6 +134,7 @@ export const sampleLightForm: FormConfig = {
 export const sampleDarkForm: FormConfig = {
   id: "666",
   title: "Dark Settings Form",
+  slug: "dark-settings",
   theme: "dark",
   blocks: [
     {
