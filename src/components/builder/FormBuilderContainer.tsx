@@ -31,6 +31,7 @@ export const FormBuilderContainer = ({
   const resetSidebar = useUIStateStore((state) => state.resetSidebar);
   const [isPersisting, setIsPersisting] = useState(false);
   const [persistMessage, setPersistMessage] = useState("");
+  const formIdentifier = formConfig.slug ?? formConfig.id;
 
   const handleCancel = () => {
     if (!isPersisting) {
@@ -56,7 +57,7 @@ export const FormBuilderContainer = ({
       };
 
       const response = await fetch(
-        isNewForm ? "/api/forms" : `/api/forms/${formConfig.id}`,
+        isNewForm ? "/api/forms" : `/api/forms/${formIdentifier}`,
         {
           method: isNewForm ? "POST" : "PUT",
           headers: { "Content-Type": "application/json" },
@@ -78,8 +79,8 @@ export const FormBuilderContainer = ({
       const savedForm = result.data;
       setFormConfig(savedForm);
 
-      if (isNewForm && savedForm.id) {
-        router.replace(`/forms/${savedForm.id}`);
+      if (isNewForm && savedForm.slug) {
+        router.replace(`/forms/${savedForm.slug}/builder`);
       }
 
       toast.success(isNewForm ? "Draft saved" : "Changes updated", {
@@ -103,7 +104,7 @@ export const FormBuilderContainer = ({
   };
 
   const handleDelete = async () => {
-    if (!formConfig.id) {
+    if (!formConfig.id || !formIdentifier) {
       toast.error("Delete unavailable", {
         description: "Save this form first before deleting it.",
       });
@@ -114,7 +115,7 @@ export const FormBuilderContainer = ({
     setIsPersisting(true);
 
     try {
-      const response = await fetch(`/api/forms/${formConfig.id}`, {
+      const response = await fetch(`/api/forms/${formIdentifier}`, {
         method: "DELETE",
       });
 
@@ -148,7 +149,7 @@ export const FormBuilderContainer = ({
   };
 
   const handleUpdateFormStatus = async (nextStatus: FormStatus) => {
-    if (!formConfig.id) {
+    if (!formConfig.id || !formIdentifier) {
       toast.error("Publish unavailable", {
         description: "Save this form first before changing publish status.",
       });
@@ -160,7 +161,7 @@ export const FormBuilderContainer = ({
     setIsPersisting(true);
 
     try {
-      const response = await fetch(`/api/forms/${formConfig.id}`, {
+      const response = await fetch(`/api/forms/${formIdentifier}`, {
         method: "PATCH",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ status: nextStatus }),

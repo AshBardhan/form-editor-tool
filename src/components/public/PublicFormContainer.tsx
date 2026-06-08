@@ -1,19 +1,16 @@
 "use client";
 
-import { JSX, useEffect, useState } from "react";
+import { useState } from "react";
 import { useRouter } from "next/navigation";
 import { Card, CardContent } from "@/components/ui/Card";
 import Text from "@/components/ui/Text";
-import { FormBlock, FormBlockValueType } from "@/lib/types/form";
+import { Button } from "@/components/ui/Button";
+import { FormBlock } from "@/lib/types/form";
 import { widgetBlockRenderers } from "@/components/form/blocks";
-import {
-  validateFormBlock,
-  isInputBlockType,
-} from "@/lib/utils/formValidationUtils";
+import { validateFormBlock } from "@/lib/utils/formValidationUtils";
 import { ErrorMessages } from "@/components/form/ErrorMessages";
 import { useFormDataStore } from "@/lib/stores/formDataStore";
-import { getFieldKey } from "@/lib/utils/formUtils";
-import { switchFormTheme } from "@/lib/utils/domUtils";
+import { useFormBlockValidationStore } from "@/lib/stores/formBlockValidationStore";
 
 interface PublicFormContainerProps {
   form: {
@@ -29,77 +26,66 @@ export function PublicFormContainer({ form }: PublicFormContainerProps) {
   const router = useRouter();
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [submitError, setSubmitError] = useState<string | null>(null);
-  const [blockErrors, setBlockErrors] = useState<Record<string, string[]>>({});
-  const [hasSubmitted, setHasSubmitted] = useState(false);
 
   const formData = useFormDataStore((state) => state.formData);
-  const updateFormData = useFormDataStore((state) => state.updateFormData);
   const resetFormData = useFormDataStore((state) => state.resetFormData);
 
-  useEffect(() => {
-    switchFormTheme(form.theme);
-  }, [form.theme]);
+  const formBlockErrors = useFormBlockValidationStore(
+    (state) => state.formBlockErrors,
+  );
+  const updateFormBlockErrors = useFormBlockValidationStore(
+    (state) => state.updateFormBlockErrors,
+  );
+  const clearAllFormBlockErrors = useFormBlockValidationStore(
+    (state) => state.clearAllFormBlockErrors,
+  );
 
-  useEffect(() => {
-    return () => {
-      resetFormData();
-      setBlockErrors({});
-    };
-  }, [resetFormData]);
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    setSubmitError(null);
 
-  const handleFieldChange = (key: string, value: FormBlockValueType) => {
-    updateFormData(key, value);
-
-    if (hasSubmitted) {
-      const block = form.blocks.find((b) => getFieldKey(b) === key);
-      if (block) {
-        setBlockErrors((prev) => ({
-          ...prev,
-          [block.id]: validateFormBlock(block, value),
-        }));
-      }
-    }
-  };
-
-  const validateBlock = (block: FormBlock): string[] => {
-    const fieldKey = getFieldKey(block);
-    return validateFormBlock(block, formData[fieldKey]);
-  };
-
-  const validateForm = (): boolean => {
+    // Validate all form blocks
     const errors: Record<string, string[]> = {};
-    let isValid = true;
+    let hasErrors = false;
 
     form.blocks.forEach((block) => {
-      const fieldErrors = validateBlock(block);
-      if (fieldErrors.length > 0) {
-        isValid = false;
-        errors[block.id] = fieldErrors;
+      const blockErrors = validateFormBlock(block, formData[block.name]);
+      if (blockErrors.length > 0) {
+        errors[block.id] = blockErrors;
+        hasErrors = true;
       }
     });
 
-    setBlockErrors(errors);
-    return isValid;
-  };
+    // Update errors in store
+    Object.entries(errors).forEach(([blockId, blockErrors]) => {
+      updateFormBlockErrors(blockId, blockErrors);
+    });
 
-  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
-    if (isSubmitting) return;
-    setHasSubmitted(true);
-    setSubmitError(null);
-
-    if (!validateForm()) {
+    if (hasErrors) {
       return;
     }
 
     setIsSubmitting(true);
 
     try {
+      // Prepare submission data
       const responses = form.blocks
-        .filter((block) => isInputBlockType(block.type))
+        .filter((block) =>
+          [
+            "text",
+            "number",
+            "email",
+            "url",
+            "password",
+            "textarea",
+            "select",
+            "radio",
+            "checkbox",
+          ].includes(block.type),
+        )
         .map((block) => ({
           blockId: block.id,
-          value: formData[getFieldKey(block)] ?? null,
+          value: formData[block.name] ?? null,
         }));
 
       const response = await fetch("/api/submissions", {
@@ -116,9 +102,11 @@ export function PublicFormContainer({ form }: PublicFormContainerProps) {
         throw new Error(error.error || "Failed to submit form");
       }
 
+      // Clear form data and errors
       resetFormData();
-      setBlockErrors({});
+      clearAllFormBlockErrors();
 
+      // Redirect to success page
       router.push(`/f/${form.id}/success`);
     } catch (error) {
       console.error("Submission error:", error);
@@ -130,43 +118,10 @@ export function PublicFormContainer({ form }: PublicFormContainerProps) {
     }
   };
 
-  const handleReset = (e: React.FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
+  const handleReset = () => {
     resetFormData();
-    setBlockErrors({});
+    clearAllFormBlockErrors();
     setSubmitError(null);
-    setHasSubmitted(false);
-  };
-
-  const renderFormBlock = (block: FormBlock): JSX.Element | null => {
-    const FormRenderer = widgetBlockRenderers[block.type];
-    if (!FormRenderer) return null;
-
-    if (isInputBlockType(block.type)) {
-      const InputRenderer = FormRenderer as React.ComponentType<{
-        block: FormBlock;
-        editable?: boolean;
-        value?: FormBlockValueType;
-        onChange?: (value: FormBlockValueType) => void;
-        errors?: string[];
-      }>;
-
-      const fieldKey = getFieldKey(block);
-      return (
-        <InputRenderer
-          key={block.id}
-          block={block}
-          editable
-          value={formData[fieldKey]}
-          onChange={(value: FormBlockValueType) =>
-            handleFieldChange(fieldKey, value)
-          }
-          errors={blockErrors[block.id] || []}
-        />
-      );
-    }
-
-    return <FormRenderer key={block.id} block={block} />;
   };
 
   return (
@@ -175,22 +130,57 @@ export function PublicFormContainer({ form }: PublicFormContainerProps) {
       data-theme={form.theme}
     >
       <div className="max-w-3xl mx-auto space-y-6">
+        {/* Form Header */}
+        <div className="space-y-2">
+          <Text variant="h2" className="text-foreground">
+            {form.title}
+          </Text>
+          {form.description && (
+            <Text className="text-muted-foreground">{form.description}</Text>
+          )}
+        </div>
+
         {/* Form */}
         <Card>
           <CardContent>
-            <form
-              onSubmit={handleSubmit}
-              onReset={handleReset}
-              className="space-y-6"
-              noValidate
-            >
+            <form onSubmit={handleSubmit} className="space-y-6">
               {/* Form Blocks */}
               <div className="space-y-4">
-                {form.blocks.map((block) => renderFormBlock(block))}
+                {form.blocks.map((block) => {
+                  const BlockComponent = widgetBlockRenderers[block.type];
+                  return BlockComponent ? (
+                    <div key={block.id}>
+                      <BlockComponent block={block} />
+                      {formBlockErrors[block.id] &&
+                        formBlockErrors[block.id].length > 0 && (
+                          <ErrorMessages errors={formBlockErrors[block.id]} />
+                        )}
+                    </div>
+                  ) : null;
+                })}
               </div>
 
               {/* Submit Error */}
               {submitError && <ErrorMessages errors={[submitError]} />}
+
+              {/* Form Actions */}
+              <div className="flex gap-3 pt-4 border-t border-border">
+                <Button
+                  type="submit"
+                  disabled={isSubmitting}
+                  className="flex-1"
+                >
+                  {isSubmitting ? "Submitting..." : "Submit"}
+                </Button>
+                <Button
+                  type="button"
+                  variant="secondary"
+                  onClick={handleReset}
+                  disabled={isSubmitting}
+                >
+                  Reset
+                </Button>
+              </div>
             </form>
           </CardContent>
         </Card>

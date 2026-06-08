@@ -5,18 +5,17 @@ import { NotFoundError, ValidationError } from "@/lib/errors";
 
 export async function GET(
   request: NextRequest,
-  { params }: { params: Promise<{ id: string }> },
+  { params }: { params: Promise<{ slug: string }> },
 ) {
   return apiHandler(async () => {
-    const { id } = await params;
+    const { slug } = await params;
 
-    if (!id) {
-      throw new ValidationError("Form ID is required");
+    if (!slug) {
+      throw new ValidationError("Form slug is required");
     }
 
-    // Verify form exists
     const form = await prisma.form.findUnique({
-      where: { id },
+      where: { slug },
       select: { id: true, title: true },
     });
 
@@ -24,9 +23,8 @@ export async function GET(
       throw new NotFoundError("Form not found");
     }
 
-    // Fetch all submissions for this form
     const submissions = await prisma.formSubmission.findMany({
-      where: { formId: id },
+      where: { formId: form.id },
       include: {
         responses: {
           include: {

@@ -100,6 +100,7 @@ export type FormMetrics = Record<string, string | number>;
 
 export interface FormListItem {
   id: string;
+  slug: string;
   title: string;
   status: FormStatus;
   metrics: FormMetrics;

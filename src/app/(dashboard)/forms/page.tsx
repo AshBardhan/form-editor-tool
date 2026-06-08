@@ -12,6 +12,7 @@ export default async function FormsPage(): Promise<JSX.Element> {
       orderBy: { updatedAt: "desc" },
       select: {
         id: true,
+        slug: true,
         title: true,
         status: true,
         _count: { select: { blocks: true, submissions: true } },
@@ -25,6 +26,7 @@ export default async function FormsPage(): Promise<JSX.Element> {
   // Map to FormListItem[]
   const formList: FormList = forms.map((form) => ({
     id: form.id,
+    slug: form.slug,
     title: form.title,
     status: form.status,
     metrics: {

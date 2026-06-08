@@ -5,8 +5,7 @@ import { useParams } from "next/navigation";
 import Link from "next/link";
 import Text from "@/components/ui/Text";
 import { Button } from "@/components/ui/Button";
-import { ResponseList } from "@/components/responses/ResponseList";
-import { ResponseMetrics } from "@/components/responses/ResponseMetrics";
+import { FieldAnalysisList } from "@/components/responses/FieldAnalysisList";
 import { Skeleton } from "@/components/ui/Skeleton";
 import { FormBlockProps } from "@/lib/types/form";
 
@@ -34,9 +33,9 @@ interface ResponsesData {
   totalSubmissions: number;
 }
 
-export default function FormResponsesPage() {
+export default function FieldAnalysisPage() {
   const params = useParams();
-  const formId = params.id as string;
+  const slug = params.slug as string;
 
   const [data, setData] = useState<ResponsesData | null>(null);
   const [loading, setLoading] = useState(true);
@@ -45,7 +44,7 @@ export default function FormResponsesPage() {
   useEffect(() => {
     async function fetchResponses() {
       try {
-        const response = await fetch(`/api/forms/${formId}/responses`);
+        const response = await fetch(`/api/forms/${slug}/responses`);
         if (!response.ok) {
           throw new Error("Failed to fetch responses");
         }
@@ -59,13 +58,12 @@ export default function FormResponsesPage() {
     }
 
     fetchResponses();
-  }, [formId]);
+  }, [slug]);
 
   if (loading) {
     return (
       <div className="space-y-6 p-6">
         <Skeleton className="h-8 w-64" />
-        <Skeleton className="h-24 w-full" />
         <Skeleton className="h-64 w-full" />
       </div>
     );
@@ -75,10 +73,10 @@ export default function FormResponsesPage() {
     return (
       <div className="p-6 space-y-4">
         <Text variant="h3" className="text-error">
-          Error Loading Responses
+          Error Loading Analysis
         </Text>
         <Text className="text-muted-foreground">
-          {error || "Unable to load form responses"}
+          {error || "Unable to load field analysis"}
         </Text>
         <Link href="/forms">
           <Button variant="secondary" size="sm">
@@ -97,15 +95,15 @@ export default function FormResponsesPage() {
           <Text variant="h3" className="text-foreground">
             {data.form.title}
           </Text>
-          <Text className="text-muted-foreground">Form Responses</Text>
+          <Text className="text-muted-foreground">Field-by-Field Analysis</Text>
         </div>
         <div className="flex gap-3">
-          <Link href={`/forms/${formId}/responses/fields`}>
+          <Link href={`/forms/${slug}/reports/responses`}>
             <Button variant="secondary" size="sm">
-              Field Analysis
+              View Responses
             </Button>
           </Link>
-          <Link href={`/forms/${formId}`}>
+          <Link href={`/forms/${slug}/builder`}>
             <Button variant="secondary" size="sm">
               Back to Editor
             </Button>
@@ -113,10 +111,7 @@ export default function FormResponsesPage() {
         </div>
       </div>
 
-      {/* Metrics */}
-      <ResponseMetrics submissions={data.submissions} />
-
-      {/* Responses List */}
+      {/* Field Analysis */}
       {data.submissions.length === 0 ? (
         <div className="text-center py-12">
           <Text className="text-muted-foreground">
@@ -124,7 +119,10 @@ export default function FormResponsesPage() {
           </Text>
         </div>
       ) : (
-        <ResponseList submissions={data.submissions} />
+        <FieldAnalysisList
+          submissions={data.submissions}
+          totalSubmissions={data.totalSubmissions}
+        />
       )}
     </div>
   );

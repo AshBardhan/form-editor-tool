@@ -4,18 +4,18 @@ import { FormConfig } from "@/lib/types/form";
 import { FormBuilderContainer } from "@/components/builder/FormBuilderContainer";
 
 interface FormPageProps {
-  params: Promise<{ id: string }>;
+  params: Promise<{ slug: string }>;
 }
 
 export default async function FormPage({ params }: FormPageProps) {
-  const { id } = await params;
+  const { slug } = await params;
 
   const form = (await prisma.form.findUnique({
-    where: { id },
+    where: { slug },
     include: {
-       blocks: {
-         orderBy: { order: "asc" },
-       },
+      blocks: {
+        orderBy: { order: "asc" },
+      },
     },
   })) as FormConfig | null;
 

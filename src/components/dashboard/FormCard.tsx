@@ -21,7 +21,7 @@ export function FormCard({ form }: FormCardProps) {
   const statusLabel = formStatusLabel[form.status];
 
   return (
-    <Link href={`/forms/${form.id}`} className="block group">
+    <Link href={`/forms/${form.slug}`} className="block group">
       <Card className="hover:shadow-lg transition-shadow duration-200 h-full relative">
         <Badge
           label={statusLabel}

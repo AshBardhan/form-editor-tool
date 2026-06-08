@@ -16,18 +16,31 @@ function toSlug(value: string): string {
   return normalized || "untitled-form";
 }
 
+async function resolveFormIdBySlug(slug: string): Promise<string> {
+  const form = await prisma.form.findUnique({
+    where: { slug },
+    select: { id: true },
+  });
+
+  if (!form) {
+    throw new NotFoundError("Form not found");
+  }
+
+  return form.id;
+}
+
 export async function GET(
   request: NextRequest,
-  { params }: { params: Promise<{ id: string }> },
+  { params }: { params: Promise<{ slug: string }> },
 ) {
   return apiHandler(async () => {
-    const { id } = await params;
-    if (!id) {
-      throw new ValidationError("Form ID is required");
+    const { slug } = await params;
+    if (!slug) {
+      throw new ValidationError("Form slug is required");
     }
 
     const form = await prisma.form.findUnique({
-      where: { id },
+      where: { slug },
       include: {
         blocks: true,
       },
@@ -43,13 +56,15 @@ export async function GET(
 
 export async function PUT(
   request: NextRequest,
-  { params }: { params: Promise<{ id: string }> },
+  { params }: { params: Promise<{ slug: string }> },
 ) {
   return apiHandler(async () => {
-    const { id } = await params;
-    if (!id) {
-      throw new ValidationError("Form ID is required");
+    const { slug } = await params;
+    if (!slug) {
+      throw new ValidationError("Form slug is required");
     }
+
+    const id = await resolveFormIdBySlug(slug);
 
     const body = await request.json();
     const parsed = CreateFormSchema.safeParse(body);
@@ -59,15 +74,9 @@ export async function PUT(
       );
     }
 
-    const { title, theme, blocks, description, slug } = parsed.data;
+    const { title, theme, blocks, description, slug: inputSlug } = parsed.data;
 
-    // --- Check form exists ---
-    const existing = await prisma.form.findUnique({ where: { id } });
-    if (!existing) {
-      throw new NotFoundError("Form not found");
-    }
-
-    const generatedSlug = toSlug(slug?.trim() || title);
+    const generatedSlug = toSlug(inputSlug?.trim() || title);
 
     const duplicateForm = await prisma.form.findFirst({
       where: {
@@ -79,7 +88,6 @@ export async function PUT(
       throw new ValidationError("Slug already exists");
     }
 
-    // Replace the whole form payload in the same style as POST.
     const form = await prisma.form.update({
       where: { id },
       data: {
@@ -110,13 +118,15 @@ export async function PUT(
 
 export async function DELETE(
   request: NextRequest,
-  { params }: { params: Promise<{ id: string }> },
+  { params }: { params: Promise<{ slug: string }> },
 ) {
   return apiHandler(async () => {
-    const { id } = await params;
-    if (!id) {
-      throw new ValidationError("Form ID is required");
+    const { slug } = await params;
+    if (!slug) {
+      throw new ValidationError("Form slug is required");
     }
+
+    const id = await resolveFormIdBySlug(slug);
 
     const existing = await prisma.form.findUnique({
       where: { id },
@@ -135,13 +145,15 @@ export async function DELETE(
 
 export async function PATCH(
   request: NextRequest,
-  { params }: { params: Promise<{ id: string }> },
+  { params }: { params: Promise<{ slug: string }> },
 ) {
   return apiHandler(async () => {
-    const { id } = await params;
-    if (!id) {
-      throw new ValidationError("Form ID is required");
+    const { slug } = await params;
+    if (!slug) {
+      throw new ValidationError("Form slug is required");
     }
+
+    const id = await resolveFormIdBySlug(slug);
 
     const body = await request.json();
     const parsed = PatchFormStatusSchema.safeParse(body);
@@ -174,9 +186,7 @@ export async function PATCH(
               : undefined,
       },
       include: {
-        blocks: {
-           orderBy: { order: "asc" },
-         },
+        blocks: true,
       },
     });
 
