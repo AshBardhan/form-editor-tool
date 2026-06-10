@@ -5,7 +5,10 @@ import {
   AppHeader,
   AppContent,
 } from "@/components/layout";
-import { NavigationTabs } from "@/components/ui/NavigationTabs";
+import prisma from "@/lib/prisma";
+import { notFound } from "next/navigation";
+import { FormHeader } from "@/components/form/FormHeader";
+import { FormBlockType } from "@/lib/types/form";
 
 interface LayoutProps {
   children: React.ReactNode;
@@ -14,26 +17,49 @@ interface LayoutProps {
 
 export default async function FormLayout({ children, params }: LayoutProps) {
   const { slug } = await params;
-  const formNavigationPaths = [
-    {
-      label: "Builder",
-      path: "builder",
-    },
-    {
-      label: "Reports",
-      path: "reports",
-      children: [
-        {
-          label: "Responses",
-          path: "responses",
+
+  const form = await prisma.form.findUnique({
+    where: { slug },
+    select: {
+      id: true,
+      slug: true,
+      title: true,
+      description: true,
+      theme: true,
+      status: true,
+      blocks: {
+        orderBy: { order: "asc" },
+        select: {
+          id: true,
+          type: true,
+          name: true,
+          props: true,
         },
-        {
-          label: "Fields",
-          path: "fields",
-        },
-      ],
+      },
     },
-  ];
+  });
+
+  if (!form || !form.slug) {
+    notFound();
+  }
+
+  const mappedForm = {
+    id: form.id,
+    slug: form.slug,
+    title: form.title,
+    description: form.description ?? undefined,
+    theme: form.theme,
+    status: form.status,
+    blocks: form.blocks.map((block) => ({
+      id: block.id,
+      type: block.type as FormBlockType,
+      name: block.name,
+      props: block.props as Record<
+        string,
+        string | number | boolean | string[] | undefined
+      >,
+    })),
+  };
 
   return (
     <>
@@ -41,11 +67,7 @@ export default async function FormLayout({ children, params }: LayoutProps) {
       <AppContent>
         <PageHeader className="pb-0">
           <PageContainer className="flex flex-col gap-4">
-            <div className="text-2xl font-semibold">Form Page Header</div>
-            <NavigationTabs
-              items={formNavigationPaths}
-              basePath={`/forms/${slug}`}
-            />
+            <FormHeader form={mappedForm} />
           </PageContainer>
         </PageHeader>
         <PageContent>{children}</PageContent>
