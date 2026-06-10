@@ -1,6 +1,6 @@
-import { FormList } from "@/lib/types/form";
+import { DashboardForms } from "@/lib/types/form";
 
-export const sampleFormList: FormList = [
+export const sampleFormList: DashboardForms = [
   {
     id: "123",
     title: "Profile Settings Form",

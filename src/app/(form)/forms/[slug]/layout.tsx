@@ -1,3 +1,10 @@
+import {
+  PageHeader,
+  PageContent,
+  PageContainer,
+  AppHeader,
+  AppContent,
+} from "@/components/layout";
 import { NavigationTabs } from "@/components/ui/NavigationTabs";
 
 interface LayoutProps {
@@ -29,18 +36,20 @@ export default async function FormLayout({ children, params }: LayoutProps) {
   ];
 
   return (
-    <div>
-      <div className="bg-gray-200">
-        <div className="flex flex-col max-w-7xl mx-auto py-4 px-6">
-          <div className="text-2xl font-semibold">Form Page Header</div>
-          <NavigationTabs
-            items={formNavigationPaths}
-            basePath={`/forms/${slug}`}
-            className="mt-4"
-          />
-        </div>
-      </div>
-      {children}
-    </div>
+    <>
+      <AppHeader />
+      <AppContent>
+        <PageHeader className="pb-0">
+          <PageContainer className="flex flex-col gap-4">
+            <div className="text-2xl font-semibold">Form Page Header</div>
+            <NavigationTabs
+              items={formNavigationPaths}
+              basePath={`/forms/${slug}`}
+            />
+          </PageContainer>
+        </PageHeader>
+        <PageContent>{children}</PageContent>
+      </AppContent>
+    </>
   );
 }

@@ -1,3 +1,3 @@
 export { FormCard } from "./FormCard";
-export { FormGrid } from "./FormGrid";
+export { FormList } from "./FormList";
 export { FormsHeader } from "./FormsHeader";

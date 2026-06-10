@@ -1,8 +1,6 @@
 import prisma from "@/lib/prisma";
 import { notFound } from "next/navigation";
-import Link from "next/link";
 import Text from "@/components/ui/Text";
-import { Button } from "@/components/ui/Button";
 import { ResponseList } from "@/components/responses/ResponseList";
 import { ResponseMetrics } from "@/components/responses/ResponseMetrics";
 export default async function FormResponsesPage({
@@ -50,27 +48,13 @@ export default async function FormResponsesPage({
   }));
 
   return (
-    <div className="space-y-6 p-6">
+    <div className="space-y-6">
       {/* Header */}
-      <div className="flex justify-between items-start">
-        <div className="space-y-1">
-          <Text variant="h3" className="text-foreground">
-            {form.title}
-          </Text>
-          <Text className="text-muted-foreground">Form Responses</Text>
-        </div>
-        <div className="flex gap-3">
-          <Link href={`/forms/${slug}/reports/fields`}>
-            <Button variant="secondary" size="sm">
-              Field Analysis
-            </Button>
-          </Link>
-          <Link href={`/forms/${slug}/builder`}>
-            <Button variant="secondary" size="sm">
-              Back to Editor
-            </Button>
-          </Link>
-        </div>
+      <div className="space-y-1">
+        <Text variant="h3" className="text-foreground">
+          {form.title}
+        </Text>
+        <Text className="text-muted-foreground">Form Responses</Text>
       </div>
 
       {/* Metrics */}

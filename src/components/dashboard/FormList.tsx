@@ -1,22 +1,22 @@
 "use client";
 
-import { FormList } from "@/lib/types/form";
+import { DashboardForms } from "@/lib/types/form";
 import { FormCard } from "./FormCard";
 import Text from "@/components/ui/Text";
 
-interface FormGridProps {
-  forms: FormList | null;
+interface FormListProps {
+  forms: DashboardForms | null;
 }
 
 /**
- * FormGrid
+ * FormList
  * - Displays a grid of form cards
  * - Handles empty state when no forms are available
  *
- * @param {FormGridProps} props - The component props containing the list of forms.
+ * @param {FormListProps} props - The component props containing the list of forms.
  * @returns {JSX.Element} The rendered grid of form cards or an empty state message.
  */
-export function FormGrid({ forms }: FormGridProps) {
+export function FormList({ forms }: FormListProps) {
   if (!forms || forms.length === 0) {
     return (
       <div className="text-center py-12">
@@ -31,7 +31,7 @@ export function FormGrid({ forms }: FormGridProps) {
   }
 
   return (
-    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+    <div className="flex flex-col gap-6">
       {forms.map((form) => (
         <FormCard key={form.id} form={form} />
       ))}

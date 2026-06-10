@@ -1,6 +1,8 @@
 import { JSX } from "react";
+import { cn } from "@/lib/utils/styleUtils";
 
 interface PageContentProps {
+  className?: string;
   children: React.ReactNode;
 }
 
@@ -11,8 +13,11 @@ interface PageContentProps {
  * @param {PageContentProps} props - The props for the component.
  * @returns {JSX.Element} The rendered component.
  */
-const PageContent = ({ children }: PageContentProps): JSX.Element => {
-  return <main className="page-content">{children}</main>;
+const PageContent = ({
+  className,
+  children,
+}: PageContentProps): JSX.Element => {
+  return <main className={cn("page-content", className)}>{children}</main>;
 };
 
 export { PageContent };

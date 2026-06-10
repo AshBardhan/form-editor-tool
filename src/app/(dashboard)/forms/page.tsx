@@ -1,7 +1,7 @@
 import prisma from "@/lib/prisma";
 import { notFound } from "next/navigation";
-import { FormList } from "@/lib/types/form";
-import { FormGrid } from "@/components/dashboard/FormGrid";
+import { DashboardForm } from "@/lib/types/form";
+import { FormList } from "@/components/dashboard/FormList";
 import { JSX } from "react";
 
 export default async function FormsPage(): Promise<JSX.Element> {
@@ -23,8 +23,7 @@ export default async function FormsPage(): Promise<JSX.Element> {
   }
   if (error || !forms) return notFound();
 
-  // Map to FormListItem[]
-  const formList: FormList = forms.map((form) => ({
+  const dashboardFormsList: DashboardForm[] = forms.map((form) => ({
     id: form.id,
     slug: form.slug,
     title: form.title,
@@ -35,5 +34,5 @@ export default async function FormsPage(): Promise<JSX.Element> {
     },
   }));
 
-  return <FormGrid forms={formList} />;
+  return <FormList forms={dashboardFormsList} />;
 }

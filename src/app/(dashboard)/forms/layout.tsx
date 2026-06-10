@@ -1,5 +1,12 @@
 import { JSX } from "react";
 import { FormsHeader } from "@/components/dashboard";
+import {
+  AppHeader,
+  AppContent,
+  PageHeader,
+  PageContent,
+  PageContainer,
+} from "@/components/layout";
 
 /**
  * Forms Dashboard Layout
@@ -14,9 +21,18 @@ export default function FormsLayout({
   children: React.ReactNode;
 }>): JSX.Element {
   return (
-    <main className="max-w-7xl mx-auto py-8 px-6">
-      <FormsHeader />
-      {children}
-    </main>
+    <>
+      <AppHeader />
+      <AppContent>
+        <PageHeader>
+          <PageContainer>
+            <FormsHeader />
+          </PageContainer>
+        </PageHeader>
+        <PageContent>
+          <PageContainer className="py-8">{children}</PageContainer>
+        </PageContent>
+      </AppContent>
+    </>
   );
 }

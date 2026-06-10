@@ -76,6 +76,7 @@ export interface FormBlock {
 export interface FormConfig {
   id?: string; // Form ID for tracking (undefined for new forms)
   title: string;
+  description?: string;
   slug?: string;
   status?: FormStatus;
   theme: "light" | "dark";
@@ -98,7 +99,7 @@ export interface FormMetric {
  */
 export type FormMetrics = Record<string, string | number>;
 
-export interface FormListItem {
+export interface DashboardForm {
   id: string;
   slug: string;
   title: string;
@@ -106,7 +107,7 @@ export interface FormListItem {
   metrics: FormMetrics;
 }
 
-export type FormList = FormListItem[];
+export type DashboardForms = DashboardForm[];
 
 /**
  * Messages for form status transitions.

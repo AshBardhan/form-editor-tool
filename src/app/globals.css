@@ -37,15 +37,24 @@
 }
 
 @layer components {
-  .page-container {
-    @apply flex flex-col h-screen;
+  #app {
+    @apply flex flex-col h-screen w-screen;
   }
+
+  .app-header {
+    @apply shrink-0 text-white p-4 bg-[#151515] border-b border-[#2f2f2f];
+  }
+
+  .app-content {
+    @apply flex flex-col flex-1 w-full relative overflow-y-hidden;
+  }
+
   .page-header {
-    @apply shrink-0 text-white h-16 px-4 bg-[#151515] border-b border-[#2f2f2f];
+    @apply shrink-0 p-4 bg-gray-200 border-b border-gray-400;
   }
 
   .page-content {
-    @apply flex flex-1 w-full relative overflow-y-auto;
+    @apply flex-1 relative overflow-y-auto;
   }
 
   .sidebar {
@@ -61,7 +70,7 @@
   }
 
   .main-content {
-    @apply flex-1 relative overflow-y-auto bg-gray-200 flex flex-col;
+    @apply flex-1 relative overflow-y-auto bg-gray-200;
   }
 
   .empty-content {
@@ -69,7 +78,7 @@
   }
 
   .form-container {
-    @apply mx-auto my-10 px-4 lg:px-6 w-full transition-[max-width];
+    @apply mx-auto w-full transition-[max-width];
     /* Enable container queries for child elements */
     @apply @container;
   }

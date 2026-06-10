@@ -24,9 +24,7 @@ import { AnimatePresence } from "motion/react";
 import { Widget } from "@/lib/types/widget";
 import { FormBlock } from "@/lib/types/form";
 import { DeviceType, DeviceList } from "@/lib/constants/device";
-import { Sidebar } from "@/components/layout/Sidebar";
-import { MainContent } from "@/components/layout/MainContent";
-import { DeviceSelector } from "@/components/layout/DeviceSelector";
+import { Sidebar, MainContent, PageContainer } from "@/components/layout";
 import { CanvasDroppable } from "@/components/builder/canvas/CanvasDroppable";
 import { CanvasForm } from "@/components/builder/canvas/CanvasForm";
 import { WidgetPanel } from "@/components/builder/widgets/WidgetPanel";
@@ -223,9 +221,8 @@ export const FormBuilderContent = ({
         </AnimatePresence>
 
         {/* Main Content Area with Canvas and Device Selector */}
-        <MainContent>
-          <div
-            className="h-full"
+        <MainContent className="py-10">
+          <PageContainer
             onClickCapture={(e) => {
               const target = e.target as HTMLElement;
               if (!target.closest("[data-slot='block']")) {
@@ -233,16 +230,16 @@ export const FormBuilderContent = ({
               }
             }}
           >
-            <DeviceSelector
+            {/* <DeviceSelector
               currentDevice={deviceType}
               onDeviceChange={setDeviceType}
               sticky={true}
-            />
+            /> */}
             <div
               className="form-container"
-              style={{
-                maxWidth: `${DeviceList.find((d) => d.label === deviceType)?.size || 1440}px`,
-              }}
+              // style={{
+              //   maxWidth: `${DeviceList.find((d) => d.label === deviceType)?.size || 1440}px`,
+              // }}
             >
               <CanvasForm
                 overId={dragState.overId}
@@ -251,7 +248,7 @@ export const FormBuilderContent = ({
                 onDeleteBlock={handleDeleteRequest}
               />
             </div>
-          </div>
+          </PageContainer>
         </MainContent>
 
         {/* Right Form Configuration Sidebar */}

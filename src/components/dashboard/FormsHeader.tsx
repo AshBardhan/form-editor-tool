@@ -17,7 +17,7 @@ export function FormsHeader() {
   };
 
   return (
-    <div className="flex items-center justify-between mb-8">
+    <div className="flex items-center justify-between">
       <div className="flex items-center gap-3">
         <div className="p-3 bg-primary/10 rounded-lg">
           <FileText className="size-6 sm:size-10 text-primary" />
@@ -26,9 +26,7 @@ export function FormsHeader() {
           <Text variant="h1" className="mb-0.5 sm:mb-1">
             FormKit
           </Text>
-          <Text variant="p" className="text-muted-foreground">
-            Create and manage your forms
-          </Text>
+          <Text variant="p">Create and manage your forms</Text>
         </div>
       </div>
       <Button onClick={handleCreateNewForm} size="lg" className="gap-2">

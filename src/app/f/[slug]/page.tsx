@@ -1,7 +1,7 @@
 import { notFound } from "next/navigation";
 import prisma from "@/lib/prisma";
 import { PublicFormContainer } from "@/components/public/PublicFormContainer";
-import { FormBlockType } from "@/lib/types/form";
+import { AppContent, PageContent } from "@/components/layout";
 
 interface PageProps {
   params: Promise<{ slug: string }>;
@@ -24,22 +24,10 @@ export default async function PublicFormPage({ params }: PageProps) {
   }
 
   return (
-    <PublicFormContainer
-      form={{
-        id: form.id,
-        title: form.title,
-        description: form.description,
-        theme: form.theme,
-        blocks: form.blocks.map((block) => ({
-          id: block.id,
-          type: block.type as FormBlockType,
-          name: block.name,
-          props: block.props as Record<
-            string,
-            string | number | boolean | string[] | undefined
-          >,
-        })),
-      }}
-    />
+    <AppContent>
+      <PageContent>
+        <PublicFormContainer form={form} />
+      </PageContent>
+    </AppContent>
   );
 }

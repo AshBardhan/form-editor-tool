@@ -1,4 +1,4 @@
-import { FormListItem } from "@/lib/types/form";
+import { DashboardForm } from "@/lib/types/form";
 import { Card, CardContent } from "@/components/ui/Card";
 import Link from "next/link";
 import Text from "@/components/ui/Text";
@@ -8,7 +8,7 @@ import { getFormMetrics } from "@/lib/utils/formUtils";
 import { formStatusLabel, formStatusVariant } from "@/lib/constants/form";
 
 interface FormCardProps {
-  form: FormListItem;
+  form: DashboardForm;
 }
 
 /**

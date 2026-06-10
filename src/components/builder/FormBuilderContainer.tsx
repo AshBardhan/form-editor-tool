@@ -204,21 +204,19 @@ export const FormBuilderContainer = ({
 
   return (
     <>
-      <Header>
-        <FormBuilderHeader
-          onSave={handleSave}
-          onCancel={handleCancel}
-          onDelete={handleDelete}
-          onUpdateFormStatus={handleUpdateFormStatus}
-          isSubmitting={isPersisting}
-        />
-      </Header>
-      <PageContent>
+      {/* <FormBuilderHeader
+        onSave={handleSave}
+        onCancel={handleCancel}
+        onDelete={handleDelete}
+        onUpdateFormStatus={handleUpdateFormStatus}
+        isSubmitting={isPersisting}
+      /> */}
+      <div className="flex h-full">
         <FormBuilderContent
           isPersisting={isPersisting}
           persistMessage={persistMessage}
         />
-      </PageContent>
+      </div>
     </>
   );
 };

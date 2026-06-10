@@ -5,7 +5,7 @@ import { useRouter } from "next/navigation";
 import { Card, CardContent } from "@/components/ui/Card";
 import Text from "@/components/ui/Text";
 import { Button } from "@/components/ui/Button";
-import { FormBlock } from "@/lib/types/form";
+import { FormConfig } from "@/lib/types/form";
 import { widgetBlockRenderers } from "@/components/form/blocks";
 import { validateFormBlock } from "@/lib/utils/formValidationUtils";
 import { ErrorMessages } from "@/components/form/ErrorMessages";
@@ -13,13 +13,7 @@ import { useFormDataStore } from "@/lib/stores/formDataStore";
 import { useFormBlockValidationStore } from "@/lib/stores/formBlockValidationStore";
 
 interface PublicFormContainerProps {
-  form: {
-    id: string;
-    title: string;
-    description: string | null;
-    theme: string;
-    blocks: FormBlock[];
-  };
+  form: FormConfig;
 }
 
 export function PublicFormContainer({ form }: PublicFormContainerProps) {

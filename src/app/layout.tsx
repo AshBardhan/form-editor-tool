@@ -22,8 +22,10 @@ export default function RootLayout({
   return (
     <html lang="en" suppressHydrationWarning>
       <body suppressHydrationWarning>
-        <MockProvider>{children}</MockProvider>
-        <Toaster position="bottom-center" />
+        <div id="app">
+          <MockProvider>{children}</MockProvider>
+          <Toaster position="bottom-center" />
+        </div>
       </body>
     </html>
   );
