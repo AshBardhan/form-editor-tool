@@ -1,7 +1,7 @@
 import prisma from "@/lib/prisma";
 import { notFound } from "next/navigation";
 import Text from "@/components/ui/Text";
-import { FieldAnalysisList } from "@/components/responses/FieldAnalysisList";
+import { FieldAnalysisList } from "@/components/reports/FieldAnalysisList";
 
 export default async function FieldAnalysisPage({
   params,
@@ -49,14 +49,10 @@ export default async function FieldAnalysisPage({
 
   return (
     <div className="space-y-6">
-      {/* Header */}
-      <div className="space-y-1">
-        <Text variant="h3" className="text-foreground">
-          {form.title}
-        </Text>
-        <Text className="text-muted-foreground">Field-by-Field Analysis</Text>
-      </div>
-
+      {/* Heading */}
+      <Text variant="h3" className="text-foreground">
+        Field-by-Field Analysis
+      </Text>
       {/* Field Analysis */}
       {mappedSubmissions.length === 0 ? (
         <div className="text-center py-12">

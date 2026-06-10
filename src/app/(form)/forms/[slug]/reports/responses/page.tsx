@@ -1,8 +1,8 @@
 import prisma from "@/lib/prisma";
 import { notFound } from "next/navigation";
 import Text from "@/components/ui/Text";
-import { ResponseList } from "@/components/responses/ResponseList";
-import { ResponseMetrics } from "@/components/responses/ResponseMetrics";
+import { ResponseList } from "@/components/reports/ResponseList";
+import { ResponseMetrics } from "@/components/reports/ResponseMetrics";
 export default async function FormResponsesPage({
   params,
 }: {
@@ -49,13 +49,10 @@ export default async function FormResponsesPage({
 
   return (
     <div className="space-y-6">
-      {/* Header */}
-      <div className="space-y-1">
-        <Text variant="h3" className="text-foreground">
-          {form.title}
-        </Text>
-        <Text className="text-muted-foreground">Form Responses</Text>
-      </div>
+      {/* Heading */}
+      <Text variant="h3" className="text-foreground">
+        Form Responses
+      </Text>
 
       {/* Metrics */}
       <ResponseMetrics submissions={mappedSubmissions} />
