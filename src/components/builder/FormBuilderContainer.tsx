@@ -4,10 +4,7 @@ import { JSX, useEffect, useState } from "react";
 import { FormConfig, FormStatus } from "@/lib/types/form";
 import { FORM_STATUS_UPDATE_MESSAGES } from "@/lib/constants/form";
 import { useFormConfigStore, useUIStateStore } from "@/lib/stores";
-import { Header } from "@/components/layout/Header";
-import { FormBuilderHeader } from "@/components/builder/FormBuilderHeader";
 import { FormBuilderContent } from "@/components/builder/FormBuilderContent";
-import { PageContent } from "@/components/layout/PageContent";
 import { useRouter } from "next/navigation";
 import { toast } from "@/components/ui/Toast";
 import { ApiResponse } from "@/lib/types/api";
@@ -40,8 +37,14 @@ export const FormBuilderContainer = ({
   };
 
   const handleSave = async () => {
-    const isNewForm = !formConfig.id;
-    setPersistMessage(isNewForm ? "Saving form..." : "Updating form...");
+    if (!formIdentifier) {
+      toast.error("Save unavailable", {
+        description: "Form identifier is missing.",
+      });
+      return;
+    }
+
+    setPersistMessage("Updating form...");
     setIsPersisting(true);
 
     try {
@@ -56,14 +59,11 @@ export const FormBuilderContainer = ({
         })),
       };
 
-      const response = await fetch(
-        isNewForm ? "/api/forms" : `/api/forms/${formIdentifier}`,
-        {
-          method: isNewForm ? "POST" : "PUT",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify(payload),
-        },
-      );
+      const response = await fetch(`/api/forms/${formIdentifier}`, {
+        method: "PUT",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(payload),
+      });
 
       const result = (await response.json()) as ApiResponse<FormConfig>;
       if (!response.ok) {
@@ -79,14 +79,8 @@ export const FormBuilderContainer = ({
       const savedForm = result.data;
       setFormConfig(savedForm);
 
-      if (isNewForm && savedForm.slug) {
-        router.replace(`/forms/${savedForm.slug}/builder`);
-      }
-
-      toast.success(isNewForm ? "Draft saved" : "Changes updated", {
-        description: isNewForm
-          ? "Your form is saved and ready for publishing when you are."
-          : "Latest edits are now saved to this form.",
+      toast.success("Changes updated", {
+        description: "Latest edits are now saved to this form.",
       });
     } catch (error) {
       const message =
@@ -104,9 +98,9 @@ export const FormBuilderContainer = ({
   };
 
   const handleDelete = async () => {
-    if (!formConfig.id || !formIdentifier) {
+    if (!formIdentifier) {
       toast.error("Delete unavailable", {
-        description: "Save this form first before deleting it.",
+        description: "Form identifier is missing.",
       });
       return;
     }
@@ -149,9 +143,9 @@ export const FormBuilderContainer = ({
   };
 
   const handleUpdateFormStatus = async (nextStatus: FormStatus) => {
-    if (!formConfig.id || !formIdentifier) {
+    if (!formIdentifier) {
       toast.error("Publish unavailable", {
-        description: "Save this form first before changing publish status.",
+        description: "Form identifier is missing.",
       });
       return;
     }
@@ -203,20 +197,13 @@ export const FormBuilderContainer = ({
   }, [form]);
 
   return (
-    <>
-      {/* <FormBuilderHeader
+    <div className="flex h-full">
+      <FormBuilderContent
+        isPersisting={isPersisting}
+        persistMessage={persistMessage}
         onSave={handleSave}
         onCancel={handleCancel}
-        onDelete={handleDelete}
-        onUpdateFormStatus={handleUpdateFormStatus}
-        isSubmitting={isPersisting}
-      /> */}
-      <div className="flex h-full">
-        <FormBuilderContent
-          isPersisting={isPersisting}
-          persistMessage={persistMessage}
-        />
-      </div>
-    </>
+      />
+    </div>
   );
 };

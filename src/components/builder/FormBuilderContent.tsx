@@ -56,11 +56,15 @@ interface DragState {
 interface FormBuilderContentProps {
   isPersisting?: boolean;
   persistMessage?: string;
+  onSave?: () => void;
+  onCancel?: () => void;
 }
 
 export const FormBuilderContent = ({
   isPersisting = false,
   persistMessage = "",
+  onSave = () => {},
+  onCancel = () => {},
 }: FormBuilderContentProps): JSX.Element => {
   const [dragState, setDragState] = useState<DragState>({
     overId: null,
@@ -79,7 +83,6 @@ export const FormBuilderContent = ({
   const clearFormBlockErrors = useFormBlockValidationStore(
     (state) => state.clearFormBlockErrors,
   );
-  const [deviceType, setDeviceType] = useState<DeviceType>(DeviceType.DESKTOP);
   const [deleteConfirmation, setDeleteConfirmation] = useState<{
     isOpen: boolean;
     blockId: string | null;
@@ -220,35 +223,39 @@ export const FormBuilderContent = ({
           )}
         </AnimatePresence>
 
-        {/* Main Content Area with Canvas and Device Selector */}
-        <MainContent className="py-10">
-          <PageContainer
-            onClickCapture={(e) => {
-              const target = e.target as HTMLElement;
-              if (!target.closest("[data-slot='block']")) {
-                selectFormBlock(null);
-              }
-            }}
-          >
-            {/* <DeviceSelector
-              currentDevice={deviceType}
-              onDeviceChange={setDeviceType}
-              sticky={true}
-            /> */}
-            <div
-              className="form-container"
-              // style={{
-              //   maxWidth: `${DeviceList.find((d) => d.label === deviceType)?.size || 1440}px`,
-              // }}
+        {/* Main Content Area with Canvas and Save/Cancel CTA Buttons */}
+        <MainContent className="flex flex-col">
+          <div className="flex-1 py-10 overflow-y-auto">
+            <PageContainer
+              onClickCapture={(e) => {
+                const target = e.target as HTMLElement;
+                if (!target.closest("[data-slot='block']")) {
+                  selectFormBlock(null);
+                }
+              }}
             >
-              <CanvasForm
-                overId={dragState.overId}
-                activeDragItem={dragState.activeItem as FormBlock}
-                dragSource={dragState.source}
-                onDeleteBlock={handleDeleteRequest}
-              />
-            </div>
-          </PageContainer>
+              <div className="form-container">
+                <CanvasForm
+                  overId={dragState.overId}
+                  activeDragItem={dragState.activeItem as FormBlock}
+                  dragSource={dragState.source}
+                  onDeleteBlock={handleDeleteRequest}
+                />
+              </div>
+            </PageContainer>
+          </div>
+          <div className="shrink-0 py-4 bg-white border-t flex items-center justify-center gap-4">
+            <Button variant="positive" onClick={onSave} disabled={isPersisting}>
+              Save
+            </Button>
+            <Button
+              variant="secondary"
+              onClick={onCancel}
+              disabled={isPersisting}
+            >
+              Cancel
+            </Button>
+          </div>
         </MainContent>
 
         {/* Right Form Configuration Sidebar */}
