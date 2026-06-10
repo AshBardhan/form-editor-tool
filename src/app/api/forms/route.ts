@@ -13,6 +13,30 @@ function toSlug(value: string): string {
   return normalized || "untitled-form";
 }
 
+async function generateUniqueFormIdentity(baseTitle: string, baseSlug: string) {
+  let suffix = 0;
+
+  while (suffix < 1000) {
+    const title = suffix === 0 ? baseTitle : `${baseTitle} (${suffix + 1})`;
+    const slug = suffix === 0 ? baseSlug : `${baseSlug}-${suffix + 1}`;
+
+    const existing = await prisma.form.findFirst({
+      where: {
+        OR: [{ title }, { slug }],
+      },
+      select: { id: true },
+    });
+
+    if (!existing) {
+      return { title, slug };
+    }
+
+    suffix += 1;
+  }
+
+  throw new InternalServerError("Unable to generate a unique form name");
+}
+
 export async function POST(request: NextRequest) {
   return apiHandler(async () => {
     const body = await request.json();
@@ -36,24 +60,18 @@ export async function POST(request: NextRequest) {
       throw new InternalServerError("No user found. Run seed first.");
     }
 
-    // Auto-generate slug if not provided.
-    const generatedSlug = toSlug(slug?.trim() || title);
-
-    // Check for slug uniqueness.
-    const existingForm = await prisma.form.findUnique({
-      where: { slug: generatedSlug },
-    });
-    if (existingForm) {
-      throw new ValidationError("Slug already exists");
-    }
+    const baseTitle = title.trim() || "Untitled Form";
+    const baseSlug = toSlug(slug?.trim() || baseTitle);
+    const { title: uniqueTitle, slug: uniqueSlug } =
+      await generateUniqueFormIdentity(baseTitle, baseSlug);
 
     // Create form with blocks.
     const form = await prisma.form.create({
       data: {
-        title,
+        title: uniqueTitle,
         theme,
         description: description ?? null,
-        slug: generatedSlug,
+        slug: uniqueSlug,
         userId: user.id,
         blocks: {
           create: blocks.map((block, idx) => ({
