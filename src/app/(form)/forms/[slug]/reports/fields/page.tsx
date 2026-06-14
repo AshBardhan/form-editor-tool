@@ -1,8 +1,11 @@
-import prisma from "@/lib/prisma";
 import { notFound } from "next/navigation";
 import Text from "@/components/ui/Text";
 import { FieldAnalysisList } from "@/components/reports/FieldAnalysisList";
+import { getFormReportPageData } from "@/lib/queries/forms";
 
+/**
+ * Renders the field analysis report using the shared cached submissions payload.
+ */
 export default async function FieldAnalysisPage({
   params,
 }: {
@@ -10,42 +13,11 @@ export default async function FieldAnalysisPage({
 }) {
   const { slug } = await params;
 
-  const form = await prisma.form.findUnique({
-    where: { slug },
-    select: { id: true, title: true },
-  });
+  const data = await getFormReportPageData(slug);
 
-  if (!form) {
+  if (!data) {
     notFound();
   }
-
-  const submissions = await prisma.formSubmission.findMany({
-    where: { formId: form.id },
-    include: {
-      responses: {
-        include: {
-          block: true,
-        },
-      },
-    },
-    orderBy: { submittedAt: "desc" },
-  });
-
-  const mappedSubmissions = submissions.map((submission) => ({
-    id: submission.id,
-    submittedAt: submission.submittedAt.toISOString(),
-    responses: submission.responses.map((response) => ({
-      id: response.id,
-      blockId: response.blockId,
-      blockType: response.block.type,
-      blockName: response.block.name,
-      blockProps: response.block.props as Record<
-        string,
-        string | number | boolean | string[] | undefined
-      >,
-      value: response.value as string | number | boolean | string[] | null,
-    })),
-  }));
 
   return (
     <div className="space-y-6">
@@ -54,7 +26,7 @@ export default async function FieldAnalysisPage({
         Field-by-Field Analysis
       </Text>
       {/* Field Analysis */}
-      {mappedSubmissions.length === 0 ? (
+      {data.submissions.length === 0 ? (
         <div className="text-center py-12">
           <Text className="text-muted-foreground">
             No responses yet. Share your form to start collecting submissions.
@@ -62,8 +34,8 @@ export default async function FieldAnalysisPage({
         </div>
       ) : (
         <FieldAnalysisList
-          submissions={mappedSubmissions}
-          totalSubmissions={mappedSubmissions.length}
+          submissions={data.submissions}
+          totalSubmissions={data.submissions.length}
         />
       )}
     </div>

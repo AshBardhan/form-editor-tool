@@ -7,6 +7,11 @@ import {
   CreateFormSchema,
   PatchFormStatusSchema,
 } from "@/lib/schema/formSchema";
+import {
+  FORM_PAGE_CACHE_TAG,
+  FORM_REPORT_CACHE_TAG,
+} from "@/lib/queries/forms";
+import { revalidateTag } from "next/cache";
 
 function toSlug(value: string): string {
   const normalized = value
@@ -16,6 +21,9 @@ function toSlug(value: string): string {
   return normalized || "untitled-form";
 }
 
+/**
+ * Resolves the canonical form id for a slug so update and delete operations target the right row.
+ */
 async function resolveFormIdBySlug(slug: string): Promise<string> {
   const form = await prisma.form.findUnique({
     where: { slug },
@@ -29,6 +37,9 @@ async function resolveFormIdBySlug(slug: string): Promise<string> {
   return form.id;
 }
 
+/**
+ * Returns the full form payload for editing and preview flows.
+ */
 export async function GET(
   request: NextRequest,
   { params }: { params: Promise<{ slug: string }> },
@@ -54,6 +65,9 @@ export async function GET(
   });
 }
 
+/**
+ * Updates a form's content, regenerates its blocks, and invalidates cached page data.
+ */
 export async function PUT(
   request: NextRequest,
   { params }: { params: Promise<{ slug: string }> },
@@ -112,10 +126,16 @@ export async function PUT(
       },
     });
 
+    revalidateTag(FORM_PAGE_CACHE_TAG);
+    revalidateTag(FORM_REPORT_CACHE_TAG);
+
     return NextResponse.json({ success: true, data: form }, { status: 200 });
   });
 }
 
+/**
+ * Permanently deletes a form and clears related cached page and report data.
+ */
 export async function DELETE(
   request: NextRequest,
   { params }: { params: Promise<{ slug: string }> },
@@ -139,10 +159,16 @@ export async function DELETE(
 
     await prisma.form.delete({ where: { id } });
 
+    revalidateTag(FORM_PAGE_CACHE_TAG);
+    revalidateTag(FORM_REPORT_CACHE_TAG);
+
     return NextResponse.json({ success: true, data: { id } }, { status: 200 });
   });
 }
 
+/**
+ * Updates the form publish status and clears cached page and report data.
+ */
 export async function PATCH(
   request: NextRequest,
   { params }: { params: Promise<{ slug: string }> },
@@ -189,6 +215,9 @@ export async function PATCH(
         blocks: true,
       },
     });
+
+    revalidateTag(FORM_PAGE_CACHE_TAG);
+    revalidateTag(FORM_REPORT_CACHE_TAG);
 
     return NextResponse.json({ success: true, data: form }, { status: 200 });
   });

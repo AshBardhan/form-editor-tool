@@ -4,6 +4,8 @@ import prisma from "@/lib/prisma";
 import { apiHandler } from "@/lib/utils/apiUtils";
 import { ValidationError, NotFoundError } from "@/lib/errors";
 import { z } from "zod";
+import { revalidateTag } from "next/cache";
+import { FORM_REPORT_CACHE_TAG } from "@/lib/queries/forms";
 
 const SubmissionSchema = z.object({
   formId: z.string().min(1, "Form ID is required"),
@@ -21,6 +23,9 @@ const SubmissionSchema = z.object({
   ),
 });
 
+/**
+ * Validates and stores a new form submission, then invalidates the report cache.
+ */
 export async function POST(request: NextRequest) {
   return apiHandler(async () => {
     const body = await request.json();
@@ -69,6 +74,8 @@ export async function POST(request: NextRequest) {
         responses: true,
       },
     });
+
+    revalidateTag(FORM_REPORT_CACHE_TAG);
 
     return NextResponse.json(
       {

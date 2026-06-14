@@ -13,6 +13,9 @@ function toSlug(value: string): string {
   return normalized || "untitled-form";
 }
 
+/**
+ * Generates a unique title and slug pair so newly created forms do not collide.
+ */
 async function generateUniqueFormIdentity(baseTitle: string, baseSlug: string) {
   let suffix = 0;
 
@@ -37,6 +40,9 @@ async function generateUniqueFormIdentity(baseTitle: string, baseSlug: string) {
   throw new InternalServerError("Unable to generate a unique form name");
 }
 
+/**
+ * Creates a new form for the default user and returns the persisted record.
+ */
 export async function POST(request: NextRequest) {
   return apiHandler(async () => {
     const body = await request.json();
