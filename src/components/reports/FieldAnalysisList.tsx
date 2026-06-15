@@ -4,46 +4,13 @@ import { useMemo } from "react";
 import { Card, CardContent } from "@/components/ui/Card";
 import Text from "@/components/ui/Text";
 import { Badge } from "@/components/ui/Badge";
-
-interface Response {
-  id: string;
-  blockId: string;
-  blockType: string;
-  blockName: string;
-  blockProps: Record<string, string | number | boolean | string[] | undefined>;
-  value: string | number | boolean | string[] | null;
-}
-
-interface Submission {
-  id: string;
-  submittedAt: string;
-  responses: Response[];
-}
+import { type FormSubmission } from "@/lib/types/form";
+import { type FieldData, type FieldAnalysisResult } from "@/lib/types/reports";
 
 interface FieldAnalysisListProps {
-  submissions: Submission[];
+  submissions: FormSubmission[];
   totalSubmissions: number;
 }
-
-interface FieldData {
-  blockId: string;
-  blockName: string;
-  blockType: string;
-  label: string;
-  responses: (string | number | boolean | string[] | null)[];
-  responseCount: number;
-  responseRate: number;
-}
-
-interface ChoiceAnalysisItem {
-  value: string;
-  count: number;
-  percentage: string;
-}
-
-type FieldAnalysisResult =
-  | { type: "choices"; data: ChoiceAnalysisItem[] }
-  | { type: "list"; data: (string | number | boolean | string[])[] };
 
 function formatValue(
   value: string | number | boolean | string[] | null,

@@ -2,18 +2,13 @@
 
 import { Card, CardContent } from "@/components/ui/Card";
 import Metric from "@/components/ui/Metric";
-
-interface Submission {
-  id: string;
-  submittedAt: string;
-  responses: unknown[];
-}
+import { type FormSubmission } from "@/lib/types/form";
 
 interface ResponseMetricsProps {
-  submissions: Submission[];
+  submissions: FormSubmission[];
 }
 
-function getRecentCount(submissions: Submission[], hours: number): number {
+function getRecentCount(submissions: FormSubmission[], hours: number): number {
   const cutoff = new Date();
   cutoff.setHours(cutoff.getHours() - hours);
 

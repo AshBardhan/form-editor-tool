@@ -33,6 +33,27 @@ export type FormStatus = "draft" | "published";
 export type FormBlockOrientation = "horizontal" | "vertical";
 
 /**
+ * A single response to a form field from a submission
+ */
+export interface FormResponse {
+  id: string;
+  blockId: string;
+  blockType: FormBlockType;
+  blockName: string;
+  blockProps: FormBlockProps;
+  value: string | number | boolean | string[] | null;
+}
+
+/**
+ * A complete form submission containing multiple field responses
+ */
+export interface FormSubmission {
+  id: string;
+  submittedAt: string;
+  responses: FormResponse[];
+}
+
+/**
  * Form block prop template - used for widget templates
  * Contains full metadata including labels, types, options, and default values
  */
@@ -98,6 +119,30 @@ export interface FormMetric {
  * Only stores values, metadata comes from metricTemplates
  */
 export type FormMetrics = Record<string, string | number>;
+
+/**
+ * Form page data - used for rendering form builder and public form views
+ */
+export interface FormPageData {
+  id: string;
+  slug: string;
+  title: string;
+  description?: string;
+  theme: "light" | "dark";
+  status: FormStatus;
+  blocks: FormBlock[];
+}
+
+/**
+ * Form report page data - used for displaying form responses and analytics
+ */
+export interface FormReportPageData {
+  form: {
+    id: string;
+    title: string;
+  };
+  submissions: FormSubmission[];
+}
 
 export interface DashboardForm {
   id: string;

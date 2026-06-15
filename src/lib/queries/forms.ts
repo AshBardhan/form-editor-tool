@@ -1,96 +1,63 @@
 import { cache } from "react";
 import { unstable_cache } from "next/cache";
 import prisma from "@/lib/prisma";
-import { FormBlockProps, FormBlockType, FormStatus } from "@/lib/types/form";
+import {
+  FormBlockProps,
+  FormBlockType,
+  FormPageData,
+  FormReportPageData,
+} from "@/lib/types/form";
 
 const FORM_PAGE_CACHE_TAG = "form-page";
 const FORM_REPORT_CACHE_TAG = "form-report";
-
-interface FormPageBlock {
-  id: string;
-  type: FormBlockType;
-  name: string;
-  props: FormBlockProps;
-}
-
-export interface FormPageData {
-  id: string;
-  slug: string;
-  title: string;
-  description?: string;
-  theme: "light" | "dark";
-  status: FormStatus;
-  blocks: FormPageBlock[];
-}
-
-interface FormReportResponse {
-  id: string;
-  blockId: string;
-  blockType: FormBlockType;
-  blockName: string;
-  blockProps: FormBlockProps;
-  value: string | number | boolean | string[] | null;
-}
-
-interface FormReportSubmission {
-  id: string;
-  submittedAt: string;
-  responses: FormReportResponse[];
-}
-
-export interface FormReportPageData {
-  form: {
-    id: string;
-    title: string;
-  };
-  submissions: FormReportSubmission[];
-}
 
 /**
  * Loads the shared form page payload used by the header and builder views.
  * Wrapped in React cache so the same request can reuse the result.
  */
-const getFormPageDataCached = cache(async (slug: string): Promise<FormPageData | null> => {
-  const form = await prisma.form.findUnique({
-    where: { slug },
-    select: {
-      id: true,
-      slug: true,
-      title: true,
-      description: true,
-      theme: true,
-      status: true,
-      blocks: {
-        orderBy: { order: "asc" },
-        select: {
-          id: true,
-          type: true,
-          name: true,
-          props: true,
+const getFormPageDataCached = cache(
+  async (slug: string): Promise<FormPageData | null> => {
+    const form = await prisma.form.findUnique({
+      where: { slug },
+      select: {
+        id: true,
+        slug: true,
+        title: true,
+        description: true,
+        theme: true,
+        status: true,
+        blocks: {
+          orderBy: { order: "asc" },
+          select: {
+            id: true,
+            type: true,
+            name: true,
+            props: true,
+          },
         },
       },
-    },
-  });
+    });
 
-  if (!form || !form.slug) {
-    return null;
-  }
+    if (!form || !form.slug) {
+      return null;
+    }
 
-  return {
-    id: form.id,
-    slug: form.slug,
-    title: form.title,
-    description: form.description ?? undefined,
-    theme: form.theme,
-    status: form.status,
-    blocks: form.blocks.map((block) => ({
-      id: block.id,
-      type: block.type as FormBlockType,
-      name: block.name,
-      props: block.props as FormBlockProps,
-    })),
-  };
-});
+    return {
+      id: form.id,
+      slug: form.slug,
+      title: form.title,
+      description: form.description ?? undefined,
+      theme: form.theme,
+      status: form.status,
+      blocks: form.blocks.map((block) => ({
+        id: block.id,
+        type: block.type as FormBlockType,
+        name: block.name,
+        props: block.props as FormBlockProps,
+      })),
+    };
+  },
+);
 
 /**
  * Loads the report payload for responses and field analysis views.

@@ -4,24 +4,10 @@ import { useState } from "react";
 import { Card, CardContent } from "@/components/ui/Card";
 import Text from "@/components/ui/Text";
 import { Badge } from "@/components/ui/Badge";
-
-interface Response {
-  id: string;
-  blockId: string;
-  blockType: string;
-  blockName: string;
-  blockProps: Record<string, string | number | boolean | string[] | undefined>;
-  value: string | number | boolean | string[] | null;
-}
-
-interface Submission {
-  id: string;
-  submittedAt: string;
-  responses: Response[];
-}
+import { type FormSubmission } from "@/lib/types/form";
 
 interface ResponseListProps {
-  submissions: Submission[];
+  submissions: FormSubmission[];
 }
 
 function formatValue(
