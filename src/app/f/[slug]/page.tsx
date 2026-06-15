@@ -1,7 +1,7 @@
 import { notFound } from "next/navigation";
-import prisma from "@/lib/prisma";
-import { PublicFormContainer } from "@/components/public/PublicFormContainer";
+import { PublicFormContent } from "@/components/public/PublicFormContent";
 import { AppContent, PageContent } from "@/components/layout";
+import { getPublicFormData } from "@/lib/queries/forms";
 
 interface PageProps {
   params: Promise<{ slug: string }>;
@@ -10,14 +10,7 @@ interface PageProps {
 export default async function PublicFormPage({ params }: PageProps) {
   const { slug } = await params;
 
-  const form = await prisma.form.findUnique({
-    where: { slug, status: "published" },
-    include: {
-      blocks: {
-        orderBy: { order: "asc" },
-      },
-    },
-  });
+  const form = await getPublicFormData(slug);
 
   if (!form) {
     notFound();
@@ -26,7 +19,7 @@ export default async function PublicFormPage({ params }: PageProps) {
   return (
     <AppContent>
       <PageContent>
-        <PublicFormContainer form={form} />
+        <PublicFormContent form={form} />
       </PageContent>
     </AppContent>
   );

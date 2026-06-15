@@ -2,6 +2,7 @@ import { cache } from "react";
 import { unstable_cache } from "next/cache";
 import prisma from "@/lib/prisma";
 import {
+  FormConfig,
   FormBlockProps,
   FormBlockType,
   FormPageData,
@@ -10,6 +11,7 @@ import {
 
 const FORM_PAGE_CACHE_TAG = "form-page";
 const FORM_REPORT_CACHE_TAG = "form-report";
+const PUBLIC_FORM_CACHE_TAG = "public-form";
 
 /**
  * Loads the shared form page payload used by the header and builder views.
@@ -108,6 +110,54 @@ const getFormReportPageDataCached = cache(
 );
 
 /**
+ * Loads the public form payload for the public form page.
+ * Wrapped in React cache so repeated requests can reuse the same result.
+ */
+const getPublicFormDataCached = cache(
+  async (slug: string): Promise<FormConfig | null> => {
+    const form = await prisma.form.findUnique({
+      where: { slug, status: "published" },
+      select: {
+        id: true,
+        slug: true,
+        title: true,
+        description: true,
+        theme: true,
+        status: true,
+        blocks: {
+          orderBy: { order: "asc" },
+          select: {
+            id: true,
+            type: true,
+            name: true,
+            props: true,
+          },
+        },
+      },
+    });
+
+    if (!form) {
+      return null;
+    }
+
+    return {
+      id: form.id,
+      slug: form.slug,
+      title: form.title,
+      description: form.description ?? undefined,
+      theme: form.theme,
+      status: form.status,
+      blocks: form.blocks.map((block) => ({
+        id: block.id,
+        type: block.type as FormBlockType,
+        name: block.name,
+        props: block.props as FormBlockProps,
+      })),
+    };
+  },
+);
+
+/**
  * Returns cached form page data and marks it with the form-page tag for invalidation.
  */
 export const getFormPageData = unstable_cache(
@@ -131,4 +181,16 @@ export const getFormReportPageData = unstable_cache(
   },
 );
 
-export { FORM_PAGE_CACHE_TAG, FORM_REPORT_CACHE_TAG };
+/**
+ * Returns cached public form data and marks it with the public-form tag for invalidation.
+ */
+export const getPublicFormData = unstable_cache(
+  getPublicFormDataCached,
+  [PUBLIC_FORM_CACHE_TAG],
+  {
+    tags: [PUBLIC_FORM_CACHE_TAG],
+    revalidate: 300,
+  },
+);
+
+export { FORM_PAGE_CACHE_TAG, FORM_REPORT_CACHE_TAG, PUBLIC_FORM_CACHE_TAG };

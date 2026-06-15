@@ -89,6 +89,10 @@
     @apply py-4 @sm:py-6 @5xl:py-8;
   }
 
+  .form-overlay {
+    @apply absolute inset-0 z-40 bg-black/30 text-white backdrop-blur-[1px] flex items-center justify-center rounded-lg;
+  }
+
   .form-block {
     /* Mobile-first responsive padding using container queries */
     @apply px-4 py-1.5;

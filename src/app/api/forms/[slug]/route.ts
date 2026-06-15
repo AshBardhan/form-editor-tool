@@ -9,6 +9,7 @@ import {
 } from "@/lib/schema/formSchema";
 import {
   FORM_PAGE_CACHE_TAG,
+  PUBLIC_FORM_CACHE_TAG,
   FORM_REPORT_CACHE_TAG,
 } from "@/lib/queries/forms";
 import { revalidateTag } from "next/cache";
@@ -128,6 +129,7 @@ export async function PUT(
 
     revalidateTag(FORM_PAGE_CACHE_TAG);
     revalidateTag(FORM_REPORT_CACHE_TAG);
+    revalidateTag(PUBLIC_FORM_CACHE_TAG);
 
     return NextResponse.json({ success: true, data: form }, { status: 200 });
   });
@@ -161,6 +163,7 @@ export async function DELETE(
 
     revalidateTag(FORM_PAGE_CACHE_TAG);
     revalidateTag(FORM_REPORT_CACHE_TAG);
+    revalidateTag(PUBLIC_FORM_CACHE_TAG);
 
     return NextResponse.json({ success: true, data: { id } }, { status: 200 });
   });

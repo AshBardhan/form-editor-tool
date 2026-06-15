@@ -1,1 +1,1 @@
-export { PublicFormContainer } from "./PublicFormContainer";
+export { PublicFormContent } from "./PublicFormContent";
