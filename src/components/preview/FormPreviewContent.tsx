@@ -147,15 +147,6 @@ export const FormPreviewContent = ({
       toast.success("Form submitted successfully!", {
         description: "Your response has been recorded.",
       });
-
-      // You could also send this data to an API here
-      // Example:
-      // await fetch('/api/submit', { method: 'POST', body: JSON.stringify(formData) })
-      //   .catch((error) => {
-      //     toast.error("Submission failed", {
-      //       description: "Failed to submit form. Please try again.",
-      //     });
-      //   });
     } catch (error) {
       toast.error("Submission failed", {
         description: "An unexpected error occurred. Please try again.",

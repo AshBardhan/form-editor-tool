@@ -54,7 +54,9 @@ export async function GET(
     const form = await prisma.form.findUnique({
       where: { slug },
       include: {
-        blocks: true,
+        blocks: {
+          orderBy: { order: "asc" },
+        },
       },
     });
 
@@ -103,29 +105,111 @@ export async function PUT(
       throw new ValidationError("Slug already exists");
     }
 
-    const form = await prisma.form.update({
-      where: { id },
-      data: {
-        title,
-        theme,
-        description: description ?? null,
-        slug: generatedSlug,
-        blocks: {
-          deleteMany: {},
-          create: blocks.map((block, idx) => ({
-            type: block.type,
-            name: block.name,
-            props: block.props as Prisma.InputJsonValue,
-            order: idx,
-          })),
+    const form = await prisma.$transaction(async (tx) => {
+      const existingBlocks = await tx.formBlock.findMany({
+        where: { formId: id },
+        select: { id: true },
+      });
+
+      const existingBlockIds = new Set(existingBlocks.map((block) => block.id));
+      const retainedBlockIds = new Set<string>();
+
+      const blocksToCreate = blocks.filter((block) => {
+        if (block.id && existingBlockIds.has(block.id)) {
+          retainedBlockIds.add(block.id);
+          return false;
+        }
+
+        return true;
+      });
+
+      const blocksToDelete = existingBlocks
+        .map((block) => block.id)
+        .filter((blockId) => !retainedBlockIds.has(blockId));
+
+      if (blocksToDelete.length > 0) {
+        const usedResponseCount = await tx.formFieldResponse.count({
+          where: {
+            blockId: {
+              in: blocksToDelete,
+            },
+          },
+        });
+
+        if (usedResponseCount > 0) {
+          throw new ValidationError(
+            "Cannot remove fields that already have submissions. Keep the existing field or clear submissions first.",
+          );
+        }
+      }
+
+      await tx.form.update({
+        where: { id },
+        data: {
+          title,
+          theme,
+          description: description ?? null,
+          slug: generatedSlug,
         },
-      },
-      include: {
-        blocks: {
-          orderBy: { order: "asc" },
+      });
+
+      await Promise.all(
+        blocks.map((block, idx) => {
+          if (!block.id || !existingBlockIds.has(block.id)) {
+            return Promise.resolve();
+          }
+
+          return tx.formBlock.update({
+            where: { id: block.id },
+            data: {
+              type: block.type,
+              name: block.name,
+              props: block.props as Prisma.InputJsonValue,
+              order: idx,
+            },
+          });
+        }),
+      );
+
+      await Promise.all(
+        blocksToCreate.map((block, idx) => {
+          const order = blocks.findIndex((candidate) => candidate === block);
+
+          return tx.formBlock.create({
+            data: {
+              formId: id,
+              type: block.type,
+              name: block.name,
+              props: block.props as Prisma.InputJsonValue,
+              order: order >= 0 ? order : idx,
+            },
+          });
+        }),
+      );
+
+      if (blocksToDelete.length > 0) {
+        await tx.formBlock.deleteMany({
+          where: {
+            id: {
+              in: blocksToDelete,
+            },
+          },
+        });
+      }
+
+      return tx.form.findUnique({
+        where: { id },
+        include: {
+          blocks: {
+            orderBy: { order: "asc" },
+          },
         },
-      },
+      });
     });
+
+    if (!form) {
+      throw new NotFoundError("Form not found");
+    }
 
     revalidateTag(FORM_PAGE_CACHE_TAG);
     revalidateTag(FORM_REPORT_CACHE_TAG);
@@ -221,6 +305,7 @@ export async function PATCH(
 
     revalidateTag(FORM_PAGE_CACHE_TAG);
     revalidateTag(FORM_REPORT_CACHE_TAG);
+    revalidateTag(PUBLIC_FORM_CACHE_TAG);
 
     return NextResponse.json({ success: true, data: form }, { status: 200 });
   });

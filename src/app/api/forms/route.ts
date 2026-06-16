@@ -95,6 +95,12 @@ export async function POST(request: NextRequest) {
       },
     });
 
-    return NextResponse.json({ success: true, data: form }, { status: 200 });
+    return NextResponse.json(
+      { success: true, data: form },
+      {
+        status: 201,
+        headers: { Location: `/api/forms/${form.slug}` },
+      },
+    );
   });
 }

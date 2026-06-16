@@ -33,13 +33,16 @@ export function FormsHeader() {
       });
 
       const result = (await response.json()) as ApiResponse<FormConfig>;
+      const locationHeader = response.headers.get("Location");
+      const slugFromLocation = locationHeader?.split("/").pop() || null;
+      const createdSlug = result.data?.slug || slugFromLocation;
 
-      if (!response.ok || !result.success || !result.data?.slug) {
+      if (!response.ok || !result.success || !createdSlug) {
         throw new Error(result.error?.message || "Failed to create form");
       }
 
       toast.success("form has been successfully created");
-      router.push(`/forms/${result.data.slug}/builder`);
+      router.push(`/forms/${createdSlug}/builder`);
     } catch (error) {
       toast.error("Failed to create form", {
         description:

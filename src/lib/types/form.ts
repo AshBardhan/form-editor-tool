@@ -146,13 +146,11 @@ export interface FormReportPageData {
 
 export interface DashboardForm {
   id: string;
-  slug: string;
+  slug: string | null;
   title: string;
   status: FormStatus;
   metrics: FormMetrics;
 }
-
-export type DashboardForms = DashboardForm[];
 
 /**
  * Messages for form status transitions.

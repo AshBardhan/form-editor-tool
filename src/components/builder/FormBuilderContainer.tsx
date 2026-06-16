@@ -1,8 +1,7 @@
 "use client";
 
 import { JSX, useEffect, useState } from "react";
-import { FormConfig, FormStatus } from "@/lib/types/form";
-import { FORM_STATUS_UPDATE_MESSAGES } from "@/lib/constants/form";
+import { FormConfig } from "@/lib/types/form";
 import { useFormConfigStore, useUIStateStore } from "@/lib/stores";
 import { FormBuilderContent } from "@/components/builder/FormBuilderContent";
 import { useRouter } from "next/navigation";
@@ -89,97 +88,6 @@ export const FormBuilderContainer = ({
           : "We could not save your changes. Please try again.";
 
       toast.error("Save failed", {
-        description: message,
-      });
-    } finally {
-      setIsPersisting(false);
-      setPersistMessage("");
-    }
-  };
-
-  const handleDelete = async () => {
-    if (!formIdentifier) {
-      toast.error("Delete unavailable", {
-        description: "Form identifier is missing.",
-      });
-      return;
-    }
-
-    setPersistMessage("Deleting form...");
-    setIsPersisting(true);
-
-    try {
-      const response = await fetch(`/api/forms/${formIdentifier}`, {
-        method: "DELETE",
-      });
-
-      const result = (await response.json()) as ApiResponse<{ id: string }>;
-      if (!response.ok) {
-        throw new Error(
-          result.error?.message || "Unable to delete form right now.",
-        );
-      }
-
-      if (!result.success) {
-        throw new Error("Unexpected response from server.");
-      }
-
-      router.push("/forms");
-      toast.success("Form permanently deleted", {
-        description: "The form and its submission reports were removed.",
-      });
-    } catch (error) {
-      const message =
-        error instanceof Error
-          ? error.message
-          : "We could not delete the form. Please try again.";
-
-      toast.error("Delete failed", {
-        description: message,
-      });
-      setIsPersisting(false);
-      setPersistMessage("");
-    }
-  };
-
-  const handleUpdateFormStatus = async (nextStatus: FormStatus) => {
-    if (!formIdentifier) {
-      toast.error("Publish unavailable", {
-        description: "Form identifier is missing.",
-      });
-      return;
-    }
-
-    const messages = FORM_STATUS_UPDATE_MESSAGES[nextStatus];
-    setPersistMessage(messages.transitioning);
-    setIsPersisting(true);
-
-    try {
-      const response = await fetch(`/api/forms/${formIdentifier}`, {
-        method: "PATCH",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ status: nextStatus }),
-      });
-
-      const result = (await response.json()) as ApiResponse<FormConfig>;
-      if (!response.ok) {
-        throw new Error(result.error?.message || messages.error.description);
-      }
-
-      if (!result.success || !result.data) {
-        throw new Error("Unexpected response from server.");
-      }
-
-      setFormConfig(result.data);
-
-      toast.success(messages.success.title, {
-        description: messages.success.description,
-      });
-    } catch (error) {
-      const message =
-        error instanceof Error ? error.message : messages.error.description;
-
-      toast.error(messages.error.title, {
         description: message,
       });
     } finally {

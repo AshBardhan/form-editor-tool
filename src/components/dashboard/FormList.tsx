@@ -1,11 +1,11 @@
 "use client";
 
-import { DashboardForms } from "@/lib/types/form";
+import { DashboardForm } from "@/lib/types/form";
 import { FormCard } from "./FormCard";
 import Text from "@/components/ui/Text";
 
 interface FormListProps {
-  forms: DashboardForms | null;
+  forms: DashboardForm[];
 }
 
 /**

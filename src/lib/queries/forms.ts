@@ -136,7 +136,7 @@ const getPublicFormDataCached = cache(
       },
     });
 
-    if (!form) {
+    if (!form || !form.slug) {
       return null;
     }
 

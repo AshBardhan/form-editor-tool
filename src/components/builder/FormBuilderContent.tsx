@@ -23,7 +23,6 @@ import {
 import { AnimatePresence } from "motion/react";
 import { Widget } from "@/lib/types/widget";
 import { FormBlock } from "@/lib/types/form";
-import { DeviceType, DeviceList } from "@/lib/constants/device";
 import { Sidebar, MainContent, PageContainer } from "@/components/layout";
 import { CanvasDroppable } from "@/components/builder/canvas/CanvasDroppable";
 import { CanvasForm } from "@/components/builder/canvas/CanvasForm";
@@ -227,6 +226,7 @@ export const FormBuilderContent = ({
         <MainContent className="flex flex-col">
           <div className="flex-1 py-10 overflow-y-auto">
             <PageContainer
+              className="px-6 min-w-md"
               onClickCapture={(e) => {
                 const target = e.target as HTMLElement;
                 if (!target.closest("[data-slot='block']")) {

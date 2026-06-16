@@ -2,11 +2,14 @@ import { PrismaClient, FormTheme, FormStatus } from "@prisma/client";
 import { FormBlock } from "../src/lib/types/form";
 import { sampleLightForm, sampleDarkForm } from "../src/mocks/data/sampleForms";
 import { PrismaPg } from "@prisma/adapter-pg";
+import { Pool } from "pg";
 import "dotenv/config";
 
-const adapter = new PrismaPg({
+const pool = new Pool({
   connectionString: process.env.DATABASE_URL,
 });
+
+const adapter = new PrismaPg(pool);
 
 const prisma = new PrismaClient({
   adapter,
@@ -59,6 +62,7 @@ async function main() {
     },
     include: { blocks: true },
   });
+
   console.log(
     `✓ Created form: "${lightForm.title}" with ${lightForm.blocks.length} blocks`,
   );
@@ -84,6 +88,7 @@ async function main() {
     },
     include: { blocks: true },
   });
+
   console.log(
     `✓ Created form: "${darkForm.title}" with ${darkForm.blocks.length} blocks`,
   );
@@ -106,4 +111,5 @@ main()
   })
   .finally(async () => {
     await prisma.$disconnect();
+    process.exit(0);
   });

@@ -136,8 +136,8 @@ export function PublicFormContent({ form }: PublicFormContentProps) {
       });
 
       if (!response.ok) {
-        const error = await response.json();
-        throw new Error(error.error || "Failed to submit form");
+        const result = await response.json();
+        throw new Error(result.error?.message || "Failed to submit form");
       }
 
       resetFormData();
@@ -172,7 +172,7 @@ export function PublicFormContent({ form }: PublicFormContentProps) {
       className="bg-gray-200 px-6 py-4 h-screen overflow-y-auto"
       data-theme={form.theme}
     >
-      <div className="max-w-3xl form-container">
+      <div className="max-w-7xl form-container">
         {/* Form */}
         <div className="form-content relative">
           {status.type === "submitting" && (

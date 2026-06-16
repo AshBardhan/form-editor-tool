@@ -1,4 +1,5 @@
 import prisma from "@/lib/prisma";
+import { notFound } from "next/navigation";
 
 interface Stats {
   users: number;
@@ -8,6 +9,14 @@ interface Stats {
 }
 
 export default async function TestPage() {
+  const isDbTestPageEnabled =
+    process.env.NODE_ENV !== "production" ||
+    process.env.ENABLE_DB_TEST_PAGE === "true";
+
+  if (!isDbTestPageEnabled) {
+    notFound();
+  }
+
   let stats: Stats | null = null;
   let error: string | null = null;
 
