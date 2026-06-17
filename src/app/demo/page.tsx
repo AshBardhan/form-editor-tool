@@ -17,6 +17,7 @@ import {
   SelectDemo,
   SkeletonDemo,
   SwitchDemo,
+  TableDemo,
   TextDemo,
   TextareaDemo,
   ToastDemo,
@@ -34,6 +35,7 @@ export default function DemoPage() {
     { id: "textarea", name: "Textarea" },
     { id: "checkbox", name: "Checkbox" },
     { id: "switch", name: "Switch" },
+    { id: "table", name: "Table" },
     { id: "radiogroup", name: "RadioGroup" },
     { id: "select", name: "Select" },
     { id: "dropdownmenu", name: "DropdownMenu" },
@@ -139,6 +141,13 @@ export default function DemoPage() {
             {/* Switch Demo */}
             <section id="switch" className="scroll-mt-8">
               <SwitchDemo />
+            </section>
+
+            <Separator className="my-16" />
+
+            {/* Table Demo */}
+            <section id="table" className="scroll-mt-8">
+              <TableDemo />
             </section>
 
             <Separator className="my-16" />

@@ -13,6 +13,7 @@ export { RadioGroupDemo } from "./RadioGroupDemo";
 export { SelectDemo } from "./SelectDemo";
 export { SkeletonDemo } from "./SkeletonDemo";
 export { SwitchDemo } from "./SwitchDemo";
+export { TableDemo } from "./TableDemo";
 export { TextDemo } from "./TextDemo";
 export { TextareaDemo } from "./TextareaDemo";
 export { ToastDemo } from "./ToastDemo";
