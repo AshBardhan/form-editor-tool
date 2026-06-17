@@ -22,7 +22,7 @@ export function FormCard({ form }: FormCardProps) {
 
   return (
     <Link href={`/forms/${form.slug}`} className="block group">
-      <Card className="hover:shadow-lg transition-shadow duration-200 h-full relative">
+      <Card clickable className="h-full relative">
         <Badge
           label={statusLabel}
           variant={statusVariant}
