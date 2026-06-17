@@ -1,102 +1,76 @@
 "use client";
 
-import { useState } from "react";
-import { Card, CardContent } from "@/components/ui/Card";
-import Text from "@/components/ui/Text";
-import { Badge } from "@/components/ui/Badge";
+import { useMemo } from "react";
+import {
+  Table,
+  type TableColumn,
+  type TableData,
+  type TableRow,
+} from "@/components/ui/Table";
 import { type FormSubmission } from "@/lib/types/form";
+import Text from "@/components/ui/Text";
 
 interface ResponseListProps {
   submissions: FormSubmission[];
 }
 
-function formatValue(
-  value: string | number | boolean | string[] | null,
-): string {
-  if (value === null || value === undefined) return "-";
-  if (Array.isArray(value)) return value.join(", ");
-  if (typeof value === "boolean") return value ? "Yes" : "No";
-  return String(value);
-}
-
-function formatDate(dateString: string): string {
-  const date = new Date(dateString);
-  return date.toLocaleString("en-US", {
-    month: "short",
-    day: "numeric",
-    year: "numeric",
-    hour: "2-digit",
-    minute: "2-digit",
-  });
-}
+type ResponseTableRow = TableRow & {
+  responseId: string;
+};
 
 export function ResponseList({ submissions }: ResponseListProps) {
-  const [expandedId, setExpandedId] = useState<string | null>(null);
+  const tableData = useMemo<TableData<ResponseTableRow>>(() => {
+    const fieldMap = new Map<string, string>();
 
-  const toggleExpand = (id: string) => {
-    setExpandedId(expandedId === id ? null : id);
-  };
+    for (const submission of submissions) {
+      for (const response of submission.responses) {
+        if (fieldMap.has(response.blockId)) continue;
+        fieldMap.set(
+          response.blockId,
+          String(response.blockProps?.label || response.blockName),
+        );
+      }
+    }
+
+    const fieldColumns: TableColumn[] = Array.from(fieldMap.entries()).map(
+      ([blockId, label]) => ({
+        id: blockId,
+        label,
+        sortable: true,
+      }),
+    );
+
+    const columns: TableColumn[] = [
+      {
+        id: "responseId",
+        label: "Response ID",
+        sticky: true,
+        sortable: false,
+      },
+      ...fieldColumns,
+    ];
+
+    const rows: ResponseTableRow[] = submissions.map((submission) => {
+      const row: ResponseTableRow = {
+        responseId: submission.id,
+      };
+
+      for (const response of submission.responses) {
+        row[response.blockId] = response.value;
+      }
+
+      return row;
+    });
+
+    return { columns, rows };
+  }, [submissions]);
 
   return (
-    <div className="space-y-3">
-      {submissions.map((submission, index) => {
-        const isExpanded = expandedId === submission.id;
-        const responseCount = submission.responses.length;
-
-        return (
-          <Card
-            key={submission.id}
-            className="cursor-pointer hover:shadow-md transition-shadow"
-            onClick={() => toggleExpand(submission.id)}
-          >
-            <CardContent className="p-4">
-              <div className="flex justify-between items-center">
-                <div className="space-y-1">
-                  <Text variant="h5" className="font-semibold">
-                    Response #{submissions.length - index}
-                  </Text>
-                  <Text variant="p" className="text-muted-foreground text-sm">
-                    {formatDate(submission.submittedAt)} • {responseCount}{" "}
-                    {responseCount === 1 ? "field" : "fields"}
-                  </Text>
-                </div>
-                <Badge
-                  label={isExpanded ? "Collapse" : "Expand"}
-                  variant="neutral"
-                  size="sm"
-                />
-              </div>
-
-              {isExpanded && (
-                <div className="mt-4 space-y-4 border-t border-border pt-4">
-                  {submission.responses.map((response) => {
-                    const label =
-                      response.blockProps?.label || response.blockName;
-                    const value = formatValue(response.value);
-
-                    return (
-                      <div key={response.id} className="space-y-1">
-                        <Text
-                          variant="p"
-                          className="text-foreground text-sm font-semibold"
-                        >
-                          {label}
-                        </Text>
-                        <Text
-                          variant="p"
-                          className="pl-2 text-muted-foreground"
-                        >
-                          {value}
-                        </Text>
-                      </div>
-                    );
-                  })}
-                </div>
-              )}
-            </CardContent>
-          </Card>
-        );
-      })}
-    </div>
+    <>
+      <Text variant="h4" className="text-foreground mb-4">
+        All Responses
+      </Text>
+      <Table data={tableData} rowKey="responseId" />
+    </>
   );
 }
