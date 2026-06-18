@@ -60,11 +60,11 @@ export function FormHeader({ form }: FormHeaderProps) {
       path: "reports",
       children: [
         {
-          label: "Responses",
-          path: "responses",
+          label: "Submissions",
+          path: "submissions",
         },
         {
-          label: "Fields",
+          label: "Field Analytics",
           path: "fields",
         },
       ],

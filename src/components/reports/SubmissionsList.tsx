@@ -10,16 +10,16 @@ import {
 import { type FormSubmission } from "@/lib/types/form";
 import Text from "@/components/ui/Text";
 
-interface ResponseListProps {
+interface SubmissionsListProps {
   submissions: FormSubmission[];
 }
 
-type ResponseTableRow = TableRow & {
-  responseId: string;
+type SubmissionsTableRow = TableRow & {
+  submissionId: string;
 };
 
-export function ResponseList({ submissions }: ResponseListProps) {
-  const tableData = useMemo<TableData<ResponseTableRow>>(() => {
+export function SubmissionsList({ submissions }: SubmissionsListProps) {
+  const tableData = useMemo<TableData<SubmissionsTableRow>>(() => {
     const fieldMap = new Map<string, string>();
 
     for (const submission of submissions) {
@@ -42,17 +42,17 @@ export function ResponseList({ submissions }: ResponseListProps) {
 
     const columns: TableColumn[] = [
       {
-        id: "responseId",
-        label: "Response ID",
+        id: "submissionId",
+        label: "ID",
         sticky: true,
         sortable: false,
       },
       ...fieldColumns,
     ];
 
-    const rows: ResponseTableRow[] = submissions.map((submission) => {
-      const row: ResponseTableRow = {
-        responseId: submission.id,
+    const rows: SubmissionsTableRow[] = submissions.map((submission) => {
+      const row: SubmissionsTableRow = {
+        submissionId: submission.id,
       };
 
       for (const response of submission.responses) {
@@ -68,9 +68,9 @@ export function ResponseList({ submissions }: ResponseListProps) {
   return (
     <>
       <Text variant="h4" className="text-foreground mb-4">
-        All Responses
+        All Submissions
       </Text>
-      <Table data={tableData} rowKey="responseId" />
+      <Table data={tableData} rowKey="submissionId" />
     </>
   );
 }

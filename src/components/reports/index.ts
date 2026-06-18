@@ -1,3 +1,3 @@
-export { ResponseList } from "./ResponseList";
-export { ResponseMetrics } from "./ResponseMetrics";
+export { SubmissionsList } from "./SubmissionsList";
+export { ReportMetrics } from "./ReportMetrics";
 export { FieldAnalysisList } from "./FieldAnalysisList";

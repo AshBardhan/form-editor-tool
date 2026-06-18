@@ -7,5 +7,5 @@ export default async function FormReportsPage({
 }) {
   const { slug } = await params;
 
-  redirect(`/forms/${slug}/reports/responses`);
+  redirect(`/forms/${slug}/reports/submissions`);
 }

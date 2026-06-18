@@ -69,7 +69,7 @@ const getFormReportPageDataCached = cache(
   async (slug: string): Promise<FormReportPageData | null> => {
     const form = await prisma.form.findUnique({
       where: { slug },
-      select: { id: true, title: true },
+      select: { id: true, title: true, views: true },
     });
 
     if (!form) {
@@ -92,6 +92,10 @@ const getFormReportPageDataCached = cache(
       form: {
         id: form.id,
         title: form.title,
+      },
+      metrics: {
+        submissions: submissions.length,
+        views: form.views ?? 0,
       },
       submissions: submissions.map((submission) => ({
         id: submission.id,

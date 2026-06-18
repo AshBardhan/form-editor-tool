@@ -1,6 +1,6 @@
 import { Skeleton } from "@/components/ui/Skeleton";
 
-export default function ResponsesLoading() {
+export default function SubmissionsLoading() {
   return (
     <div className="space-y-6 p-6">
       <Skeleton className="h-8 w-64" />

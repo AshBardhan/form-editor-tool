@@ -57,6 +57,7 @@ model Form {
   description String? // Optional form description/instructions
   theme       FormTheme  @default(light) // Visual theme (light/dark mode)
   status      FormStatus @default(draft) // Lifecycle state (draft = editing, published = accepting responses)
+  views       Int        @default(0) // Total public page visits for response rate calculations
 
   // Ownership
   userId Int // Foreign key to form creator

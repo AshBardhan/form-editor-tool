@@ -1,13 +1,13 @@
 import { notFound } from "next/navigation";
 import Text from "@/components/ui/Text";
-import { ResponseList } from "@/components/reports/ResponseList";
-import { ResponseMetrics } from "@/components/reports/ResponseMetrics";
+import { SubmissionsList } from "@/components/reports/SubmissionsList";
+import { ReportMetrics } from "@/components/reports/ReportMetrics";
 import { getFormReportPageData } from "@/lib/queries/forms";
 
 /**
- * Renders the response report using the shared cached submissions payload.
+ * Renders the submissions report using the shared cached submissions payload.
  */
-export default async function FormResponsesPage({
+export default async function FormSubmissionsPage({
   params,
 }: {
   params: Promise<{ slug: string }>;
@@ -24,21 +24,21 @@ export default async function FormResponsesPage({
     <div className="space-y-6">
       {/* Heading */}
       <Text variant="h3" className="text-foreground">
-        Form Responses
+        Form Submissions
       </Text>
 
       {/* Metrics */}
-      <ResponseMetrics submissions={data.submissions} />
+      <ReportMetrics metrics={data.metrics} />
 
-      {/* Responses List */}
+      {/* Submissions List */}
       {data.submissions.length === 0 ? (
         <div className="text-center py-12">
           <Text className="text-muted-foreground">
-            No responses yet. Share your form to start collecting submissions.
+            No submissions yet. Share your form to start collecting submissions.
           </Text>
         </div>
       ) : (
-        <ResponseList submissions={data.submissions} />
+        <SubmissionsList submissions={data.submissions} />
       )}
     </div>
   );

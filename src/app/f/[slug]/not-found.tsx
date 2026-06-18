@@ -11,7 +11,7 @@ export default function PublicFormNotFound() {
             Form Not Found
           </Text>
           <Text className="text-muted-foreground">
-            This form doesn&apos;t exist or is no longer accepting responses.
+            This form doesn&apos;t exist or is no longer accepting submissions.
           </Text>
         </div>
 

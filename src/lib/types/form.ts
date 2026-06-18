@@ -134,13 +134,20 @@ export interface FormPageData {
 }
 
 /**
- * Form report page data - used for displaying form responses and analytics
+ * Form report page data - used for displaying form submissions and analytics
  */
+
+export interface FormReportMetrics {
+  submissions: number;
+  views: number;
+}
+
 export interface FormReportPageData {
   form: {
     id: string;
     title: string;
   };
+  metrics: FormReportMetrics;
   submissions: FormSubmission[];
 }
 

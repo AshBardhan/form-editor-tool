@@ -5,8 +5,8 @@ import { Table } from "@/components/ui/Table";
 const tableData = {
   columns: [
     {
-      id: "responseId",
-      label: "Response ID",
+      id: "submissionId",
+      label: "Submission ID",
       sticky: true,
       sortable: false,
     },
@@ -38,7 +38,7 @@ const tableData = {
   ],
   rows: [
     {
-      responseId: "res_001",
+      submissionId: "res_001",
       fld_name: "John",
       fld_age: 30,
       fld_city: "New York",
@@ -46,7 +46,7 @@ const tableData = {
       fld_tags: ["new", "vip"],
     },
     {
-      responseId: "res_002",
+      submissionId: "res_002",
       fld_name: "Jane",
       fld_age: 25,
       fld_city: "Austin",
@@ -54,7 +54,7 @@ const tableData = {
       fld_tags: ["beta"],
     },
     {
-      responseId: "res_003",
+      submissionId: "res_003",
       fld_name: "Carlos",
       fld_age: 33,
       fld_city: "Seattle",
@@ -62,7 +62,7 @@ const tableData = {
       fld_tags: ["returning", "pro"],
     },
     {
-      responseId: "res_004",
+      submissionId: "res_004",
       fld_name: "Aisha",
       fld_age: 28,
       fld_city: "Chicago",
@@ -85,15 +85,15 @@ export function TableDemo() {
       <section>
         <div className="mb-6">
           <h3 className="text-2xl font-semibold mb-2">
-            Form Responses Example
+            Form Submissions Example
           </h3>
           <p className="text-muted-foreground">
-            Sticky first column for response IDs and sortable field columns.
+            Sticky first column for submission IDs and sortable field columns.
             Click a sortable header to cycle default, ascending, and descending.
           </p>
         </div>
 
-        <Table data={tableData} rowKey="responseId" />
+        <Table data={tableData} rowKey="submissionId" />
       </section>
 
       <section>
@@ -111,8 +111,8 @@ export function TableDemo() {
 const data = {
   columns: [
     {
-      id: "responseId",
-      label: "Response ID",
+      id: "submissionId",
+      label: "Submission ID",
       sticky: true,
       sortable: false,
     },
@@ -124,13 +124,13 @@ const data = {
   ],
   rows: [
     {
-      responseId: "res_001",
+      submissionId: "res_001",
       fld_name: "John",
     },
   ],
 };
 
-<Table data={data} rowKey="responseId" />`}</code>
+<Table data={data} rowKey="submissionId" />`}</code>
           </pre>
         </div>
       </section>
