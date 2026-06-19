@@ -1,0 +1,4 @@
+-- AlterTable
+ALTER TABLE "Form" ADD COLUMN     "completions" INTEGER NOT NULL DEFAULT 0,
+ADD COLUMN     "starts" INTEGER NOT NULL DEFAULT 0,
+ADD COLUMN     "submitAttempts" INTEGER NOT NULL DEFAULT 0;

@@ -1,5 +1,6 @@
 import { notFound } from "next/navigation";
 import Text from "@/components/ui/Text";
+import { Card } from "@/components/ui/Card";
 import { SubmissionsList } from "@/components/reports/SubmissionsList";
 import { ReportMetrics } from "@/components/reports/ReportMetrics";
 import { getFormReportPageData } from "@/lib/queries/forms";
@@ -7,7 +8,7 @@ import { getFormReportPageData } from "@/lib/queries/forms";
 /**
  * Renders the submissions report using the shared cached submissions payload.
  */
-export default async function FormSubmissionsPage({
+export default async function SubmissionsPage({
   params,
 }: {
   params: Promise<{ slug: string }>;
@@ -21,25 +22,23 @@ export default async function FormSubmissionsPage({
   }
 
   return (
-    <div className="space-y-6">
-      {/* Heading */}
-      <Text variant="h3" className="text-foreground">
-        Form Submissions
-      </Text>
-
+    <>
       {/* Metrics */}
-      <ReportMetrics metrics={data.metrics} />
+      {data.metrics && data.metrics.views > 0 ? (
+        <ReportMetrics metrics={data.metrics} />
+      ) : (
+        <Card className="text-center">
+          <Text variant="h5">No Data Recorded</Text>
+          <Text className="text-muted-foreground">
+            The results will be shown once the form is viewed.
+          </Text>
+        </Card>
+      )}
 
       {/* Submissions List */}
-      {data.submissions.length === 0 ? (
-        <div className="text-center py-12">
-          <Text className="text-muted-foreground">
-            No submissions yet. Share your form to start collecting submissions.
-          </Text>
-        </div>
-      ) : (
+      {data.submissions.length > 0 && (
         <SubmissionsList submissions={data.submissions} />
       )}
-    </div>
+    </>
   );
 }

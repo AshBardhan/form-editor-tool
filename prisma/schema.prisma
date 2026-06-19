@@ -58,6 +58,9 @@ model Form {
   theme       FormTheme  @default(light) // Visual theme (light/dark mode)
   status      FormStatus @default(draft) // Lifecycle state (draft = editing, published = accepting responses)
   views       Int        @default(0) // Total public page visits for response rate calculations
+  starts      Int        @default(0) // Sessions that started filling at least one field
+  completions Int        @default(0) // Sessions that reached all required fields filled
+  submitAttempts Int     @default(0) // Total submit button clicks (success + failure)
 
   // Ownership
   userId Int // Foreign key to form creator

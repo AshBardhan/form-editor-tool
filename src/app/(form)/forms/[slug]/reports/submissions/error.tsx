@@ -1,6 +1,7 @@
 "use client";
 
 import Text from "@/components/ui/Text";
+import { Card } from "@/components/ui/Card";
 import { Button } from "@/components/ui/Button";
 
 export default function SubmissionsError({
@@ -11,8 +12,8 @@ export default function SubmissionsError({
   reset: () => void;
 }) {
   return (
-    <div className="p-6 space-y-4">
-      <Text variant="h3" className="text-error">
+    <Card className="text-center px-6 space-y-4">
+      <Text variant="h5" className="text-error">
         Error Loading Submissions
       </Text>
       <Text className="text-muted-foreground">
@@ -21,6 +22,6 @@ export default function SubmissionsError({
       <Button variant="secondary" size="sm" onClick={reset}>
         Try Again
       </Button>
-    </div>
+    </Card>
   );
 }

@@ -140,6 +140,9 @@ export interface FormPageData {
 export interface FormReportMetrics {
   submissions: number;
   views: number;
+  starts: number;
+  completions: number;
+  submitAttempts: number;
 }
 
 export interface FormReportPageData {

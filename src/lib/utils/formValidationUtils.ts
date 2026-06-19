@@ -14,7 +14,7 @@ const INPUT_BLOCK_TYPES = [
   "checkbox",
   "select",
   "radio",
-] as const;
+];
 
 /**
  * Validates a single form block against its value
@@ -124,11 +124,9 @@ export const validateFormBlock = (
 /**
  * Check if a block type is an input block that requires validation
  *
- * @param {string} blockType - The block type to check.
- * @returns {boolean} True if the block type is an input block.
+ * @param {FormBlock} block - The form block to check.
+ * @returns {boolean} True if the block is an input block.
  */
-export const isInputBlockType = (blockType: string): boolean => {
-  return INPUT_BLOCK_TYPES.includes(
-    blockType as (typeof INPUT_BLOCK_TYPES)[number],
-  );
+export const isInputBasedBlock = (block: FormBlock): boolean => {
+  return INPUT_BLOCK_TYPES.includes(block.type);
 };

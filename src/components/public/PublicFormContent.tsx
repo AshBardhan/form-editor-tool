@@ -1,18 +1,19 @@
 "use client";
 
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import Link from "next/link";
 import Text from "@/components/ui/Text";
 import { Button } from "@/components/ui/Button";
 import { FormBlock, FormBlockValueType, FormConfig } from "@/lib/types/form";
 import { widgetBlockRenderers } from "@/components/form/blocks";
-import { getFieldKey } from "@/lib/utils/formUtils";
+import { getFieldKey, getPropValue } from "@/lib/utils/formUtils";
 import {
-  isInputBlockType,
+  isInputBasedBlock,
   validateFormBlock,
 } from "@/lib/utils/formValidationUtils";
 import { useFormDataStore } from "@/lib/stores/formDataStore";
 import { switchFormTheme } from "@/lib/utils/domUtils";
+import { sendAnalyticsEvent } from "@/lib/utils/analytics";
 
 interface PublicFormContentProps {
   form: FormConfig;
@@ -26,24 +27,63 @@ interface PublicFormStatus {
 export function PublicFormContent({ form }: PublicFormContentProps) {
   const [blockErrors, setBlockErrors] = useState<Record<string, string[]>>({});
   const [status, setStatus] = useState<PublicFormStatus>({ type: "editing" });
+  const hasTrackedViewRef = useRef(false);
+  const hasTrackedStartRef = useRef(false);
+  const hasTrackedCompletionRef = useRef(false);
 
   const formData = useFormDataStore((state) => state.formData);
   const updateFormData = useFormDataStore((state) => state.updateFormData);
   const resetFormData = useFormDataStore((state) => state.resetFormData);
 
   useEffect(() => {
+    if (!form.slug || !form.theme || hasTrackedViewRef.current) {
+      return;
+    }
+    hasTrackedViewRef.current = true;
+    sendAnalyticsEvent(form.slug, "view");
     switchFormTheme(form.theme);
-  }, [form.theme]);
 
-  useEffect(() => {
     return () => {
       setStatus({ type: "editing" });
       resetFormData();
       setBlockErrors({});
     };
-  }, [resetFormData]);
+  }, []);
+
+  useEffect(() => {
+    if (!form.slug || hasTrackedCompletionRef.current) {
+      return;
+    }
+
+    const isFormCompleted = form.blocks.every((block) => {
+      if (!isInputBasedBlock(block) || !getPropValue(block, "required")) {
+        return true;
+      }
+
+      const value = formData[getFieldKey(block)];
+
+      if (value === undefined || value === null) return false;
+      if (typeof value === "boolean") return value;
+      if (typeof value === "string") return value.trim() !== "";
+      if (Array.isArray(value)) return value.length > 0;
+
+      return true;
+    });
+
+    if (!isFormCompleted) {
+      return;
+    }
+
+    hasTrackedCompletionRef.current = true;
+    sendAnalyticsEvent(form.slug, "completion");
+  }, [formData]);
 
   const handleFieldChange = (key: string, value: FormBlockValueType) => {
+    if (!hasTrackedStartRef.current && form.slug) {
+      hasTrackedStartRef.current = true;
+      sendAnalyticsEvent(form.slug, "start");
+    }
+
     updateFormData(key, value);
 
     const block = form.blocks.find((item) => getFieldKey(item) === key);
@@ -83,7 +123,7 @@ export function PublicFormContent({ form }: PublicFormContentProps) {
       return null;
     }
 
-    if (isInputBlockType(block.type)) {
+    if (isInputBasedBlock(block)) {
       const InputRenderer = FormRenderer as React.ComponentType<{
         block: FormBlock;
         editable?: boolean;
@@ -112,6 +152,10 @@ export function PublicFormContent({ form }: PublicFormContentProps) {
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
+    if (form.slug) {
+      sendAnalyticsEvent(form.slug, "submit_attempt");
+    }
+
     if (!validateForm()) {
       return;
     }
@@ -120,7 +164,7 @@ export function PublicFormContent({ form }: PublicFormContentProps) {
 
     try {
       const responses = form.blocks
-        .filter((block) => isInputBlockType(block.type))
+        .filter((block) => isInputBasedBlock(block))
         .map((block) => ({
           blockId: block.id,
           value: formData[getFieldKey(block)] ?? null,
@@ -163,7 +207,17 @@ export function PublicFormContent({ form }: PublicFormContentProps) {
     setBlockErrors({});
   };
 
-  const retryForm = () => {
+  const handleSubmitAnotherResponse = () => {
+    if (form.slug) {
+      sendAnalyticsEvent(form.slug, "view");
+    }
+
+    hasTrackedStartRef.current = false;
+    hasTrackedCompletionRef.current = false;
+    setStatus({ type: "editing" });
+  };
+
+  const retryFormAfterFailure = () => {
     setStatus({ type: "editing" });
   };
 
@@ -200,7 +254,9 @@ export function PublicFormContent({ form }: PublicFormContentProps) {
                   <Text variant="h3">Thank you!</Text>
                   <p>{status.message}</p>
                   <div className="flex gap-3 justify-center mt-4">
-                    <Button onClick={retryForm}>Submit another response</Button>
+                    <Button onClick={handleSubmitAnotherResponse}>
+                      Submit another response
+                    </Button>
                     <Link href="/forms">
                       <Button variant="outline">Go Home</Button>
                     </Link>
@@ -212,7 +268,7 @@ export function PublicFormContent({ form }: PublicFormContentProps) {
                   <Text variant="h3">Error</Text>
                   <p>{status.message}</p>
                   <div className="flex gap-3 justify-center mt-4">
-                    <Button onClick={retryForm}>Retry</Button>
+                    <Button onClick={retryFormAfterFailure}>Retry</Button>
                     <Link href="/forms">
                       <Button variant="outline">Go Home</Button>
                     </Link>
