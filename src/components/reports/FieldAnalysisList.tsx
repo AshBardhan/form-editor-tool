@@ -4,28 +4,56 @@ import { useMemo } from "react";
 import { Card, CardContent } from "@/components/ui/Card";
 import Text from "@/components/ui/Text";
 import { Badge } from "@/components/ui/Badge";
-import { type FormSubmission } from "@/lib/types/form";
-import { type FieldData, type FieldAnalysisResult } from "@/lib/types/reports";
+import Metric from "@/components/ui/Metric";
+import {
+  type FormSubmission,
+  type FormBlockProps,
+  type FormBlockType,
+} from "@/lib/types/form";
+import { type FieldData } from "@/lib/types/reports";
+import {
+  isChoiceBasedFieldBlock,
+  isTextBasedFieldBlock,
+} from "@/lib/utils/formUtils";
+import { BarChart } from "@/components/charts/Bar";
 
 interface FieldAnalysisListProps {
   submissions: FormSubmission[];
-  totalSubmissions: number;
 }
 
-function formatValue(
-  value: string | number | boolean | string[] | null,
-): string {
+interface SummaryMetrics {
+  totalFields: number;
+  totalResponses: number;
+}
+
+// Data types for field analysis
+interface ChoiceBasedData {
+  label: string;
+  value: string;
+  count: number;
+  percentage: string;
+}
+
+type TextBasedData = string | number;
+
+type FieldAnalysisData = ChoiceBasedData[] | TextBasedData[];
+
+interface FieldAnalysisResult {
+  blockType: FormBlockType;
+  data: FieldAnalysisData;
+}
+
+function formatValue(value: TextBasedData | null): string {
   if (value === null || value === undefined) return "(Empty)";
-  if (Array.isArray(value)) return value.join(", ");
-  if (typeof value === "boolean") return value ? "Yes" : "No";
   return String(value);
 }
 
 function analyzeField(field: FieldData): FieldAnalysisResult {
+  const blockType = field.blockType;
   const values = field.responses.filter((v) => v !== null && v !== undefined);
 
   // For choice-based fields (radio, select, checkbox)
-  if (["radio", "select", "checkbox"].includes(field.blockType)) {
+  if (isChoiceBasedFieldBlock(blockType)) {
     const valueCounts: Record<string, number> = {};
 
     values.forEach((value) => {
@@ -33,29 +61,47 @@ function analyzeField(field: FieldData): FieldAnalysisResult {
       valueCounts[key] = (valueCounts[key] || 0) + 1;
     });
 
-    const sortedValues = Object.entries(valueCounts)
-      .sort(([, a], [, b]) => b - a)
-      .map(([value, count]) => ({
-        value,
-        count,
-        percentage: ((count / field.responseCount) * 100).toFixed(1),
-      }));
+    // Get all available options from blockProps
+    let allOptions =
+      field.options?.map((option) => ({ label: option, value: option })) ?? [];
 
-    return { type: "choices", data: sortedValues };
+    // For ungrouped checkbox fields (no options), use True/False
+    if (blockType === "checkbox" && allOptions.length === 0) {
+      allOptions = [
+        { label: "True", value: "true" },
+        { label: "False", value: "false" },
+      ];
+    }
+
+    // Create list of all options with their counts, sorted by count descending
+    const sortedValues = allOptions
+      .map((option) => ({
+        label: option.label,
+        value: option.value,
+        count: valueCounts[option.value] || 0,
+        percentage:
+          field.responses.length > 0
+            ? (
+                ((valueCounts[option.value] || 0) / field.responses.length) *
+                100
+              ).toFixed(1)
+            : "0.0",
+      }))
+      .sort((a, b) => b.count - a.count);
+
+    return { blockType, data: sortedValues };
   }
 
   // For text-based fields
   return {
-    type: "list",
-    data: values as (string | number | boolean | string[])[],
+    blockType,
+    data: values as TextBasedData[],
   };
 }
 
-export function FieldAnalysisList({
-  submissions,
-  totalSubmissions,
-}: FieldAnalysisListProps) {
-  const fieldAnalysis = useMemo(() => {
+export function FieldAnalysisList({ submissions }: FieldAnalysisListProps) {
+  console.log(submissions);
+  const { summaryMetrics, fieldAnalysis } = useMemo(() => {
     const fieldMap = new Map<string, FieldData>();
 
     submissions.forEach((submission) => {
@@ -65,115 +111,186 @@ export function FieldAnalysisList({
           const label =
             typeof labelValue === "string" ? labelValue : response.blockName;
 
+          // Extract required flag from blockProps
+          const required =
+            response.blockProps?.required === true ||
+            response.blockProps?.required === "true";
+
+          const options = (response.blockProps?.options ?? []) as string[];
+
           fieldMap.set(response.blockId, {
             blockId: response.blockId,
             blockName: response.blockName,
             blockType: response.blockType,
             label,
             responses: [],
-            responseCount: 0,
-            responseRate: 0,
+            required,
+            skipped: 0,
+            options,
           });
         }
 
         const field = fieldMap.get(response.blockId)!;
-        field.responses.push(response.value);
-        field.responseCount++;
+        if (response.value === null) {
+          field.skipped++;
+        } else {
+          field.responses.push(response.value);
+        }
       });
     });
 
-    // Calculate response rates
-    fieldMap.forEach((field) => {
-      field.responseRate = (field.responseCount / totalSubmissions) * 100;
-    });
+    const fields = Array.from(fieldMap.values());
 
-    return Array.from(fieldMap.values());
-  }, [submissions, totalSubmissions]);
+    // Calculate summary metrics
+    const summary: SummaryMetrics = {
+      totalFields: fields.length,
+      totalResponses: fields.reduce(
+        (sum, field) => sum + field.responses.length,
+        0,
+      ),
+    };
+
+    return {
+      summaryMetrics: summary,
+      fieldAnalysis: fields,
+    };
+  }, [submissions]);
 
   return (
-    <div className="space-y-4">
-      {fieldAnalysis.map((field) => {
-        const analysis = analyzeField(field);
+    <div className="space-y-6">
+      {/* Summary Card */}
+      <Card>
+        <CardContent className="px-6">
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+            <Metric
+              label="Total Fields"
+              value={String(summaryMetrics.totalFields)}
+            />
+            <Metric
+              label="Total Responses"
+              value={String(summaryMetrics.totalResponses)}
+            />
+          </div>
+        </CardContent>
+      </Card>
 
-        return (
-          <Card key={field.blockId}>
-            <CardContent className="p-6">
-              <div className="space-y-4">
+      {/* Field Cards */}
+      <Card>
+        <CardContent className="space-y-4 px-6">
+          {fieldAnalysis.map((field, index, arr) => {
+            const isLast = index === arr.length - 1;
+            const analysis = analyzeField(field);
+
+            return (
+              <div
+                className={`space-y-6 ${!isLast && "border-b border-border pb-6"}`}
+                key={field.blockId}
+              >
                 {/* Field Header */}
-                <div className="flex justify-between items-start">
-                  <div className="space-y-1">
-                    <Text variant="h4" className="text-foreground">
-                      {field.label}
-                    </Text>
-                    <div className="flex gap-2 items-center">
-                      <Badge
-                        label={field.blockType}
-                        variant="neutral"
-                        size="sm"
-                      />
-                      <Text
-                        variant="p"
-                        className="text-muted-foreground text-sm"
-                      >
-                        {field.responseCount} responses •{" "}
-                        {field.responseRate.toFixed(1)}% response rate
-                      </Text>
-                    </div>
+                <div className="space-y-2">
+                  <Text variant="h4" className="text-foreground">
+                    {field.label}
+                  </Text>
+                  <div className="flex flex-wrap gap-2 items-center">
+                    <Badge
+                      label={field.blockType}
+                      variant="neutral"
+                      size="sm"
+                    />
+                    <Badge
+                      label={field.required ? "Required" : "Optional"}
+                      variant={field.required ? "success" : "neutral"}
+                      size="sm"
+                    />
                   </div>
                 </div>
 
-                {/* Field Analysis */}
-                <div className="border-t border-border pt-4">
-                  {analysis.type === "choices" && (
-                    <div className="space-y-3">
-                      {analysis.data.map((item, index) => (
-                        <div
-                          key={index}
-                          className="flex items-center justify-between"
-                        >
-                          <div className="flex-1 space-y-1">
-                            <div className="flex items-center gap-3">
-                              <Text className="text-foreground">
-                                {item.value}
-                              </Text>
-                              <Badge
-                                label={`${item.count} (${item.percentage}%)`}
-                                variant="neutral"
+                {/* Two-Column Layout: Stats (Left) | Responses (Right) */}
+                <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+                  {/* Stats Section (Left) */}
+                  <div className="space-y-3">
+                    <div className="space-y-1 flex gap-2">
+                      <Metric
+                        className="flex-1"
+                        value={field.responses.length}
+                        label="Responses"
+                      />
+                      <Metric
+                        className="flex-1"
+                        value={field.skipped}
+                        label="Skipped"
+                      />
+                    </div>
+
+                    {/* Horizontal Bar Chart */}
+                    <div className="space-y-1">
+                      <BarChart
+                        value={field.responses.length}
+                        maxValue={field.responses.length + field.skipped}
+                        size="lg"
+                      />
+                    </div>
+                  </div>
+
+                  {/* Responses Section (Right) */}
+                  <div className="space-y-3">
+                    <Text
+                      variant="p"
+                      className="text-sm font-medium text-foreground"
+                    >
+                      Responses
+                    </Text>
+
+                    {isChoiceBasedFieldBlock(analysis.blockType) && (
+                      <div className="space-y-3 p-3 bg-muted/30 rounded border border-border">
+                        {(analysis.data as ChoiceBasedData[]).map(
+                          (item, index) => (
+                            <div key={index} className="space-y-1">
+                              <div className="flex justify-between items-center">
+                                <Text className="font-medium text-foreground text-sm">
+                                  {item.label}
+                                </Text>
+                                <Badge
+                                  label={`${item.count} (${item.percentage}%)`}
+                                  variant="neutral"
+                                  size="sm"
+                                />
+                              </div>
+
+                              <BarChart
+                                value={item.count}
+                                maxValue={field.responses.length}
                                 size="sm"
                               />
                             </div>
-                            <div className="h-2 bg-muted rounded-full overflow-hidden max-w-md">
-                              <div
-                                className="h-full bg-primary"
-                                style={{ width: `${item.percentage}%` }}
-                              />
-                            </div>
-                          </div>
-                        </div>
-                      ))}
-                    </div>
-                  )}
+                          ),
+                        )}
+                      </div>
+                    )}
 
-                  {analysis.type === "list" && (
-                    <div className="space-y-2 max-h-64 overflow-y-auto">
-                      {analysis.data.map((value, index) => (
-                        <div
-                          key={index}
-                          className="p-3 bg-muted/50 rounded border border-border"
-                        >
-                          <Text className="text-foreground">
-                            {formatValue(value)}
-                          </Text>
-                        </div>
-                      ))}
-                    </div>
-                  )}
+                    {isTextBasedFieldBlock(analysis.blockType) && (
+                      <ul className="space-y-2 max-h-48 overflow-y-auto rounded border border-border">
+                        {(analysis.data as TextBasedData[]).map(
+                          (value, index) => (
+                            <li
+                              key={index}
+                              className="py-1 px-2 bg-white even:bg-gray-100"
+                            >
+                              <Text className="text-xs text-foreground">
+                                {formatValue(value)}
+                              </Text>
+                            </li>
+                          ),
+                        )}
+                      </ul>
+                    )}
+                  </div>
                 </div>
               </div>
-            </CardContent>
-          </Card>
-        );
-      })}
+            );
+          })}
+        </CardContent>
+      </Card>
     </div>
   );
 }

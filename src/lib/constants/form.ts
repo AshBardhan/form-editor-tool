@@ -1,4 +1,21 @@
 import { FormStatus, FormStatusUpdateMessage } from "@/lib/types/form";
+
+export const OPINION_BASED_FIELD_BLOCKS = [
+  "text",
+  "number",
+  "email",
+  "password",
+  "url",
+  "textarea",
+];
+
+export const CHOICE_BASED_FIELD_BLOCKS = ["checkbox", "select", "radio"];
+
+export const ALL_FIELD_BLOCKS = [
+  ...OPINION_BASED_FIELD_BLOCKS,
+  ...CHOICE_BASED_FIELD_BLOCKS,
+];
+
 /**
  * Form Metric Labels
  * Maps metric keys to their display labels

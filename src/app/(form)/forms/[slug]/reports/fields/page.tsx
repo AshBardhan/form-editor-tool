@@ -1,5 +1,6 @@
 import { notFound } from "next/navigation";
 import Text from "@/components/ui/Text";
+import { Card } from "@/components/ui/Card";
 import { FieldAnalysisList } from "@/components/reports/FieldAnalysisList";
 import { getFormReportPageData } from "@/lib/queries/forms";
 
@@ -20,24 +21,17 @@ export default async function FieldAnalysisPage({
   }
 
   return (
-    <div className="space-y-6">
-      {/* Heading */}
-      <Text variant="h3" className="text-foreground">
-        Field-by-Field Analysis
-      </Text>
-      {/* Field Analysis */}
+    <>
       {data.submissions.length === 0 ? (
-        <div className="text-center py-12">
+        <Card className="text-center">
+          <Text variant="h5">No Data Recorded</Text>
           <Text className="text-muted-foreground">
-            No responses yet. Share your form to start collecting submissions.
+            Share your form to start collecting submissions.
           </Text>
-        </div>
+        </Card>
       ) : (
-        <FieldAnalysisList
-          submissions={data.submissions}
-          totalSubmissions={data.submissions.length}
-        />
+        <FieldAnalysisList submissions={data.submissions} />
       )}
-    </div>
+    </>
   );
 }

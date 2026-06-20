@@ -64,7 +64,7 @@ export function FormHeader({ form }: FormHeaderProps) {
           path: "submissions",
         },
         {
-          label: "Field Analytics",
+          label: "Fields",
           path: "fields",
         },
       ],

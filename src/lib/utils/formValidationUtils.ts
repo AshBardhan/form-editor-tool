@@ -1,20 +1,6 @@
 import { FormBlock, FormBlockValueType } from "@/lib/types/form";
 import { getPropValue } from "./formUtils";
-
-/**
- * List of form block types that require validation
- */
-const INPUT_BLOCK_TYPES = [
-  "text",
-  "number",
-  "email",
-  "password",
-  "url",
-  "textarea",
-  "checkbox",
-  "select",
-  "radio",
-];
+import { ALL_FIELD_BLOCKS } from "@/lib/constants/form";
 
 /**
  * Validates a single form block against its value
@@ -33,9 +19,7 @@ export const validateFormBlock = (
 
   // Skip non-input blocks (heading, paragraph, separator, button, buttons)
   if (
-    !INPUT_BLOCK_TYPES.includes(
-      block.type as (typeof INPUT_BLOCK_TYPES)[number],
-    )
+    !ALL_FIELD_BLOCKS.includes(block.type as (typeof ALL_FIELD_BLOCKS)[number])
   ) {
     return errors;
   }
@@ -119,14 +103,4 @@ export const validateFormBlock = (
   }
 
   return errors;
-};
-
-/**
- * Check if a block type is an input block that requires validation
- *
- * @param {FormBlock} block - The form block to check.
- * @returns {boolean} True if the block is an input block.
- */
-export const isInputBasedBlock = (block: FormBlock): boolean => {
-  return INPUT_BLOCK_TYPES.includes(block.type);
 };

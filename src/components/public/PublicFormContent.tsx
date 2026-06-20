@@ -6,11 +6,12 @@ import Text from "@/components/ui/Text";
 import { Button } from "@/components/ui/Button";
 import { FormBlock, FormBlockValueType, FormConfig } from "@/lib/types/form";
 import { widgetBlockRenderers } from "@/components/form/blocks";
-import { getFieldKey, getPropValue } from "@/lib/utils/formUtils";
 import {
-  isInputBasedBlock,
-  validateFormBlock,
-} from "@/lib/utils/formValidationUtils";
+  getFieldKey,
+  getPropValue,
+  isFieldBasedBlock,
+} from "@/lib/utils/formUtils";
+import { validateFormBlock } from "@/lib/utils/formValidationUtils";
 import { useFormDataStore } from "@/lib/stores/formDataStore";
 import { switchFormTheme } from "@/lib/utils/domUtils";
 import { sendAnalyticsEvent } from "@/lib/utils/analytics";
@@ -56,7 +57,7 @@ export function PublicFormContent({ form }: PublicFormContentProps) {
     }
 
     const isFormCompleted = form.blocks.every((block) => {
-      if (!isInputBasedBlock(block) || !getPropValue(block, "required")) {
+      if (!isFieldBasedBlock(block.type) || !getPropValue(block, "required")) {
         return true;
       }
 
@@ -123,7 +124,7 @@ export function PublicFormContent({ form }: PublicFormContentProps) {
       return null;
     }
 
-    if (isInputBasedBlock(block)) {
+    if (isFieldBasedBlock(block.type)) {
       const InputRenderer = FormRenderer as React.ComponentType<{
         block: FormBlock;
         editable?: boolean;
@@ -164,7 +165,7 @@ export function PublicFormContent({ form }: PublicFormContentProps) {
 
     try {
       const responses = form.blocks
-        .filter((block) => isInputBasedBlock(block))
+        .filter((block) => isFieldBasedBlock(block.type))
         .map((block) => ({
           blockId: block.id,
           value: formData[getFieldKey(block)] ?? null,

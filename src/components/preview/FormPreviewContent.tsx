@@ -5,11 +5,8 @@ import { FormBlock, FormBlockValueType } from "@/lib/types/form";
 import Text from "@/components/ui/Text";
 import { widgetBlockRenderers } from "@/components/form/blocks";
 import { useFormConfigStore, useFormDataStore } from "@/lib/stores";
-import { getFieldKey } from "@/lib/utils/formUtils";
-import {
-  validateFormBlock,
-  isInputBasedBlock,
-} from "@/lib/utils/formValidationUtils";
+import { getFieldKey, isFieldBasedBlock } from "@/lib/utils/formUtils";
+import { validateFormBlock } from "@/lib/utils/formValidationUtils";
 import { DeviceList, DeviceType } from "@/lib/constants/device";
 import { toast } from "@/components/ui/Toast";
 import { switchFormTheme } from "@/lib/utils/domUtils";
@@ -180,7 +177,7 @@ export const FormPreviewContent = ({
     if (!FormRenderer) return null;
 
     // Check if the renderer accepts an 'editable' prop (input-based blocks)
-    if (isInputBasedBlock(block)) {
+    if (isFieldBasedBlock(block.type)) {
       // Type assertion for input blocks that support editable and onChange
       const InputRenderer = FormRenderer as React.ComponentType<{
         block: FormBlock;
