@@ -67,7 +67,7 @@ model Form {
   user   User @relation(fields: [userId], references: [id], onDelete: Cascade) // n-1: Many forms belong to one user
 
   // Public access
-  slug String? @unique // URL-friendly identifier (e.g., "contact-form" for /forms/contact-form)
+  slug String @unique // URL-friendly identifier (e.g., "contact-form" for /forms/contact-form) - always generated on creation
 
   createdAt   DateTime  @default(now()) // Form creation timestamp
   updatedAt   DateTime  @updatedAt // Last modification timestamp

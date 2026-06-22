@@ -25,6 +25,7 @@ interface FormConfigState {
  */
 const initialFormConfig: FormConfig = {
   id: undefined, // No ID for new forms
+  slug: "untitled-form",
   title: "Untitled Form",
   theme: "light",
   blocks: [],
