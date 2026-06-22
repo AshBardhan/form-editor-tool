@@ -9,6 +9,7 @@ export interface FieldData {
   blockType: FormBlockType;
   label: string;
   responses: (string | number | boolean | string[] | null)[];
+  responded: number;
   skipped: number;
   required: boolean;
   options?: string[];

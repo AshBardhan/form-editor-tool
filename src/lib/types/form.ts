@@ -98,7 +98,7 @@ export interface FormConfig {
   id?: string; // Form ID for tracking (undefined for new forms)
   title: string;
   description?: string;
-  slug?: string;
+  slug: string;
   status?: FormStatus;
   theme: "light" | "dark";
   blocks: FormBlock[];
@@ -156,7 +156,7 @@ export interface FormReportPageData {
 
 export interface DashboardForm {
   id: string;
-  slug: string | null;
+  slug: string;
   title: string;
   status: FormStatus;
   metrics: FormMetrics;

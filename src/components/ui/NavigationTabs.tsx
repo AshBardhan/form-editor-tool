@@ -86,7 +86,7 @@ function NavigationNode({
         {item.label}
       </Link>
 
-      {item.children?.length && (
+      {item.children && item.children.length > 0 && (
         <ul className="absolute w-max z-10 top-full left-1/2 transform -translate-x-1/2 border bg-white rounded mt-1 p-2 flex flex-col gap-2">
           {item.children.map((child) => (
             <NavigationNode

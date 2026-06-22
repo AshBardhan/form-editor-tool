@@ -57,8 +57,14 @@ function analyzeField(field: FieldData): FieldAnalysisResult {
     const valueCounts: Record<string, number> = {};
 
     values.forEach((value) => {
-      const key = Array.isArray(value) ? value.join(", ") : String(value);
-      valueCounts[key] = (valueCounts[key] || 0) + 1;
+      if (blockType === "checkbox" && Array.isArray(value)) {
+        value.forEach((option) => {
+          valueCounts[option] = (valueCounts[option] || 0) + 1;
+        });
+      } else {
+        const key = String(value);
+        valueCounts[key] = (valueCounts[key] || 0) + 1;
+      }
     });
 
     // Get all available options from blockProps
@@ -100,7 +106,6 @@ function analyzeField(field: FieldData): FieldAnalysisResult {
 }
 
 export function FieldAnalysisList({ submissions }: FieldAnalysisListProps) {
-  console.log(submissions);
   const { summaryMetrics, fieldAnalysis } = useMemo(() => {
     const fieldMap = new Map<string, FieldData>();
 
@@ -123,8 +128,9 @@ export function FieldAnalysisList({ submissions }: FieldAnalysisListProps) {
             blockName: response.blockName,
             blockType: response.blockType,
             label,
-            responses: [],
             required,
+            responses: [],
+            responded: 0,
             skipped: 0,
             options,
           });
@@ -132,9 +138,12 @@ export function FieldAnalysisList({ submissions }: FieldAnalysisListProps) {
 
         const field = fieldMap.get(response.blockId)!;
         if (response.value === null) {
-          field.skipped++;
+          field.skipped += 1;
         } else {
           field.responses.push(response.value);
+          field.responded += Array.isArray(response.value)
+            ? response.value.length
+            : 1;
         }
       });
     });
@@ -144,10 +153,7 @@ export function FieldAnalysisList({ submissions }: FieldAnalysisListProps) {
     // Calculate summary metrics
     const summary: SummaryMetrics = {
       totalFields: fields.length,
-      totalResponses: fields.reduce(
-        (sum, field) => sum + field.responses.length,
-        0,
-      ),
+      totalResponses: fields.reduce((sum, field) => sum + field.responded, 0),
     };
 
     return {
@@ -212,7 +218,7 @@ export function FieldAnalysisList({ submissions }: FieldAnalysisListProps) {
                     <div className="space-y-1 flex gap-2">
                       <Metric
                         className="flex-1"
-                        value={field.responses.length}
+                        value={field.responded}
                         label="Responses"
                       />
                       <Metric
@@ -225,8 +231,8 @@ export function FieldAnalysisList({ submissions }: FieldAnalysisListProps) {
                     {/* Horizontal Bar Chart */}
                     <div className="space-y-1">
                       <BarChart
-                        value={field.responses.length}
-                        maxValue={field.responses.length + field.skipped}
+                        value={field.responded}
+                        maxValue={field.responded + field.skipped}
                         size="lg"
                       />
                     </div>

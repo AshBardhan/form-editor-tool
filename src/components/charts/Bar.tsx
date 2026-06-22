@@ -13,7 +13,9 @@ function BarChart({ value, maxValue, size = "md", label }: BarChartProps) {
       <div className={`relative w-full bg-gray-200 rounded ${height}`}>
         <div
           className="absolute top-0 left-0 h-full bg-blue-500 rounded"
-          style={{ width: `${(value / maxValue) * 100}%` }}
+          style={{
+            width: `${maxValue > 0 ? Math.min((value / maxValue) * 100, 100) : 0}%`,
+          }}
         />
       </div>
       {label && (

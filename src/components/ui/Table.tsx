@@ -101,7 +101,7 @@ export function Table<TRow extends TableRow>({
     const isActive = isActiveSortColumn(column);
     const nextState: SortKey = {
       id: column.id,
-      direction: isActive ? getNextDirection(sortKey.direction) : null,
+      direction: isActive ? getNextDirection(sortKey.direction) : "asc",
     };
 
     setSortKey(nextState);
