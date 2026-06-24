@@ -1,14 +1,32 @@
-import { sampleFormList } from "./data/sampleFormsList";
-import { sampleForm, getFormBySlug } from "./data/sampleForms";
-import { sampleSubmissions } from "./data/sampleSubmissions";
+// Import mock data
+import {
+  mockForms,
+  mockSubmissions,
+  mockUser,
+  getFormById,
+  getFormBySlug,
+  getBlocksForForm,
+  getSubmissionsForForm,
+  getMockStats,
+} from "./data";
 import { FormStatus } from "@prisma/client";
 
 /**
- * Mock Prisma Client for server-side data fetching
- * 
+ * Mock Prisma Client for offline development
+ *
  * This mock client mimics the Prisma API to enable offline development
- * without a database connection. It returns sample data for all queries.
+ * without a database connection.
+ *
+ * Uses hardcoded mock data from src/mocks/data/
+ * - 10 unique forms with edge cases
+ * - Up to 20 submissions per form
+ * - Various field types and scenarios
  */
+
+const stats = getMockStats();
+console.log(
+  `[Mock Prisma] Loaded ${stats.totalForms} forms (${stats.publishedForms} published, ${stats.draftForms} draft), ${stats.totalSubmissions} submissions`,
+);
 
 /* eslint-disable @typescript-eslint/no-explicit-any */
 
@@ -55,24 +73,37 @@ export const mockPrisma: MockPrismaClient = {
      */
     findMany: async (args?: any) => {
       console.log("[Mock Prisma] form.findMany called with:", args);
-      
-      // Return forms in the format expected by dashboard
-      return sampleFormList.map((form) => ({
+
+      let forms = [...mockForms];
+
+      // Apply filters
+      if (args?.where?.status) {
+        forms = forms.filter((f: any) => f.status === args.where.status);
+      }
+
+      // Apply pagination
+      const skip = args?.skip || 0;
+      const take = args?.take || forms.length;
+      const paginatedForms = forms.slice(skip, skip + take);
+
+      // Return in dashboard format
+      return paginatedForms.map((form: any) => ({
         id: form.id,
         slug: form.slug,
         title: form.title,
-        description: null,
-        theme: "default",
+        description: form.description,
+        theme: form.theme,
         status: form.status as FormStatus,
-        createdAt: new Date("2026-06-01"),
-        updatedAt: new Date("2026-06-20"),
-        views: form.metrics.views || 0,
-        starts: form.metrics.starts || 0,
-        completions: form.metrics.completions || 0,
-        submitAttempts: form.metrics.submitAttempts || 0,
+        createdAt: new Date(form.createdAt),
+        updatedAt: new Date(form.updatedAt),
+        publishedAt: form.publishedAt ? new Date(form.publishedAt) : null,
+        views: form.views,
+        starts: form.starts,
+        completions: form.completions,
+        submitAttempts: form.submitAttempts,
         _count: {
-          blocks: form.metrics.blocks || 0,
-          submissions: form.metrics.submissions || 0,
+          blocks: getBlocksForForm(form.id).length,
+          submissions: getSubmissionsForForm(form.id).length,
         },
       }));
     },
@@ -85,39 +116,45 @@ export const mockPrisma: MockPrismaClient = {
 
       if (!where) return null;
 
-      // Get form by slug if provided, otherwise use default
-      const form = where.slug ? getFormBySlug(where.slug) : sampleForm;
-      
+      // Get form by slug or id
+      const form = where.slug
+        ? getFormBySlug(where.slug)
+        : getFormById(where.id);
+
       if (!form) return null;
 
-      // Check if filtering by status (for published forms)
+      // Check status filter
       if (where.status && form.status !== where.status) {
         return null;
       }
 
-      // Return form in the format expected by queries
+      // Get blocks for this form
+      const blocks = getBlocksForForm(form.id);
+
+      // Return form in expected format
       return {
         id: form.id,
         slug: form.slug,
         title: form.title,
         description: form.description || null,
-        theme: form.theme || "default",
+        theme: form.theme || "light",
         status: form.status as FormStatus,
-        createdAt: new Date("2026-06-01"),
-        updatedAt: new Date("2026-06-20"),
-        views: 450,
-        starts: 380,
-        completions: 20,
-        submitAttempts: 25,
-        blocks: form.blocks.map((block, index) => ({
+        createdAt: new Date(form.createdAt),
+        updatedAt: new Date(form.updatedAt),
+        publishedAt: form.publishedAt ? new Date(form.publishedAt) : null,
+        views: form.views,
+        starts: form.starts,
+        completions: form.completions,
+        submitAttempts: form.submitAttempts,
+        blocks: blocks.map((block: any) => ({
           id: block.id,
           type: block.type,
           name: block.name,
           props: block.props,
-          order: index,
+          order: block.order,
           formId: form.id,
-          createdAt: new Date("2026-06-01"),
-          updatedAt: new Date("2026-06-20"),
+          createdAt: new Date(form.createdAt),
+          updatedAt: new Date(form.updatedAt),
         })),
       };
     },
@@ -135,26 +172,30 @@ export const mockPrisma: MockPrismaClient = {
 
       // Get form by slug if provided
       const requestedSlug = args?.where?.slug;
-      const form = requestedSlug ? getFormBySlug(requestedSlug) : sampleForm;
+      const form = requestedSlug
+        ? getFormBySlug(requestedSlug)
+        : mockForms[0] || null;
 
       if (!form) return null;
 
-      // Used to find published forms
+      // Check status filter
       if (args?.where?.status === "published") {
         if (form.status !== "published") {
           return null;
         }
+
+        const blocks = getBlocksForForm(form.id);
         return {
           id: form.id,
           slug: form.slug,
           title: form.title,
           status: form.status as FormStatus,
-          blocks: form.blocks.map((block, index) => ({
+          blocks: blocks.map((block: any) => ({
             id: block.id,
             type: block.type,
             name: block.name,
             props: block.props,
-            order: index,
+            order: block.order,
           })),
         };
       }
@@ -172,20 +213,21 @@ export const mockPrisma: MockPrismaClient = {
      */
     create: async (args) => {
       console.log("[Mock Prisma] form.create called with:", args);
-      
+
       const newFormId = `form-${Date.now()}`;
-      const createdBlocks = args.include?.blocks && args.data.blocks?.create
-        ? args.data.blocks.create.map((block: any, index: number) => ({
-            id: `block-${Date.now()}-${index}`,
-            type: block.type,
-            name: block.name,
-            props: block.props,
-            order: block.order || index,
-            formId: newFormId,
-            createdAt: new Date(),
-            updatedAt: new Date(),
-          }))
-        : [];
+      const createdBlocks =
+        args.include?.blocks && args.data.blocks?.create
+          ? args.data.blocks.create.map((block: any, index: number) => ({
+              id: `block-${Date.now()}-${index}`,
+              type: block.type,
+              name: block.name,
+              props: block.props,
+              order: block.order || index,
+              formId: newFormId,
+              createdAt: new Date(),
+              updatedAt: new Date(),
+            }))
+          : [];
 
       return {
         id: newFormId,
@@ -210,14 +252,16 @@ export const mockPrisma: MockPrismaClient = {
      */
     update: async (args) => {
       console.log("[Mock Prisma] form.update called with:", args);
-      
+
+      const existingForm = mockForms[0]; // Use first form as fallback
+
       return {
-        id: sampleForm.id,
+        id: existingForm.id,
         slug: args.where.slug || args.where.id,
-        title: args.data.title || sampleForm.title,
-        description: args.data.description || sampleForm.description || null,
-        theme: args.data.theme || sampleForm.theme || "default",
-        status: args.data.status || sampleForm.status,
+        title: args.data.title || existingForm.title,
+        description: args.data.description || existingForm.description || null,
+        theme: args.data.theme || existingForm.theme || "light",
+        status: args.data.status || existingForm.status,
         updatedAt: new Date(),
       };
     },
@@ -227,9 +271,11 @@ export const mockPrisma: MockPrismaClient = {
      */
     delete: async (args) => {
       console.log("[Mock Prisma] form.delete called with:", args);
-      
+
+      const existingForm = mockForms[0]; // Use first form as fallback
+
       return {
-        id: sampleForm.id,
+        id: existingForm.id,
         slug: args.where.slug || args.where.id,
       };
     },
@@ -239,7 +285,7 @@ export const mockPrisma: MockPrismaClient = {
      */
     updateMany: async (args) => {
       console.log("[Mock Prisma] form.updateMany called with:", args);
-      
+
       // Return count of updated records
       return { count: 1 };
     },
@@ -249,7 +295,7 @@ export const mockPrisma: MockPrismaClient = {
      */
     count: async () => {
       console.log("[Mock Prisma] form.count called");
-      return sampleFormList.length;
+      return mockForms.length;
     },
   },
 
@@ -262,29 +308,45 @@ export const mockPrisma: MockPrismaClient = {
      */
     findMany: async (args?: any) => {
       console.log("[Mock Prisma] formSubmission.findMany called with:", args);
-      
+
+      const formId = args?.where?.formId;
+      const submissions = formId
+        ? getSubmissionsForForm(formId)
+        : mockSubmissions;
+
+      // Get the form to access its blocks
+      const form = formId ? getFormById(formId) : null;
+      const formBlocks = form ? getBlocksForForm(form.id) : [];
+
       // Return submissions in the format expected by reports
-      return sampleSubmissions.map((submission) => ({
+      return submissions.map((submission) => ({
         id: submission.id,
-        formId: args?.where?.formId || sampleForm.id,
+        formId: submission.formId,
         submittedAt: new Date(submission.submittedAt),
-        responses: submission.responses.map((response) => ({
-          id: response.id,
-          blockId: response.blockId,
-          submissionId: submission.id,
-          value: response.value,
-          createdAt: new Date(submission.submittedAt),
-          block: {
-            id: response.blockId,
-            type: response.blockType,
-            name: response.blockName,
-            props: response.blockProps,
-            formId: args?.where?.formId || sampleForm.id,
-            order: 0,
-            createdAt: new Date("2026-06-01"),
-            updatedAt: new Date("2026-06-20"),
-          },
-        })),
+        responses: submission.responses.map((response) => {
+          // Find the block for this response
+          const block = formBlocks.find((b) => b.id === response.blockId);
+
+          return {
+            id: `response-${submission.id}-${response.blockId}`,
+            blockId: response.blockId,
+            submissionId: submission.id,
+            value: response.value,
+            createdAt: new Date(submission.submittedAt),
+            block: block
+              ? {
+                  id: block.id,
+                  type: block.type,
+                  name: block.name,
+                  props: block.props,
+                  formId: submission.formId,
+                  order: block.order,
+                  createdAt: new Date(submission.submittedAt),
+                  updatedAt: new Date(submission.submittedAt),
+                }
+              : null,
+          };
+        }),
       }));
     },
 
@@ -293,7 +355,7 @@ export const mockPrisma: MockPrismaClient = {
      */
     create: async (args) => {
       console.log("[Mock Prisma] formSubmission.create called with:", args);
-      
+
       return {
         id: `submission-${Date.now()}`,
         formId: args.data.formId,
@@ -351,13 +413,13 @@ export const mockPrisma: MockPrismaClient = {
   user: {
     findFirst: async (args?: any) => {
       console.log("[Mock Prisma] user.findFirst called with:", args);
-      
-      // Return a mock user for form creation
+
+      // Return mock user
       return {
-        id: "user-mock-001",
-        email: "mock@example.com",
-        name: "Mock User",
-        createdAt: new Date("2026-01-01"),
+        id: mockUser.id,
+        email: mockUser.email,
+        name: mockUser.name,
+        createdAt: new Date(mockUser.createdAt),
       };
     },
 
@@ -370,7 +432,7 @@ export const mockPrisma: MockPrismaClient = {
   // ============================================
   // Utilities
   // ============================================
-  
+
   /**
    * Raw query - Used by test page
    */
@@ -385,7 +447,7 @@ export const mockPrisma: MockPrismaClient = {
    */
   $transaction: async (callback: (tx: any) => Promise<any>) => {
     console.log("[Mock Prisma] $transaction called");
-    
+
     // Execute callback with mockPrisma itself as the transaction client
     // This allows all operations inside the transaction to use mocked methods
     return await callback(mockPrisma);
