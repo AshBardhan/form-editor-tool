@@ -5,7 +5,6 @@
 - **Next.js 15**: Robust web application framework for routing, CSR/SSR, and static site generation with App Router.
 - **React 19**: Modern UI development library for reusable components with latest features.
 - **TypeScript**: Ensures strong typing for props, state, and domain models, reducing runtime errors.
-- **MSW**: Mock HTTP requests during development without external services for realistic API simulation.
 - **Zustand**: Lightweight state management alternative to `Redux` with simplicity and ease of use.
 - **TailwindCSS v4**: Utility-first styling with theme tokens, responsive support, and container queries.
 - **@dnd-kit**: Modern drag-and-drop toolkit for React with accessibility features.

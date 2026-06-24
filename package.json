@@ -38,16 +38,10 @@
     "eslint-config-next": "15.3.3",
     "input-otp": "^1.4.2",
     "lucide-react": "^0.513.0",
-    "msw": "^2.12.14",
     "tailwind-merge": "^3.5.0",
     "tailwindcss": "^4.2.2",
     "tsx": "^4.21.0",
     "typescript": "^5.9.3",
     "zustand": "^5.0.12"
-  },
-  "msw": {
-    "workerDirectory": [
-      "public"
-    ]
   }
 }

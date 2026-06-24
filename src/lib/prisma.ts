@@ -7,28 +7,45 @@ const globalForPrisma = global as unknown as {
   pool: Pool;
 };
 
-// Create connection pool
-const pool =
-  globalForPrisma.pool ||
-  new Pool({
-    connectionString: process.env.DATABASE_URL,
-  });
+// Check if API mocking is enabled
+const isMockingEnabled = process.env.NEXT_PUBLIC_API_MOCKING === "enabled";
 
-if (process.env.NODE_ENV !== "production") globalForPrisma.pool = pool;
+let prisma: PrismaClient;
 
-// Create adapter
-const adapter = new PrismaPg(pool);
+if (isMockingEnabled) {
+  // Use mock Prisma client for offline development
+  console.log("[Prisma] Using Mock Prisma Client (no database connection)");
+  // Dynamic import to avoid bundling mock in production
+  // eslint-disable-next-line @typescript-eslint/no-require-imports
+  const { mockPrisma } = require("@/mocks/mockPrisma");
+  prisma = mockPrisma as PrismaClient;
+} else {
+  // Use real Prisma client with database connection
+  console.log("[Prisma] Using Real Prisma Client");
 
-const prisma =
-  globalForPrisma.prisma ||
-  new PrismaClient({
-    adapter,
-    log:
-      process.env.NODE_ENV === "development"
-        ? ["query", "error", "warn"]
-        : ["error"],
-  });
+  // Create connection pool
+  const pool =
+    globalForPrisma.pool ||
+    new Pool({
+      connectionString: process.env.DATABASE_URL,
+    });
 
-if (process.env.NODE_ENV !== "production") globalForPrisma.prisma = prisma;
+  if (process.env.NODE_ENV !== "production") globalForPrisma.pool = pool;
+
+  // Create adapter
+  const adapter = new PrismaPg(pool);
+
+  prisma =
+    globalForPrisma.prisma ||
+    new PrismaClient({
+      adapter,
+      log:
+        process.env.NODE_ENV === "development"
+          ? ["query", "error", "warn"]
+          : ["error"],
+    });
+
+  if (process.env.NODE_ENV !== "production") globalForPrisma.prisma = prisma;
+}
 
 export default prisma;

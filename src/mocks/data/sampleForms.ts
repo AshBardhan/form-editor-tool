@@ -1,11 +1,11 @@
-import { FormConfig } from "@/lib/types/form";
+import { FormConfig, FormBlock } from "@/lib/types/form";
+import { sampleFormList } from "./sampleFormsList";
 
-export const sampleLightForm: FormConfig = {
-  id: "123",
-  title: "Profile Settings Form",
-  slug: "profile-settings",
-  theme: "light",
-  blocks: [
+/**
+ * Base blocks that can be used across all forms
+ * These represent a generic form structure with common field types
+ */
+const baseBlocks: FormBlock[] = [
     {
       id: "n0qBHYAWA8JUIbb_Y-i64",
       type: "heading",
@@ -127,8 +127,50 @@ export const sampleLightForm: FormConfig = {
         alignment: "left",
         reverse: false,
       },
-    },
-  ],
+    }
+  ];
+
+/**
+ * Generates a form configuration based on a slug
+ * Matches form metadata (id, slug, title, status) from the dashboard list
+ * Uses shared block structure for simplicity
+ */
+export function getFormBySlug(slug: string): FormConfig | null {
+  const dashboardForm = sampleFormList.find(f => f.slug === slug);
+  
+  if (!dashboardForm) {
+    // If slug not found, return default form
+    return {
+      id: "form-default",
+      title: "Sample Form",
+      slug: slug,
+      status: "draft",
+      theme: "light",
+      blocks: baseBlocks,
+    };
+  }
+
+  // Return form with matching metadata from dashboard
+  return {
+    id: dashboardForm.id,
+    title: dashboardForm.title,
+    slug: dashboardForm.slug,
+    status: dashboardForm.status,
+    theme: "light",
+    blocks: baseBlocks,
+  };
+}
+
+/**
+ * Legacy default form for backward compatibility
+ */
+export const sampleForm: FormConfig = {
+  id: "form-001",
+  title: "Customer Feedback Survey",
+  slug: "customer-feedback-survey",
+  status: "published",
+  theme: "light",
+  blocks: baseBlocks,
 };
 
 export const sampleDarkForm: FormConfig = {

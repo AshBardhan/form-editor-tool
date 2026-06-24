@@ -75,19 +75,20 @@ form-editor-tool/
 │  ├─ lib/
 │  │  ├─ constants/                  # App constants (themes, styles, templates)
 │  │  ├─ hooks/                      # Custom React hooks
-│  │  ├─ providers/                  # Context providers (MSW, etc.)
 │  │  ├─ queries/                    # Prisma queries 
 │  │  ├─ schema/                     # Zod validation schemas
 │  │  ├─ stores/                     # Zustand state management
 │  │  ├─ types/                      # TypeScript type definitions
 │  │  ├─ utils/                      # Utility functions
-│  │  └─ prisma.ts                   # Prisma Client singleton
+│  │  └─ prisma.ts                   # Prisma Client singleton (mock/real)
 │  └─ mocks/
-│     ├─ data/                       # Mock data (sample forms)
-│     ├─ handlers.ts                 # MSW request handlers
-│     └─ browser.ts                  # MSW browser worker
+│     ├─ data/                       # Sample data for offline development
+│     │  ├─ sampleFormsList.ts       # Dashboard forms (10 forms)
+│     │  ├─ sampleForms.ts           # Form builder config (1 form)
+│     │  └─ sampleSubmissions.ts     # Form submissions (20 submissions)
+│     └─ mockPrisma.ts               # Mock Prisma client for offline dev
 ├─ public/
-│  └─ mockServiceWorker.js           # MSW service worker
+│  └─ [next.js assets]               # SVG icons and static files
 ├─ screenshots/                      # Screenshots for README
 ├─ .env.sample                       # Environment variables template
 ├─ prisma.config.ts                  # Prisma configuration
@@ -131,6 +132,37 @@ npx prisma db seed
 # 6. Start development server
 npm run dev
 ```
+
+### Offline Development (No Database Required)
+
+You can develop and test the application without setting up PostgreSQL:
+
+```bash
+# 1. Install dependencies
+npm install
+
+# 2. Enable mock mode
+cp .env.sample .env.local
+echo "NEXT_PUBLIC_API_MOCKING=enabled" >> .env.local
+
+# 3. Start development server
+npm run dev
+```
+
+**What works in offline mode:**
+- ✅ Dashboard with 10 sample forms
+- ✅ Form builder with full editing capabilities
+- ✅ Form reports with 20 sample submissions
+- ✅ Public form rendering and submission
+- ✅ All API routes (create, update, delete, publish)
+
+**Benefits:**
+- No database setup required
+- Fast and consistent responses
+- Perfect for UI/UX development
+- Automatic mocking via Mock Prisma
+
+See [docs/MOCKING_GUIDE.md](docs/MOCKING_GUIDE.md) for complete details on the mocking architecture.
 
 ## Documentation
 

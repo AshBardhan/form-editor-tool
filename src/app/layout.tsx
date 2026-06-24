@@ -1,7 +1,6 @@
 import "./globals.css";
 
 import type { Metadata, Viewport } from "next";
-import { MockProvider } from "@/lib/providers/MockProvider";
 import { Toaster } from "@/components/ui/Toast";
 
 export const metadata: Metadata = {
@@ -23,7 +22,7 @@ export default function RootLayout({
     <html lang="en" suppressHydrationWarning>
       <body suppressHydrationWarning>
         <div id="app">
-          <MockProvider>{children}</MockProvider>
+          {children}
           <Toaster position="bottom-center" />
         </div>
       </body>
