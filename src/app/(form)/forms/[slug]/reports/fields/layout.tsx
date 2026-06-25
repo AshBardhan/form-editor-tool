@@ -11,7 +11,7 @@ export default function FieldsLayout({ children }: FieldsLayoutProps) {
       {/* Heading */}
       <div className="flex items-center justify-between">
         <Text variant="h3" className="text-foreground">
-          Field-by-Field Analysis
+          Field-by-Field Analysis Report
         </Text>
         <RefreshReportsButton />
       </div>

@@ -275,20 +275,28 @@ export function FieldAnalysisList({ submissions }: FieldAnalysisListProps) {
                     )}
 
                     {isTextBasedFieldBlock(analysis.blockType) && (
-                      <ul className="space-y-2 max-h-48 overflow-y-auto rounded border border-border">
-                        {(analysis.data as TextBasedData[]).map(
-                          (value, index) => (
-                            <li
-                              key={index}
-                              className="py-1 px-2 bg-white even:bg-gray-100"
-                            >
-                              <Text className="text-xs text-foreground">
-                                {formatValue(value)}
-                              </Text>
-                            </li>
-                          ),
+                      <>
+                        {analysis.data.length > 0 ? (
+                          <ul className="space-y-2 max-h-48 overflow-y-auto rounded border border-border">
+                            {(analysis.data as TextBasedData[]).map(
+                              (value, index) => (
+                                <li
+                                  key={index}
+                                  className="py-1 px-2 bg-white even:bg-gray-100"
+                                >
+                                  <Text className="text-xs text-foreground">
+                                    {formatValue(value)}
+                                  </Text>
+                                </li>
+                              ),
+                            )}
+                          </ul>
+                        ) : (
+                          <div className="p-4 rounded border border-border">
+                            No response recorded
+                          </div>
                         )}
-                      </ul>
+                      </>
                     )}
                   </div>
                 </div>

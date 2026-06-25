@@ -27,7 +27,7 @@ export default async function SubmissionsPage({
       {data.metrics && data.metrics.views > 0 ? (
         <ReportMetrics metrics={data.metrics} />
       ) : (
-        <Card className="text-center">
+        <Card className="text-center py-20">
           <Text variant="h5">No Data Recorded</Text>
           <Text className="text-muted-foreground">
             The results will be shown once the form is viewed.

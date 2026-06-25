@@ -23,7 +23,7 @@ export default async function FieldAnalysisPage({
   return (
     <>
       {data.submissions.length === 0 ? (
-        <Card className="text-center">
+        <Card className="text-center py-20">
           <Text variant="h5">No Data Recorded</Text>
           <Text className="text-muted-foreground">
             Share your form to start collecting submissions.

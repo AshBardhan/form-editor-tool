@@ -13,7 +13,7 @@ export default function SubmissionsLayout({
       {/* Heading */}
       <div className="flex items-center justify-between">
         <Text variant="h3" className="text-foreground">
-          Form Submissions
+          Form Submissions Report
         </Text>
         <RefreshReportsButton />
       </div>
