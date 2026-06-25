@@ -18,19 +18,21 @@ export const seedBlocks: Record<string, any[]> = {
       type: "paragraph",
       name: "paragraph-intro",
       order: 1,
-      props: { text: "Thank you for taking the time to share your feedback with us." },
+      props: {
+        text: "Thank you for taking the time to share your feedback with us.",
+      },
     },
     {
       id: "block-001-03",
       type: "text",
       name: "text-name",
       order: 2,
-      props: { 
-        label: "Your Name", 
+      props: {
+        label: "Your Name",
         key: "customer_name",
-        required: true, 
+        required: true,
         maxLength: 100,
-        placeholder: "Enter your full name"
+        placeholder: "Enter your full name",
       },
     },
     {
@@ -38,11 +40,11 @@ export const seedBlocks: Record<string, any[]> = {
       type: "email",
       name: "email-contact",
       order: 3,
-      props: { 
-        label: "Email Address", 
+      props: {
+        label: "Email Address",
         key: "email",
         required: true,
-        placeholder: "your.email@example.com"
+        placeholder: "your.email@example.com",
       },
     },
     {
@@ -55,7 +57,13 @@ export const seedBlocks: Record<string, any[]> = {
         key: "satisfaction_rating",
         required: true,
         orientation: "vertical",
-        options: ["Very Satisfied", "Satisfied", "Neutral", "Dissatisfied", "Very Dissatisfied"],
+        options: [
+          "Very Satisfied",
+          "Satisfied",
+          "Neutral",
+          "Dissatisfied",
+          "Very Dissatisfied",
+        ],
       },
     },
     {
@@ -69,7 +77,13 @@ export const seedBlocks: Record<string, any[]> = {
         required: false,
         grouped: true,
         orientation: "vertical",
-        options: ["Response Time", "Product Quality", "Customer Support", "Pricing", "User Experience"],
+        options: [
+          "Response Time",
+          "Product Quality",
+          "Customer Support",
+          "Pricing",
+          "User Experience",
+        ],
       },
     },
     {
@@ -114,17 +128,19 @@ export const seedBlocks: Record<string, any[]> = {
       type: "paragraph",
       name: "paragraph-intro",
       order: 1,
-      props: { text: "Please complete this onboarding form to help us set up your workspace and accounts." },
+      props: {
+        text: "Please complete this onboarding form to help us set up your workspace and accounts.",
+      },
     },
     {
       id: "block-002-03",
       type: "text",
       name: "text-fullname",
       order: 2,
-      props: { 
-        label: "Full Name (as per official documents)", 
+      props: {
+        label: "Full Name (as per official documents)",
         key: "full_name",
-        required: true, 
+        required: true,
         maxLength: 150,
       },
     },
@@ -133,8 +149,8 @@ export const seedBlocks: Record<string, any[]> = {
       type: "email",
       name: "email-personal",
       order: 3,
-      props: { 
-        label: "Personal Email", 
+      props: {
+        label: "Personal Email",
         key: "personal_email",
         required: true,
       },
@@ -144,11 +160,11 @@ export const seedBlocks: Record<string, any[]> = {
       type: "text",
       name: "text-phone",
       order: 4,
-      props: { 
-        label: "Phone Number", 
+      props: {
+        label: "Phone Number",
         key: "phone",
         required: true,
-        placeholder: "+1 (555) 123-4567"
+        placeholder: "+1 (555) 123-4567",
       },
     },
     {
@@ -161,7 +177,15 @@ export const seedBlocks: Record<string, any[]> = {
         key: "department",
         required: true,
         placeholder: "Select your department",
-        options: ["Engineering", "Product", "Design", "Marketing", "Sales", "Operations", "HR"],
+        options: [
+          "Engineering",
+          "Product",
+          "Design",
+          "Marketing",
+          "Sales",
+          "Operations",
+          "HR",
+        ],
       },
     },
     {
@@ -174,7 +198,13 @@ export const seedBlocks: Record<string, any[]> = {
         key: "job_role",
         required: true,
         placeholder: "Select your role",
-        options: ["Software Engineer", "Product Manager", "Designer", "Marketing Manager", "Sales Executive"],
+        options: [
+          "Software Engineer",
+          "Product Manager",
+          "Designer",
+          "Marketing Manager",
+          "Sales Executive",
+        ],
       },
     },
     {
@@ -201,7 +231,14 @@ export const seedBlocks: Record<string, any[]> = {
         required: true,
         grouped: true,
         orientation: "vertical",
-        options: ["Laptop", "Monitor", "Keyboard", "Mouse", "Headphones", "Webcam"],
+        options: [
+          "Laptop",
+          "Monitor",
+          "Keyboard",
+          "Mouse",
+          "Headphones",
+          "Webcam",
+        ],
       },
     },
     {
@@ -246,17 +283,19 @@ export const seedBlocks: Record<string, any[]> = {
       type: "paragraph",
       name: "paragraph-intro",
       order: 1,
-      props: { text: "Your feedback helps us build better products. Thank you!" },
+      props: {
+        text: "Your feedback helps us build better products. Thank you!",
+      },
     },
     {
       id: "block-003-03",
       type: "text",
       name: "text-name",
       order: 2,
-      props: { 
-        label: "Name (Optional)", 
+      props: {
+        label: "Name (Optional)",
         key: "user_name",
-        required: false, 
+        required: false,
         maxLength: 100,
       },
     },
@@ -265,8 +304,8 @@ export const seedBlocks: Record<string, any[]> = {
       type: "email",
       name: "email-contact",
       order: 3,
-      props: { 
-        label: "Email (Optional)", 
+      props: {
+        label: "Email (Optional)",
         key: "user_email",
         required: false,
       },
@@ -281,7 +320,13 @@ export const seedBlocks: Record<string, any[]> = {
         key: "product_name",
         required: true,
         placeholder: "Select a product",
-        options: ["FormKit Builder", "FormKit Analytics", "FormKit API", "FormKit Mobile", "Other"],
+        options: [
+          "FormKit Builder",
+          "FormKit Analytics",
+          "FormKit API",
+          "FormKit Mobile",
+          "Other",
+        ],
       },
     },
     {
@@ -308,7 +353,13 @@ export const seedBlocks: Record<string, any[]> = {
         key: "would_recommend",
         required: true,
         orientation: "horizontal",
-        options: ["Definitely", "Probably", "Not Sure", "Probably Not", "Definitely Not"],
+        options: [
+          "Definitely",
+          "Probably",
+          "Not Sure",
+          "Probably Not",
+          "Definitely Not",
+        ],
       },
     },
     {
@@ -365,17 +416,19 @@ export const seedBlocks: Record<string, any[]> = {
       type: "paragraph",
       name: "paragraph-date",
       order: 1,
-      props: { text: "Join us on August 15-17, 2026 in San Francisco for three days of innovation and networking!" },
+      props: {
+        text: "Join us on August 15-17, 2026 in San Francisco for three days of innovation and networking!",
+      },
     },
     {
       id: "block-004-03",
       type: "text",
       name: "text-attendee-name",
       order: 2,
-      props: { 
-        label: "Attendee Name", 
+      props: {
+        label: "Attendee Name",
         key: "attendee_name",
-        required: true, 
+        required: true,
       },
     },
     {
@@ -383,8 +436,8 @@ export const seedBlocks: Record<string, any[]> = {
       type: "email",
       name: "email-attendee",
       order: 3,
-      props: { 
-        label: "Email Address", 
+      props: {
+        label: "Email Address",
         key: "attendee_email",
         required: true,
       },
@@ -394,8 +447,8 @@ export const seedBlocks: Record<string, any[]> = {
       type: "text",
       name: "text-company",
       order: 4,
-      props: { 
-        label: "Company/Organization", 
+      props: {
+        label: "Company/Organization",
         key: "company",
         required: false,
       },
@@ -410,7 +463,12 @@ export const seedBlocks: Record<string, any[]> = {
         key: "ticket_type",
         required: true,
         placeholder: "Choose your ticket",
-        options: ["Early Bird - $299", "Standard - $399", "VIP - $599", "Student - $99"],
+        options: [
+          "Early Bird - $299",
+          "Standard - $399",
+          "VIP - $599",
+          "Student - $99",
+        ],
       },
     },
     {
@@ -443,19 +501,21 @@ export const seedBlocks: Record<string, any[]> = {
       type: "paragraph",
       name: "paragraph-instructions",
       order: 1,
-      props: { text: "Please provide as much detail as possible to help us reproduce and fix the issue." },
+      props: {
+        text: "Please provide as much detail as possible to help us reproduce and fix the issue.",
+      },
     },
     {
       id: "block-005-03",
       type: "text",
       name: "text-bug-title",
       order: 2,
-      props: { 
-        label: "Bug Title", 
+      props: {
+        label: "Bug Title",
         key: "bug_title",
         required: true,
         maxLength: 200,
-        placeholder: "Brief description of the issue"
+        placeholder: "Brief description of the issue",
       },
     },
     {
@@ -468,7 +528,13 @@ export const seedBlocks: Record<string, any[]> = {
         key: "severity",
         required: true,
         placeholder: "How severe is this bug?",
-        options: ["Critical - System Down", "High - Major Feature Broken", "Medium - Feature Partially Working", "Low - Minor Issue", "Trivial - Cosmetic"],
+        options: [
+          "Critical - System Down",
+          "High - Major Feature Broken",
+          "Medium - Feature Partially Working",
+          "Low - Minor Issue",
+          "Trivial - Cosmetic",
+        ],
       },
     },
     {
@@ -481,7 +547,15 @@ export const seedBlocks: Record<string, any[]> = {
         key: "component",
         required: true,
         placeholder: "Where did you encounter this bug?",
-        options: ["Form Builder", "Form Preview", "Dashboard", "Reports", "API", "Authentication", "Other"],
+        options: [
+          "Form Builder",
+          "Form Preview",
+          "Dashboard",
+          "Reports",
+          "API",
+          "Authentication",
+          "Other",
+        ],
       },
     },
     {

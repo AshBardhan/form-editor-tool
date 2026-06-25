@@ -37,8 +37,11 @@ async function main() {
 
   // 2. Create forms with blocks
   console.log("\n📝 Creating forms with blocks...");
-  const createdForms: Record<string, { id: string; blocks: Record<string, string> }> = {};
-  
+  const createdForms: Record<
+    string,
+    { id: string; blocks: Record<string, string> }
+  > = {};
+
   for (const formData of seedForms) {
     const blocks = seedBlocks[formData.id] || [];
 
@@ -55,20 +58,20 @@ async function main() {
         blocks: true,
       },
     });
-    
+
     // Create blockName -> blockId mapping for submissions
     const blockMapping: Record<string, string> = {};
     form.blocks.forEach((block) => {
       blockMapping[block.name] = block.id;
     });
-    
+
     createdForms[formData.id] = {
       id: form.id,
       blocks: blockMapping,
     };
-    
+
     console.log(
-      `✓ Form: "${formData.title}" (${formData.status}) - ${blocks.length} blocks | Views: ${formData.views}, Starts: ${formData.starts}, Completions: ${formData.completions}`
+      `✓ Form: "${formData.title}" (${formData.status}) - ${blocks.length} blocks | Views: ${formData.views}, Starts: ${formData.starts}, Completions: ${formData.completions}`,
     );
   }
 
@@ -76,11 +79,13 @@ async function main() {
   console.log("\n📊 Creating submissions with responses...");
   let submissionsCreated = 0;
   let responsesCreated = 0;
-  
+
   for (const subData of seedSubmissions) {
     const formMapping = createdForms[subData.formId];
     if (!formMapping) {
-      console.warn(`⚠ Skipping submission ${subData.id} - form ${subData.formId} not found`);
+      console.warn(
+        `⚠ Skipping submission ${subData.id} - form ${subData.formId} not found`,
+      );
       continue;
     }
 
@@ -89,7 +94,9 @@ async function main() {
       .map((response) => {
         const blockId = formMapping.blocks[response.blockName];
         if (!blockId) {
-          console.warn(`⚠ Block ${response.blockName} not found in form ${subData.formId}`);
+          console.warn(
+            `⚠ Block ${response.blockName} not found in form ${subData.formId}`,
+          );
           return null;
         }
         return {
@@ -114,12 +121,14 @@ async function main() {
         },
       },
     });
-    
+
     submissionsCreated++;
     responsesCreated += responses.length;
   }
-  
-  console.log(`✓ Created ${submissionsCreated} submissions with ${responsesCreated} responses`);
+
+  console.log(
+    `✓ Created ${submissionsCreated} submissions with ${responsesCreated} responses`,
+  );
 
   // 4. Display summary
   console.log("\n🎉 Database seeding completed!");
@@ -127,10 +136,10 @@ async function main() {
   console.log(`   - Users: 1`);
   console.log(`   - Forms: ${seedForms.length}`);
   console.log(
-    `     • Published: ${seedForms.filter((f) => f.status === "published").length}`
+    `     • Published: ${seedForms.filter((f) => f.status === "published").length}`,
   );
   console.log(
-    `     • Draft: ${seedForms.filter((f) => f.status === "draft").length}`
+    `     • Draft: ${seedForms.filter((f) => f.status === "draft").length}`,
   );
   console.log(`   - Form Blocks: ${Object.values(seedBlocks).flat().length}`);
   console.log(`   - Submissions: ${submissionsCreated}`);
@@ -149,17 +158,19 @@ async function main() {
       },
     },
   });
-  
+
   formsWithMetrics.forEach((form) => {
     if (form.views > 0 || form._count.submissions > 0) {
-      console.log(`   "${form.title}": ${form.views} views, ${form.starts} starts, ${form.completions} completions, ${form.submitAttempts} attempts, ${form._count.submissions} submissions`);
+      console.log(
+        `   "${form.title}": ${form.views} views, ${form.starts} starts, ${form.completions} completions, ${form.submitAttempts} attempts, ${form._count.submissions} submissions`,
+      );
     }
   });
 
-  console.log("\n�💡 Next steps:");
+  console.log("\n💡 Next steps:");
   console.log("   • Run 'npm run dev' to start the application");
-  console.log("   • View forms at http://localhost:3000");
-  console.log("   • For large mock datasets, run: npm run mock:generate");
+  console.log("   • View forms at http://localhost:3000/forms");
+  console.log("   • Run 'npx prisma studio' to inspect seeded data");
 }
 
 main()
