@@ -145,7 +145,7 @@ async function main() {
   console.log(`   - Submissions: ${submissionsCreated}`);
   console.log(`   - Field Responses: ${responsesCreated}`);
 
-  console.log("\n� Form Metrics:");
+  console.log("\n📈 Form Metrics:");
   const formsWithMetrics = await prisma.form.findMany({
     select: {
       title: true,

@@ -121,6 +121,20 @@ export function Table<TRow extends TableRow>({
     }
   };
 
+  const getAriaSortLabel = (column: TableColumn) => {
+    const isActive = isActiveSortColumn(column);
+    if (!isActive) return "none";
+
+    switch (sortKey.direction) {
+      case "asc":
+        return "ascending";
+      case "desc":
+        return "descending";
+      default:
+        return "none";
+    }
+  };
+
   return (
     <div className={cn("space-y-3", className)}>
       <div className="overflow-x-auto rounded-lg border border-border">
@@ -132,7 +146,10 @@ export function Table<TRow extends TableRow>({
 
                 return (
                   <th
+                    scope="col"
                     key={column.id}
+                    aria-sort={getAriaSortLabel(column)}
+                    aria-label={`Sort by ${column.label}`}
                     className={cn(
                       "border-b border-border bg-gray-400 px-4 py-3 text-left font-semibold text-white whitespace-nowrap",
                       column.sticky &&
@@ -147,7 +164,10 @@ export function Table<TRow extends TableRow>({
                         onClick={() => handleSort(column)}
                       >
                         <span>{column.label}</span>
-                        <span className="text-xs text-muted-foreground">
+                        <span
+                          className="text-xs text-muted-foreground"
+                          aria-hidden="true"
+                        >
                           {sortLabel}
                         </span>
                       </button>

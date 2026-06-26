@@ -19,8 +19,8 @@ interface FormListProps {
 export function FormList({ forms }: FormListProps) {
   if (!forms || forms.length === 0) {
     return (
-      <div className="text-center py-12">
-        <Text variant="h4" className="mb-2">
+      <div className="empty-content flex-col gap-2">
+        <Text variant="h4">
           No forms yet
         </Text>
         <Text variant="p" className="text-sm text-muted-foreground">

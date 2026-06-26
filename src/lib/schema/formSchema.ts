@@ -197,8 +197,8 @@ const formBlockInputSchema = z
 export const CreateFormSchema = z.object({
   title: nonEmptyString,
   theme: formThemeSchema.default("light"),
-  description: z.string().trim().optional().nullable(),
-  slug: z.string().trim().optional().nullable(),
+  description: z.string().optional().nullable(),
+  slug: z.string().optional().nullable(),
   blocks: z.array(formBlockInputSchema).default([]),
 });
 
@@ -217,8 +217,8 @@ export const UpdateFormSchema = z
   .object({
     title: nonEmptyString.optional(),
     theme: formThemeSchema.optional(),
-    description: z.string().trim().optional().nullable(),
-    slug: z.string().trim().optional().nullable(),
+    description: z.string().optional().nullable(),
+    slug: z.string().optional().nullable(),
     status: formStatusSchema.optional(),
     blocks: z.array(formBlockInputSchema).optional(),
   })

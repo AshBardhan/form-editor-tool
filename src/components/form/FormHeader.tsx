@@ -26,7 +26,6 @@ import { DeviceSelector } from "@/components/layout/DeviceSelector";
 import { FormPreviewContent } from "@/components/preview";
 import { DeviceType } from "@/lib/constants/device";
 import { useFormConfigStore } from "@/lib/stores";
-import { switchFormTheme } from "@/lib/utils/domUtils";
 import { AlertTriangle, ExternalLink, Eye, MoreVertical } from "lucide-react";
 import Text from "@/components/ui/Text";
 
@@ -74,12 +73,6 @@ export function FormHeader({ form }: FormHeaderProps) {
   useEffect(() => {
     setFormConfig(form);
   }, [form, setFormConfig]);
-
-  useEffect(() => {
-    if (isPreviewOpen) {
-      switchFormTheme(form.theme);
-    }
-  }, [isPreviewOpen, form.theme]);
 
   const handleDelete = async () => {
     setIsSubmitting(true);
