@@ -4,8 +4,8 @@ import prisma from "@/lib/prisma";
 import { apiHandler } from "@/lib/utils/apiUtils";
 import { NotFoundError, ValidationError } from "@/lib/errors";
 import {
-  CreateFormSchema,
   PatchFormStatusSchema,
+  UpdateFormSchema,
 } from "@/lib/schema/formSchema";
 import {
   FORM_PAGE_CACHE_TAG,
@@ -84,7 +84,8 @@ export async function PUT(
     const id = await resolveFormIdBySlug(slug);
 
     const body = await request.json();
-    const parsed = CreateFormSchema.safeParse(body);
+    const parsed = UpdateFormSchema.safeParse(body);
+    
     if (!parsed.success) {
       throw new ValidationError(
         parsed.error.issues[0]?.message || "Invalid request body",

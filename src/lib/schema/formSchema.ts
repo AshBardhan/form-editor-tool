@@ -199,7 +199,6 @@ export const CreateFormSchema = z.object({
   theme: formThemeSchema.default("light"),
   description: z.string().optional().nullable(),
   slug: z.string().optional().nullable(),
-  blocks: z.array(formBlockInputSchema).default([]),
 });
 
 /**
@@ -215,12 +214,12 @@ export const PatchFormStatusSchema = z.object({
  */
 export const UpdateFormSchema = z
   .object({
-    title: nonEmptyString.optional(),
-    theme: formThemeSchema.optional(),
+    title: nonEmptyString,
+    theme: formThemeSchema,
     description: z.string().optional().nullable(),
     slug: z.string().optional().nullable(),
-    status: formStatusSchema.optional(),
-    blocks: z.array(formBlockInputSchema).optional(),
+    status: formStatusSchema,
+    blocks: z.array(formBlockInputSchema),
   })
   .refine((data) => Object.keys(data).length > 0, {
     message: "At least one field is required for update",

@@ -54,7 +54,7 @@ export async function POST(request: NextRequest) {
       );
     }
 
-    const { title, theme, blocks, description, slug } = parsed.data;
+    const { title, theme, description, slug } = parsed.data;
 
     // Phase 1 single-user fallback.
     const user = await prisma.user.findFirst({
@@ -79,19 +79,6 @@ export async function POST(request: NextRequest) {
         description: description ?? null,
         slug: uniqueSlug,
         userId: user.id,
-        blocks: {
-          create: blocks.map((block, idx) => ({
-            type: block.type,
-            name: block.name,
-            props: block.props as Prisma.InputJsonValue,
-            order: idx,
-          })),
-        },
-      },
-      include: {
-        blocks: {
-          orderBy: { order: "asc" },
-        },
       },
     });
 

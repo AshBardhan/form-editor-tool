@@ -28,7 +28,6 @@ export function FormsHeader() {
         body: JSON.stringify({
           title: "Untitled Form",
           theme: "light",
-          blocks: [],
         }),
       });
 
