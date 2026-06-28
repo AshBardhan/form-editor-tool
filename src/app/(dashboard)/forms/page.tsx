@@ -1,6 +1,7 @@
 import prisma from "@/lib/prisma";
 import { notFound } from "next/navigation";
-import { DashboardForm } from "@/lib/types/form";
+import { DashboardForm, FormBlockType } from "@/lib/types/form";
+import { isFieldBasedBlock } from "@/lib/utils/formUtils";
 import { FormList } from "@/components/dashboard/FormList";
 import { JSX } from "react";
 
@@ -15,7 +16,11 @@ export default async function FormsPage(): Promise<JSX.Element> {
         slug: true,
         title: true,
         status: true,
-        _count: { select: { blocks: true, submissions: true } },
+        views: true,
+        blocks: {
+          select: { id: true, type: true },
+        },
+        _count: { select: { submissions: true } },
       },
     });
   } catch (_) {
@@ -29,7 +34,10 @@ export default async function FormsPage(): Promise<JSX.Element> {
     title: form.title,
     status: form.status,
     metrics: {
-      blocks: form._count.blocks,
+      fields: form.blocks.filter(
+        (block) => block.type && isFieldBasedBlock(block.type as FormBlockType),
+      ).length,
+      views: form.views,
       submissions: form._count.submissions,
     },
   }));

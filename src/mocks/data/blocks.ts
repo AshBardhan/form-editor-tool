@@ -339,7 +339,6 @@ export const mockBlocks: Record<
         label: "Benefits Package",
         key: "benefits_satisfaction",
         required: true,
-        
         orientation: "horizontal",
         options: [
           "Very Satisfied",

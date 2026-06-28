@@ -20,9 +20,7 @@ export function FormList({ forms }: FormListProps) {
   if (!forms || forms.length === 0) {
     return (
       <div className="empty-content flex-col gap-2">
-        <Text variant="h4">
-          No forms yet
-        </Text>
+        <Text variant="h4">No forms yet</Text>
         <Text variant="p" className="text-sm text-muted-foreground">
           Create your first form to get started.
         </Text>

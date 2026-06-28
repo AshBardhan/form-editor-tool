@@ -36,18 +36,20 @@ export function FormCard({ form }: FormCardProps) {
           >
             {form.title}
           </Text>
-          <div className="flex gap-8">
-            {getFormMetrics(form.metrics).map((metric) => (
-              <Metric
-                key={metric.key}
-                direction="column"
-                label={metric.label}
-                reverse={true}
-                value={metric.value}
-                size="sm"
-              />
-            ))}
-          </div>
+          {form.status !== "draft" && (
+            <div className="flex gap-8">
+              {getFormMetrics(form.metrics).map((metric) => (
+                <Metric
+                  key={metric.key}
+                  direction="column"
+                  label={metric.label}
+                  reverse={true}
+                  value={metric.value}
+                  size="sm"
+                />
+              ))}
+            </div>
+          )}
         </CardContent>
       </Card>
     </Link>

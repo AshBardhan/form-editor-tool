@@ -9,6 +9,8 @@ import {
   getSubmissionsForForm,
   getMockStats,
 } from "./data";
+import { FormBlockType } from "@/lib/types/form";
+import { isFieldBasedBlock } from "@/lib/utils/formUtils";
 import { FormStatus } from "@prisma/client";
 
 /**
@@ -91,18 +93,13 @@ export const mockPrisma: MockPrismaClient = {
         id: form.id,
         slug: form.slug,
         title: form.title,
-        description: form.description,
-        theme: form.theme,
         status: form.status as FormStatus,
-        createdAt: new Date(form.createdAt),
-        updatedAt: new Date(form.updatedAt),
-        publishedAt: form.publishedAt ? new Date(form.publishedAt) : null,
         views: form.views,
-        starts: form.starts,
-        completions: form.completions,
-        submitAttempts: form.submitAttempts,
+        blocks: getBlocksForForm(form.id).map((block: any) => ({
+          id: block.id,
+          type: block.type,
+        })),
         _count: {
-          blocks: getBlocksForForm(form.id).length,
           submissions: getSubmissionsForForm(form.id).length,
         },
       }));

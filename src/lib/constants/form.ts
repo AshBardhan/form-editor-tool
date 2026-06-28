@@ -21,9 +21,9 @@ export const ALL_FIELD_BLOCKS = [
  * Maps metric keys to their display labels
  */
 export const formMetricLabel: Record<string, string> = {
-  fields: "Blocks",
+  fields: "Fields",
   submissions: "Submissions",
-  completion: "Completion",
+  views: "Views",
 };
 
 export const formStatusLabel: Record<FormStatus, string> = {
