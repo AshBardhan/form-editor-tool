@@ -31,7 +31,7 @@ export function getFormBySlug(slug: string) {
  * Get blocks for a form
  */
 export function getBlocksForForm(formId: string) {
-  return mockBlocks[formId] || [];
+  return mockBlocks.filter((block) => block.formId === formId);
 }
 
 /**
@@ -71,6 +71,6 @@ export function getMockStats() {
     publishedForms: getPublishedForms().length,
     draftForms: getDraftForms().length,
     totalSubmissions: mockSubmissions.length,
-    totalBlocks: Object.values(mockBlocks).flat().length,
+    totalBlocks: mockBlocks.length,
   };
 }
