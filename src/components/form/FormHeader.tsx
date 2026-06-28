@@ -74,6 +74,12 @@ export function FormHeader({ form }: FormHeaderProps) {
     setFormConfig(form);
   }, [form, setFormConfig]);
 
+  const handleOpenPreview = () => {
+    setFormConfig(form);
+    setCurrentDevice(DeviceType.DESKTOP);
+    setIsPreviewOpen(true);
+  };
+
   const handleDelete = async () => {
     setIsSubmitting(true);
     try {
@@ -150,7 +156,7 @@ export function FormHeader({ form }: FormHeaderProps) {
         <div className="flex items-center gap-4">
           <Button
             variant="secondary"
-            onClick={() => setIsPreviewOpen(true)}
+            onClick={handleOpenPreview}
             disabled={isSubmitting}
           >
             <Eye className="size-4" />
