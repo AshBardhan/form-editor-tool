@@ -1,16 +1,5 @@
 // Import mock data
-import {
-  mockForms,
-  mockSubmissions,
-  mockUser,
-  getFormById,
-  getFormBySlug,
-  getBlocksForForm,
-  getSubmissionsForForm,
-  getMockStats,
-} from "./data";
-import { FormBlockType } from "@/lib/types/form";
-import { isFieldBasedBlock } from "@/lib/utils/formUtils";
+import { mockForms, mockBlocks, mockSubmissions, mockUser } from "./data";
 import { FormStatus } from "@prisma/client";
 
 /**
@@ -24,6 +13,61 @@ import { FormStatus } from "@prisma/client";
  * - Up to 20 submissions per form
  * - Various field types and scenarios
  */
+
+/**
+ * Get form by ID
+ */
+function getFormById(id: string) {
+  return mockForms.find((f) => f.id === id) || null;
+}
+
+/**
+ * Get form by slug
+ */
+function getFormBySlug(slug: string) {
+  return mockForms.find((f) => f.slug === slug) || null;
+}
+
+/**
+ * Get blocks for a form
+ */
+function getBlocksForForm(formId: string) {
+  return mockBlocks.filter((block) => block.formId === formId);
+}
+
+/**
+ * Get submissions for a form
+ */
+function getSubmissionsForForm(formId: string) {
+  return mockSubmissions.filter((s) => s.formId === formId);
+}
+
+/**
+ * Get published forms
+ */
+function getPublishedForms() {
+  return mockForms.filter((f) => f.status === "published");
+}
+
+/**
+ * Get draft forms
+ */
+function getDraftForms() {
+  return mockForms.filter((f) => f.status === "draft");
+}
+
+/**
+ * Get mock stats
+ */
+function getMockStats() {
+  return {
+    totalForms: mockForms.length,
+    publishedForms: getPublishedForms().length,
+    draftForms: getDraftForms().length,
+    totalSubmissions: mockSubmissions.length,
+    totalBlocks: mockBlocks.length,
+  };
+}
 
 const stats = getMockStats();
 console.log(
