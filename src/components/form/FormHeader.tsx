@@ -72,10 +72,9 @@ export function FormHeader({ form }: FormHeaderProps) {
 
   useEffect(() => {
     setFormConfig(form);
-  }, [form, setFormConfig]);
+  }, [form]);
 
   const handleOpenPreview = () => {
-    setFormConfig(form);
     setCurrentDevice(DeviceType.DESKTOP);
     setIsPreviewOpen(true);
   };

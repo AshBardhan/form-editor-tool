@@ -218,7 +218,6 @@ export const UpdateFormSchema = z
     theme: formThemeSchema,
     description: z.string().optional().nullable(),
     slug: z.string().optional().nullable(),
-    status: formStatusSchema,
     blocks: z.array(formBlockInputSchema),
   })
   .refine((data) => Object.keys(data).length > 0, {

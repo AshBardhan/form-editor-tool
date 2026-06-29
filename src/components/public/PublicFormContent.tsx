@@ -252,8 +252,12 @@ export function PublicFormContent({ form }: PublicFormContentProps) {
               )}
               {status.type === "submitted" && (
                 <div className="p-4 text-center">
-                  <Text variant="h3">Thank you!</Text>
-                  <p>{status.message}</p>
+                  <Text variant="h3" className="dark:text-white">
+                    Thank you!
+                  </Text>
+                  <Text variant="p" className="dark:text-white">
+                    {status.message}
+                  </Text>
                   <div className="flex gap-3 justify-center mt-4">
                     <Button onClick={handleSubmitAnotherResponse}>
                       Submit another response
