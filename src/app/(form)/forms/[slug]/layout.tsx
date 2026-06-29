@@ -1,7 +1,7 @@
 import { PageHeader, PageContent, PageContainer } from "@/components/layout";
 import { notFound } from "next/navigation";
 import { FormHeader } from "@/components/form/FormHeader";
-import { getFormPageData } from "@/lib/queries/forms";
+import { getFormMetaData } from "@/lib/queries/forms";
 
 interface LayoutProps {
   children: React.ReactNode;
@@ -9,13 +9,13 @@ interface LayoutProps {
 }
 
 /**
- * Fetches the shared form shell data for the form area and renders the common header.
- * Validates form exists at parent level to prevent unnecessary child API calls.
+ * Fetches minimal form metadata for the header and validates form exists.
+ * Child pages (builder, reports) fetch their own specific data as needed.
  */
 export default async function FormLayout({ children, params }: LayoutProps) {
   const { slug } = await params;
 
-  const form = await getFormPageData(slug);
+  const form = await getFormMetaData(slug);
 
   // If form doesn't exist, trigger not-found with proper 404 status
   if (!form) {

@@ -3,7 +3,7 @@ import Text from "@/components/ui/Text";
 import { Card } from "@/components/ui/Card";
 import { SubmissionsList } from "@/components/reports/SubmissionsList";
 import { ReportMetrics } from "@/components/reports/ReportMetrics";
-import { getFormReportPageData } from "@/lib/queries/forms";
+import { getFormReportData } from "@/lib/queries/forms";
 
 /**
  * Renders the submissions report using the shared cached submissions payload.
@@ -15,7 +15,7 @@ export default async function SubmissionsPage({
 }) {
   const { slug } = await params;
 
-  const data = await getFormReportPageData(slug);
+  const data = await getFormReportData(slug);
 
   if (!data) {
     notFound();

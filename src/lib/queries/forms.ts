@@ -9,15 +9,34 @@ import {
   FormReportPageData,
 } from "@/lib/types/form";
 
-const FORM_PAGE_CACHE_TAG = "form-page";
+const FORM_BUILDER_CACHE_TAG = "form-builder";
+const FORM_META_CACHE_TAG = "form-meta";
 const FORM_REPORT_CACHE_TAG = "form-report";
 const PUBLIC_FORM_CACHE_TAG = "public-form";
 
 /**
- * Loads the shared form page payload used by the header and builder views.
+ * Loads minimal form metadata for the layout header.
+ * Only fetches id, slug, title, and status - no blocks.
+ */
+const getFormMetaDataCached = cache(async (slug: string) => {
+  const form = await prisma.form.findUnique({
+    where: { slug },
+    select: {
+      id: true,
+      slug: true,
+      title: true,
+      status: true,
+    },
+  });
+
+  return form;
+});
+
+/**
+ * Loads the shared form page payload used by the builder view.
  * Wrapped in React cache so the same request can reuse the result.
  */
-const getFormPageDataCached = cache(
+const getFormBuilderDataCached = cache(
   async (slug: string): Promise<FormPageData | null> => {
     const form = await prisma.form.findUnique({
       where: { slug },
@@ -65,7 +84,7 @@ const getFormPageDataCached = cache(
  * Loads the report payload for responses and field analysis views.
  * Wrapped in React cache so both report pages can reuse the same fetch result.
  */
-const getFormReportPageDataCached = cache(
+const getFormReportDataCached = cache(
   async (slug: string): Promise<FormReportPageData | null> => {
     const form = await prisma.form.findUnique({
       where: { slug },
@@ -172,13 +191,25 @@ const getPublicFormDataCached = cache(
 );
 
 /**
- * Returns cached form page data and marks it with the form-page tag for invalidation.
+ * Returns cached form metadata for layout header.
  */
-export const getFormPageData = unstable_cache(
-  getFormPageDataCached,
-  [FORM_PAGE_CACHE_TAG],
+export const getFormMetaData = unstable_cache(
+  getFormMetaDataCached,
+  [FORM_META_CACHE_TAG],
   {
-    tags: [FORM_PAGE_CACHE_TAG],
+    tags: [FORM_META_CACHE_TAG],
+    revalidate: 300,
+  },
+);
+
+/**
+ * Returns cached form builder data and marks it with the form-builder tag for invalidation.
+ */
+export const getFormBuilderData = unstable_cache(
+  getFormBuilderDataCached,
+  [FORM_BUILDER_CACHE_TAG],
+  {
+    tags: [FORM_BUILDER_CACHE_TAG],
     revalidate: 300,
   },
 );
@@ -186,8 +217,8 @@ export const getFormPageData = unstable_cache(
 /**
  * Returns cached report data and marks it with the form-report tag for invalidation.
  */
-export const getFormReportPageData = unstable_cache(
-  getFormReportPageDataCached,
+export const getFormReportData = unstable_cache(
+  getFormReportDataCached,
   [FORM_REPORT_CACHE_TAG],
   {
     tags: [FORM_REPORT_CACHE_TAG],
@@ -207,4 +238,9 @@ export const getPublicFormData = unstable_cache(
   },
 );
 
-export { FORM_PAGE_CACHE_TAG, FORM_REPORT_CACHE_TAG, PUBLIC_FORM_CACHE_TAG };
+export {
+  FORM_BUILDER_CACHE_TAG,
+  FORM_META_CACHE_TAG,
+  FORM_REPORT_CACHE_TAG,
+  PUBLIC_FORM_CACHE_TAG,
+};

@@ -8,7 +8,8 @@ import {
   UpdateFormSchema,
 } from "@/lib/schema/formSchema";
 import {
-  FORM_PAGE_CACHE_TAG,
+  FORM_BUILDER_CACHE_TAG,
+  FORM_META_CACHE_TAG,
   PUBLIC_FORM_CACHE_TAG,
   FORM_REPORT_CACHE_TAG,
 } from "@/lib/queries/forms";
@@ -212,7 +213,8 @@ export async function PUT(
       throw new NotFoundError("Form not found");
     }
 
-    revalidateTag(FORM_PAGE_CACHE_TAG);
+    revalidateTag(FORM_BUILDER_CACHE_TAG);
+    revalidateTag(FORM_META_CACHE_TAG);
     revalidateTag(FORM_REPORT_CACHE_TAG);
     revalidateTag(PUBLIC_FORM_CACHE_TAG);
 
@@ -246,7 +248,8 @@ export async function DELETE(
 
     await prisma.form.delete({ where: { id } });
 
-    revalidateTag(FORM_PAGE_CACHE_TAG);
+    revalidateTag(FORM_BUILDER_CACHE_TAG);
+    revalidateTag(FORM_META_CACHE_TAG);
     revalidateTag(FORM_REPORT_CACHE_TAG);
     revalidateTag(PUBLIC_FORM_CACHE_TAG);
 
@@ -304,7 +307,8 @@ export async function PATCH(
       },
     });
 
-    revalidateTag(FORM_PAGE_CACHE_TAG);
+    revalidateTag(FORM_BUILDER_CACHE_TAG);
+    revalidateTag(FORM_META_CACHE_TAG);
     revalidateTag(FORM_REPORT_CACHE_TAG);
     revalidateTag(PUBLIC_FORM_CACHE_TAG);
 

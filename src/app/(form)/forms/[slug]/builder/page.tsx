@@ -1,5 +1,5 @@
 import { FormBuilderContainer } from "@/components/builder/FormBuilderContainer";
-import { getFormPageData } from "@/lib/queries/forms";
+import { getFormBuilderData } from "@/lib/queries/forms";
 
 interface FormPageProps {
   params: Promise<{ slug: string }>;
@@ -12,7 +12,7 @@ interface FormPageProps {
 export default async function FormPage({ params }: FormPageProps) {
   const { slug } = await params;
 
-  const form = await getFormPageData(slug);
+  const form = await getFormBuilderData(slug);
 
   return <FormBuilderContainer form={form!} />;
 }

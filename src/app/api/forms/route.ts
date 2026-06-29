@@ -1,9 +1,14 @@
 import { NextRequest, NextResponse } from "next/server";
 import { Prisma } from "@prisma/client";
+import { revalidateTag } from "next/cache";
 import prisma from "@/lib/prisma";
 import { apiHandler } from "@/lib/utils/apiUtils";
 import { CreateFormSchema } from "@/lib/schema/formSchema";
 import { ValidationError, InternalServerError } from "@/lib/errors";
+import {
+  FORM_BUILDER_CACHE_TAG,
+  FORM_META_CACHE_TAG,
+} from "@/lib/queries/forms";
 
 function toSlug(value: string): string {
   const normalized = value
@@ -81,6 +86,9 @@ export async function POST(request: NextRequest) {
         userId: user.id,
       },
     });
+
+    revalidateTag(FORM_BUILDER_CACHE_TAG);
+    revalidateTag(FORM_META_CACHE_TAG);
 
     return NextResponse.json(
       { success: true, data: form },
