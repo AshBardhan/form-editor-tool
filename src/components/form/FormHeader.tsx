@@ -1,7 +1,7 @@
 "use client";
 
-import { useEffect, useState } from "react";
-import { useRouter } from "next/navigation";
+import { useState } from "react";
+import { useRouter, usePathname } from "next/navigation";
 import { Badge } from "@/components/ui/Badge";
 import { Button } from "@/components/ui/Button";
 import { NavigationTabs } from "@/components/ui/NavigationTabs";
@@ -25,17 +25,17 @@ import {
 import { DeviceSelector } from "@/components/layout/DeviceSelector";
 import { FormPreviewContent } from "@/components/preview";
 import { DeviceType } from "@/lib/constants/device";
-import { useFormConfigStore } from "@/lib/stores";
 import { AlertTriangle, ExternalLink, Eye, MoreVertical } from "lucide-react";
 import Text from "@/components/ui/Text";
 
 interface FormHeaderProps {
-  form: FormConfig & { slug: string; status: FormStatus };
+  form: { id: string; slug: string; title: string; status: FormStatus };
 }
 
 export function FormHeader({ form }: FormHeaderProps) {
   const router = useRouter();
-  const setFormConfig = useFormConfigStore((state) => state.setFormConfig);
+  const pathname = usePathname();
+  const isBuilderPage = pathname?.endsWith("/builder");
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [isPreviewOpen, setIsPreviewOpen] = useState(false);
   const [isDeleteConfirmOpen, setIsDeleteConfirmOpen] = useState(false);
@@ -69,10 +69,6 @@ export function FormHeader({ form }: FormHeaderProps) {
       ],
     },
   ];
-
-  useEffect(() => {
-    setFormConfig(form);
-  }, [form]);
 
   const handleOpenPreview = () => {
     setCurrentDevice(DeviceType.DESKTOP);
@@ -153,14 +149,16 @@ export function FormHeader({ form }: FormHeaderProps) {
         </div>
 
         <div className="flex items-center gap-4">
-          <Button
-            variant="secondary"
-            onClick={handleOpenPreview}
-            disabled={isSubmitting}
-          >
-            <Eye className="size-4" />
-            Preview
-          </Button>
+          {isBuilderPage && (
+            <Button
+              variant="secondary"
+              onClick={handleOpenPreview}
+              disabled={isSubmitting}
+            >
+              <Eye className="size-4" />
+              Preview
+            </Button>
+          )}
           <Button
             onClick={handleAccess}
             disabled={isSubmitting || currentStatus !== "published"}
