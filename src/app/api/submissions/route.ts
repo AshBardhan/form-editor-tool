@@ -42,7 +42,12 @@ export async function POST(request: NextRequest) {
     // Verify form exists and is published
     const form = await prisma.form.findFirst({
       where: { id: formId, status: "published" },
-      include: { blocks: true },
+      select: {
+        id: true,
+        blocks: {
+          select: { id: true },
+        },
+      },
     });
 
     if (!form) {

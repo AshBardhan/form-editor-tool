@@ -24,19 +24,23 @@ function toSlug(value: string): string {
 }
 
 /**
- * Resolves the canonical form id for a slug so update and delete operations target the right row.
+ * Fetches form data by slug with flexible field selection.
+ * Returns the requested fields or throws NotFoundError if not found.
  */
-async function resolveFormIdBySlug(slug: string): Promise<string> {
+async function getFormBySlug<T extends Prisma.FormSelect>(
+  slug: string,
+  select: T,
+): Promise<Prisma.FormGetPayload<{ select: T }>> {
   const form = await prisma.form.findUnique({
     where: { slug },
-    select: { id: true },
+    select,
   });
 
   if (!form) {
     throw new NotFoundError("Form not found");
   }
 
-  return form.id;
+  return form as Prisma.FormGetPayload<{ select: T }>;
 }
 
 /**
@@ -82,8 +86,6 @@ export async function PUT(
       throw new ValidationError("Form slug is required");
     }
 
-    const id = await resolveFormIdBySlug(slug);
-
     const body = await request.json();
     const parsed = UpdateFormSchema.safeParse(body);
 
@@ -97,14 +99,19 @@ export async function PUT(
 
     const generatedSlug = toSlug(inputSlug?.trim() || title);
 
-    const duplicateForm = await prisma.form.findFirst({
-      where: {
-        slug: generatedSlug,
-        NOT: { id },
-      },
-    });
-    if (duplicateForm) {
-      throw new ValidationError("Slug already exists");
+    // Get form ID and check for slug conflicts in one operation
+    const { id } = await getFormBySlug(slug, { id: true });
+
+    if (generatedSlug !== slug) {
+      const duplicateForm = await prisma.form.findFirst({
+        where: {
+          slug: generatedSlug,
+          NOT: { id },
+        },
+      });
+      if (duplicateForm) {
+        throw new ValidationError("Slug already exists");
+      }
     }
 
     const form = await prisma.$transaction(async (tx) => {
@@ -235,16 +242,7 @@ export async function DELETE(
       throw new ValidationError("Form slug is required");
     }
 
-    const id = await resolveFormIdBySlug(slug);
-
-    const existing = await prisma.form.findUnique({
-      where: { id },
-      select: { id: true },
-    });
-
-    if (!existing) {
-      throw new NotFoundError("Form not found");
-    }
+    const { id } = await getFormBySlug(slug, { id: true });
 
     await prisma.form.delete({ where: { id } });
 
@@ -270,8 +268,6 @@ export async function PATCH(
       throw new ValidationError("Form slug is required");
     }
 
-    const id = await resolveFormIdBySlug(slug);
-
     const body = await request.json();
     const parsed = PatchFormStatusSchema.safeParse(body);
     if (!parsed.success) {
@@ -282,17 +278,10 @@ export async function PATCH(
 
     const { status } = parsed.data;
 
-    const existing = await prisma.form.findUnique({
-      where: { id },
-      select: { id: true, status: true },
-    });
-
-    if (!existing) {
-      throw new NotFoundError("Form not found");
-    }
+    const existing = await getFormBySlug(slug, { id: true, status: true });
 
     const form = await prisma.form.update({
-      where: { id },
+      where: { id: existing.id },
       data: {
         status,
         publishedAt:
@@ -302,8 +291,12 @@ export async function PATCH(
               ? null
               : undefined,
       },
-      include: {
-        blocks: true,
+      select: {
+        id: true,
+        slug: true,
+        title: true,
+        status: true,
+        publishedAt: true,
       },
     });
 

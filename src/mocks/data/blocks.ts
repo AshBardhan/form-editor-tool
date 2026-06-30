@@ -102,6 +102,7 @@ export const mockBlocks: Array<{
       label: "I would recommend this service to others",
       key: "recommend",
       required: false,
+      grouped: false,
     },
   },
   {
@@ -233,6 +234,8 @@ export const mockBlocks: Array<{
     props: {
       label: "I have access to remote work options",
       key: "remote_work",
+      required: false,
+      grouped: false,
     },
   },
 
@@ -332,6 +335,8 @@ export const mockBlocks: Array<{
     props: {
       label: "I participate in a mentorship program",
       key: "mentorship_program",
+      required: false,
+      grouped: false,
     },
   },
 
@@ -454,6 +459,8 @@ export const mockBlocks: Array<{
     props: {
       label: "I'm willing to participate in a follow-up discussion",
       key: "followup",
+      required: false,
+      grouped: false,
     },
   },
   {
@@ -730,6 +737,8 @@ export const mockBlocks: Array<{
     props: {
       label: "I can consistently reproduce this bug",
       key: "can_reproduce",
+      required: false,
+      grouped: false,
     },
   },
   {
@@ -741,6 +750,8 @@ export const mockBlocks: Array<{
     props: {
       label: "I have screenshots or logs to share",
       key: "data_attached",
+      required: false,
+      grouped: false,
     },
   },
   {
@@ -929,7 +940,12 @@ export const mockBlocks: Array<{
     type: "checkbox",
     name: "dietary_vegetarian",
     order: 12,
-    props: { label: "Vegetarian meals", key: "dietary_vegetarian" },
+    props: {
+      label: "Vegetarian meals",
+      key: "dietary_vegetarian",
+      required: false,
+      grouped: false,
+    },
   },
   {
     id: "block-007-14",
@@ -937,7 +953,12 @@ export const mockBlocks: Array<{
     type: "checkbox",
     name: "dietary_vegan",
     order: 13,
-    props: { label: "Vegan meals", key: "dietary_vegan" },
+    props: {
+      label: "Vegan meals",
+      key: "dietary_vegan",
+      required: false,
+      grouped: false,
+    },
   },
   {
     id: "block-007-15",
@@ -945,7 +966,12 @@ export const mockBlocks: Array<{
     type: "checkbox",
     name: "dietary_gluten_free",
     order: 14,
-    props: { label: "Gluten-free meals", key: "dietary_gluten_free" },
+    props: {
+      label: "Gluten-free meals",
+      key: "dietary_gluten_free",
+      required: false,
+      grouped: false,
+    },
   },
   {
     id: "block-007-16",
@@ -969,6 +995,8 @@ export const mockBlocks: Array<{
     props: {
       label: "Send me updates about future events",
       key: "marketing_consent",
+      required: false,
+      grouped: false,
     },
   },
   {
@@ -1167,6 +1195,7 @@ export const mockBlocks: Array<{
         "I have read, understood, and agree to participate in this research study under the terms described above",
       key: "consent_agree",
       required: true,
+      grouped: false,
     },
   },
   {

@@ -95,6 +95,27 @@ const getFormReportDataCached = cache(
         starts: true,
         completions: true,
         submitAttempts: true,
+        submissions: {
+          orderBy: { submittedAt: "desc" },
+          select: {
+            id: true,
+            submittedAt: true,
+            responses: {
+              select: {
+                id: true,
+                blockId: true,
+                value: true,
+                block: {
+                  select: {
+                    type: true,
+                    name: true,
+                    props: true,
+                  },
+                },
+              },
+            },
+          },
+        },
       },
     });
 
@@ -102,31 +123,19 @@ const getFormReportDataCached = cache(
       return null;
     }
 
-    const submissions = await prisma.formSubmission.findMany({
-      where: { formId: form.id },
-      include: {
-        responses: {
-          include: {
-            block: true,
-          },
-        },
-      },
-      orderBy: { submittedAt: "desc" },
-    });
-
     return {
       form: {
         id: form.id,
         title: form.title,
       },
       metrics: {
-        submissions: submissions.length,
+        submissions: form.submissions.length,
         views: form.views ?? 0,
         starts: form.starts ?? 0,
         completions: form.completions ?? 0,
         submitAttempts: form.submitAttempts ?? 0,
       },
-      submissions: submissions.map((submission) => ({
+      submissions: form.submissions.map((submission) => ({
         id: submission.id,
         submittedAt: submission.submittedAt.toISOString(),
         responses: submission.responses.map((response) => ({
