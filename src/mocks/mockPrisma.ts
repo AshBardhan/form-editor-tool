@@ -14,46 +14,52 @@ import { FormStatus } from "@prisma/client";
  * - Various field types and scenarios
  */
 
+const mockDatabase = {
+  forms: structuredClone(mockForms),
+  blocks: structuredClone(mockBlocks),
+  submissions: structuredClone(mockSubmissions),
+};
+
 /**
  * Get form by ID
  */
 function getFormById(id: string) {
-  return mockForms.find((f) => f.id === id) || null;
+  return mockDatabase.forms.find((f) => f.id === id) || null;
 }
 
 /**
  * Get form by slug
  */
 function getFormBySlug(slug: string) {
-  return mockForms.find((f) => f.slug === slug) || null;
+  return mockDatabase.forms.find((f) => f.slug === slug) || null;
 }
 
 /**
  * Get blocks for a form
  */
 function getBlocksForForm(formId: string) {
-  return mockBlocks.filter((block) => block.formId === formId);
+  return mockDatabase.blocks.filter((block) => block.formId === formId);
 }
 
 /**
  * Get submissions for a form
  */
 function getSubmissionsForForm(formId: string) {
-  return mockSubmissions.filter((s) => s.formId === formId);
+  return mockDatabase.submissions.filter((s) => s.formId === formId);
 }
 
 /**
  * Get published forms
  */
 function getPublishedForms() {
-  return mockForms.filter((f) => f.status === "published");
+  return mockDatabase.forms.filter((f) => f.status === "published");
 }
 
 /**
  * Get draft forms
  */
 function getDraftForms() {
-  return mockForms.filter((f) => f.status === "draft");
+  return mockDatabase.forms.filter((f) => f.status === "draft");
 }
 
 /**
@@ -61,11 +67,11 @@ function getDraftForms() {
  */
 function getMockStats() {
   return {
-    totalForms: mockForms.length,
+    totalForms: mockDatabase.forms.length,
     publishedForms: getPublishedForms().length,
     draftForms: getDraftForms().length,
-    totalSubmissions: mockSubmissions.length,
-    totalBlocks: mockBlocks.length,
+    totalSubmissions: mockDatabase.submissions.length,
+    totalBlocks: mockDatabase.blocks.length,
   };
 }
 
@@ -120,7 +126,7 @@ export const mockPrisma: MockPrismaClient = {
     findMany: async (args?: any) => {
       console.log("[Mock Prisma] form.findMany called with:", args);
 
-      let forms = [...mockForms];
+      let forms = [...mockDatabase.forms];
 
       // Apply filters
       if (args?.where?.status) {
@@ -152,9 +158,10 @@ export const mockPrisma: MockPrismaClient = {
     /**
      * Find unique form - Used by builder and reports
      */
-    findUnique: async ({ where }: any = {}) => {
-      console.log("[Mock Prisma] form.findUnique called with:", where);
+    findUnique: async (args: any = {}) => {
+      console.log("[Mock Prisma] form.findUnique called with:", args);
 
+      const { where } = args;
       if (!where) return null;
 
       // Get form by slug or id
@@ -172,8 +179,11 @@ export const mockPrisma: MockPrismaClient = {
       // Get blocks for this form
       const blocks = getBlocksForForm(form.id);
 
+      // Get submissions for this form (for report data with submissions include)
+      const submissions = getSubmissionsForForm(form.id);
+
       // Return form in expected format
-      return {
+      const result: any = {
         id: form.id,
         slug: form.slug,
         title: form.title,
@@ -198,6 +208,99 @@ export const mockPrisma: MockPrismaClient = {
           updatedAt: new Date(form.updatedAt),
         })),
       };
+
+      // Handle select option (for report data with nested submissions)
+      if (args?.select) {
+        const selectedResult: any = {};
+
+        Object.keys(args.select).forEach((key) => {
+          if (key === "submissions" && args.select[key]) {
+            // Handle nested submissions with select
+            const submissionsConfig = args.select.submissions;
+
+            selectedResult.submissions = submissions.map((submission: any) => {
+              const submissionResult: any = {
+                id: submission.id,
+                submittedAt: new Date(submission.submittedAt),
+              };
+
+              // Handle responses with nested select
+              if (submissionsConfig.select?.responses) {
+                const responsesConfig = submissionsConfig.select.responses;
+
+                submissionResult.responses = submission.responses.map(
+                  (response: any) => {
+                    const block = blocks.find(
+                      (b: any) => b.id === response.blockId,
+                    );
+                    const responseResult: any = {
+                      id: `response-${submission.id}-${response.blockId}`,
+                      blockId: response.blockId,
+                      value: response.value,
+                    };
+
+                    // Handle nested block select
+                    if (responsesConfig.select?.block) {
+                      const blockSelect = responsesConfig.select.block.select;
+                      if (block && blockSelect) {
+                        responseResult.block = {};
+                        Object.keys(blockSelect).forEach((blockKey) => {
+                          if (blockSelect[blockKey]) {
+                            responseResult.block[blockKey] = (block as any)[
+                              blockKey
+                            ];
+                          }
+                        });
+                      }
+                    }
+
+                    return responseResult;
+                  },
+                );
+              }
+
+              return submissionResult;
+            });
+          } else if (args.select[key]) {
+            selectedResult[key] = result[key];
+          }
+        });
+
+        return selectedResult;
+      }
+
+      // Handle submissions include (for report data)
+      if (args?.include?.submissions) {
+        result.submissions = submissions.map((submission: any) => ({
+          id: submission.id,
+          formId: submission.formId,
+          submittedAt: new Date(submission.submittedAt),
+          responses: submission.responses.map((response: any) => {
+            const block = blocks.find((b: any) => b.id === response.blockId);
+            return {
+              id: `response-${submission.id}-${response.blockId}`,
+              blockId: response.blockId,
+              submissionId: submission.id,
+              value: response.value,
+              createdAt: new Date(submission.submittedAt),
+              block: block
+                ? {
+                    id: block.id,
+                    type: block.type,
+                    name: block.name,
+                    props: block.props,
+                    formId: submission.formId,
+                    order: block.order,
+                    createdAt: new Date(submission.submittedAt),
+                    updatedAt: new Date(submission.submittedAt),
+                  }
+                : null,
+            };
+          }),
+        }));
+      }
+
+      return result;
     },
 
     /**
@@ -215,7 +318,7 @@ export const mockPrisma: MockPrismaClient = {
       const requestedSlug = args?.where?.slug;
       const form = requestedSlug
         ? getFormBySlug(requestedSlug)
-        : mockForms[0] || null;
+        : mockDatabase.forms[0] || null;
 
       if (!form) return null;
 
@@ -226,6 +329,27 @@ export const mockPrisma: MockPrismaClient = {
         }
 
         const blocks = getBlocksForForm(form.id);
+
+        // Handle select with nested blocks (for submissions route)
+        if (args.select) {
+          const result: any = {};
+          Object.keys(args.select).forEach((key) => {
+            if (key === "blocks" && args.select[key]?.select) {
+              // Nested select for blocks
+              result.blocks = blocks.map((block: any) => {
+                const selectedBlock: any = {};
+                Object.keys(args.select.blocks.select).forEach((blockKey) => {
+                  selectedBlock[blockKey] = block[blockKey];
+                });
+                return selectedBlock;
+              });
+            } else if (args.select[key]) {
+              result[key] = (form as any)[key];
+            }
+          });
+          return result;
+        }
+
         return {
           id: form.id,
           slug: form.slug,
@@ -256,21 +380,8 @@ export const mockPrisma: MockPrismaClient = {
       console.log("[Mock Prisma] form.create called with:", args);
 
       const newFormId = `form-${Date.now()}`;
-      const createdBlocks =
-        args.include?.blocks && args.data.blocks?.create
-          ? args.data.blocks.create.map((block: any, index: number) => ({
-              id: `block-${Date.now()}-${index}`,
-              type: block.type,
-              name: block.name,
-              props: block.props,
-              order: block.order || index,
-              formId: newFormId,
-              createdAt: new Date(),
-              updatedAt: new Date(),
-            }))
-          : [];
 
-      return {
+      const newForm = {
         id: newFormId,
         slug: args.data.slug || newFormId,
         title: args.data.title || "New Form",
@@ -280,12 +391,21 @@ export const mockPrisma: MockPrismaClient = {
         userId: args.data.userId,
         createdAt: new Date(),
         updatedAt: new Date(),
+        publishedAt: null,
         views: 0,
         starts: 0,
         completions: 0,
         submitAttempts: 0,
-        ...(args.include?.blocks && { blocks: createdBlocks }),
       };
+
+      // Add to mock database
+      mockDatabase.forms.push({
+        ...newForm,
+        createdAt: newForm.createdAt.toISOString(),
+        updatedAt: newForm.updatedAt.toISOString(),
+      });
+
+      return newForm;
     },
 
     /**
@@ -294,16 +414,75 @@ export const mockPrisma: MockPrismaClient = {
     update: async (args) => {
       console.log("[Mock Prisma] form.update called with:", args);
 
-      const existingForm = mockForms[0]; // Use first form as fallback
+      const formId = args.where.id;
+      const currentForm = getFormById(formId);
 
-      return {
-        id: existingForm.id,
-        slug: args.where.slug || args.where.id,
-        title: args.data.title || existingForm.title,
-        description: args.data.description || existingForm.description || null,
-        theme: args.data.theme || existingForm.theme || "light",
-        status: args.data.status || existingForm.status,
+      if (!currentForm) {
+        return null;
+      }
+
+      const updatedForm: any = {
+        ...currentForm,
+        title: args.data.title || currentForm.title,
+        description: args.data.description || currentForm.description || null,
+        theme: args.data.theme || currentForm.theme || "light",
+        status: args.data.status || currentForm.status,
+        publishedAt: currentForm.publishedAt ? new Date(currentForm.publishedAt) : new Date(),
         updatedAt: new Date(),
+      };
+
+      // Update the mock database
+      mockDatabase.forms = mockDatabase.forms.map((form) => {
+        if (form.id === formId) {
+          return {
+            ...form,
+            ...updatedForm,
+            publishedAt: updatedForm.publishedAt?.toISOString() || null,
+            updatedAt: updatedForm.updatedAt.toISOString(),
+          };
+        }
+        return form;
+      });
+
+      // Update blocks if provided
+      if (args.data.blocks) {
+        // Remove existing blocks for this form
+        mockDatabase.blocks = mockDatabase.blocks.filter(
+          (block) => block.formId !== formId,
+        );
+
+        // Add updated blocks
+        const updatedBlocks = args.data.blocks.map((block: any) => ({
+          id: block.id || `block-${Date.now()}-${Math.random()}`,
+          formId: formId,
+          type: block.type,
+          name: block.name,
+          props: block.props,
+          order: block.order,
+          createdAt: block.createdAt || updatedForm.updatedAt.toISOString(),
+          updatedAt: updatedForm.updatedAt.toISOString(),
+        }));
+
+        mockDatabase.blocks.push(...updatedBlocks);
+      }
+
+      // Handle select option (for PATCH status updates)
+      if (args.select) {
+        const result: any = {};
+        Object.keys(args.select).forEach((key) => {
+          if (args.select[key]) {
+            result[key] = (updatedForm as any)[key];
+          }
+        });
+        return result;
+      }
+
+      // Handle include option (for PUT with blocks)
+      return {
+        ...updatedForm,
+        ...(args.include?.blocks || args.data.blocks
+          ? { blocks: args.data.blocks || [] }
+          : {}),
       };
     },
 
@@ -313,12 +492,29 @@ export const mockPrisma: MockPrismaClient = {
     delete: async (args) => {
       console.log("[Mock Prisma] form.delete called with:", args);
 
-      const existingForm = mockForms[0]; // Use first form as fallback
+      const formId = args.where.id;
+      const currentForm = getFormById(formId);
 
-      return {
-        id: existingForm.id,
-        slug: args.where.slug || args.where.id,
-      };
+      if (!currentForm) {
+        return null;
+      }
+
+      // Remove formblocks associated with this form
+      mockDatabase.blocks = mockDatabase.blocks.filter(
+        (block) => block.formId !== formId,
+      );
+
+      // Remove submissions associated with this form
+      mockDatabase.submissions = mockDatabase.submissions.filter(
+        (submission) => submission.formId !== formId,
+      );
+
+      // Remove the form itself
+      mockDatabase.forms = mockDatabase.forms.filter(
+        (form) => form.id !== formId,
+      );
+
+      return currentForm;
     },
 
     /**
@@ -336,7 +532,7 @@ export const mockPrisma: MockPrismaClient = {
      */
     count: async () => {
       console.log("[Mock Prisma] form.count called");
-      return mockForms.length;
+      return mockDatabase.forms.length;
     },
   },
 
@@ -350,10 +546,26 @@ export const mockPrisma: MockPrismaClient = {
     findMany: async (args?: any) => {
       console.log("[Mock Prisma] formSubmission.findMany called with:", args);
 
+      // Filter by formId if provided
       const formId = args?.where?.formId;
       const submissions = formId
         ? getSubmissionsForForm(formId)
-        : mockSubmissions;
+        : [...mockDatabase.submissions];
+
+      // Apply orderBy
+      if (args?.orderBy?.submittedAt === "desc") {
+        submissions.sort(
+          (a, b) =>
+            new Date(b.submittedAt).getTime() -
+            new Date(a.submittedAt).getTime(),
+        );
+      } else if (args?.orderBy?.submittedAt === "asc") {
+        submissions.sort(
+          (a, b) =>
+            new Date(a.submittedAt).getTime() -
+            new Date(b.submittedAt).getTime(),
+        );
+      }
 
       // Get the form to access its blocks
       const form = formId ? getFormById(formId) : null;
@@ -397,11 +609,44 @@ export const mockPrisma: MockPrismaClient = {
     create: async (args) => {
       console.log("[Mock Prisma] formSubmission.create called with:", args);
 
-      return {
-        id: `submission-${Date.now()}`,
+      const submissionId = `submission-${Date.now()}`;
+      const submittedAt = new Date();
+
+      // Extract responses from nested create
+      const responsesData = args.data.responses?.create || [];
+
+      const newSubmission = {
+        id: submissionId,
         formId: args.data.formId,
-        submittedAt: new Date(),
+        submittedAt: submittedAt.toISOString(),
+        responses: responsesData.map((response: any) => ({
+          blockId: response.blockId,
+          value: response.value,
+        })),
       };
+
+      // Add to mockDatabase
+      mockDatabase.submissions.push(newSubmission);
+
+      // Return in expected format with include
+      const result: any = {
+        id: newSubmission.id,
+        formId: newSubmission.formId,
+        submittedAt: new Date(newSubmission.submittedAt),
+      };
+
+      // Add responses if include is requested
+      if (args.include?.responses) {
+        result.responses = newSubmission.responses.map((response: any) => ({
+          id: `response-${submissionId}-${response.blockId}`,
+          blockId: response.blockId,
+          submissionId: submissionId,
+          value: response.value,
+          createdAt: new Date(newSubmission.submittedAt),
+        }));
+      }
+
+      return result;
     },
   },
 
@@ -411,29 +656,110 @@ export const mockPrisma: MockPrismaClient = {
   formBlock: {
     findMany: async (args?: any) => {
       console.log("[Mock Prisma] formBlock.findMany called with:", args);
-      return [];
+
+      // Filter by formId if provided
+      if (args?.where?.formId) {
+        const blocks = getBlocksForForm(args.where.formId);
+
+        // Apply select if provided (e.g., { id: true })
+        if (args.select) {
+          return blocks.map((block: any) => {
+            const selected: any = {};
+            Object.keys(args.select).forEach((key) => {
+              if (args.select[key]) {
+                selected[key] = block[key];
+              }
+            });
+            return selected;
+          });
+        }
+
+        return blocks;
+      }
+
+      return mockDatabase.blocks;
     },
 
     update: async (args: any) => {
       console.log("[Mock Prisma] formBlock.update called with:", args);
-      return {
-        id: args.where.id,
+
+      const blockId = args.where.id;
+      const existingBlock = mockDatabase.blocks.find((b) => b.id === blockId);
+
+      if (!existingBlock) {
+        throw new Error(`Block with id ${blockId} not found`);
+      }
+
+      const updatedBlock = {
+        ...existingBlock,
         ...args.data,
+        updatedAt: new Date().toISOString(),
+      };
+
+      // Update in mockDatabase
+      mockDatabase.blocks = mockDatabase.blocks.map((block) =>
+        block.id === blockId ? updatedBlock : block,
+      );
+
+      return {
+        ...updatedBlock,
+        createdAt: new Date(updatedBlock.createdAt),
+        updatedAt: new Date(updatedBlock.updatedAt),
       };
     },
 
     create: async (args: any) => {
       console.log("[Mock Prisma] formBlock.create called with:", args);
+
+      const newBlock = {
+        id: `block-${Date.now()}-${Math.random()}`,
+        formId: args.data.formId,
+        type: args.data.type,
+        name: args.data.name,
+        props: args.data.props,
+        order: args.data.order,
+        createdAt: new Date().toISOString(),
+        updatedAt: new Date().toISOString(),
+      };
+
+      // Add to mockDatabase
+      mockDatabase.blocks.push(newBlock);
+
       return {
-        id: `block-${Date.now()}`,
-        ...args.data,
-        createdAt: new Date(),
-        updatedAt: new Date(),
+        ...newBlock,
+        createdAt: new Date(newBlock.createdAt),
+        updatedAt: new Date(newBlock.updatedAt),
       };
     },
 
     deleteMany: async (args: any) => {
       console.log("[Mock Prisma] formBlock.deleteMany called with:", args);
+
+      // Handle deletion by id array
+      if (args?.where?.id?.in) {
+        const idsToDelete = args.where.id.in;
+        const initialCount = mockDatabase.blocks.length;
+
+        mockDatabase.blocks = mockDatabase.blocks.filter(
+          (block) => !idsToDelete.includes(block.id),
+        );
+
+        const deletedCount = initialCount - mockDatabase.blocks.length;
+        return { count: deletedCount };
+      }
+
+      // Handle deletion by formId
+      if (args?.where?.formId) {
+        const initialCount = mockDatabase.blocks.length;
+
+        mockDatabase.blocks = mockDatabase.blocks.filter(
+          (block) => block.formId !== args.where.formId,
+        );
+
+        const deletedCount = initialCount - mockDatabase.blocks.length;
+        return { count: deletedCount };
+      }
+
       return { count: 0 };
     },
   },
@@ -444,6 +770,26 @@ export const mockPrisma: MockPrismaClient = {
   formFieldResponse: {
     count: async (args?: any) => {
       console.log("[Mock Prisma] formFieldResponse.count called with:", args);
+
+      // If no where clause, return total count
+      if (!args?.where) {
+        return mockDatabase.submissions.reduce((total, submission) => {
+          return total + submission.responses.length;
+        }, 0);
+      }
+
+      // Handle blockId filtering (used in PUT route to check if blocks have responses)
+      if (args.where.blockId?.in) {
+        const blockIds = args.where.blockId.in;
+        return mockDatabase.submissions.reduce((total, submission) => {
+          const matchingResponses = submission.responses.filter((response) =>
+            blockIds.includes(response.blockId),
+          );
+          return total + matchingResponses.length;
+        }, 0);
+      }
+
+      // Default: return 0 for unhandled filters
       return 0;
     },
   },
