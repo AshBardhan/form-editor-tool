@@ -28,7 +28,7 @@ export type FormBlockPropType =
   | "list"
   | "select";
 
-export type FormStatus = "draft" | "published";
+export type FormStatus = "draft" | "published" | "archived";
 
 export type FormBlockOrientation = "horizontal" | "vertical";
 

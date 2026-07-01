@@ -63,6 +63,13 @@ function getDraftForms() {
 }
 
 /**
+ * Get archived forms
+ */
+function getArchivedForms() {
+  return mockDatabase.forms.filter((f) => f.status === "archived");
+}
+
+/**
  * Get mock stats
  */
 function getMockStats() {
@@ -70,6 +77,7 @@ function getMockStats() {
     totalForms: mockDatabase.forms.length,
     publishedForms: getPublishedForms().length,
     draftForms: getDraftForms().length,
+    archivedForms: getArchivedForms().length,
     totalSubmissions: mockDatabase.submissions.length,
     totalBlocks: mockDatabase.blocks.length,
   };
@@ -77,7 +85,7 @@ function getMockStats() {
 
 const stats = getMockStats();
 console.log(
-  `[Mock Prisma] Loaded ${stats.totalForms} forms (${stats.publishedForms} published, ${stats.draftForms} draft), ${stats.totalSubmissions} submissions`,
+  `[Mock Prisma] Loaded ${stats.totalForms} forms (${stats.publishedForms} published, ${stats.draftForms} draft, ${stats.archivedForms} archived), ${stats.totalSubmissions} submissions`,
 );
 
 /* eslint-disable @typescript-eslint/no-explicit-any */

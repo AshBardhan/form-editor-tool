@@ -154,7 +154,7 @@ export const mockForms = [
     publishedAt: null,
   },
 
-  // 9. Form with very long text (edge case)
+  // 9. Form with very long text (edge case) - ARCHIVED
   {
     id: "mock-form-009",
     slug: "research-study-consent",
@@ -162,7 +162,7 @@ export const mockForms = [
       "Research Study Consent Form - A Comprehensive Investigation into User Experience Patterns and Behavioral Analytics in Modern Web Applications",
     description:
       "This research study aims to understand how users interact with web-based form systems, their preferences for input methods, their satisfaction with various UI/UX patterns, and their overall experience with digital form completion processes. Your participation is voluntary and all data collected will be anonymized and used solely for academic research purposes in accordance with institutional review board guidelines and data protection regulations.",
-    status: "published" as FormStatus,
+    status: "archived" as FormStatus,
     theme: "light" as const,
     userId: "mock-user-001",
     views: 34,
@@ -190,5 +190,23 @@ export const mockForms = [
     createdAt: "2026-02-15T09:30:00Z",
     updatedAt: "2026-06-23T11:00:00Z",
     publishedAt: "2026-02-16T08:00:00Z",
+  },
+
+  // 11. Old archived form from 2025
+  {
+    id: "mock-form-011",
+    slug: "winter-2025-survey",
+    title: "Winter 2025 Customer Survey",
+    description: "Archived form from last year's winter campaign",
+    status: "archived" as FormStatus,
+    theme: "light" as const,
+    userId: "mock-user-001",
+    views: 523,
+    starts: 298,
+    completions: 87,
+    submitAttempts: 94,
+    createdAt: "2025-12-01T10:00:00Z",
+    updatedAt: "2026-01-15T16:00:00Z",
+    publishedAt: "2025-12-05T09:00:00Z",
   },
 ];

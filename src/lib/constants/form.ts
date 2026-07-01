@@ -29,14 +29,16 @@ export const formMetricLabel: Record<string, string> = {
 export const formStatusLabel: Record<FormStatus, string> = {
   draft: "Draft",
   published: "Published",
+  archived: "Archived",
 };
 
 export const formStatusVariant: Record<
   FormStatus,
   "success" | "warning" | "error" | "info" | "neutral"
 > = {
-  draft: "warning",
+  draft: "neutral",
   published: "success",
+  archived: "warning",
 };
 
 /**

@@ -23,6 +23,7 @@ enum FormTheme {
 enum FormStatus {
   draft
   published
+  archived
 }
 
 // ========================================
