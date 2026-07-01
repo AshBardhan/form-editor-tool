@@ -71,7 +71,7 @@ export async function POST(request: NextRequest) {
       throw new InternalServerError("No user found. Run seed first.");
     }
 
-    const baseTitle = title.trim() || "Untitled Form";
+    const baseTitle = title.trim() || "New Form";
     const baseSlug = toSlug(slug?.trim() || baseTitle);
     const { title: uniqueTitle, slug: uniqueSlug } =
       await generateUniqueFormIdentity(baseTitle, baseSlug);
@@ -94,7 +94,7 @@ export async function POST(request: NextRequest) {
       { success: true, data: form },
       {
         status: 201,
-        headers: { Location: `/api/forms/${form.slug}` },
+        headers: { Location: `/api/forms/${form.id}` },
       },
     );
   });

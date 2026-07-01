@@ -427,7 +427,9 @@ export const mockPrisma: MockPrismaClient = {
         description: args.data.description || currentForm.description || null,
         theme: args.data.theme || currentForm.theme || "light",
         status: args.data.status || currentForm.status,
-        publishedAt: currentForm.publishedAt ? new Date(currentForm.publishedAt) : new Date(),
+        publishedAt: currentForm.publishedAt
+          ? new Date(currentForm.publishedAt)
+          : new Date(),
         updatedAt: new Date(),
       };
 

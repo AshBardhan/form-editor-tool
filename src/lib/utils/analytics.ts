@@ -8,8 +8,8 @@ export type FormAnalyticsEvent =
  * Sends a lightweight analytics event for a public form interaction.
  * Failures are intentionally swallowed so analytics never block UX.
  */
-export function sendAnalyticsEvent(slug: string, event: FormAnalyticsEvent) {
-  fetch(`/api/forms/${slug}/analytics`, {
+export function sendAnalyticsEvent(formId: string, event: FormAnalyticsEvent) {
+  fetch(`/api/forms/${formId}/analytics`, {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
@@ -17,6 +17,8 @@ export function sendAnalyticsEvent(slug: string, event: FormAnalyticsEvent) {
     body: JSON.stringify({ event }),
     keepalive: true,
   }).catch(() => {
-    console.error(`Failed to send analytics event for form ${slug}: ${event}`);
+    console.error(
+      `Failed to send analytics event for form ${formId}: ${event}`,
+    );
   });
 }

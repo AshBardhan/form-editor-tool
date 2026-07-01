@@ -27,7 +27,6 @@ export const FormBuilderContainer = ({
   const resetSidebar = useUIStateStore((state) => state.resetSidebar);
   const [isPersisting, setIsPersisting] = useState(false);
   const [persistMessage, setPersistMessage] = useState("");
-  const formIdentifier = formConfig.slug ?? formConfig.id;
 
   const handleCancel = () => {
     if (!isPersisting) {
@@ -36,9 +35,9 @@ export const FormBuilderContainer = ({
   };
 
   const handleSave = async () => {
-    if (!formIdentifier) {
+    if (!formConfig.id) {
       toast.error("Save unavailable", {
-        description: "Form identifier is missing.",
+        description: "Form ID is missing.",
       });
       return;
     }
@@ -58,7 +57,7 @@ export const FormBuilderContainer = ({
         })),
       };
 
-      const response = await fetch(`/api/forms/${formIdentifier}`, {
+      const response = await fetch(`/api/forms/${formConfig.id}`, {
         method: "PUT",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(payload),

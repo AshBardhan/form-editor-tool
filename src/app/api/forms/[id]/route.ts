@@ -24,40 +24,20 @@ function toSlug(value: string): string {
 }
 
 /**
- * Fetches form data by slug with flexible field selection.
- * Returns the requested fields or throws NotFoundError if not found.
- */
-async function getFormBySlug<T extends Prisma.FormSelect>(
-  slug: string,
-  select: T,
-): Promise<Prisma.FormGetPayload<{ select: T }>> {
-  const form = await prisma.form.findUnique({
-    where: { slug },
-    select,
-  });
-
-  if (!form) {
-    throw new NotFoundError("Form not found");
-  }
-
-  return form as Prisma.FormGetPayload<{ select: T }>;
-}
-
-/**
  * Returns the full form payload for editing and preview flows.
  */
 export async function GET(
   request: NextRequest,
-  { params }: { params: Promise<{ slug: string }> },
+  { params }: { params: Promise<{ id: string }> },
 ) {
   return apiHandler(async () => {
-    const { slug } = await params;
-    if (!slug) {
-      throw new ValidationError("Form slug is required");
+    const { id } = await params;
+    if (!id) {
+      throw new ValidationError("Form ID is required");
     }
 
     const form = await prisma.form.findUnique({
-      where: { slug },
+      where: { id },
       include: {
         blocks: {
           orderBy: { order: "asc" },
@@ -78,12 +58,12 @@ export async function GET(
  */
 export async function PUT(
   request: NextRequest,
-  { params }: { params: Promise<{ slug: string }> },
+  { params }: { params: Promise<{ id: string }> },
 ) {
   return apiHandler(async () => {
-    const { slug } = await params;
-    if (!slug) {
-      throw new ValidationError("Form slug is required");
+    const { id } = await params;
+    if (!id) {
+      throw new ValidationError("Form ID is required");
     }
 
     const body = await request.json();
@@ -99,19 +79,16 @@ export async function PUT(
 
     const generatedSlug = toSlug(inputSlug?.trim() || title);
 
-    // Get form ID and check for slug conflicts in one operation
-    const { id } = await getFormBySlug(slug, { id: true });
+    // Check for slug conflicts
+    const duplicateForm = await prisma.form.findFirst({
+      where: {
+        slug: generatedSlug,
+        NOT: { id },
+      },
+    });
 
-    if (generatedSlug !== slug) {
-      const duplicateForm = await prisma.form.findFirst({
-        where: {
-          slug: generatedSlug,
-          NOT: { id },
-        },
-      });
-      if (duplicateForm) {
-        throw new ValidationError("Slug already exists");
-      }
+    if (duplicateForm) {
+      throw new ValidationError("Slug already exists");
     }
 
     const form = await prisma.$transaction(async (tx) => {
@@ -234,15 +211,13 @@ export async function PUT(
  */
 export async function DELETE(
   request: NextRequest,
-  { params }: { params: Promise<{ slug: string }> },
+  { params }: { params: Promise<{ id: string }> },
 ) {
   return apiHandler(async () => {
-    const { slug } = await params;
-    if (!slug) {
-      throw new ValidationError("Form slug is required");
+    const { id } = await params;
+    if (!id) {
+      throw new ValidationError("Form ID is required");
     }
-
-    const { id } = await getFormBySlug(slug, { id: true });
 
     await prisma.form.delete({ where: { id } });
 
@@ -260,12 +235,12 @@ export async function DELETE(
  */
 export async function PATCH(
   request: NextRequest,
-  { params }: { params: Promise<{ slug: string }> },
+  { params }: { params: Promise<{ id: string }> },
 ) {
   return apiHandler(async () => {
-    const { slug } = await params;
-    if (!slug) {
-      throw new ValidationError("Form slug is required");
+    const { id } = await params;
+    if (!id) {
+      throw new ValidationError("Form ID is required");
     }
 
     const body = await request.json();
@@ -278,18 +253,11 @@ export async function PATCH(
 
     const { status } = parsed.data;
 
-    const existing = await getFormBySlug(slug, { id: true, status: true });
-
     const form = await prisma.form.update({
-      where: { id: existing.id },
+      where: { id },
       data: {
         status,
-        publishedAt:
-          status === "published" && existing.status !== "published"
-            ? new Date()
-            : status === "draft"
-              ? null
-              : undefined,
+        publishedAt: status === "published" ? new Date() : null,
       },
       select: {
         id: true,

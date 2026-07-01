@@ -78,7 +78,7 @@ export function FormHeader({ form }: FormHeaderProps) {
   const handleDelete = async () => {
     setIsSubmitting(true);
     try {
-      const response = await fetch(`/api/forms/${form.slug}`, {
+      const response = await fetch(`/api/forms/${form.id}`, {
         method: "DELETE",
       });
 
@@ -109,7 +109,7 @@ export function FormHeader({ form }: FormHeaderProps) {
   const handleUpdateFormStatus = async (nextStatus: FormStatus) => {
     setIsSubmitting(true);
     try {
-      const response = await fetch(`/api/forms/${form.slug}`, {
+      const response = await fetch(`/api/forms/${form.id}`, {
         method: "PATCH",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ status: nextStatus }),

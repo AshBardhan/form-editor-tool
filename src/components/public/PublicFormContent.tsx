@@ -37,11 +37,11 @@ export function PublicFormContent({ form }: PublicFormContentProps) {
   const resetFormData = useFormDataStore((state) => state.resetFormData);
 
   useEffect(() => {
-    if (!form.slug || !form.theme || hasTrackedViewRef.current) {
+    if (!form.id || !form.theme || hasTrackedViewRef.current) {
       return;
     }
     hasTrackedViewRef.current = true;
-    sendAnalyticsEvent(form.slug, "view");
+    sendAnalyticsEvent(form.id, "view");
     switchFormTheme(form.theme);
 
     return () => {
@@ -52,7 +52,7 @@ export function PublicFormContent({ form }: PublicFormContentProps) {
   }, []);
 
   useEffect(() => {
-    if (!form.slug || hasTrackedCompletionRef.current) {
+    if (!form.id || hasTrackedCompletionRef.current) {
       return;
     }
 
@@ -76,13 +76,13 @@ export function PublicFormContent({ form }: PublicFormContentProps) {
     }
 
     hasTrackedCompletionRef.current = true;
-    sendAnalyticsEvent(form.slug, "completion");
+    sendAnalyticsEvent(form.id, "completion");
   }, [formData]);
 
   const handleFieldChange = (key: string, value: FormBlockValueType) => {
-    if (!hasTrackedStartRef.current && form.slug) {
+    if (!hasTrackedStartRef.current && form.id) {
       hasTrackedStartRef.current = true;
-      sendAnalyticsEvent(form.slug, "start");
+      sendAnalyticsEvent(form.id, "start");
     }
 
     updateFormData(key, value);
@@ -153,8 +153,8 @@ export function PublicFormContent({ form }: PublicFormContentProps) {
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
-    if (form.slug) {
-      sendAnalyticsEvent(form.slug, "submit_attempt");
+    if (form.id) {
+      sendAnalyticsEvent(form.id, "submit_attempt");
     }
 
     if (!validateForm()) {
@@ -209,8 +209,8 @@ export function PublicFormContent({ form }: PublicFormContentProps) {
   };
 
   const handleSubmitAnotherResponse = () => {
-    if (form.slug) {
-      sendAnalyticsEvent(form.slug, "view");
+    if (form.id) {
+      sendAnalyticsEvent(form.id, "view");
     }
 
     hasTrackedStartRef.current = false;

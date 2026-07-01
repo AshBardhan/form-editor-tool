@@ -26,7 +26,7 @@ export function FormsHeader() {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
-          title: "Untitled Form",
+          title: "New Form",
           theme: "light",
         }),
       });

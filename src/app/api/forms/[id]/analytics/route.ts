@@ -28,16 +28,16 @@ function toIncrementData(event: AnalyticsEvent) {
 }
 
 /**
- * Increments one analytics counter for a published form identified by slug.
+ * Increments one analytics counter for a published form identified by ID.
  */
 export async function POST(
   request: NextRequest,
-  { params }: { params: Promise<{ slug: string }> },
+  { params }: { params: Promise<{ id: string }> },
 ) {
   return apiHandler(async () => {
-    const { slug } = await params;
-    if (!slug) {
-      throw new ValidationError("Form slug is required");
+    const { id } = await params;
+    if (!id) {
+      throw new ValidationError("Form ID is required");
     }
 
     const body = await request.json();
@@ -56,7 +56,7 @@ export async function POST(
 
     const result = await prisma.form.updateMany({
       where: {
-        slug,
+        id,
         status: "published",
       },
       data,
