@@ -1,11 +1,14 @@
 "use client";
 
-import { DashboardForm } from "@/lib/types/form";
+import { DashboardForm, FormStatus } from "@/lib/types/form";
 import { FormCard } from "./FormCard";
 import Text from "@/components/ui/Text";
 
 interface FormListProps {
   forms: DashboardForm[];
+  onStatusUpdate: (formId: string, status: FormStatus) => void;
+  onDeleteRequest: (form: DashboardForm) => void;
+  isSubmitting: boolean;
 }
 
 /**
@@ -16,7 +19,12 @@ interface FormListProps {
  * @param {FormListProps} props - The component props containing the list of forms.
  * @returns {JSX.Element} The rendered grid of form cards or an empty state message.
  */
-export function FormList({ forms }: FormListProps) {
+export function FormList({
+  forms,
+  onStatusUpdate,
+  onDeleteRequest,
+  isSubmitting,
+}: FormListProps) {
   if (!forms || forms.length === 0) {
     return (
       <div className="empty-content flex-col gap-2">
@@ -31,7 +39,13 @@ export function FormList({ forms }: FormListProps) {
   return (
     <div className="flex flex-col gap-6">
       {forms.map((form) => (
-        <FormCard key={form.id} form={form} />
+        <FormCard
+          key={form.id}
+          form={form}
+          onStatusUpdate={onStatusUpdate}
+          onDeleteRequest={onDeleteRequest}
+          isSubmitting={isSubmitting}
+        />
       ))}
     </div>
   );

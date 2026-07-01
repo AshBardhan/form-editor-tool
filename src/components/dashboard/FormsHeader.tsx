@@ -1,19 +1,39 @@
 "use client";
 
 import { useState } from "react";
-import { FileText, Plus } from "lucide-react";
+import { FileText, Plus, Search } from "lucide-react";
 import Text from "@/components/ui/Text";
 import { Button } from "@/components/ui/Button";
+import { Input } from "@/components/ui/Input";
+import {
+  Select,
+  SelectTrigger,
+  SelectItem,
+  SelectContent,
+  SelectValue,
+} from "@/components/ui/Select";
 import { useRouter } from "next/navigation";
 import { toast } from "@/components/ui/Toast";
 import { ApiResponse } from "@/lib/types/api";
-import { FormConfig } from "@/lib/types/form";
+import { FormConfig, FormFilterStatus } from "@/lib/types/form";
+import { FormFilterOptions } from "@/lib/constants/form";
+
+interface FormFilter {
+  search?: string;
+  status?: FormFilterStatus;
+  onStatusChange?: (status: FormFilterStatus) => void;
+  onSearchChange?: (query: string) => void;
+}
+
+interface FormsHeaderProps {
+  filter?: FormFilter;
+}
 
 /**
  * FormsHeader - Main header for the dashboard page
- * Displays title and create new form button
+ * Displays title, search, filter, and create new form button
  */
-export function FormsHeader() {
+export function FormsHeader({ filter = {} }: FormsHeaderProps) {
   const router = useRouter();
   const [isCreating, setIsCreating] = useState(false);
 
@@ -40,7 +60,7 @@ export function FormsHeader() {
         throw new Error(result.error?.message || "Failed to create form");
       }
 
-      toast.success("form has been successfully created");
+      toast.success("Form has been successfully created");
       router.push(`/forms/${createdSlug}/builder`);
     } catch (error) {
       toast.error("Failed to create form", {
@@ -55,27 +75,72 @@ export function FormsHeader() {
   };
 
   return (
-    <div className="flex items-center justify-between">
-      <div className="flex items-center gap-3">
-        <div className="p-3 bg-primary/10 rounded-lg">
-          <FileText className="size-6 sm:size-10 text-primary" />
+    <>
+      <div className="flex items-center justify-between">
+        <div className="flex items-center gap-3">
+          <div className="p-3 bg-primary/10 rounded-lg">
+            <FileText className="size-6 sm:size-10 text-primary" />
+          </div>
+          <div>
+            <Text variant="h1" className="mb-0.5 sm:mb-1">
+              FormKit
+            </Text>
+            <Text variant="p">Create and manage your forms</Text>
+          </div>
         </div>
-        <div>
-          <Text variant="h1" className="mb-0.5 sm:mb-1">
-            FormKit
-          </Text>
-          <Text variant="p">Create and manage your forms</Text>
+
+        <div className="flex items-center justify-end gap-3">
+          {filter && (
+            <>
+              <div className="relative flex-1 max-w-md">
+                <Search className="absolute left-3 top-1/2 -translate-y-1/2 size-4 text-muted-foreground" />
+                <Input
+                  type="text"
+                  placeholder="Search forms..."
+                  value={filter.search}
+                  onChange={(e) => {
+                    filter.onSearchChange?.(e.target.value);
+                  }}
+                  className="pl-9"
+                />
+              </div>
+
+              <Select
+                value={filter.status}
+                onValueChange={(value) => {
+                  filter.onStatusChange?.(value as FormFilterStatus);
+                }}
+              >
+                <SelectTrigger>
+                  <SelectValue>
+                    {
+                      FormFilterOptions.find(
+                        (option) => option.value === filter.status,
+                      )?.label
+                    }
+                  </SelectValue>
+                </SelectTrigger>
+                <SelectContent>
+                  {FormFilterOptions.map((option) => (
+                    <SelectItem key={option.value} value={option.value}>
+                      {option.label}
+                    </SelectItem>
+                  ))}
+                </SelectContent>
+              </Select>
+            </>
+          )}
+          <Button
+            onClick={handleCreateNewForm}
+            size="lg"
+            className="gap-2"
+            disabled={isCreating}
+          >
+            <Plus className="size-5" />
+            {isCreating ? "Creating..." : "Create Form"}
+          </Button>
         </div>
       </div>
-      <Button
-        onClick={handleCreateNewForm}
-        size="lg"
-        className="gap-2"
-        disabled={isCreating}
-      >
-        <Plus className="size-5" />
-        {isCreating ? "Creating..." : "Create Form"}
-      </Button>
-    </div>
+    </>
   );
 }

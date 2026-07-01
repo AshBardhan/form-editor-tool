@@ -41,6 +41,13 @@ export const formStatusVariant: Record<
   archived: "warning",
 };
 
+export const FormFilterOptions = [
+  { value: "all", label: "All Forms" },
+  { value: "draft", label: "Draft" },
+  { value: "published", label: "Published" },
+  { value: "archived", label: "Archived" },
+];
+
 /**
  * Messages for form status transitions.
  * Keys represent the target status being transitioned TO.
@@ -50,15 +57,15 @@ export const FORM_STATUS_UPDATE_MESSAGES: Record<
   FormStatusUpdateMessage
 > = {
   draft: {
-    transitioning: "Unpublishing form...",
+    transitioning: "Moving to draft...",
     success: {
       title: "Form moved to draft",
       description:
-        "Unpublished successfully. The form is no longer accepting submissions.",
+        "The form is now in draft mode and no longer accepting submissions.",
     },
     error: {
-      title: "Unpublish failed",
-      description: "Unable to unpublish the form. Please try again.",
+      title: "Status update failed",
+      description: "Unable to move the form to draft. Please try again.",
     },
   },
   published: {
@@ -71,6 +78,18 @@ export const FORM_STATUS_UPDATE_MESSAGES: Record<
     error: {
       title: "Publish failed",
       description: "Unable to publish the form. Please try again.",
+    },
+  },
+  archived: {
+    transitioning: "Archiving form...",
+    success: {
+      title: "Form archived",
+      description:
+        "The form has been archived and is no longer accepting submissions.",
+    },
+    error: {
+      title: "Archive failed",
+      description: "Unable to archive the form. Please try again.",
     },
   },
 };

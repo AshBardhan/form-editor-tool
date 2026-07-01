@@ -1,12 +1,5 @@
 import { JSX } from "react";
-import { FormsHeader } from "@/components/dashboard";
-import {
-  AppHeader,
-  AppContent,
-  PageHeader,
-  PageContent,
-  PageContainer,
-} from "@/components/layout";
+import { AppHeader, AppContent } from "@/components/layout";
 
 /**
  * Forms Dashboard Layout
@@ -23,16 +16,7 @@ export default function FormsLayout({
   return (
     <>
       <AppHeader />
-      <AppContent>
-        <PageHeader>
-          <PageContainer>
-            <FormsHeader />
-          </PageContainer>
-        </PageHeader>
-        <PageContent>
-          <PageContainer className="py-8">{children}</PageContainer>
-        </PageContent>
-      </AppContent>
+      <AppContent>{children}</AppContent>
     </>
   );
 }

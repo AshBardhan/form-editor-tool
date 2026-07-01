@@ -30,6 +30,8 @@ export type FormBlockPropType =
 
 export type FormStatus = "draft" | "published" | "archived";
 
+export type FormFilterStatus = "all" | FormStatus;
+
 export type FormBlockOrientation = "horizontal" | "vertical";
 
 /**

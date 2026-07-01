@@ -2,7 +2,7 @@ import prisma from "@/lib/prisma";
 import { notFound } from "next/navigation";
 import { DashboardForm, FormBlockType } from "@/lib/types/form";
 import { isFieldBasedBlock } from "@/lib/utils/formUtils";
-import { FormList } from "@/components/dashboard/FormList";
+import { FormsDashboard } from "@/components/dashboard/FormsDashboard";
 import { JSX } from "react";
 
 export default async function FormsPage(): Promise<JSX.Element> {
@@ -42,5 +42,5 @@ export default async function FormsPage(): Promise<JSX.Element> {
     },
   }));
 
-  return <FormList forms={dashboardFormsList} />;
+  return <FormsDashboard forms={dashboardFormsList} />;
 }
