@@ -104,6 +104,7 @@ interface MockPrismaClient {
   formSubmission: {
     findMany: (args?: any) => Promise<any[]>;
     create: (args: any) => Promise<any>;
+    deleteMany: (args: any) => Promise<any>;
   };
   formBlock: {
     findMany: (args?: any) => Promise<any[]>;
@@ -439,6 +440,14 @@ export const mockPrisma: MockPrismaClient = {
           ? new Date(currentForm.publishedAt)
           : new Date(),
         updatedAt: new Date(),
+        // Handle analytics counters (used by clear report)
+        ...(args.data.starts !== undefined && { starts: args.data.starts }),
+        ...(args.data.completions !== undefined && {
+          completions: args.data.completions,
+        }),
+        ...(args.data.submitAttempts !== undefined && {
+          submitAttempts: args.data.submitAttempts,
+        }),
       };
 
       // Update the mock database
@@ -657,6 +666,35 @@ export const mockPrisma: MockPrismaClient = {
       }
 
       return result;
+    },
+
+    /**
+     * Delete many submissions - Used by clear report functionality
+     */
+    deleteMany: async (args: any) => {
+      console.log("[Mock Prisma] formSubmission.deleteMany called with:", args);
+
+      const formId = args?.where?.formId;
+      if (!formId) {
+        return { count: 0 };
+      }
+
+      // Count submissions before deletion
+      const submissionsToDelete = mockDatabase.submissions.filter(
+        (s) => s.formId === formId,
+      );
+      const deleteCount = submissionsToDelete.length;
+
+      // Remove submissions from mock database
+      mockDatabase.submissions = mockDatabase.submissions.filter(
+        (s) => s.formId !== formId,
+      );
+
+      console.log(
+        `[Mock Prisma] Deleted ${deleteCount} submissions for form ${formId}`,
+      );
+
+      return { count: deleteCount };
     },
   },
 

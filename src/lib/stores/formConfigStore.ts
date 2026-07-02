@@ -28,6 +28,7 @@ const initialFormConfig: FormConfig = {
   slug: "untitled-form",
   title: "Untitled Form",
   theme: "light",
+  status: "draft",
   blocks: [],
 };
 

@@ -49,6 +49,7 @@ export const FormBuilderContainer = ({
       const payload = {
         title: formConfig.title,
         theme: formConfig.theme,
+        status: formConfig.status,
         blocks: formConfig.blocks.map((block) => ({
           id: block.id,
           type: block.type,

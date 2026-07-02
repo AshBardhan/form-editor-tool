@@ -25,8 +25,18 @@ import {
 import { DeviceSelector } from "@/components/layout/DeviceSelector";
 import { FormPreviewContent } from "@/components/preview";
 import { DeviceType } from "@/lib/constants/device";
-import { AlertTriangle, ExternalLink, Eye, MoreVertical } from "lucide-react";
+import {
+  AlertTriangle,
+  Archive,
+  BrushCleaning,
+  ExternalLink,
+  Eye,
+  FileUp,
+  MoreVertical,
+  Trash2,
+} from "lucide-react";
 import Text from "@/components/ui/Text";
+import { formStatusLabel, formStatusVariant } from "@/lib/constants/form";
 
 interface FormHeaderProps {
   form: { id: string; slug: string; title: string; status: FormStatus };
@@ -39,15 +49,14 @@ export function FormHeader({ form }: FormHeaderProps) {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [isPreviewOpen, setIsPreviewOpen] = useState(false);
   const [isDeleteConfirmOpen, setIsDeleteConfirmOpen] = useState(false);
-  const [isUnpublishConfirmOpen, setIsUnpublishConfirmOpen] = useState(false);
+  const [isClearReportConfirmOpen, setIsClearReportConfirmOpen] =
+    useState(false);
   const [currentDevice, setCurrentDevice] = useState<DeviceType>(
     DeviceType.DESKTOP,
   );
 
-  const currentStatus: FormStatus =
-    form.status === "published" ? "published" : "draft";
-  const statusVariant = currentStatus === "published" ? "success" : "warning";
-  const statusLabel = currentStatus === "published" ? "Published" : "Draft";
+  const statusVariant = formStatusVariant[form.status] ?? "neutral";
+  const statusLabel = formStatusLabel[form.status];
 
   const formNavigationPaths = [
     {
@@ -82,15 +91,24 @@ export function FormHeader({ form }: FormHeaderProps) {
         method: "DELETE",
       });
 
-      const result = (await response.json()) as ApiResponse<{ id: string }>;
+      const result = (await response.json()) as ApiResponse<{
+        id: string;
+        title: string;
+        status: FormStatus;
+        deletedSubmissions: number;
+      }>;
       if (!response.ok || !result.success) {
         throw new Error(
           result.error?.message || "Unable to delete form right now.",
         );
       }
 
+      const deletedCount = result.data?.deletedSubmissions || 0;
       toast.success("Form permanently deleted", {
-        description: "The form and its submission reports were removed.",
+        description:
+          deletedCount > 0
+            ? `Deleted form and ${deletedCount} submission${deletedCount > 1 ? "s" : ""}.`
+            : "The form has been removed.",
       });
       router.push("/forms");
       router.refresh();
@@ -100,6 +118,39 @@ export function FormHeader({ form }: FormHeaderProps) {
           error instanceof Error
             ? error.message
             : "We could not delete the form. Please try again.",
+      });
+    } finally {
+      setIsSubmitting(false);
+    }
+  };
+
+  const handleClearReport = async () => {
+    setIsSubmitting(true);
+    try {
+      const response = await fetch(`/api/forms/${form.id}/submissions`, {
+        method: "DELETE",
+      });
+
+      const result = (await response.json()) as ApiResponse<{
+        deletedSubmissions: number;
+      }>;
+      if (!response.ok || !result.success) {
+        throw new Error(
+          result.error?.message || "Unable to clear report right now.",
+        );
+      }
+
+      const deletedCount = result.data?.deletedSubmissions || 0;
+      toast.success("Report cleared successfully", {
+        description: `Deleted ${deletedCount} submission${deletedCount !== 1 ? "s" : ""} and all field responses.`,
+      });
+      router.refresh();
+    } catch (error) {
+      toast.error("Clear report failed", {
+        description:
+          error instanceof Error
+            ? error.message
+            : "We could not clear the report. Please try again.",
       });
     } finally {
       setIsSubmitting(false);
@@ -120,16 +171,20 @@ export function FormHeader({ form }: FormHeaderProps) {
         throw new Error(result.error?.message || "Unable to update status.");
       }
 
-      toast.success(
-        nextStatus === "published" ? "Form published" : "Form unpublished",
-      );
+      const statusMessages: Record<FormStatus, string> = {
+        published: "Form published",
+        draft: "Form moved to draft",
+        archived: "Form archived",
+      };
+
+      toast.success(statusMessages[nextStatus] || "Status updated");
       router.refresh();
     } catch (error) {
       toast.error("Status update failed", {
         description:
           error instanceof Error
             ? error.message
-            : "We could not update publish status. Please try again.",
+            : "We could not update status. Please try again.",
       });
     } finally {
       setIsSubmitting(false);
@@ -161,9 +216,9 @@ export function FormHeader({ form }: FormHeaderProps) {
           )}
           <Button
             onClick={handleAccess}
-            disabled={isSubmitting || currentStatus !== "published"}
+            disabled={isSubmitting || form.status !== "published"}
             title={
-              currentStatus === "published"
+              form.status === "published"
                 ? "Open public form"
                 : "Publish form to enable public access"
             }
@@ -180,20 +235,43 @@ export function FormHeader({ form }: FormHeaderProps) {
               </Button>
             </DropdownMenuTrigger>
             <DropdownMenuContent align="end">
-              <DropdownMenuItem
-                onSelect={() =>
-                  currentStatus === "published"
-                    ? setIsUnpublishConfirmOpen(true)
-                    : handleUpdateFormStatus("published")
-                }
-              >
-                {currentStatus === "published" ? "Unpublish" : "Publish"}
-              </DropdownMenuItem>
+              {/* Publish option: shown in draft and archived forms */}
+              {(form.status === "draft" || form.status === "archived") && (
+                <DropdownMenuItem
+                  onSelect={() => handleUpdateFormStatus("published")}
+                >
+                  <FileUp className="size-4 mr-2" />
+                  Publish
+                </DropdownMenuItem>
+              )}
+
+              {/* Archive option: shown in draft and published forms */}
+              {(form.status === "draft" || form.status === "published") && (
+                <DropdownMenuItem
+                  onSelect={() => handleUpdateFormStatus("archived")}
+                >
+                  <Archive className="size-4 mr-2" />
+                  Archive
+                </DropdownMenuItem>
+              )}
+
+              {/* Clear Report option: shown in published and archived forms */}
+              {(form.status === "published" || form.status === "archived") && (
+                <DropdownMenuItem
+                  onSelect={() => setIsClearReportConfirmOpen(true)}
+                >
+                  <BrushCleaning className="size-4 mr-2" />
+                  Clear Report
+                </DropdownMenuItem>
+              )}
+
+              {/* Delete option: always shown */}
               <DropdownMenuItem
                 className="text-red-600 dark:text-red-400"
                 onSelect={() => setIsDeleteConfirmOpen(true)}
               >
-                Delete form
+                <Trash2 className="size-4 mr-2" />
+                Delete
               </DropdownMenuItem>
             </DropdownMenuContent>
           </DropdownMenu>
@@ -228,8 +306,8 @@ export function FormHeader({ form }: FormHeaderProps) {
               <div className="flex-1 flex flex-col gap-2">
                 <ModalTitle>Delete this form permanently?</ModalTitle>
                 <ModalDescription>
-                  This will permanently remove the form and all associated
-                  submission reports. This action cannot be undone.
+                  This action cannot be undone. All submissions, field
+                  responses, and analytics data will be permanently removed.
                 </ModalDescription>
               </div>
             </div>
@@ -257,18 +335,19 @@ export function FormHeader({ form }: FormHeaderProps) {
       </Modal>
 
       <Modal
-        open={isUnpublishConfirmOpen}
-        onOpenChange={setIsUnpublishConfirmOpen}
+        open={isClearReportConfirmOpen}
+        onOpenChange={setIsClearReportConfirmOpen}
       >
         <ModalContent size="sm">
           <ModalHeader className="pb-2">
             <div className="flex gap-3">
               <AlertTriangle className="shrink-0 h-6 w-6 text-amber-600 dark:text-amber-500" />
               <div className="flex-1 flex flex-col gap-2">
-                <ModalTitle>Unpublish this form?</ModalTitle>
+                <ModalTitle>Clear all submission data?</ModalTitle>
                 <ModalDescription>
-                  Unpublishing will take this form offline immediately and pause
-                  new submissions until it is published again.
+                  This will permanently delete all submissions and field
+                  responses for this form. The form structure will remain
+                  unchanged.
                 </ModalDescription>
               </div>
             </div>
@@ -276,20 +355,20 @@ export function FormHeader({ form }: FormHeaderProps) {
           <ModalFooter>
             <Button
               variant="outline"
-              onClick={() => setIsUnpublishConfirmOpen(false)}
+              onClick={() => setIsClearReportConfirmOpen(false)}
               disabled={isSubmitting}
             >
-              Keep published
+              Cancel
             </Button>
             <Button
               variant="destructive"
               onClick={() => {
-                setIsUnpublishConfirmOpen(false);
-                handleUpdateFormStatus("draft");
+                setIsClearReportConfirmOpen(false);
+                handleClearReport();
               }}
               disabled={isSubmitting}
             >
-              Unpublish form
+              Clear report
             </Button>
           </ModalFooter>
         </ModalContent>

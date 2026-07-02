@@ -55,6 +55,7 @@ export async function GET(
 
 /**
  * Updates a form's content, regenerates its blocks, and invalidates cached page data.
+ * Edit permissions enforced based on form status and submission count.
  */
 export async function PUT(
   request: NextRequest,
@@ -75,9 +76,39 @@ export async function PUT(
       );
     }
 
-    const { title, theme, blocks, description, slug: inputSlug } = parsed.data;
+    const {
+      title,
+      theme,
+      description,
+      slug: inputSlug,
+      status,
+      blocks,
+    } = parsed.data;
 
     const generatedSlug = toSlug(inputSlug?.trim() || title);
+
+    // Validate edit permissions based on status and submissions
+
+    // Archived forms cannot be edited
+    if (status === "archived") {
+      throw new ValidationError(
+        "Cannot edit archived form. Restore it to 'published' first.",
+      );
+    }
+
+    // For published forms, check if they have submissions
+    if (status === "published") {
+      const submissionCount = await prisma.formSubmission.count({
+        where: { formId: id },
+      });
+
+      if (submissionCount > 0) {
+        throw new ValidationError(
+          `Cannot update form structure - it has ${submissionCount} submission${submissionCount > 1 ? "s" : ""}. ` +
+            "Only metadata updates are allowed for forms with submissions.",
+        );
+      }
+    }
 
     // Check for slug conflicts
     const duplicateForm = await prisma.form.findFirst({
@@ -208,6 +239,7 @@ export async function PUT(
 
 /**
  * Permanently deletes a form and clears related cached page and report data.
+ * Frontend should show warnings for published/archived forms with submissions.
  */
 export async function DELETE(
   request: NextRequest,
@@ -219,6 +251,26 @@ export async function DELETE(
       throw new ValidationError("Form ID is required");
     }
 
+    // Get form details before deletion (for response info)
+    const form = await prisma.form.findUnique({
+      where: { id },
+      select: {
+        id: true,
+        title: true,
+        status: true,
+        _count: {
+          select: {
+            submissions: true,
+          },
+        },
+      },
+    });
+
+    if (!form) {
+      throw new NotFoundError("Form not found");
+    }
+
+    // Delete the form (cascade deletes blocks, submissions, and responses)
     await prisma.form.delete({ where: { id } });
 
     revalidateTag(FORM_BUILDER_CACHE_TAG);
@@ -226,12 +278,24 @@ export async function DELETE(
     revalidateTag(FORM_REPORT_CACHE_TAG);
     revalidateTag(PUBLIC_FORM_CACHE_TAG);
 
-    return NextResponse.json({ success: true, data: { id } }, { status: 200 });
+    return NextResponse.json(
+      {
+        success: true,
+        data: {
+          id: form.id,
+          title: form.title,
+          status: form.status,
+          deletedSubmissions: form._count.submissions,
+        },
+      },
+      { status: 200 },
+    );
   });
 }
 
 /**
- * Updates the form publish status and clears cached page and report data.
+ * Updates the form status with proper state transition validation.
+ * Enforces the 3-state lifecycle: draft → published ↔ archived
  */
 export async function PATCH(
   request: NextRequest,
@@ -251,13 +315,62 @@ export async function PATCH(
       );
     }
 
-    const { status } = parsed.data;
+    const { status: newStatus } = parsed.data;
+
+    // Get current form status to validate transition
+    const currentForm = await prisma.form.findUnique({
+      where: { id },
+      select: { status: true, publishedAt: true },
+    });
+
+    if (!currentForm) {
+      throw new NotFoundError("Form not found");
+    }
+
+    const currentStatus = currentForm.status;
+
+    // Validate state transitions
+    const invalidTransitions = [
+      { from: "published", to: "draft" },
+      { from: "archived", to: "draft" },
+    ];
+
+    const isInvalidTransition = invalidTransitions.some(
+      (transition) =>
+        currentStatus === transition.from && newStatus === transition.to,
+    );
+
+    if (isInvalidTransition) {
+      throw new ValidationError(
+        `Cannot transition from ${currentStatus} to ${newStatus}. ` +
+          (currentStatus === "published"
+            ? "Use 'archived' to unpublish a form."
+            : "Restore to 'published' first, then edit."),
+      );
+    }
+
+    // Determine publishedAt value based on transition
+    let publishedAt: Date | null | undefined = undefined;
+
+    if (newStatus === "published" && currentStatus === "draft") {
+      // First time publishing - set publishedAt
+      publishedAt = new Date();
+    } else if (newStatus === "published" && currentStatus === "archived") {
+      // Restoring from archive - keep original publishedAt
+      publishedAt = currentForm.publishedAt;
+    } else if (newStatus === "archived") {
+      // Archiving - keep original publishedAt
+      publishedAt = currentForm.publishedAt;
+    } else if (newStatus === "draft") {
+      // Back to draft - clear publishedAt
+      publishedAt = null;
+    }
 
     const form = await prisma.form.update({
       where: { id },
       data: {
-        status,
-        publishedAt: status === "published" ? new Date() : null,
+        status: newStatus,
+        ...(publishedAt !== undefined && { publishedAt }),
       },
       select: {
         id: true,

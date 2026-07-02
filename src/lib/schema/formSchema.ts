@@ -157,7 +157,7 @@ export const formBlockSchemas: Record<string, z.ZodSchema> = {
 
 const nonEmptyString = z.string().trim().min(1);
 const formThemeSchema = z.enum(["light", "dark"]);
-const formStatusSchema = z.enum(["draft", "published"]);
+const formStatusSchema = z.enum(["draft", "published", "archived"]);
 
 /**
  * Form block request schema.
@@ -218,6 +218,7 @@ export const UpdateFormSchema = z
     theme: formThemeSchema,
     description: z.string().optional().nullable(),
     slug: z.string().optional().nullable(),
+    status: formStatusSchema,
     blocks: z.array(formBlockInputSchema),
   })
   .refine((data) => Object.keys(data).length > 0, {
