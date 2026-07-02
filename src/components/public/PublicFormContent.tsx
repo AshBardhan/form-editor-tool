@@ -71,7 +71,17 @@ export function PublicFormContent({ form }: PublicFormContentProps) {
       return true;
     });
 
-    if (!isFormCompleted) {
+    // Check if user has filled at least one field with a meaningful value
+    const hasFilledAnyField =
+      Object.keys(formData).length > 0 &&
+      Object.values(formData).some((value) => {
+        if (value === null || value === undefined) return false;
+        if (typeof value === "string") return value.trim() !== "";
+        if (Array.isArray(value)) return value.length > 0;
+        return true; // booleans, numbers, etc.
+      });
+
+    if (!isFormCompleted || !hasFilledAnyField) {
       return;
     }
 
@@ -171,11 +181,10 @@ export function PublicFormContent({ form }: PublicFormContentProps) {
           value: formData[getFieldKey(block)] ?? null,
         }));
 
-      const response = await fetch("/api/submissions", {
+      const response = await fetch(`/api/forms/${form.id}/submissions`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
-          formId: form.id,
           responses,
         }),
       });

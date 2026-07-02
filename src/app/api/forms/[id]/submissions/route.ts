@@ -8,7 +8,6 @@ import { revalidateTag } from "next/cache";
 import { FORM_REPORT_CACHE_TAG } from "@/lib/queries/forms";
 
 const SubmissionSchema = z.object({
-  formId: z.string().min(1, "Form ID is required"),
   responses: z.array(
     z.object({
       blockId: z.string().min(1, "Block ID is required"),
@@ -24,10 +23,19 @@ const SubmissionSchema = z.object({
 });
 
 /**
- * Validates and stores a new form submission, then invalidates the report cache.
+ * POST /api/forms/[id]/submissions
+ * Creates a new submission for the specified form
  */
-export async function POST(request: NextRequest) {
+export async function POST(
+  request: NextRequest,
+  { params }: { params: Promise<{ id: string }> },
+) {
   return apiHandler(async () => {
+    const { id: formId } = await params;
+    if (!formId) {
+      throw new ValidationError("Form ID is required");
+    }
+
     const body = await request.json();
     const parsed = SubmissionSchema.safeParse(body);
 
@@ -37,7 +45,7 @@ export async function POST(request: NextRequest) {
       );
     }
 
-    const { formId, responses } = parsed.data;
+    const { responses } = parsed.data;
 
     // Verify form exists and is published
     const form = await prisma.form.findFirst({
@@ -92,5 +100,65 @@ export async function POST(request: NextRequest) {
       },
       { status: 201 },
     );
+  });
+}
+
+/**
+ * DELETE /api/forms/[id]/submissions
+ * Clears all submissions and field responses for the specified form
+ * Also resets submission-related analytics counters (starts, completions, submitAttempts)
+ */
+export async function DELETE(
+  request: NextRequest,
+  { params }: { params: Promise<{ id: string }> },
+) {
+  return apiHandler(async () => {
+    const { id: formId } = await params;
+    if (!formId) {
+      throw new ValidationError("Form ID is required");
+    }
+
+    // Verify form exists
+    const form = await prisma.form.findUnique({
+      where: { id: formId },
+      select: {
+        id: true,
+        _count: {
+          select: { submissions: true },
+        },
+      },
+    });
+
+    if (!form) {
+      throw new NotFoundError("Form not found");
+    }
+
+    const submissionCount = form._count.submissions;
+
+    // Delete all submissions (cascade will delete field responses)
+    // and reset submission-related analytics counters
+    await prisma.$transaction([
+      prisma.formSubmission.deleteMany({
+        where: { formId },
+      }),
+      prisma.form.update({
+        where: { id: formId },
+        data: {
+          views: 0,
+          starts: 0,
+          completions: 0,
+          submitAttempts: 0,
+        },
+      }),
+    ]);
+
+    revalidateTag(FORM_REPORT_CACHE_TAG);
+
+    return NextResponse.json({
+      success: true,
+      data: {
+        deletedSubmissions: submissionCount,
+      },
+    });
   });
 }
