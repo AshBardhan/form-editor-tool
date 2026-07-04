@@ -1,5 +1,4 @@
 import { NextRequest, NextResponse } from "next/server";
-import { Prisma } from "@prisma/client";
 import { revalidateTag } from "next/cache";
 import prisma from "@/lib/prisma";
 import { apiHandler } from "@/lib/utils/apiUtils";
@@ -9,14 +8,7 @@ import {
   FORM_BUILDER_CACHE_TAG,
   FORM_META_CACHE_TAG,
 } from "@/lib/queries/forms";
-
-function toSlug(value: string): string {
-  const normalized = value
-    .toLowerCase()
-    .replace(/[^a-z0-9]+/g, "-")
-    .replace(/^-+|-+$/g, "");
-  return normalized || "untitled-form";
-}
+import { generateFormSlug } from "@/lib/utils/formUtils";
 
 /**
  * Generates a unique title and slug pair so newly created forms do not collide.
@@ -72,7 +64,7 @@ export async function POST(request: NextRequest) {
     }
 
     const baseTitle = title.trim() || "New Form";
-    const baseSlug = toSlug(slug?.trim() || baseTitle);
+    const baseSlug = generateFormSlug(slug?.trim() || baseTitle);
     const { title: uniqueTitle, slug: uniqueSlug } =
       await generateUniqueFormIdentity(baseTitle, baseSlug);
 

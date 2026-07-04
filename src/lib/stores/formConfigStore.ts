@@ -37,7 +37,13 @@ const initialFormConfig: FormConfig = {
  */
 export const useFormConfigStore = create<FormConfigState>()((set, get) => ({
   formConfig: initialFormConfig,
-  setFormConfig: (data) => set({ formConfig: data }),
+  setFormConfig: (data) =>
+    set((state) => ({
+      formConfig: {
+        ...state.formConfig,
+        ...data,
+      },
+    })),
   updateFormConfig: (key, value) => {
     set((state) => ({
       formConfig: {

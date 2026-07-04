@@ -53,15 +53,11 @@ interface DragState {
  * @returns {JSX.Element} The rendered component.
  */
 interface FormBuilderContentProps {
-  isPersisting?: boolean;
-  persistMessage?: string;
   onSave?: () => void;
   onCancel?: () => void;
 }
 
 export const FormBuilderContent = ({
-  isPersisting = false,
-  persistMessage = "",
   onSave = () => {},
   onCancel = () => {},
 }: FormBuilderContentProps): JSX.Element => {
@@ -161,14 +157,6 @@ export const FormBuilderContent = ({
 
   return (
     <>
-      {isPersisting && (
-        <div className="absolute inset-0 z-40 bg-black/30 backdrop-blur-[1px] flex items-center justify-center pt-4">
-          <div className="text-white text-3xl font-medium">
-            {persistMessage}
-          </div>
-        </div>
-      )}
-
       {/* Drag Context Container */}
       <DndContext
         sensors={sensors}
@@ -204,7 +192,7 @@ export const FormBuilderContent = ({
         {/* Drag Placeholder Overlay */}
         <DragOverlay>
           {dragState.activeItem && (
-            <div className={formTheme === "dark" ? "dark" : ""}>
+            <div className={formTheme}>
               <CanvasDroppable
                 item={dragState.activeItem}
                 source={dragState.source}
@@ -245,14 +233,10 @@ export const FormBuilderContent = ({
             </PageContainer>
           </div>
           <div className="shrink-0 py-4 bg-white border-t flex items-center justify-center gap-4">
-            <Button variant="positive" onClick={onSave} disabled={isPersisting}>
+            <Button variant="positive" onClick={onSave}>
               Save
             </Button>
-            <Button
-              variant="secondary"
-              onClick={onCancel}
-              disabled={isPersisting}
-            >
+            <Button variant="secondary" onClick={onCancel}>
               Cancel
             </Button>
           </div>

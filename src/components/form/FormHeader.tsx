@@ -157,13 +157,17 @@ export function FormHeader({ form }: FormHeaderProps) {
     }
   };
 
-  const handleUpdateFormStatus = async (nextStatus: FormStatus) => {
+  const handleUpdateFormStatus = async (newStatus: FormStatus) => {
+    if (form.status === newStatus) {
+      toast.info("Form status is already set to " + newStatus);
+      return;
+    }
     setIsSubmitting(true);
     try {
-      const response = await fetch(`/api/forms/${form.id}`, {
+      const response = await fetch(`/api/forms/${form.id}/status`, {
         method: "PATCH",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ status: nextStatus }),
+        body: JSON.stringify({ status: newStatus }),
       });
 
       const result = (await response.json()) as ApiResponse<FormConfig>;
@@ -177,7 +181,7 @@ export function FormHeader({ form }: FormHeaderProps) {
         archived: "Form archived",
       };
 
-      toast.success(statusMessages[nextStatus] || "Status updated");
+      toast.success(statusMessages[newStatus] || "Status updated");
       router.refresh();
     } catch (error) {
       toast.error("Status update failed", {

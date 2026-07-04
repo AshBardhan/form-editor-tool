@@ -92,7 +92,7 @@
   }
 
   .form-overlay {
-    @apply absolute inset-0 z-40 bg-black/30 text-white backdrop-blur-[1px] flex items-center justify-center rounded-lg;
+    @apply absolute inset-0 bg-white/40 z-1  backdrop-blur-[1px] flex items-center justify-center;
   }
 
   .form-block {

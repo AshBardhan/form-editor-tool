@@ -214,12 +214,11 @@ export const PatchFormStatusSchema = z.object({
  */
 export const UpdateFormSchema = z
   .object({
-    title: nonEmptyString,
-    theme: formThemeSchema,
+    title: nonEmptyString.optional(),
+    theme: formThemeSchema.optional(),
     description: z.string().optional().nullable(),
     slug: z.string().optional().nullable(),
-    status: formStatusSchema,
-    blocks: z.array(formBlockInputSchema),
+    blocks: z.array(formBlockInputSchema).optional(),
   })
   .refine((data) => Object.keys(data).length > 0, {
     message: "At least one field is required for update",

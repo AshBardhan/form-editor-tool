@@ -56,6 +56,11 @@ const getFormBuilderDataCached = cache(
             props: true,
           },
         },
+        _count: {
+          select: {
+            submissions: true,
+          },
+        },
       },
     });
 
@@ -70,6 +75,7 @@ const getFormBuilderDataCached = cache(
       description: form.description ?? undefined,
       theme: form.theme,
       status: form.status,
+      submissionCount: form._count.submissions,
       blocks: form.blocks.map((block) => ({
         id: block.id,
         type: block.type as FormBlockType,

@@ -1,4 +1,4 @@
-import { FormStatus } from "@prisma/client";
+import { FormStatus, FormTheme } from "@prisma/client";
 
 /**
  * Seed forms - Small, realistic dataset for database initialization
@@ -18,7 +18,7 @@ export const seedForms = [
     title: "Customer Satisfaction Survey",
     description: "Help us improve our services by sharing your feedback",
     status: "published" as FormStatus,
-    theme: "light" as const,
+    theme: "light" as FormTheme,
     views: 19,
     starts: 12,
     completions: 5,
@@ -30,7 +30,7 @@ export const seedForms = [
     title: "Employee Onboarding Form",
     description: "Welcome! Please complete this form on your first day",
     status: "published" as FormStatus,
-    theme: "light" as const,
+    theme: "light" as FormTheme,
     views: 9,
     starts: 3,
     completions: 3,
@@ -42,7 +42,7 @@ export const seedForms = [
     title: "Product Feedback",
     description: "Tell us about your experience with our product",
     status: "published" as FormStatus,
-    theme: "dark" as const,
+    theme: "dark"as FormTheme,
     views: 6,
     starts: 5,
     completions: 3,
@@ -54,7 +54,7 @@ export const seedForms = [
     title: "Tech Conference 2026 Registration",
     description: "Register for our upcoming tech conference (Work in Progress)",
     status: "draft" as FormStatus,
-    theme: "light" as const,
+    theme: "light"as FormTheme,
     views: 0,
     starts: 0,
     completions: 0,
@@ -66,7 +66,7 @@ export const seedForms = [
     title: "Bug Report Template",
     description: "Report issues you encounter in our application",
     status: "published" as FormStatus,
-    theme: "dark" as const,
+    theme: "dark"as FormTheme,
     views: 9,
     starts: 6,
     completions: 2,

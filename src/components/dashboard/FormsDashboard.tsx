@@ -6,7 +6,9 @@ import { AlertTriangle } from "lucide-react";
 import { DashboardForm, FormStatus } from "@/lib/types/form";
 import { FormsHeader } from "./FormsHeader";
 import { FormList } from "./FormList";
+import Text from "@/components/ui/Text";
 import { PageContainer, PageHeader, PageContent } from "@/components/layout";
+import { cn } from "@/lib/utils/styleUtils";
 import {
   Modal,
   ModalContent,
@@ -61,7 +63,7 @@ export function FormsDashboard({ forms }: FormsDashboardProps) {
   ) => {
     setIsSubmitting(true);
     try {
-      const response = await fetch(`/api/forms/${formId}`, {
+      const response = await fetch(`/api/forms/${formId}/status`, {
         method: "PATCH",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ status: nextStatus }),
@@ -149,13 +151,27 @@ export function FormsDashboard({ forms }: FormsDashboardProps) {
         </PageContainer>
       </PageHeader>
       <PageContent>
-        <PageContainer className="py-8">
-          <FormList
-            forms={filteredForms}
-            onStatusUpdate={handleUpdateFormStatus}
-            onDeleteRequest={setFormToDelete}
-            isSubmitting={isSubmitting}
-          />
+        <PageContainer
+          className={cn(
+            "py-8",
+            (filteredForms.length === 0 || forms.length === 0) && "h-full",
+          )}
+        >
+          {forms.length === 0 ? (
+            <div className="empty-content flex-col gap-2">
+              <Text variant="h4">No forms yet</Text>
+              <Text variant="p" className="text-sm text-muted-foreground">
+                Create your first form to get started.
+              </Text>
+            </div>
+          ) : (
+            <FormList
+              forms={filteredForms}
+              onStatusUpdate={handleUpdateFormStatus}
+              onDeleteRequest={setFormToDelete}
+              isSubmitting={isSubmitting}
+            />
+          )}
         </PageContainer>
       </PageContent>
 

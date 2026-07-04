@@ -270,6 +270,59 @@ export const mockPrisma: MockPrismaClient = {
 
               return submissionResult;
             });
+          } else if (key === "_count" && args.select[key]) {
+            // Handle _count select (used by builder for submission count)
+            selectedResult._count = {
+              submissions: submissions.length,
+            };
+          } else if (key === "blocks" && args.select[key]) {
+            // Handle blocks with orderBy and select
+            let formBlocks = result.blocks;
+
+            // Apply orderBy if specified
+            if (args.select.blocks.orderBy) {
+              const orderBy = args.select.blocks.orderBy;
+              if (Array.isArray(orderBy)) {
+                // Handle array of orderBy
+                orderBy.forEach((order: any) => {
+                  if (order.order === "asc") {
+                    formBlocks = formBlocks.sort(
+                      (a: any, b: any) => a.order - b.order,
+                    );
+                  } else if (order.order === "desc") {
+                    formBlocks = formBlocks.sort(
+                      (a: any, b: any) => b.order - a.order,
+                    );
+                  }
+                });
+              } else if (orderBy.order) {
+                // Handle single orderBy object
+                if (orderBy.order === "asc") {
+                  formBlocks = formBlocks.sort(
+                    (a: any, b: any) => a.order - b.order,
+                  );
+                } else if (orderBy.order === "desc") {
+                  formBlocks = formBlocks.sort(
+                    (a: any, b: any) => b.order - a.order,
+                  );
+                }
+              }
+            }
+
+            // Apply select to blocks if specified
+            if (args.select.blocks.select) {
+              selectedResult.blocks = formBlocks.map((block: any) => {
+                const selectedBlock: any = {};
+                Object.keys(args.select.blocks.select).forEach((blockKey) => {
+                  if (args.select.blocks.select[blockKey]) {
+                    selectedBlock[blockKey] = block[blockKey];
+                  }
+                });
+                return selectedBlock;
+              });
+            } else {
+              selectedResult.blocks = formBlocks;
+            }
           } else if (args.select[key]) {
             selectedResult[key] = result[key];
           }
@@ -307,6 +360,13 @@ export const mockPrisma: MockPrismaClient = {
             };
           }),
         }));
+      }
+
+      // Handle _count include (for submission counts)
+      if (args?.include?._count) {
+        result._count = {
+          submissions: submissions.length,
+        };
       }
 
       return result;

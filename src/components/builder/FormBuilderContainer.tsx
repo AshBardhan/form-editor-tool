@@ -1,6 +1,6 @@
 "use client";
 
-import { JSX, useEffect, useState } from "react";
+import { JSX, useEffect, useMemo, useState } from "react";
 import { FormConfig } from "@/lib/types/form";
 import { useFormConfigStore, useUIStateStore } from "@/lib/stores";
 import { FormBuilderContent } from "@/components/builder/FormBuilderContent";
@@ -28,6 +28,18 @@ export const FormBuilderContainer = ({
   const [isPersisting, setIsPersisting] = useState(false);
   const [persistMessage, setPersistMessage] = useState("");
 
+  // Determine if form is editable based on status and submission count
+  const isFormEditable = useMemo(() => {
+    switch (formConfig.status) {
+      case "archived":
+        return false;
+      case "published":
+        return (formConfig.submissionCount ?? 0) === 0;
+      default:
+        return true;
+    }
+  }, [formConfig.status, formConfig.submissionCount]);
+
   const handleCancel = () => {
     if (!isPersisting) {
       router.push("/");
@@ -42,6 +54,17 @@ export const FormBuilderContainer = ({
       return;
     }
 
+    if (!isFormEditable) {
+      const message =
+        formConfig.status === "archived"
+          ? "Archived forms cannot be edited. Restore it to 'published' first."
+          : "Cannot edit published form with submissions. Archive the form first if you need to make changes.";
+      toast.error("Unable to update form", {
+        description: message,
+      });
+      return;
+    }
+
     setPersistMessage("Updating form...");
     setIsPersisting(true);
 
@@ -49,7 +72,6 @@ export const FormBuilderContainer = ({
       const payload = {
         title: formConfig.title,
         theme: formConfig.theme,
-        status: formConfig.status,
         blocks: formConfig.blocks.map((block) => ({
           id: block.id,
           type: block.type,
@@ -105,13 +127,25 @@ export const FormBuilderContainer = ({
   }, [form]);
 
   return (
-    <div className="flex h-full">
-      <FormBuilderContent
-        isPersisting={isPersisting}
-        persistMessage={persistMessage}
-        onSave={handleSave}
-        onCancel={handleCancel}
-      />
+    <div className="flex h-full relative">
+      <FormBuilderContent onSave={handleSave} onCancel={handleCancel} />
+      {isPersisting && (
+        <div className="form-overlay">
+          <div className="text-3xl font-medium">{persistMessage}</div>
+        </div>
+      )}
+      {!isFormEditable && (
+        <div className="form-overlay cursor-not-allowed">
+          <div className="bg-white p-6 rounded-lg shadow-lg max-w-md text-center">
+            <h3 className="text-lg font-semibold mb-2">Form Uneditable</h3>
+            <p className="text-sm text-gray-600 dark:text-gray-400">
+              {formConfig.status === "archived"
+                ? "This form is archived and cannot be edited. Restore it to 'published' status and clear report to make changes."
+                : "This form has submissions and cannot be edited. Clear report first to make changes."}
+            </p>
+          </div>
+        </div>
+      )}
     </div>
   );
 };

@@ -6,12 +6,12 @@ import { ALL_FIELD_BLOCKS } from "@/lib/constants/form";
  * Validates a single form block against its value
  *
  * @param {FormBlock} block - The form block to validate.
- * @param {FormBlockValueType | undefined} value - The current value of the field.
+ * @param {FormBlockValueType} value - The current value of the field.
  * @returns {string[]} Array of error messages (empty if valid).
  */
 export const validateFormBlock = (
   block: FormBlock,
-  value: FormBlockValueType | undefined,
+  value: FormBlockValueType,
 ): string[] => {
   const errors: string[] = [];
   const required = getPropValue(block, "required");
@@ -103,4 +103,13 @@ export const validateFormBlock = (
   }
 
   return errors;
+};
+
+export const isFormDataValid = (value: FormBlockValueType) => {
+  if (value === null || value === undefined) return false;
+  if (typeof value === "boolean") return value;
+  if (typeof value === "string") return value.trim() !== "";
+  if (Array.isArray(value)) return value.length > 0;
+
+  return true;
 };

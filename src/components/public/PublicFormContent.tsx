@@ -15,6 +15,7 @@ import { validateFormBlock } from "@/lib/utils/formValidationUtils";
 import { useFormDataStore } from "@/lib/stores/formDataStore";
 import { switchFormTheme } from "@/lib/utils/domUtils";
 import { sendAnalyticsEvent } from "@/lib/utils/analytics";
+import { isFormDataValid } from "@/lib/utils/formValidationUtils";
 
 interface PublicFormContentProps {
   form: FormConfig;
@@ -60,33 +61,19 @@ export function PublicFormContent({ form }: PublicFormContentProps) {
       if (!isFieldBasedBlock(block.type) || !getPropValue(block, "required")) {
         return true;
       }
-
       const value = formData[getFieldKey(block)];
-
-      if (value === undefined || value === null) return false;
-      if (typeof value === "boolean") return value;
-      if (typeof value === "string") return value.trim() !== "";
-      if (Array.isArray(value)) return value.length > 0;
-
-      return true;
+      return isFormDataValid(value);
     });
 
     // Check if user has filled at least one field with a meaningful value
     const hasFilledAnyField =
       Object.keys(formData).length > 0 &&
-      Object.values(formData).some((value) => {
-        if (value === null || value === undefined) return false;
-        if (typeof value === "string") return value.trim() !== "";
-        if (Array.isArray(value)) return value.length > 0;
-        return true; // booleans, numbers, etc.
-      });
+      Object.values(formData).some((value) => isFormDataValid(value));
 
-    if (!isFormCompleted || !hasFilledAnyField) {
-      return;
+    if (isFormCompleted && hasFilledAnyField) {
+      hasTrackedCompletionRef.current = true;
+      sendAnalyticsEvent(form.id, "completion");
     }
-
-    hasTrackedCompletionRef.current = true;
-    sendAnalyticsEvent(form.id, "completion");
   }, [formData]);
 
   const handleFieldChange = (key: string, value: FormBlockValueType) => {
@@ -240,7 +227,7 @@ export function PublicFormContent({ form }: PublicFormContentProps) {
         {/* Form */}
         <div className="form-content relative">
           {status.type === "submitting" && (
-            <div className="form-overlay">
+            <div className="form-overlay  rounded-lg">
               <Text>Submitting form...</Text>
             </div>
           )}

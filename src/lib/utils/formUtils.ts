@@ -189,3 +189,14 @@ export function getFormMetrics(metrics: FormMetrics): FormMetric[] {
     value,
   }));
 }
+
+/*
+ * Generates a slug from a given string.
+ * Converts to lowercase, trims whitespace, replaces spaces and special characters with hyphens.
+ * @param {string} value - The input string to convert to a slug.
+ * @returns {string} The generated slug.
+ */
+export function generateFormSlug(value: string): string {
+  const normalized = toKebabCase(value);
+  return normalized || "untitled-form";
+}

@@ -34,6 +34,8 @@ export type FormFilterStatus = "all" | FormStatus;
 
 export type FormBlockOrientation = "horizontal" | "vertical";
 
+export type FormTheme = "light" | "dark";
+
 /**
  * A single response to a form field from a submission
  */
@@ -102,8 +104,9 @@ export interface FormConfig {
   description?: string;
   slug: string;
   status?: FormStatus;
-  theme: "light" | "dark";
+  theme: FormTheme;
   blocks: FormBlock[];
+  submissionCount?: number;
 }
 
 /**
@@ -130,9 +133,10 @@ export interface FormPageData {
   slug: string;
   title: string;
   description?: string;
-  theme: "light" | "dark";
+  theme: FormTheme;
   status: FormStatus;
   blocks: FormBlock[];
+  submissionCount?: number;
 }
 
 /**
