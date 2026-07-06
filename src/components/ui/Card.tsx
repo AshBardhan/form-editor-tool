@@ -3,13 +3,17 @@
 import { type ComponentProps } from "react";
 import { cn } from "@/lib/utils/styleUtils";
 
-function Card({ className, ...props }: ComponentProps<"div">) {
+interface CardProps extends ComponentProps<"div"> {
+  clickable?: boolean;
+}
+
+function Card({ className, clickable, ...props }: CardProps) {
   return (
     <div
       data-slot="card"
       className={cn(
-        "block py-6 bg-white border border-gray-200 rounded-lg shadow transition-colors",
-        "hover:bg-gray-100 hover:shadow-md cursor-pointer",
+        "block py-6 bg-white border border-gray-200 rounded-lg shadow transition-colors duration-200",
+        clickable && "hover:bg-gray-100 hover:shadow-md cursor-pointer",
         className,
       )}
       {...props}

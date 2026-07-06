@@ -21,6 +21,7 @@
   --color-secondary: #7a7a7a;
   --color-input: #8d8d8d;
   --color-destructive: #cc3131;
+  --color-positive: #47cc71;
   --color-accent: #e1e1e1;
   --color-accent-inverted: #454343;
   --color-heading: #1f2532;
@@ -31,20 +32,31 @@
 @theme inline {
   --color-background: var(--background);
   --color-foreground: var(--foreground);
+  --color-muted-background: var(--color-accent);
+  --color-muted-foreground: var(--color-secondary);
   --font-sans: var(--font-geist-sans);
   --font-mono: var(--font-geist-mono);
 }
 
 @layer components {
-  .page-container {
-    @apply flex flex-col h-screen;
+  #app {
+    @apply flex flex-col h-screen w-screen;
   }
+
+  .app-header {
+    @apply shrink-0 text-white p-4 bg-[#151515] border-b border-[#2f2f2f];
+  }
+
+  .app-content {
+    @apply flex flex-col flex-1 w-full relative overflow-y-hidden;
+  }
+
   .page-header {
-    @apply shrink-0 text-white h-16 px-4 bg-[#151515] border-b border-[#2f2f2f];
+    @apply shrink-0 p-4 bg-gray-200 border-b border-gray-400;
   }
 
   .page-content {
-    @apply flex flex-1 w-full relative overflow-y-auto;
+    @apply flex-1 relative overflow-y-auto;
   }
 
   .sidebar {
@@ -60,7 +72,7 @@
   }
 
   .main-content {
-    @apply flex-1 relative overflow-y-auto bg-gray-200 flex flex-col;
+    @apply flex-1 relative overflow-y-auto bg-gray-200;
   }
 
   .empty-content {
@@ -68,7 +80,7 @@
   }
 
   .form-container {
-    @apply mx-auto my-10 px-4 lg:px-6 w-full transition-[max-width];
+    @apply mx-auto w-full transition-[max-width];
     /* Enable container queries for child elements */
     @apply @container;
   }
@@ -77,6 +89,10 @@
     @apply bg-white dark:bg-black shadow dark:shadow-white/80 w-full transition-colors rounded-lg;
     /* Mobile-first responsive padding using container queries */
     @apply py-4 @sm:py-6 @5xl:py-8;
+  }
+
+  .form-overlay {
+    @apply absolute inset-0 bg-white/40 z-1  backdrop-blur-[1px] flex items-center justify-center;
   }
 
   .form-block {

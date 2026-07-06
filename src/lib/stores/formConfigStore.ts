@@ -25,8 +25,10 @@ interface FormConfigState {
  */
 const initialFormConfig: FormConfig = {
   id: undefined, // No ID for new forms
+  slug: "untitled-form",
   title: "Untitled Form",
   theme: "light",
+  status: "draft",
   blocks: [],
 };
 
@@ -35,7 +37,13 @@ const initialFormConfig: FormConfig = {
  */
 export const useFormConfigStore = create<FormConfigState>()((set, get) => ({
   formConfig: initialFormConfig,
-  setFormConfig: (data) => set({ formConfig: data }),
+  setFormConfig: (data) =>
+    set((state) => ({
+      formConfig: {
+        ...state.formConfig,
+        ...data,
+      },
+    })),
   updateFormConfig: (key, value) => {
     set((state) => ({
       formConfig: {

@@ -1,7 +1,9 @@
 import { motion } from "motion/react";
 import { JSX } from "react";
+import { cn } from "@/lib/utils/styleUtils";
 
 interface MainContentProps {
+  className?: string;
   children: React.ReactNode;
 }
 
@@ -12,12 +14,15 @@ interface MainContentProps {
  * @param {MainContentProps} props - The props for the component.
  * @returns {JSX.Element} The rendered component.
  */
-const MainContent = ({ children }: MainContentProps): JSX.Element => {
+const MainContent = ({
+  className,
+  children,
+}: MainContentProps): JSX.Element => {
   return (
     <motion.section
       layout
       transition={{ duration: 0.3, ease: "easeInOut" }}
-      className="main-content"
+      className={cn("main-content", className)}
     >
       {children}
     </motion.section>

@@ -23,10 +23,7 @@ import {
 import { AnimatePresence } from "motion/react";
 import { Widget } from "@/lib/types/widget";
 import { FormBlock } from "@/lib/types/form";
-import { DeviceType, DeviceList } from "@/lib/constants/device";
-import { Sidebar } from "@/components/layout/Sidebar";
-import { MainContent } from "@/components/layout/MainContent";
-import { DeviceSelector } from "@/components/layout/DeviceSelector";
+import { Sidebar, MainContent, PageContainer } from "@/components/layout";
 import { CanvasDroppable } from "@/components/builder/canvas/CanvasDroppable";
 import { CanvasForm } from "@/components/builder/canvas/CanvasForm";
 import { WidgetPanel } from "@/components/builder/widgets/WidgetPanel";
@@ -55,7 +52,15 @@ interface DragState {
  *
  * @returns {JSX.Element} The rendered component.
  */
-export const FormBuilderContent = (): JSX.Element => {
+interface FormBuilderContentProps {
+  onSave?: () => void;
+  onCancel?: () => void;
+}
+
+export const FormBuilderContent = ({
+  onSave = () => {},
+  onCancel = () => {},
+}: FormBuilderContentProps): JSX.Element => {
   const [dragState, setDragState] = useState<DragState>({
     overId: null,
     activeItem: null,
@@ -73,7 +78,6 @@ export const FormBuilderContent = (): JSX.Element => {
   const clearFormBlockErrors = useFormBlockValidationStore(
     (state) => state.clearFormBlockErrors,
   );
-  const [deviceType, setDeviceType] = useState<DeviceType>(DeviceType.DESKTOP);
   const [deleteConfirmation, setDeleteConfirmation] = useState<{
     isOpen: boolean;
     blockId: string | null;
@@ -188,7 +192,7 @@ export const FormBuilderContent = (): JSX.Element => {
         {/* Drag Placeholder Overlay */}
         <DragOverlay>
           {dragState.activeItem && (
-            <div className={formTheme === "dark" ? "dark" : ""}>
+            <div className={formTheme}>
               <CanvasDroppable
                 item={dragState.activeItem}
                 source={dragState.source}
@@ -206,35 +210,35 @@ export const FormBuilderContent = (): JSX.Element => {
           )}
         </AnimatePresence>
 
-        {/* Main Content Area with Canvas and Device Selector */}
-        <MainContent>
-          <div
-            className="h-full"
-            onClickCapture={(e) => {
-              const target = e.target as HTMLElement;
-              if (!target.closest("[data-slot='block']")) {
-                selectFormBlock(null);
-              }
-            }}
-          >
-            <DeviceSelector
-              currentDevice={deviceType}
-              onDeviceChange={setDeviceType}
-              sticky={true}
-            />
-            <div
-              className="form-container"
-              style={{
-                maxWidth: `${DeviceList.find((d) => d.label === deviceType)?.size || 1440}px`,
+        {/* Main Content Area with Canvas and Save/Cancel CTA Buttons */}
+        <MainContent className="flex flex-col">
+          <div className="flex-1 py-10 overflow-y-auto">
+            <PageContainer
+              className="px-6 min-w-md"
+              onClickCapture={(e) => {
+                const target = e.target as HTMLElement;
+                if (!target.closest("[data-slot='block']")) {
+                  selectFormBlock(null);
+                }
               }}
             >
-              <CanvasForm
-                overId={dragState.overId}
-                activeDragItem={dragState.activeItem as FormBlock}
-                dragSource={dragState.source}
-                onDeleteBlock={handleDeleteRequest}
-              />
-            </div>
+              <div className="form-container">
+                <CanvasForm
+                  overId={dragState.overId}
+                  activeDragItem={dragState.activeItem as FormBlock}
+                  dragSource={dragState.source}
+                  onDeleteBlock={handleDeleteRequest}
+                />
+              </div>
+            </PageContainer>
+          </div>
+          <div className="shrink-0 py-4 bg-white border-t flex items-center justify-center gap-4">
+            <Button variant="positive" onClick={onSave}>
+              Save
+            </Button>
+            <Button variant="secondary" onClick={onCancel}>
+              Cancel
+            </Button>
           </div>
         </MainContent>
 

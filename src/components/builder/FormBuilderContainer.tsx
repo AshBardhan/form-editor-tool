@@ -1,88 +1,151 @@
 "use client";
 
-import { JSX, useEffect } from "react";
+import { JSX, useEffect, useMemo, useState } from "react";
 import { FormConfig } from "@/lib/types/form";
-import { LoaderCircleIcon } from "lucide-react";
 import { useFormConfigStore, useUIStateStore } from "@/lib/stores";
-import { useFetch } from "@/lib/hooks/useFetch";
-import { Header } from "@/components/layout/Header";
-import { FormBuilderHeader } from "@/components/builder/FormBuilderHeader";
 import { FormBuilderContent } from "@/components/builder/FormBuilderContent";
-import { PageContent } from "@/components/layout/PageContent";
+import { useRouter } from "next/navigation";
+import { toast } from "@/components/ui/Toast";
+import { ApiResponse } from "@/lib/types/api";
 
 interface FormBuilderContainerProps {
-  id?: string;
+  form: FormConfig;
 }
-
-const FormLoading = () => (
-  <div className="empty-content gap-4">
-    <LoaderCircleIcon className="size-10 animate-spin" />
-    <span className="text-2xl">Loading Form...</span>
-  </div>
-);
-
-const FormError = () => (
-  <div className="empty-content flex-col gap-3">
-    <h2 className="text-lg font-semibold">Unable to load form</h2>
-    <p className="text-sm">Please check the form ID or go back to home page.</p>
-  </div>
-);
 
 /**
  * Form Builder Container
- * - Fetches form from API when route id doesn't match store id
- * - Handles new and existing forms with simple in-memory state
- *
- * @param {FormBuilderContainerProps} props - The props for the component.
- * @returns {JSX.Element} The rendered component.
+ * - Receives form data from server component
+ * - Initializes Zustand store with form data
  */
 export const FormBuilderContainer = ({
-  id,
+  form,
 }: FormBuilderContainerProps): JSX.Element => {
-  const formId = useFormConfigStore((state) => state.formConfig.id);
+  const router = useRouter();
   const setFormConfig = useFormConfigStore((state) => state.setFormConfig);
+  const formConfig = useFormConfigStore((state) => state.formConfig);
   const resetFormConfig = useFormConfigStore((state) => state.resetFormConfig);
   const resetSidebar = useUIStateStore((state) => state.resetSidebar);
+  const [isPersisting, setIsPersisting] = useState(false);
+  const [persistMessage, setPersistMessage] = useState("");
 
-  // Fetch when route id doesn't match store id
-  const needsFetch = id && formId !== id;
-  const { data, loading, error } = useFetch<FormConfig>(
-    needsFetch ? `/api/form/${id}` : "",
-  );
+  // Determine if form is editable based on status and submission count
+  const isFormEditable = useMemo(() => {
+    switch (formConfig.status) {
+      case "archived":
+        return false;
+      case "published":
+        return (formConfig.submissionCount ?? 0) === 0;
+      default:
+        return true;
+    }
+  }, [formConfig.status, formConfig.submissionCount]);
 
-  // Initialize or update form data
-  useEffect(() => {
-    // New form: reset if store has stale data
-    if (!id && formId) {
-      resetFormConfig();
+  const handleCancel = () => {
+    if (!isPersisting) {
+      router.push("/");
+    }
+  };
+
+  const handleSave = async () => {
+    if (!formConfig.id) {
+      toast.error("Save unavailable", {
+        description: "Form ID is missing.",
+      });
       return;
     }
 
-    // Update store when API data arrives
-    if (data) {
-      setFormConfig(data);
+    if (!isFormEditable) {
+      const message =
+        formConfig.status === "archived"
+          ? "Archived forms cannot be edited. Restore it to 'published' first."
+          : "Cannot edit published form with submissions. Archive the form first if you need to make changes.";
+      toast.error("Unable to update form", {
+        description: message,
+      });
+      return;
     }
-  }, [id, data, formId]);
 
-  // Cleanup on unmount
+    setPersistMessage("Updating form...");
+    setIsPersisting(true);
+
+    try {
+      const payload = {
+        title: formConfig.title,
+        theme: formConfig.theme,
+        blocks: formConfig.blocks.map((block) => ({
+          id: block.id,
+          type: block.type,
+          name: block.name,
+          props: block.props,
+        })),
+      };
+
+      const response = await fetch(`/api/forms/${formConfig.id}`, {
+        method: "PUT",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(payload),
+      });
+
+      const result = (await response.json()) as ApiResponse<FormConfig>;
+      if (!response.ok) {
+        throw new Error(
+          result.error?.message || "Unable to save form right now.",
+        );
+      }
+
+      if (!result.success || !result.data) {
+        throw new Error("Unexpected response from server.");
+      }
+
+      const savedForm = result.data;
+      setFormConfig(savedForm);
+
+      toast.success("Changes updated", {
+        description: "Latest edits are now saved to this form.",
+      });
+    } catch (error) {
+      const message =
+        error instanceof Error
+          ? error.message
+          : "We could not save your changes. Please try again.";
+
+      toast.error("Save failed", {
+        description: message,
+      });
+    } finally {
+      setIsPersisting(false);
+      setPersistMessage("");
+    }
+  };
+
   useEffect(() => {
+    setFormConfig(form);
     return () => {
       resetFormConfig();
       resetSidebar();
     };
-  }, []);
-
-  if (loading) return <FormLoading />;
-  if (error) return <FormError />;
+  }, [form]);
 
   return (
-    <>
-      <Header>
-        <FormBuilderHeader />
-      </Header>
-      <PageContent>
-        <FormBuilderContent />
-      </PageContent>
-    </>
+    <div className="flex h-full relative">
+      <FormBuilderContent onSave={handleSave} onCancel={handleCancel} />
+      {isPersisting && (
+        <div className="form-overlay">
+          <div className="text-3xl font-medium">{persistMessage}</div>
+        </div>
+      )}
+      {!isFormEditable && (
+        <div className="form-overlay cursor-not-allowed">
+          <div className="bg-white p-6 rounded-lg shadow-lg max-w-md text-center">
+            <h3 className="text-lg font-semibold mb-2">Form Uneditable</h3>
+            <p className="text-sm text-gray-600 dark:text-gray-400">
+              {formConfig.status === "archived"
+                ? "This form is archived and cannot be edited. Restore it to 'published' status and clear report to make changes."
+                : "This form has submissions and cannot be edited. Clear report first to make changes."}
+            </p>
+          </div>
+        </div>
+      )}
+    </div>
   );
 };

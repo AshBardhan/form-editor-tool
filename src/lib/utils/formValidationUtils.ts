@@ -1,31 +1,17 @@
 import { FormBlock, FormBlockValueType } from "@/lib/types/form";
 import { getPropValue } from "./formUtils";
-
-/**
- * List of form block types that require validation
- */
-const INPUT_BLOCK_TYPES = [
-  "text",
-  "number",
-  "email",
-  "password",
-  "url",
-  "textarea",
-  "checkbox",
-  "select",
-  "radio",
-] as const;
+import { ALL_FIELD_BLOCKS } from "@/lib/constants/form";
 
 /**
  * Validates a single form block against its value
  *
  * @param {FormBlock} block - The form block to validate.
- * @param {FormBlockValueType | undefined} value - The current value of the field.
+ * @param {FormBlockValueType} value - The current value of the field.
  * @returns {string[]} Array of error messages (empty if valid).
  */
 export const validateFormBlock = (
   block: FormBlock,
-  value: FormBlockValueType | undefined,
+  value: FormBlockValueType,
 ): string[] => {
   const errors: string[] = [];
   const required = getPropValue(block, "required");
@@ -33,9 +19,7 @@ export const validateFormBlock = (
 
   // Skip non-input blocks (heading, paragraph, separator, button, buttons)
   if (
-    !INPUT_BLOCK_TYPES.includes(
-      block.type as (typeof INPUT_BLOCK_TYPES)[number],
-    )
+    !ALL_FIELD_BLOCKS.includes(block.type as (typeof ALL_FIELD_BLOCKS)[number])
   ) {
     return errors;
   }
@@ -121,14 +105,11 @@ export const validateFormBlock = (
   return errors;
 };
 
-/**
- * Check if a block type is an input block that requires validation
- *
- * @param {string} blockType - The block type to check.
- * @returns {boolean} True if the block type is an input block.
- */
-export const isInputBlockType = (blockType: string): boolean => {
-  return INPUT_BLOCK_TYPES.includes(
-    blockType as (typeof INPUT_BLOCK_TYPES)[number],
-  );
+export const isFormDataValid = (value: FormBlockValueType) => {
+  if (value === null || value === undefined) return false;
+  if (typeof value === "boolean") return value;
+  if (typeof value === "string") return value.trim() !== "";
+  if (Array.isArray(value)) return value.length > 0;
+
+  return true;
 };

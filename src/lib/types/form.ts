@@ -28,6 +28,35 @@ export type FormBlockPropType =
   | "list"
   | "select";
 
+export type FormStatus = "draft" | "published" | "archived";
+
+export type FormFilterStatus = "all" | FormStatus;
+
+export type FormBlockOrientation = "horizontal" | "vertical";
+
+export type FormTheme = "light" | "dark";
+
+/**
+ * A single response to a form field from a submission
+ */
+export interface FormResponse {
+  id: string;
+  blockId: string;
+  blockType: FormBlockType;
+  blockName: string;
+  blockProps: FormBlockProps;
+  value: string | number | boolean | string[] | null;
+}
+
+/**
+ * A complete form submission containing multiple field responses
+ */
+export interface FormSubmission {
+  id: string;
+  submittedAt: string;
+  responses: FormResponse[];
+}
+
 /**
  * Form block prop template - used for widget templates
  * Contains full metadata including labels, types, options, and default values
@@ -72,13 +101,13 @@ export interface FormBlock {
 export interface FormConfig {
   id?: string; // Form ID for tracking (undefined for new forms)
   title: string;
-  theme: "light" | "dark";
+  description?: string;
+  slug: string;
+  status?: FormStatus;
+  theme: FormTheme;
   blocks: FormBlock[];
+  submissionCount?: number;
 }
-
-export type FormStatus = "draft" | "published";
-
-export type FormBlockOrientation = "horizontal" | "vertical";
 
 /**
  * Form metric template - used for rendering metrics with labels
@@ -96,11 +125,61 @@ export interface FormMetric {
  */
 export type FormMetrics = Record<string, string | number>;
 
-export interface FormListItem {
+/**
+ * Form page data - used for rendering form builder and public form views
+ */
+export interface FormPageData {
   id: string;
-  name: string;
+  slug: string;
+  title: string;
+  description?: string;
+  theme: FormTheme;
+  status: FormStatus;
+  blocks: FormBlock[];
+  submissionCount?: number;
+}
+
+/**
+ * Form report page data - used for displaying form submissions and analytics
+ */
+
+export interface FormReportMetrics {
+  submissions: number;
+  views: number;
+  starts: number;
+  completions: number;
+  submitAttempts: number;
+}
+
+export interface FormReportPageData {
+  form: {
+    id: string;
+    title: string;
+  };
+  metrics: FormReportMetrics;
+  submissions: FormSubmission[];
+}
+
+export interface DashboardForm {
+  id: string;
+  slug: string;
+  title: string;
   status: FormStatus;
   metrics: FormMetrics;
 }
 
-export type FormList = FormListItem[];
+/**
+ * Messages for form status transitions.
+ * Structure for success and error messages when updating form status.
+ */
+export interface FormStatusUpdateMessage {
+  transitioning: string;
+  success: {
+    title: string;
+    description: string;
+  };
+  error: {
+    title: string;
+    description: string;
+  };
+}

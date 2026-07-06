@@ -1,21 +1,17 @@
 "use client";
 
 import React, { JSX, useState, useEffect } from "react";
-import { FormConfig, FormBlock, FormBlockValueType } from "@/lib/types/form";
+import { FormBlock, FormBlockValueType } from "@/lib/types/form";
 import Text from "@/components/ui/Text";
 import { widgetBlockRenderers } from "@/components/form/blocks";
-import { useFormDataStore } from "@/lib/stores";
-import { getFieldKey } from "@/lib/utils/formUtils";
-import {
-  validateFormBlock,
-  isInputBlockType,
-} from "@/lib/utils/formValidationUtils";
+import { useFormConfigStore, useFormDataStore } from "@/lib/stores";
+import { getFieldKey, isFieldBasedBlock } from "@/lib/utils/formUtils";
+import { validateFormBlock } from "@/lib/utils/formValidationUtils";
 import { DeviceList, DeviceType } from "@/lib/constants/device";
 import { toast } from "@/components/ui/Toast";
 import { switchFormTheme } from "@/lib/utils/domUtils";
 
 interface FormPreviewContentProps {
-  form: FormConfig;
   editable?: boolean;
   currentDevice: DeviceType;
 }
@@ -30,10 +26,10 @@ interface FormPreviewContentProps {
  * @returns {JSX.Element} The rendered component.
  */
 export const FormPreviewContent = ({
-  form,
   editable = false,
   currentDevice,
 }: FormPreviewContentProps): JSX.Element => {
+  const form = useFormConfigStore((state) => state.formConfig);
   const formData = useFormDataStore((state) => state.formData);
   const updateFormData = useFormDataStore((state) => state.updateFormData);
   const resetFormData = useFormDataStore((state) => state.resetFormData);
@@ -148,15 +144,6 @@ export const FormPreviewContent = ({
       toast.success("Form submitted successfully!", {
         description: "Your response has been recorded.",
       });
-
-      // You could also send this data to an API here
-      // Example:
-      // await fetch('/api/submit', { method: 'POST', body: JSON.stringify(formData) })
-      //   .catch((error) => {
-      //     toast.error("Submission failed", {
-      //       description: "Failed to submit form. Please try again.",
-      //     });
-      //   });
     } catch (error) {
       toast.error("Submission failed", {
         description: "An unexpected error occurred. Please try again.",
@@ -190,10 +177,7 @@ export const FormPreviewContent = ({
     if (!FormRenderer) return null;
 
     // Check if the renderer accepts an 'editable' prop (input-based blocks)
-    const isInputBlock = isInputBlockType(block.type);
-
-    // Pass editable prop and onChange handler to input-based blocks
-    if (isInputBlock) {
+    if (isFieldBasedBlock(block.type)) {
       // Type assertion for input blocks that support editable and onChange
       const InputRenderer = FormRenderer as React.ComponentType<{
         block: FormBlock;

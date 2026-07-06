@@ -9,8 +9,13 @@ import {
 } from "@/lib/types/form";
 import { blockPropTemplates } from "@/lib/constants/widgetTemplates";
 import { widgetPalette } from "@/lib/constants/widgetPalette";
-import { formBlockSchemas } from "@/lib/schema/formBlockSchema";
-import { formMetricLabel } from "@/lib/constants/form";
+import { formBlockSchemas } from "@/lib/schema/formSchema";
+import {
+  formMetricLabel,
+  ALL_FIELD_BLOCKS,
+  CHOICE_BASED_FIELD_BLOCKS,
+  OPINION_BASED_FIELD_BLOCKS,
+} from "@/lib/constants/form";
 
 /**
  * Retrieves the default properties for a given block type as an object.
@@ -149,6 +154,30 @@ export function getFormBlock(type: FormBlockType) {
 }
 
 /**
+ * Checks if a block type is choice-based (radio, select, or checkbox).
+ * @param {FormBlockType} blockType - The form block type to check.
+ * @returns {boolean} True if the block type is choice-based, false otherwise.
+ */
+export const isChoiceBasedFieldBlock = (blockType: FormBlockType): boolean =>
+  CHOICE_BASED_FIELD_BLOCKS.includes(blockType);
+
+/**
+ * Checks if a block type is text-based (not choice-based).
+ * @param {FormBlockType} blockType - The form block type to check.
+ * @returns {boolean} True if the block type is text-based, false otherwise.
+ */
+export const isTextBasedFieldBlock = (blockType: FormBlockType): boolean =>
+  OPINION_BASED_FIELD_BLOCKS.includes(blockType);
+
+/*
+ * Checks if a block type is field-based (either choice-based or text-based).
+ * @param {FormBlockType} blockType - The form block type to check.
+ * @returns {boolean} True if the block type is field-based, false otherwise.
+ */
+export const isFieldBasedBlock = (blockType: FormBlockType): boolean =>
+  ALL_FIELD_BLOCKS.includes(blockType);
+
+/**
  * Converts normalized metrics (object with values only) to array with metadata
  * @param {FormMetrics} metrics - Object mapping metric keys to values
  * @returns {FormMetric[]} Array of metrics with labels and values
@@ -159,4 +188,15 @@ export function getFormMetrics(metrics: FormMetrics): FormMetric[] {
     label: formMetricLabel[key] || key,
     value,
   }));
+}
+
+/*
+ * Generates a slug from a given string.
+ * Converts to lowercase, trims whitespace, replaces spaces and special characters with hyphens.
+ * @param {string} value - The input string to convert to a slug.
+ * @returns {string} The generated slug.
+ */
+export function generateFormSlug(value: string): string {
+  const normalized = toKebabCase(value);
+  return normalized || "untitled-form";
 }
