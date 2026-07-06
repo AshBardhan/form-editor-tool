@@ -11,7 +11,7 @@ export enum DeviceType {
 }
 
 /**
- * Interface representing a device with a label, icon, and size.
+ * Interface representing a device with a label, icon and size.
  */
 export interface Device {
   label: DeviceType;
@@ -20,7 +20,7 @@ export interface Device {
 }
 
 /**
- * A list of devices with their corresponding labels, icons, and sizes.
+ * A list of devices with their corresponding labels, icons and sizes.
  */
 export const DeviceList: Device[] = [
   {

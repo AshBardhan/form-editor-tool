@@ -26,7 +26,7 @@ interface FormCardProps {
 
 /**
  * FormCard - Individual form tile with basic info
- * Displays form name, provides link to edit, and includes action dropdown
+ * Displays form name, provides link to edit and includes action dropdown
  * Pure presentational component - delegates actions to parent
  */
 export function FormCard({

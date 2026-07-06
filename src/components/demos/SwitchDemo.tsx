@@ -228,7 +228,7 @@ export function SwitchDemo() {
                 Marketing Communications
               </Label>
               <p className="text-sm text-muted-foreground mt-1">
-                Receive emails about new products, features, and special offers.
+                Receive emails about new products, features and special offers.
               </p>
             </div>
             <Switch id="switch-marketing" className="mt-1" />

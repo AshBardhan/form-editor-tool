@@ -18,7 +18,7 @@ import {
 
 /**
  * Alert Component Demo
- * Showcases all variants, props, and use cases for the Alert component
+ * Showcases all variants, props and use cases for the Alert component
  */
 export function AlertDemo() {
   const [showDismissable1, setShowDismissable1] = useState(true);
@@ -299,7 +299,7 @@ export function AlertDemo() {
         <div className="mb-6">
           <h3 className="text-2xl font-semibold mb-2">Custom Content</h3>
           <p className="text-muted-foreground">
-            Alerts can contain custom content like lists, links, and formatted
+            Alerts can contain custom content like lists, links and formatted
             text
           </p>
         </div>

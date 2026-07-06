@@ -1153,7 +1153,7 @@ export const mockBlocks: Array<{
     name: "consent_text",
     order: 1,
     props: {
-      text: "By participating in this research study, you acknowledge that you have read and understood the study protocol, your rights as a participant including the right to withdraw at any time without penalty, the potential risks and benefits of participation, how your data will be collected, stored, and used in accordance with GDPR and institutional guidelines, and that your participation is entirely voluntary. All personally identifiable information will be anonymized prior to analysis and publication of results.",
+      text: "By participating in this research study, you acknowledge that you have read and understood the study protocol, your rights as a participant including the right to withdraw at any time without penalty, the potential risks and benefits of participation, how your data will be collected, stored and used in accordance with GDPR and institutional guidelines and that your participation is entirely voluntary. All personally identifiable information will be anonymized prior to analysis and publication of results.",
     },
   },
   {
@@ -1192,7 +1192,7 @@ export const mockBlocks: Array<{
     order: 5,
     props: {
       label:
-        "I have read, understood, and agree to participate in this research study under the terms described above",
+        "I have read, understood and agree to participate in this research study under the terms described above",
       key: "consent_agree",
       required: true,
       grouped: false,

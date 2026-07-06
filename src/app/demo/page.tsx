@@ -61,7 +61,7 @@ export default function DemoPage() {
           </h1>
           <p className="text-lg text-muted-foreground">
             Explore our primitive UI components with interactive examples
-            showcasing various props, variants, and use cases. Each component is
+            showcasing various props, variants and use cases. Each component is
             built with accessibility and customization in mind.
           </p>
         </div>

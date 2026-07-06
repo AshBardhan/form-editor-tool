@@ -16,7 +16,7 @@ import {
 } from "lucide-react";
 
 /**
- * A list of widget categories, each containing a label and items with type, label, and icon.
+ * A list of widget categories, each containing a label and items with type, label and icon.
  */
 export const widgetPalette: WidgetCategory[] = [
   {

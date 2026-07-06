@@ -23,7 +23,7 @@ interface CanvasBlockProps {
 /**
  * Canvas Block (Sortable Block Wrapper)
  * - Renders a form block that can be sorted via drag-and-drop.
- * - Provides functionality for selecting, hovering, cloning, and removing blocks.
+ * - Provides functionality for selecting, hovering, cloning and removing blocks.
  *
  * @param {CanvasBlockProps} props - The props for the component.
  * @returns {JSX.Element} The rendered component.

@@ -311,7 +311,7 @@ export function FormHeader({ form }: FormHeaderProps) {
                 <ModalTitle>Delete this form permanently?</ModalTitle>
                 <ModalDescription>
                   This action cannot be undone. All submissions, field
-                  responses, and analytics data will be permanently removed.
+                  responses and analytics data will be permanently removed.
                 </ModalDescription>
               </div>
             </div>

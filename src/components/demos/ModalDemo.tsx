@@ -85,7 +85,7 @@ export function ModalDemo() {
         <div className="mb-6">
           <h3 className="text-2xl font-semibold mb-2">Modal Sizes</h3>
           <p className="text-muted-foreground">
-            Small (384px), Medium (672px, default), and Large (1152px) widths
+            Small (384px), Medium (672px, default) and Large (1152px) widths
           </p>
         </div>
 
@@ -132,7 +132,7 @@ export function ModalDemo() {
               <div className="px-6 py-4">
                 <p className="text-sm text-muted-foreground mb-4">
                   This is the default modal size, ideal for most use cases
-                  including forms, settings, and moderate content.
+                  including forms, settings and moderate content.
                 </p>
                 <div className="grid gap-3">
                   <Input placeholder="Email address" />

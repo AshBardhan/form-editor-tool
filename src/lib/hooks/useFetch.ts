@@ -4,7 +4,7 @@ import { useEffect, useState } from "react";
  * Fetches a resource and returns the response.
  *
  * @param {string} url The URL of the resource to fetch.
- * @returns An object containing the fetched data, a loading flag, and an error.
+ * @returns An object containing the fetched data, a loading flag and an error.
  */
 export function useFetch<T>(url: string) {
   const [data, setData] = useState<T | null>(null);

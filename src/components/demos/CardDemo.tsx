@@ -23,7 +23,7 @@ export function CardDemo() {
         <h2 className="text-3xl font-bold mb-3">Card Component</h2>
         <p className="text-lg text-muted-foreground">
           Versatile container component for grouping related content with
-          headers, descriptions, and actions.
+          headers, descriptions and actions.
         </p>
       </div>
 

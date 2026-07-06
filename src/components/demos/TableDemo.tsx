@@ -89,7 +89,7 @@ export function TableDemo() {
           </h3>
           <p className="text-muted-foreground">
             Sticky first column for submission IDs and sortable field columns.
-            Click a sortable header to cycle default, ascending, and descending.
+            Click a sortable header to cycle default, ascending and descending.
           </p>
         </div>
 

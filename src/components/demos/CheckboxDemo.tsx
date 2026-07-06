@@ -221,7 +221,7 @@ export function CheckboxDemo() {
                 Marketing emails
               </Label>
               <p className="text-sm text-muted-foreground">
-                Receive emails about new products, features, and more.
+                Receive emails about new products, features and more.
               </p>
             </div>
           </div>

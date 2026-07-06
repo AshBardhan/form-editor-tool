@@ -6,7 +6,7 @@ import { Download, Mail, Plus, Trash2, Settings } from "lucide-react";
 
 /**
  * Button Component Demo
- * Showcases all variants, sizes, and use cases for the Button component
+ * Showcases all variants, sizes and use cases for the Button component
  */
 export function ButtonDemo() {
   const [loading, setLoading] = useState(false);
@@ -17,7 +17,7 @@ export function ButtonDemo() {
       <div>
         <h2 className="text-3xl font-bold mb-3">Button Component</h2>
         <p className="text-lg text-muted-foreground">
-          Interactive button component with multiple variants, sizes, and states
+          Interactive button component with multiple variants, sizes and states
           for various use cases.
         </p>
       </div>

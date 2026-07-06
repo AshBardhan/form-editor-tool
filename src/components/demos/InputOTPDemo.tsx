@@ -25,7 +25,7 @@ export function InputOTPDemo() {
       <div>
         <h2 className="text-3xl font-bold mb-3">InputOTP Component</h2>
         <p className="text-lg text-muted-foreground">
-          Specialized input for one-time passwords, verification codes, and PIN
+          Specialized input for one-time passwords, verification codes and PIN
           entries with individual character slots.
         </p>
       </div>

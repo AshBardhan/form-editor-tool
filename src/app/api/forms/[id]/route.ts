@@ -144,7 +144,7 @@ export async function PUT(
           blocks.filter((b) => b.id).map((b) => b.id!),
         );
 
-        // Determine blocks to add, update, and delete
+        // Determine blocks to add, update and delete
         const blocksToAdd = blocks.filter((block) => !block.id);
         const blocksToUpdate = blocks.filter(
           (block) => block.id && existingBlocksMap.has(block.id),
@@ -275,7 +275,7 @@ export async function DELETE(
       throw new NotFoundError("Form not found");
     }
 
-    // Delete the form (cascade deletes blocks, submissions, and responses)
+    // Delete the form (cascade deletes blocks, submissions and responses)
     await prisma.form.delete({ where: { id } });
 
     revalidateTag(FORM_BUILDER_CACHE_TAG);

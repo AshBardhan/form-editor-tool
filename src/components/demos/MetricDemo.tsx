@@ -13,7 +13,7 @@ export function MetricDemo() {
       <div>
         <h2 className="text-3xl font-bold mb-3">Metric Component</h2>
         <p className="text-lg text-muted-foreground">
-          Display key metrics, statistics, and KPIs with customizable labels and
+          Display key metrics, statistics and KPIs with customizable labels and
           values in various layouts.
         </p>
       </div>
@@ -39,7 +39,7 @@ export function MetricDemo() {
         <div className="mb-6">
           <h3 className="text-2xl font-semibold mb-2">Different Sizes</h3>
           <p className="text-muted-foreground">
-            Metrics in small, medium, and large sizes
+            Metrics in small, medium and large sizes
           </p>
         </div>
 

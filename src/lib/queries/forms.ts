@@ -16,7 +16,7 @@ const PUBLIC_FORM_CACHE_TAG = "public-form";
 
 /**
  * Loads minimal form metadata for the layout header.
- * Only fetches id, slug, title, and status - no blocks.
+ * Only fetches id, slug, title and status - no blocks.
  */
 const getFormMetaDataCached = cache(async (slug: string) => {
   const form = await prisma.form.findUnique({

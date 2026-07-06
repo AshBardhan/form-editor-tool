@@ -33,7 +33,7 @@ const ALIGNMENT_CLASS_MAP: Record<string, string> = {
 
 /**
  * Buttons Block
- * - Displays two buttons (submit and reset) with configurable labels, themes, and alignment
+ * - Displays two buttons (submit and reset) with configurable labels, themes and alignment
  * - Supports four alignment options: left, right, center, justified
  *
  * @param {ButtonsBlockProps} props - The props for the component.

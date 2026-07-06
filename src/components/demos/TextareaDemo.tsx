@@ -21,7 +21,7 @@ export function TextareaDemo() {
         <h2 className="text-3xl font-bold mb-3">Textarea Component</h2>
         <p className="text-lg text-muted-foreground">
           Multi-line text input for longer form content like comments,
-          descriptions, and messages.
+          descriptions and messages.
         </p>
       </div>
 
@@ -248,7 +248,7 @@ export function TextareaDemo() {
                   rows={6}
                 />
                 <p className="text-xs text-muted-foreground">
-                  Include any error messages, steps to reproduce, and what you
+                  Include any error messages, steps to reproduce and what you
                   expected to happen.
                 </p>
               </div>

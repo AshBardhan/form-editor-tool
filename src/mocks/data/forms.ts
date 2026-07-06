@@ -161,7 +161,7 @@ export const mockForms = [
     title:
       "Research Study Consent Form - A Comprehensive Investigation into User Experience Patterns and Behavioral Analytics in Modern Web Applications",
     description:
-      "This research study aims to understand how users interact with web-based form systems, their preferences for input methods, their satisfaction with various UI/UX patterns, and their overall experience with digital form completion processes. Your participation is voluntary and all data collected will be anonymized and used solely for academic research purposes in accordance with institutional review board guidelines and data protection regulations.",
+      "This research study aims to understand how users interact with web-based form systems, their preferences for input methods, their satisfaction with various UI/UX patterns and their overall experience with digital form completion processes. Your participation is voluntary and all data collected will be anonymized and used solely for academic research purposes in accordance with institutional review board guidelines and data protection regulations.",
     status: "archived" as FormStatus,
     theme: "light" as const,
     userId: "mock-user-001",

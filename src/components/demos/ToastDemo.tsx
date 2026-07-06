@@ -8,7 +8,7 @@ import { Label } from "@/components/ui/Label";
 
 /**
  * Toast Component Demo
- * Showcases all variants, props, and use cases for the Toast component
+ * Showcases all variants, props and use cases for the Toast component
  */
 export function ToastDemo() {
   const [customTitle, setCustomTitle] = useState("Custom message");

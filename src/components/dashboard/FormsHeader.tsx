@@ -31,7 +31,7 @@ interface FormsHeaderProps {
 
 /**
  * FormsHeader - Main header for the dashboard page
- * Displays title, search, filter, and create new form button
+ * Displays title, search, filter and create new form button
  */
 export function FormsHeader({ filter = {} }: FormsHeaderProps) {
   const router = useRouter();

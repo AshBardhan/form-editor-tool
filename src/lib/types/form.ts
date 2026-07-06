@@ -59,7 +59,7 @@ export interface FormSubmission {
 
 /**
  * Form block prop template - used for widget templates
- * Contains full metadata including labels, types, options, and default values
+ * Contains full metadata including labels, types, options and default values
  */
 export interface FormBlockPropTemplate {
   key: string;
@@ -111,7 +111,7 @@ export interface FormConfig {
 
 /**
  * Form metric template - used for rendering metrics with labels
- * Contains full metadata including key, label, and value
+ * Contains full metadata including key, label and value
  */
 export interface FormMetric {
   key: string;
