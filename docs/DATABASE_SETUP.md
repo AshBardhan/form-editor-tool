@@ -1,5 +1,109 @@
 # Database Setup and Management
 
+## Overview
+
+The application uses **PostgreSQL** with **Prisma ORM** for data persistence. The database schema includes:
+
+- **Form Management**: Form, FormBlock
+- **Submissions**: FormSubmission, FormFieldResponse
+
+## Database Schema
+
+### Form
+
+**Description:** Form definitions with metadata, ownership, status tracking, and analytics counters.
+
+| Field | Type | Attributes |
+| ----- | ---- | ---------- |
+| `id` | String | PRIMARY KEY |
+| `title` | String | NOT NULL |
+| `description` | String | NULLABLE |
+| `theme` | FormTheme | DEFAULT: light |
+| `status` | FormStatus | DEFAULT: draft, INDEXED |
+| `views` | Int | DEFAULT: 0 |
+| `starts` | Int | DEFAULT: 0 |
+| `completions` | Int | DEFAULT: 0 |
+| `submitAttempts` | Int | DEFAULT: 0 |
+| `userId` | Int | FOREIGN KEY → User.id, NOT NULL, INDEXED |
+| `slug` | String | UNIQUE, NOT NULL, INDEXED |
+| `createdAt` | DateTime | DEFAULT: now(), INDEXED |
+| `updatedAt` | DateTime | AUTO_UPDATE |
+| `publishedAt` | DateTime | NULLABLE |
+
+**Relationships:**
+
+- Many Forms → One User (n:1)
+- One Form → Many FormBlocks (1:n)
+- One Form → Many FormSubmissions (1:n)
+
+**Enums:**
+
+- `FormTheme`: `light`, `dark`
+- `FormStatus`: `draft`, `published`, `archived`
+
+**Indexes:** `userId`, `status`, `slug`, `createdAt`  
+**Cascade:** ON DELETE CASCADE (delete form when user deleted)
+
+### FormBlock
+
+**Description:** Individual form fields/widgets with flexible JSON properties and ordering.
+
+| Field | Type | Attributes |
+| ----- | ---- | ---------- |
+| `id` | String | PRIMARY KEY |
+| `formId` | String | FOREIGN KEY → Form.id, NOT NULL, INDEXED |
+| `type` | String | NOT NULL (text/textarea/select/etc.) |
+| `name` | String | NOT NULL (unique within form) |
+| `props` | Json | NOT NULL (label, placeholder, options) |
+| `order` | Int | NOT NULL (0-indexed) |
+| `createdAt` | DateTime | DEFAULT: now() |
+| `updatedAt` | DateTime | AUTO_UPDATE |
+
+**Relationships:**
+
+- Many FormBlocks → One Form (n:1)
+- One FormBlock → Many FormFieldResponses (1:n)
+
+**Indexes:** `formId`, `formId + order` (composite)  
+**Cascade:** ON DELETE CASCADE (delete blocks when form deleted)
+
+### FormSubmission
+
+**Description:** Anonymous form submissions with timestamp for analytics.
+
+| Field | Type | Attributes |
+| ----- | ---- | ---------- |
+| `id` | String | PRIMARY KEY |
+| `formId` | String | FOREIGN KEY → Form.id, NOT NULL, INDEXED |
+| `submittedAt` | DateTime | DEFAULT: now(), INDEXED |
+
+**Relationships:**
+
+- Many FormSubmissions → One Form (n:1)
+- One FormSubmission → Many FormFieldResponses (1:n)
+
+**Indexes:** `formId`, `submittedAt`  
+**Cascade:** ON DELETE CASCADE (delete submissions when form deleted)
+
+### FormFieldResponse
+
+**Description:** Individual field responses within submissions. Flexible JSON storage for various data types.
+
+| Field | Type | Attributes |
+| ----- | ---- | ---------- |
+| `id` | String | PRIMARY KEY |
+| `submissionId` | String | FOREIGN KEY → FormSubmission.id, NOT NULL, INDEXED |
+| `blockId` | String | FOREIGN KEY → FormBlock.id, NOT NULL, INDEXED |
+| `value` | Json | NOT NULL (string/number/boolean/array) |
+
+**Relationships:**
+
+- Many FormFieldResponses → One FormSubmission (n:1)
+- Many FormFieldResponses → One FormBlock (n:1)
+
+**Indexes:** `submissionId`, `blockId`  
+**Cascade:** ON DELETE CASCADE (delete responses when submission deleted)
+
 ## Database Options
 
 Choose the database option that fits your use case:

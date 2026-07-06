@@ -1,5 +1,31 @@
 # Future Improvements
 
+## High Priority - Authentication & Authorization
+
+- **User Authentication**: End-to-end authentication system
+  - NextAuth.js integration with multiple providers
+  - Sign in/Sign up pages with credential-based auth
+  - OAuth integration (Google, GitHub)
+  - Password hashing with bcryptjs
+  - JWT-based session management
+  - Secure cookie handling with HTTP-only flags
+- **Role-Based Access Control (RBAC)**: Fine-grained permissions
+  - CLIENT role: Full control over own forms
+  - ADMIN role: Platform-wide superuser access
+  - Permission system with granular checks
+  - Middleware for route protection
+  - API authorization with ownership validation
+- **Admin Dashboard**: User and system management
+  - User management interface (list, view, edit, delete)
+  - User impersonation for customer support
+  - Platform-wide analytics dashboard
+  - Form management across all users
+- **Database Schema Updates**:
+  - User table updated with auth fields (password, image, emailVerified)
+  - Account table for OAuth provider connections
+  - Session table for multi-device support
+  - VerificationToken for email verification and password resets
+
 ## High Priority - User Experience & Features
 
 - **Modal System Enhancements**: Expand modal functionality
