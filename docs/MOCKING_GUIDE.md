@@ -6,8 +6,6 @@ This document explains the mocking strategy for offline development and testing.
 
 The application uses **Mock Prisma** to enable complete offline development without a database connection. All Prisma queries are intercepted at the data layer and return sample data.
 
----
-
 ## Architecture
 
 ### Single-Layer Mocking: Mock Prisma Only
@@ -22,14 +20,12 @@ The application uses **Mock Prisma** to enable complete offline development with
 
 **Benefits:**
 
-- ✅ API routes execute with full business logic (validation, transformations, error handling)
-- ✅ Server components work as expected
-- ✅ Single source of truth for mock data
-- ✅ Better test coverage (tests actual application code, not just mocks)
-- ✅ No duplication between mocks and real implementation
-- ✅ Simpler architecture (one mocking layer instead of two)
-
----
+- API routes execute with full business logic (validation, transformations, error handling)
+- Server components work as expected
+- Single source of truth for mock data
+- Better test coverage (tests actual application code, not just mocks)
+- No duplication between mocks and real implementation
+- Simpler architecture (one mocking layer instead of two)
 
 ## How It Works
 
@@ -59,7 +55,7 @@ export default prisma;
 - imports prisma from @/lib/prisma
 - gets mockPrisma
 - prisma.form.findMany()
-- returns sample data
+- returns sample data from [src/mocks/data/forms.ts](src/mocks/data/forms.ts)
 - no database connection made
 
 #### Client Components
@@ -75,17 +71,17 @@ export default prisma;
 
 **Key Point:** Unlike MSW which bypasses API routes, Mock Prisma lets API routes run completely, testing all your application logic.
 
----
-
 ## Sample Data Files
 
 All mock data is centralized in simple TypeScript files:
 
-| File | Purpose | Count |
-| ---- | ------- | ----- |
-| [src/mocks/data/sampleFormsList.ts](src/mocks/data/sampleFormsList.ts) | Dashboard forms | 10 forms |
-| [src/mocks/data/sampleForms.ts](src/mocks/data/sampleForms.ts) | Form builder config | 1 form with 10 blocks |
-| [src/mocks/data/sampleSubmissions.ts](src/mocks/data/sampleSubmissions.ts) | Form submissions | 20 submissions |
+| File | Purpose |
+| ---- | ------- |
+| [src/mocks/data/forms.ts](src/mocks/data/forms.ts) | Form metadata with analytics counters |
+| [src/mocks/data/blocks.ts](src/mocks/data/blocks.ts) | Form blocks/widgets for builder |
+| [src/mocks/data/submissions.ts](src/mocks/data/submissions.ts) | Form submissions and field responses |
+| [src/mocks/data/users.ts](src/mocks/data/users.ts) | Mock users (form creators) |
+| [src/mocks/data/index.ts](src/mocks/data/index.ts) | Central export for all mock data |
 
 ## Mocked Prisma Methods
 
@@ -129,8 +125,6 @@ The Mock Prisma client implements only the methods actually used in the applicat
 - `$transaction()` - Complex operations
 - `$disconnect()` - Cleanup
 
----
-
 ## Enabling/Disabling Mocks
 
 ### Enable Mocking (Offline Development)
@@ -165,8 +159,6 @@ DATABASE_URL="postgres://user:password@localhost:5432/database"
 - Full production behavior
 - Requires database connection
 - Slower than mocks
-
----
 
 ## Verification
 
@@ -210,8 +202,6 @@ DATABASE_URL="postgres://user:password@localhost:5432/database"
 - Active PostgreSQL connections
 - Queries logged in database
 - Requires valid `DATABASE_URL`
-
----
 
 ## Testing Benefits
 
@@ -259,8 +249,6 @@ test('user creates form through UI', async ({ page }) => {
 - Tests API route execution
 - Tests business logic
 - Uses Mock Prisma (no real database needed)
-
----
 
 ## Extending Mocks
 
@@ -310,8 +298,6 @@ export const sampleUsers = [
 ];
 ```
 
----
-
 ## Production Safety
 
 **Mocks are automatically disabled in production:**
@@ -330,8 +316,6 @@ npm run build
 # Check - no mock logs should appear
 npm start
 ```
-
----
 
 ## Troubleshooting
 
@@ -377,35 +361,31 @@ const form = await prisma.form.findUnique({ where: { slug } }) as FormConfig;
 The mock `$transaction` passes mockPrisma itself as the transaction client. Make sure your transaction callback uses the `tx` parameter:
 
 ```typescript
-// ✅ Correct
+// Correct
 await prisma.$transaction(async (tx) => {
   await tx.form.update(...);
   await tx.formBlock.create(...);
 });
 
-// ❌ Wrong - uses prisma instead of tx
+// Wrong - uses prisma instead of tx
 await prisma.$transaction(async (tx) => {
   await prisma.form.update(...);  // Should be tx.form
 });
 ```
 
----
-
 ## Comparison with MSW
 
 | Feature | Mock Prisma Only | Mock Prisma + MSW |
 | ------- | ---------------- | ----------------- |
-| API routes execute | ✅ Yes | ❌ No (bypassed) |
-| Business logic tested | ✅ Yes | ❌ No |
-| Validation tested | ✅ Yes | ❌ No |
-| Error handling tested | ✅ Yes | ❌ No |
-| Maintenance | ✅ Simple | ❌ Complex |
-| Duplication | ✅ None | ❌ High |
-| Test realism | ✅ High | ❌ Low |
+| API routes execute | Yes | No (bypassed) |
+| Business logic tested | Yes | No |
+| Validation tested | Yes | No |
+| Error handling tested | Yes | No |
+| Maintenance | Simple | Complex |
+| Duplication | None | High |
+| Test realism | High | Low |
 
 **Conclusion:** Mock Prisma alone provides better test coverage and simpler architecture.
-
----
 
 ## Summary
 

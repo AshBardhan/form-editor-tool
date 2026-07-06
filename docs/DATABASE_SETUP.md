@@ -7,11 +7,10 @@ Choose the database option that fits your use case:
 | Option | Best For | Persistence | Setup Time |
 | ------ | -------- | ----------- | ---------- |
 | **Local PostgreSQL** | Solo development, offline work | Persistent | 5-10 min |
-| **Prisma Dev** | Quick prototyping, testing | Ephemeral | 10 seconds |
 | **Prisma Cloud** | Team collaboration, staging | Persistent | 1-2 min |
 | **Other Cloud** | Production, advanced features | Persistent | 2-5 min |
 
-**Quick Guide:** Solo offline development → Local PostgreSQL | Quick prototyping → Prisma Dev | Team collaboration or production → Cloud
+**Quick Guide:** Solo offline development → Local PostgreSQL | Team collaboration or production → Cloud
 
 ### Option A: Local PostgreSQL
 
@@ -43,22 +42,7 @@ npx prisma migrate deploy
 npx prisma db seed
 ```
 
-### Option B: Prisma Dev (Ephemeral)
-
-**⚠️ Data deleted when stopped. For prototyping only.**
-
-```bash
-# Terminal 1: Start ephemeral database
-npx prisma dev
-
-# Terminal 2: Wait 5 seconds, then run
-npx prisma generate
-npx prisma db push
-```
-
-**Note:** Keep Terminal 1 running. No `.env` setup needed—`DATABASE_URL` is set automatically.
-
-### Option C: Prisma Cloud
+### Option B: Prisma Cloud
 
 ```bash
 # Create free cloud database
@@ -77,7 +61,7 @@ npx prisma migrate deploy
 npx prisma db seed
 ```
 
-### Option D: Other Cloud (Supabase, Railway, Neon)
+### Option C: Other Cloud (Supabase, Railway, Neon)
 
 ```bash
 # 1. Create database on provider's website, copy connection string
@@ -104,7 +88,7 @@ npx prisma migrate dev           # Create new migration (development)
 npx prisma migrate deploy        # Apply migrations (production)
 npx prisma migrate reset         # Reset database (deletes all data + re-runs migrations)
 npx prisma db push               # Sync schema without creating migration files
-npx prisma db seed               # Seed database with sample data (users, forms, submissions)
+npx prisma db seed               # Seed database with sample data
 npx prisma db pull               # Pull schema from existing database (reverse engineering)
 npx prisma studio                # Open Prisma Studio (database GUI at http://localhost:5555)
 npx prisma validate              # Validate schema file syntax
@@ -144,13 +128,6 @@ npx prisma generate
 npm run dev -- -p 3001
 ```
 
-**Prisma Dev connection timeout:**
-
-```bash
-# Wait 5-10 seconds after starting npx prisma dev
-# Use npx prisma db push instead of migrate
-```
-
 **Role/database does not exist (local PostgreSQL):**
 
 ```bash
@@ -163,8 +140,8 @@ GRANT ALL PRIVILEGES ON DATABASE formkit_dev TO formkit_user;
 **API routes returning errors:**
 
 ```bash
-# Check if database is connected
-curl http://localhost:3000/api/health
+# Check if database is connected (test page)
+# Visit http://localhost:3000/test in browser
 
 # View detailed error in terminal running `npm run dev`
 

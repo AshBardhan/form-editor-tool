@@ -2,15 +2,15 @@
 
 ## Tech Stack and Rationale
 
-- **Next.js 15**: Robust web application framework for routing, CSR/SSR, and static site generation with App Router.
+- **Next.js 15**: Robust web application framework for routing, CSR/SSR and static site generation with App Router.
 - **React 19**: Modern UI development library for reusable components with latest features.
-- **TypeScript**: Ensures strong typing for props, state, and domain models, reducing runtime errors.
+- **TypeScript**: Ensures strong typing for props, state and domain models, reducing runtime errors.
 - **Zustand**: Lightweight state management alternative to `Redux` with simplicity and ease of use.
-- **TailwindCSS v4**: Utility-first styling with theme tokens, responsive support, and container queries.
+- **TailwindCSS v4**: Utility-first styling with theme tokens, responsive support and container queries.
 - **@dnd-kit**: Modern drag-and-drop toolkit for React with accessibility features.
 - **Zod**: Type-safe client-side validation with schema-based approach for both builder and preview modes.
-- **Framer Motion**: Animations for drag-and-drop, toast notifications, and other UI feedback.
-- **Class Variance Authority (CVA)**: Manage component variants and styling combinations in a type-safe and reusable way.
+- **Motion**: Modern animation library for drag-and-drop, toast notifications and UI feedback.
+- **Class Variance Authority (CVA)**: Manage component variants and styling combinations in a type-safe and reusable way
 - **Lucide React**: Lightweight, modern SVG icon library for clean, scalable icons.
 - **Prisma ORM**: Type-safe database ORM with auto-generated client and migration system for PostgreSQL.
 - **PostgreSQL**: Robust relational database for data persistence with ACID compliance.
@@ -36,13 +36,17 @@
 - **Reusability**: UI primitives shared across the application
 - **Container Queries**: Component-level responsive design for better flexibility
 - **Error Boundaries**: Proper error handling and display with dedicated ErrorMessages component
-- **Toast System**: Non-blocking notifications for user feedback with Framer Motion animations
+- **Toast System**: Non-blocking notifications for user feedback with Motion animations
+- **Route Groups**: Next.js route groups for logical organization
+  - `(dashboard)/` - Dashboard-related pages
+  - `(form)/` - Form management pages (builder, reports)
+  - Enables shared layouts without affecting URL structure
 
 ### Responsive Design
 
 - **Container Queries**: Modern CSS container queries for component-level responsiveness
 - **Mobile-First Approach**: Forms adapt from mobile to desktop seamlessly
-- **Device Preview**: Toggle between desktop, tablet, and mobile views in builder
+- **Device Preview**: Toggle between desktop, tablet and mobile views in builder
 - **Flexible Layouts**: Form blocks adjust based on container width, not viewport
 - **Typography Scaling**: Text sizes adapt to different container sizes (@sm, @md, @lg breakpoints)
 
@@ -69,14 +73,19 @@
 - **Prisma ORM**: Type-safe database access with auto-generated TypeScript types
 - **Schema Design**: 5 models with clear separation of concerns
   - **User**: Form creators with role-based access (CLIENT, ADMIN)
-  - **Form**: Form metadata with ownership, status tracking, and public slug
+  - **Form**: Form metadata with ownership, status tracking, public slug and analytics counters
   - **FormBlock**: Individual form fields/widgets with JSON props and ordering
-  - **FormSubmission**: Anonymous submissions with optional respondent metadata
+  - **FormSubmission**: Anonymous submissions with timestamp tracking
   - **FormFieldResponse**: Individual field responses linked to submissions
 - **Enum Types**: Database-level validation for consistency
   - **UserRole**: `CLIENT` (form creator), `ADMIN` (platform admin)
   - **FormTheme**: `light`, `dark`
-  - **FormStatus**: `draft` (editing), `published` (accepting responses)
+  - **FormStatus**: `draft` (editing), `published` (accepting responses), `archived` (inactive)
+- **Analytics Tracking**: Built-in counters for form engagement metrics
+  - `views`: Total public page visits
+  - `starts`: Sessions that started filling at least one field
+  - `completions`: Sessions that reached all required fields filled
+  - `submitAttempts`: Total submit button clicks (success + failure)
 - **Relationships**:
   - User → Forms (1:n): One user creates many forms
   - Form → FormBlocks (1:n): One form contains many blocks

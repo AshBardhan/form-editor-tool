@@ -6,13 +6,13 @@ View Demo: [https://my-formkit-ui.netlify.app](https://my-formkit-ui.netlify.app
 
 The application is crafted using `Next.js` and `React` to build scalable and reusable components, with `Prisma ORM` and `PostgreSQL` for data persistence.
 
-- **Form Management**: Create, edit, and publish forms with status tracking and grid-based dashboard.
+- **Form Management**: Create, edit and publish forms with status tracking and grid-based dashboard.
 - **Drag-and-Drop Builder**: Visual form builder with configurable widgets and reorderable blocks.
 - **Form Preview**: Fully functional preview modal with submission handling and multi-device responsive views.
 - **Public Form Access**: Renders published form which records user's interaction and field response.
 - **Form Submission Reports**: Anonymous form submission with analytics (response tracking, completion rates, value distribution).
 - **UI Component Library**: Reusable primitive components with interactive demos and documentation.
-- **Database Integration**: RESTful API with PostgreSQL and Prisma for forms CRUD actions, publishing, submissions, and analytics.
+- **Database Integration**: RESTful API with PostgreSQL and Prisma for forms CRUD actions, publishing, submissions and analytics.
 
 ## Routing Summary
 
@@ -20,23 +20,27 @@ The application is crafted using `Next.js` and `React` to build scalable and reu
 
 | Route | Description |
 | ----- | ----------- |
-| `/` | Dashboard with form grid and creation button |
+| `/` | Dashboard with form grid and creation button (via `/forms`) |
 | `/demo` | Interactive showcase of 15+ UI primitives with code examples |
-| `/forms/new` | Form builder interface for creating new forms |
-| `/forms/[id]` | Edit existing form with builder interface and preview modal |
+| `/forms` | Dashboard page listing all forms with statistics |
+| `/forms/[slug]` | Form overview page with navigation to builder and reports |
+| `/forms/[slug]/builder` | Form builder interface for creating and editing forms |
+| `/forms/[slug]/reports` | Form analytics and submission reports |
+| `/forms/[slug]/reports/submissions` | List all form submissions with pagination |
+| `/forms/[slug]/reports/fields` | Field-level analytics and value distribution |
+| `/f/[slug]` | Public form view for respondents to fill and submit |
+| `/f/[slug]/success` | Form submission success confirmation page |
 | `/test` | Database connectivity test with statistics and health check links |
 
 ### API Routes
 
 | Route | Description |
 | ----- | ----------- |
-| `/api/health` | Database connectivity check with latency measurement |
 | `/api/forms` | **GET**: List all forms with filtering and pagination<br>**POST**: Create new draft form |
 | `/api/forms/[id]` | **GET**: Retrieve form with ordered blocks<br>**PUT**: Update form metadata and blocks in transaction<br>**DELETE**: Delete form with cascade |
-| `/api/forms/[id]/publish` | **PATCH**: Publish/unpublish form with auto-generated slug |
-| `/api/forms/[id]/submit` | **POST**: Anonymous form submission with optional respondent info |
-| `/api/forms/[id]/submissions` | **GET**: Retrieve all submissions with pagination |
-| `/api/forms/[id]/analytics` | **GET**: Comprehensive analytics (submissions over time, completion rates, value distribution) |
+| `/api/forms/[id]/status` | **PATCH**: Publish/unpublish/archive form with status updates |
+| `/api/forms/[id]/submissions` | **GET**: Retrieve all submissions with pagination<br>**POST**: Submit form response with field values |
+| `/api/forms/[id]/analytics` | **GET**: Comprehensive analytics (submissions over time, completion rates, field value distribution) |
 
 ## File Structure
 
@@ -45,18 +49,24 @@ form-editor-tool/
 ├─ prisma/
 │  ├─ migrations/                    # Database migration history
 │  ├─ schema.prisma                  # Database schema definition
-│  └─ seed.ts                        # Database seeding script
+│  └─ seed/                          # Database seeding script and sample data
 ├─ src/
 │  ├─ app/                           # App-router directory
+│  │  ├─ (dashboard)/                # Route group for dashboard
+│  │  │  └─ forms/                   # Dashboard forms list
+│  │  ├─ (form)/                     # Route group for form management
+│  │  │  └─ forms/[slug]/            # Dynamic form routes
+│  │  │     ├─ builder/              # Form builder interface
+│  │  │     └─ reports/              # Form reports and analytics
 │  │  ├─ api/                        # API routes
-│  │  │  ├─ health/                  # Database Connection Check
 │  │  │  └─ forms/                   # Forms-based API
+│  │  │     ├─ route.ts              # Form-dashboard endpoints
+│  │  │     └─ [id]/                 # Form-specific endpoints
 │  │  ├─ demo/                       # UI components showcase
-│  │  ├─ forms/                      # Forms routes
-│  │  │  ├─ [id]/                    # Dynamic form editor route
-│  │  │  └─ new/                     # New form creation route
+│  │  ├─ f/                          # Public forms directory
+│  │  │  └─ [slug]/                  # Public form route
 │  │  ├─ test/                       # Database test page
-│  │  ├─ page.tsx                    # Main dashboard page
+│  │  ├─ page.tsx                    # Main dashboard page (redirects to /forms)
 │  │  ├─ layout.tsx                  # Root layout
 │  │  └─ globals.css                 # Global styles
 │  ├─ components/
@@ -64,6 +74,7 @@ form-editor-tool/
 │  │  │  ├─ canvas/                  # Drag-drop canvas
 │  │  │  ├─ configuration/           # Property editor
 │  │  │  └─ widgets/                 # Widget palette
+│  │  ├─ charts/                     # Chart components
 │  │  ├─ dashboard/                  # Dashboard components
 │  │  ├─ demos/                      # UI component demos
 │  │  ├─ form/                       # Form rendering components
@@ -71,11 +82,14 @@ form-editor-tool/
 │  │  │  └─ configs/                 # Block configuration components
 │  │  ├─ layout/                     # Layout wrapper components
 │  │  ├─ preview/                    # Form preview components
+│  │  ├─ public/                     # Public form components
+│  │  ├─ reports/                    # Reports and analytics components
 │  │  └─ ui/                         # Primitive UI components
 │  ├─ lib/
 │  │  ├─ constants/                  # App constants (themes, styles, templates)
+│  │  ├─ errors/                     # Error handling utilities
 │  │  ├─ hooks/                      # Custom React hooks
-│  │  ├─ queries/                    # Prisma queries 
+│  │  ├─ queries/                    # Prisma queries
 │  │  ├─ schema/                     # Zod validation schemas
 │  │  ├─ stores/                     # Zustand state management
 │  │  ├─ types/                      # TypeScript type definitions
@@ -83,10 +97,12 @@ form-editor-tool/
 │  │  └─ prisma.ts                   # Prisma Client singleton (mock/real)
 │  └─ mocks/
 │     ├─ data/                       # Sample data for offline development
-│     │  ├─ sampleFormsList.ts       # Dashboard forms (10 forms)
-│     │  ├─ sampleForms.ts           # Form builder config (1 form)
-│     │  └─ sampleSubmissions.ts     # Form submissions (20 submissions)
-│     └─ mockPrisma.ts               # Mock Prisma client for offline dev
+│     └─ mockPrisma.ts               # Mock Prisma client
+├─ docs/                             # Documentation
+│  ├─ ADR.md                         # Architecture Decision Records
+│  ├─ DATABASE_SETUP.md              # Database setup guide
+│  ├─ IMPROVEMENTS.md                # Future improvements
+│  └─ MOCKING_GUIDE.md               # Mock implementation guide
 ├─ public/
 │  └─ [next.js assets]               # SVG icons and static files
 ├─ screenshots/                      # Screenshots for README
@@ -150,13 +166,15 @@ npm run dev
 ```
 
 **What works in offline mode:**
-- ✅ Dashboard with 10 sample forms
-- ✅ Form builder with full editing capabilities
-- ✅ Form reports with 20 sample submissions
-- ✅ Public form rendering and submission
-- ✅ All API routes (create, update, delete, publish)
+
+- Dashboard with 10 sample forms
+- Form builder with full editing capabilities
+- Form reports with 20 sample submissions
+- Public form rendering and submission
+- All API routes (create, update, delete, publish)
 
 **Benefits:**
+
 - No database setup required
 - Fast and consistent responses
 - Perfect for UI/UX development
@@ -166,7 +184,7 @@ See [docs/MOCKING_GUIDE.md](docs/MOCKING_GUIDE.md) for complete details on the m
 
 ## Documentation
 
-- **[Database Setup Guide](docs/DATABASE_SETUP.md)** - Detailed instructions for Local PostgreSQL, Prisma Dev, and Cloud options
+- **[Database Setup Guide](docs/DATABASE_SETUP.md)** - Detailed instructions for Local PostgreSQL, Prisma Dev and Cloud options
 - **[Architecture Decision Records](docs/ADR.md)** - Key technical decisions and rationale
 - **[Future Improvements](docs/IMPROVEMENTS.md)** - Planned enhancements and optimization opportunities
 

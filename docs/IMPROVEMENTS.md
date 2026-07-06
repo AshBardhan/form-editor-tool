@@ -3,7 +3,6 @@
 ## High Priority - User Experience & Features
 
 - **Modal System Enhancements**: Expand modal functionality
-  - Confirmation dialogs for delete operations
   - Form builder help/documentation modals
   - Widget property help tooltips
 - **Form Lifecycle Management**: Implement save/discard/publish workflow
@@ -21,18 +20,6 @@
 
 ## Medium Priority - Backend Integration & Data
 
-- **Real Backend Integration**: Connect frontend to database APIs
-  - Add optimistic UI updates with cache invalidation
-  - Real-time data synchronization where needed
-- **Form State Management**: Add advanced form status tracking
-  - Version control for forms
-  - Conflict resolution for simultaneous edits
-- **API Client Layer**: Create API wrapper functions
-  - `lib/api/forms.ts` for form CRUD operations
-  - `lib/api/submissions.ts` for submission handling
-  - Centralized error handling and retries
-  - Request/response interceptors
-  - Replace direct fetch calls with typed API client
 - **Persisted Preferences**: Save user preferences
   - Save `theme` preferences in `localStorage`
   - Save `device mode` preferences
@@ -41,18 +28,25 @@
 
 ## Medium Priority - Analytics & Metrics
 
-- **Dashboard Metrics**: Implement form analytics UI
-  - isplay total input widgets count per form in dashboard cards
-  - Track submission statistics with visual charts
-  - Show form engagement metrics with trends
-- **Form Analytics Dashboard**: Advanced metrics and insights UI
-  - Submission trends over time (line charts)
-  - Field completion rates (progress bars/pie charts)
-  - Drop-off analysis visualization
-  - Popular form types comparison
+- **Enhanced Analytics Dashboard**: Extend existing analytics features
+  - Time-based filtering for analytics (last 7/30/90 days)
+  - Export analytics data to CSV/PDF
+  - Comparative analytics across multiple forms
+  - Response time tracking and analysis
+  - Geographic distribution of respondents (if location data available)
+  - Real-time dashboard updates with WebSocket or polling
 
 ## Low Priority - Advanced Features
 
+- **Form Status Management**: Enhanced status tracking
+  - Scheduled publishing (publish at specific date/time)
+  - Automatic archiving after expiration date
+  - Form duplication with "Copy of" naming
+- **Form Versioning**: Track and manage form versions
+  - Version history with changes log
+  - Restore previous versions
+  - Compare version differences
+  - Conflict resolution for simultaneous edits
 - **Layout Widgets**: Add container components for nested structures
   - Group widget (flex-based container)
   - Column widget (multi-column layout)
