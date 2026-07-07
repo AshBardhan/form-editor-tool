@@ -53,14 +53,6 @@ function addToast(data: Omit<ToastData, "id">): string {
     ...data,
   };
 
-  console.log('[Toast] Adding toast:', { 
-    id, 
-    type: toast.type, 
-    title: toast.title,
-    duration: toast.duration,
-    listeners: listeners.length 
-  });
-
   toasts = [...toasts, toast];
   notify();
 
@@ -80,13 +72,6 @@ function updateToast(id: string, data: Partial<Omit<ToastData, "id">>): void {
 
   const existingToast = toasts[index];
   const updatedToast = { ...existingToast, ...data };
-
-  console.log('[Toast] Updating toast:', { 
-    id, 
-    from: { type: existingToast.type, title: existingToast.title },
-    to: { type: updatedToast.type, title: updatedToast.title },
-    duration: updatedToast.duration 
-  });
 
   toasts = [
     ...toasts.slice(0, index),
@@ -108,7 +93,6 @@ function updateToast(id: string, data: Partial<Omit<ToastData, "id">>): void {
 }
 
 function removeToast(id: string) {
-  console.log('[Toast] Removing toast:', id);
   toasts = toasts.filter((t) => t.id !== id);
   notify();
 }
@@ -279,15 +263,9 @@ export function Toaster({ position = "bottom-right" }: ToasterProps = {}) {
   const [toastList, setToastList] = useState<ToastData[]>([]);
 
   useEffect(() => {
-    console.log('[Toaster] Mounted at position:', position);
     return subscribe(setToastList);
   }, []);
 
-  useEffect(() => {
-    if (toastList.length > 0) {
-      console.log('[Toaster] Rendering toasts:', toastList.length, toastList.map(t => ({ id: t.id, type: t.type, title: t.title })));
-    }
-  }, [toastList]);
 
   if (toastList.length === 0) return null;
 
