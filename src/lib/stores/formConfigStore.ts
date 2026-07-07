@@ -8,11 +8,18 @@ import { nanoid } from "nanoid";
 import { create } from "zustand";
 import { getDefaultProps, generateUniqueKey } from "@/lib/utils/formUtils";
 
+export type SaveStatus = "idle" | "saving" | "saved" | "error";
+
 interface FormConfigState {
   formConfig: FormConfig;
+  saveStatus: SaveStatus;
+  saveError: string | null;
+  lastSaved: Date | null;
   setFormConfig: (data: FormConfig) => void;
   updateFormConfig: (key: string, value: string) => void;
   resetFormConfig: () => void;
+  setSaveStatus: (status: SaveStatus, error?: string | null) => void;
+  setLastSaved: (date: Date) => void;
   addFormBlock: (type: FormBlockType, index?: number) => string;
   moveFormBlock: (fromIndex: number, toIndex: number) => void;
   updateFormBlock: (id: string, key: string, value: FormBlockValueType) => void;
@@ -37,6 +44,9 @@ const initialFormConfig: FormConfig = {
  */
 export const useFormConfigStore = create<FormConfigState>()((set, get) => ({
   formConfig: initialFormConfig,
+  saveStatus: "idle",
+  saveError: null,
+  lastSaved: null,
   setFormConfig: (data) =>
     set((state) => ({
       formConfig: {
@@ -44,6 +54,10 @@ export const useFormConfigStore = create<FormConfigState>()((set, get) => ({
         ...data,
       },
     })),
+  setSaveStatus: (status, error = null) => 
+    set({ saveStatus: status, saveError: error }),
+  setLastSaved: (date) => 
+    set({ lastSaved: date }),
   updateFormConfig: (key, value) => {
     set((state) => ({
       formConfig: {

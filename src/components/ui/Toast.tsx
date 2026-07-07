@@ -53,11 +53,19 @@ function addToast(data: Omit<ToastData, "id">): string {
     ...data,
   };
 
+  console.log('[Toast] Adding toast:', { 
+    id, 
+    type: toast.type, 
+    title: toast.title,
+    duration: toast.duration,
+    listeners: listeners.length 
+  });
+
   toasts = [...toasts, toast];
   notify();
 
-  // Auto dismiss
-  if (toast.duration && toast.duration > 0) {
+  // Auto dismiss (exclude Infinity since setTimeout(fn, Infinity) executes immediately)
+  if (toast.duration && toast.duration !== Infinity && toast.duration > 0) {
     setTimeout(() => {
       removeToast(id);
     }, toast.duration);
@@ -66,7 +74,33 @@ function addToast(data: Omit<ToastData, "id">): string {
   return id;
 }
 
+function updateToast(id: string, data: Partial<Omit<ToastData, "id">>): void {
+  const index = toasts.findIndex((t) => t.id === id);
+  if (index === -1) return;
+
+  const existingToast = toasts[index];
+  const updatedToast = { ...existingToast, ...data };
+
+  console.log('[Toast] Updating toast:', { 
+    id, 
+    from: { type: existingToast.type, title: existingToast.title },
+    to: { type: updatedToast.type, title: updatedToast.title },
+    duration: updatedToast.duration 
+  });
+
+  toasts = [...toasts.slice(0, index), updatedToast, ...toasts.slice(index + 1)];
+  notify();
+
+  // Set new auto-dismiss if duration changed
+  if (updatedToast.duration && updatedToast.duration !== Infinity && updatedToast.duration > 0) {
+    setTimeout(() => {
+      removeToast(id);
+    }, updatedToast.duration);
+  }
+}
+
 function removeToast(id: string) {
+  console.log('[Toast] Removing toast:', id);
   toasts = toasts.filter((t) => t.id !== id);
   notify();
 }
@@ -99,6 +133,9 @@ export const toast = {
     options?: Partial<Omit<ToastData, "id" | "title" | "type">>,
   ) => {
     return addToast({ type: "warning", title, ...options });
+  },
+  update: (id: string, data: Partial<Omit<ToastData, "id">>) => {
+    updateToast(id, data);
   },
   dismiss: (id: string) => {
     removeToast(id);
@@ -234,17 +271,25 @@ export function Toaster({ position = "bottom-right" }: ToasterProps = {}) {
   const [toastList, setToastList] = useState<ToastData[]>([]);
 
   useEffect(() => {
+    console.log('[Toaster] Mounted at position:', position);
     return subscribe(setToastList);
   }, []);
+
+  useEffect(() => {
+    if (toastList.length > 0) {
+      console.log('[Toaster] Rendering toasts:', toastList.length, toastList.map(t => ({ id: t.id, type: t.type, title: t.title })));
+    }
+  }, [toastList]);
 
   if (toastList.length === 0) return null;
 
   return (
     <div
       className={cn(
-        "fixed z-100 flex max-h-screen w-full p-4 md:max-w-[420px] pointer-events-none",
+        "fixed flex max-h-screen w-full p-4 max-w-md pointer-events-none",
         positionStyles[position],
       )}
+      style={{ zIndex: 9999 }}
     >
       {toastList.map((toast) => (
         <div key={toast.id} className="mb-2 group">

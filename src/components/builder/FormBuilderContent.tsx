@@ -49,18 +49,11 @@ interface DragState {
  * Form Builder Content
  * - Renders form with prefilled and empty data
  * - Provides drag-and-drop and configuration for form
+ * - Auto-saves changes with toast notifications
  *
  * @returns {JSX.Element} The rendered component.
  */
-interface FormBuilderContentProps {
-  onSave?: () => void;
-  onCancel?: () => void;
-}
-
-export const FormBuilderContent = ({
-  onSave = () => {},
-  onCancel = () => {},
-}: FormBuilderContentProps): JSX.Element => {
+export const FormBuilderContent = (): JSX.Element => {
   const [dragState, setDragState] = useState<DragState>({
     overId: null,
     activeItem: null,
@@ -231,14 +224,6 @@ export const FormBuilderContent = ({
                 />
               </div>
             </PageContainer>
-          </div>
-          <div className="shrink-0 py-4 bg-white border-t flex items-center justify-center gap-4">
-            <Button variant="positive" onClick={onSave}>
-              Save
-            </Button>
-            <Button variant="secondary" onClick={onCancel}>
-              Cancel
-            </Button>
           </div>
         </MainContent>
 

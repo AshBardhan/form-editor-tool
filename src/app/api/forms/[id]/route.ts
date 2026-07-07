@@ -47,7 +47,7 @@ export async function GET(
  * Updates a form's content and/or metadata.
  * Edit permissions enforced based on actual database status and submission count.
  */
-export async function PUT(
+export async function PATCH (
   request: NextRequest,
   { params }: { params: Promise<{ id: string }> },
 ) {
