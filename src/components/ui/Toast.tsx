@@ -88,11 +88,19 @@ function updateToast(id: string, data: Partial<Omit<ToastData, "id">>): void {
     duration: updatedToast.duration 
   });
 
-  toasts = [...toasts.slice(0, index), updatedToast, ...toasts.slice(index + 1)];
+  toasts = [
+    ...toasts.slice(0, index),
+    updatedToast,
+    ...toasts.slice(index + 1),
+  ];
   notify();
 
   // Set new auto-dismiss if duration changed
-  if (updatedToast.duration && updatedToast.duration !== Infinity && updatedToast.duration > 0) {
+  if (
+    updatedToast.duration &&
+    updatedToast.duration !== Infinity &&
+    updatedToast.duration > 0
+  ) {
     setTimeout(() => {
       removeToast(id);
     }, updatedToast.duration);
