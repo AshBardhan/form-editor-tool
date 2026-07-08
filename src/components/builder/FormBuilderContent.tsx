@@ -12,7 +12,7 @@ import {
   useSensor,
   useSensors,
 } from "@dnd-kit/core";
-import { JSX, useState, useEffect } from "react";
+import { JSX, useState, useEffect, useMemo, useCallback } from "react";
 import { hybridKeyboardCoordinates } from "@/lib/utils/keyboardUtils";
 import { switchFormTheme } from "@/lib/utils/domUtils";
 import {
@@ -22,7 +22,7 @@ import {
 } from "@/lib/stores";
 import { AnimatePresence } from "motion/react";
 import { Widget } from "@/lib/types/widget";
-import { FormBlock } from "@/lib/types/form";
+import { FormBlock, FormConfig } from "@/lib/types/form";
 import { Sidebar, MainContent, PageContainer } from "@/components/layout";
 import { CanvasDroppable } from "@/components/builder/canvas/CanvasDroppable";
 import { CanvasForm } from "@/components/builder/canvas/CanvasForm";
@@ -38,6 +38,9 @@ import {
 } from "@/components/ui/Modal";
 import { Button } from "@/components/ui/Button";
 import { AlertTriangle } from "lucide-react";
+import { useAutoSave } from "@/lib/hooks/useAutoSave";
+import { toast } from "@/components/ui/Toast";
+import { ApiResponse } from "@/lib/types/api";
 
 interface DragState {
   overId: string | null;
@@ -49,25 +52,18 @@ interface DragState {
  * Form Builder Content
  * - Renders form with prefilled and empty data
  * - Provides drag-and-drop and configuration for form
+ * - Manages form editability based on status and submissions
+ * - Auto-saves changes with debouncing and toast notifications
  *
  * @returns {JSX.Element} The rendered component.
  */
-interface FormBuilderContentProps {
-  onSave?: () => void;
-  onCancel?: () => void;
-}
-
-export const FormBuilderContent = ({
-  onSave = () => {},
-  onCancel = () => {},
-}: FormBuilderContentProps): JSX.Element => {
+export const FormBuilderContent = (): JSX.Element => {
   const [dragState, setDragState] = useState<DragState>({
     overId: null,
     activeItem: null,
     source: null,
   });
-  const formBlocks = useFormConfigStore((state) => state.formConfig.blocks);
-  const formTheme = useFormConfigStore((state) => state.formConfig.theme);
+  const form = useFormConfigStore((state) => state.formConfig);
   const moveFormBlock = useFormConfigStore((state) => state.moveFormBlock);
   const addFormBlock = useFormConfigStore((state) => state.addFormBlock);
   const removeFormBlock = useFormConfigStore((state) => state.removeFormBlock);
@@ -82,6 +78,68 @@ export const FormBuilderContent = ({
     isOpen: boolean;
     blockId: string | null;
   }>({ isOpen: false, blockId: null });
+
+  // Determine if form is editable based on status and submission count
+  const isFormEditable = useMemo(() => {
+    switch (form.status) {
+      case "archived":
+        return false;
+      case "published":
+        return (form.submissionCount ?? 0) === 0;
+      default:
+        return true;
+    }
+  }, [form.status, form.submissionCount]);
+
+  // Auto-save callback: handles API call and toast notifications
+  const handleSave = useCallback(async (data: FormConfig) => {
+    const toastId = toast.info("Saving changes...", {
+      duration: Infinity,
+      dismissible: false,
+    });
+
+    try {
+      const response = await fetch(`/api/forms/${data.id}`, {
+        method: "PATCH",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(data),
+      });
+
+      const result = (await response.json()) as ApiResponse<FormConfig>;
+
+      if (!response.ok || !result.success) {
+        throw new Error(result.error?.message ?? "Failed to save form.");
+      }
+
+      toast.update(toastId, {
+        type: "success",
+        title: "Changes saved",
+        duration: 2000,
+        dismissible: true,
+      });
+    } catch (err) {
+      toast.update(toastId, {
+        type: "error",
+        title: "Failed to save",
+        description: err instanceof Error ? err.message : "Unknown error",
+        duration: 5000,
+        dismissible: true,
+      });
+    }
+  }, []);
+
+  // Auto-save hook: only saves user-editable fields
+  useAutoSave({
+    data: form,
+    onSave: handleSave,
+    enabled: isFormEditable && !!form.id,
+    debounceMs: 1000,
+    isEqual: (a, b) =>
+      a.title === b.title &&
+      a.description === b.description &&
+      a.theme === b.theme &&
+      JSON.stringify(a.blocks) === JSON.stringify(b.blocks),
+  });
 
   /**
    * Opens delete confirmation modal for a specific block.
@@ -121,8 +179,8 @@ export const FormBuilderContent = ({
     const dragged = active.data?.current;
     if (!dragged) return;
 
-    const activeIndex = formBlocks.findIndex((f) => f.id === active.id);
-    const overIndex = formBlocks.findIndex((f) => f.id === over.id);
+    const activeIndex = form.blocks.findIndex((f) => f.id === active.id);
+    const overIndex = form.blocks.findIndex((f) => f.id === over.id);
     const isExistingFormBlock = activeIndex !== -1;
 
     // Handle reordering existing blocks
@@ -151,12 +209,12 @@ export const FormBuilderContent = ({
 
   // Apply theme to form container
   useEffect(() => {
-    switchFormTheme(formTheme);
+    switchFormTheme(form.theme);
     return () => switchFormTheme("");
-  }, [formTheme]);
+  }, [form.theme]);
 
   return (
-    <>
+    <div className="flex h-full relative">
       {/* Drag Context Container */}
       <DndContext
         sensors={sensors}
@@ -192,7 +250,7 @@ export const FormBuilderContent = ({
         {/* Drag Placeholder Overlay */}
         <DragOverlay>
           {dragState.activeItem && (
-            <div className={formTheme}>
+            <div className={form.theme}>
               <CanvasDroppable
                 item={dragState.activeItem}
                 source={dragState.source}
@@ -232,14 +290,6 @@ export const FormBuilderContent = ({
               </div>
             </PageContainer>
           </div>
-          <div className="shrink-0 py-4 bg-white border-t flex items-center justify-center gap-4">
-            <Button variant="positive" onClick={onSave}>
-              Save
-            </Button>
-            <Button variant="secondary" onClick={onCancel}>
-              Cancel
-            </Button>
-          </div>
         </MainContent>
 
         {/* Right Form Configuration Sidebar */}
@@ -251,6 +301,20 @@ export const FormBuilderContent = ({
           )}
         </AnimatePresence>
       </DndContext>
+
+      {/* Uneditable Form Overlay */}
+      {!isFormEditable && (
+        <div className="absolute inset-0 bg-white/20 z-50 cursor-not-allowed flex items-center justify-center">
+          <div className="bg-white p-6 rounded-lg shadow-lg max-w-md text-center">
+            <h3 className="text-lg font-semibold mb-2">Form Uneditable</h3>
+            <p className="text-sm text-gray-600 dark:text-gray-400">
+              {form.status === "archived"
+                ? "This form is archived and cannot be edited. Restore it to 'published' status to make changes."
+                : "This form has submissions and cannot be edited. Archive it first if you need to make changes."}
+            </p>
+          </div>
+        </div>
+      )}
 
       {/* Delete Confirmation Modal */}
       <Modal
@@ -280,6 +344,6 @@ export const FormBuilderContent = ({
           </ModalFooter>
         </ModalContent>
       </Modal>
-    </>
+    </div>
   );
 };

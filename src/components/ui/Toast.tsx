@@ -32,6 +32,7 @@ export interface ToastData {
 let toasts: ToastData[] = [];
 let listeners: Array<(toasts: ToastData[]) => void> = [];
 let toastCount = 0;
+const toastTimeouts: Map<string, ReturnType<typeof setTimeout>> = new Map();
 
 function subscribe(listener: (toasts: ToastData[]) => void) {
   listeners.push(listener);
@@ -42,6 +43,24 @@ function subscribe(listener: (toasts: ToastData[]) => void) {
 
 function notify() {
   listeners.forEach((listener) => listener([...toasts]));
+}
+
+function addToastTimeout(id: string, duration: number | undefined) {
+  if (duration && duration !== Infinity && duration > 0) {
+    const timeoutId = setTimeout(() => {
+      removeToast(id);
+    }, duration);
+
+    toastTimeouts.set(id, timeoutId);
+  }
+}
+
+function removeToastTimeout(id: string) {
+  const existingTimeout = toastTimeouts.get(id);
+  if (existingTimeout) {
+    clearTimeout(existingTimeout);
+    toastTimeouts.delete(id);
+  }
 }
 
 function addToast(data: Omit<ToastData, "id">): string {
@@ -56,17 +75,37 @@ function addToast(data: Omit<ToastData, "id">): string {
   toasts = [...toasts, toast];
   notify();
 
-  // Auto dismiss
-  if (toast.duration && toast.duration > 0) {
-    setTimeout(() => {
-      removeToast(id);
-    }, toast.duration);
-  }
+  // Add auto-dismiss timer if duration is specified
+  addToastTimeout(id, toast.duration);
 
   return id;
 }
 
+function updateToast(id: string, data: Partial<Omit<ToastData, "id">>): void {
+  const index = toasts.findIndex((t) => t.id === id);
+  if (index === -1) return;
+
+  const existingToast = toasts[index];
+  const updatedToast = { ...existingToast, ...data };
+
+  toasts = [
+    ...toasts.slice(0, index),
+    updatedToast,
+    ...toasts.slice(index + 1),
+  ];
+  notify();
+
+  // Clear existing timeout
+  removeToastTimeout(id);
+
+  // Set new auto-dismiss if duration specified
+  addToastTimeout(id, updatedToast.duration);
+}
+
 function removeToast(id: string) {
+  // Clear any pending timeout
+  removeToastTimeout(id);
+
   toasts = toasts.filter((t) => t.id !== id);
   notify();
 }
@@ -99,6 +138,9 @@ export const toast = {
     options?: Partial<Omit<ToastData, "id" | "title" | "type">>,
   ) => {
     return addToast({ type: "warning", title, ...options });
+  },
+  update: (id: string, data: Partial<Omit<ToastData, "id">>) => {
+    updateToast(id, data);
   },
   dismiss: (id: string) => {
     removeToast(id);
@@ -242,9 +284,10 @@ export function Toaster({ position = "bottom-right" }: ToasterProps = {}) {
   return (
     <div
       className={cn(
-        "fixed z-100 flex max-h-screen w-full p-4 md:max-w-[420px] pointer-events-none",
+        "fixed flex max-h-screen w-full p-4 max-w-md pointer-events-none",
         positionStyles[position],
       )}
+      style={{ zIndex: 9999 }}
     >
       {toastList.map((toast) => (
         <div key={toast.id} className="mb-2 group">

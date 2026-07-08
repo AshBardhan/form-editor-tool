@@ -310,8 +310,8 @@ export function FormHeader({ form }: FormHeaderProps) {
               <div className="flex-1 flex flex-col gap-2">
                 <ModalTitle>Delete this form permanently?</ModalTitle>
                 <ModalDescription>
-                  This action cannot be undone. All submissions, field
-                  responses and analytics data will be permanently removed.
+                  This action cannot be undone. All submissions, field responses
+                  and analytics data will be permanently removed.
                 </ModalDescription>
               </div>
             </div>
