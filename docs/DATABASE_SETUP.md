@@ -4,10 +4,92 @@
 
 The application uses **PostgreSQL** with **Prisma ORM** for data persistence. The database schema includes:
 
+- **User Management**: User, Account, Session, VerificationToken (NextAuth.js tables)
 - **Form Management**: Form, FormBlock
 - **Submissions**: FormSubmission, FormFieldResponse
 
 ## Database Schema
+
+### User
+
+**Description:** Authenticated users who create and manage forms. Supports both credential-based and OAuth authentication.
+
+| Field | Type | Attributes |
+| ----- | ---- | ---------- |
+| `id` | Int | PRIMARY KEY, AUTO_INCREMENT |
+| `email` | String | UNIQUE, NOT NULL, INDEXED |
+| `name` | String | NULLABLE |
+| `password` | String | NULLABLE (null for OAuth-only) |
+| `image` | String | NULLABLE (profile picture URL) |
+| `role` | UserRole | DEFAULT: CLIENT, INDEXED |
+| `emailVerified` | DateTime | NULLABLE |
+| `createdAt` | DateTime | DEFAULT: now() |
+| `updatedAt` | DateTime | AUTO_UPDATE |
+
+**Relationships:**
+
+- One User → Many Forms (1:n)
+- One User → Many Accounts (1:n) - OAuth providers
+- One User → Many Sessions (1:n) - Multi-device login
+
+**Indexes:** `email`, `role`
+
+### Account
+
+**Description:** OAuth provider connections (Google, GitHub, etc.) linked to users. Managed by NextAuth.js.
+
+| Field | Type | Attributes |
+| ----- | ---- | ---------- |
+| `id` | String | PRIMARY KEY |
+| `userId` | Int | FOREIGN KEY → User.id, NOT NULL, INDEXED |
+| `type` | String | NOT NULL (oauth/credentials) |
+| `provider` | String | NOT NULL (google/github/credentials) |
+| `providerAccountId` | String | NOT NULL |
+| `refresh_token` | Text | NULLABLE |
+| `access_token` | Text | NULLABLE |
+| `expires_at` | Int | NULLABLE (Unix timestamp) |
+| `token_type` | String | NULLABLE |
+| `scope` | String | NULLABLE |
+| `id_token` | Text | NULLABLE |
+| `session_state` | String | NULLABLE |
+
+**Relationships:**
+
+- Many Accounts → One User (n:1)
+
+**Indexes:** `userId`  
+**Unique Constraints:** `provider + providerAccountId`  
+**Cascade:** ON DELETE CASCADE (delete account when user deleted)
+
+### Session
+
+**Description:** Active user sessions for multi-device support. Used when not using JWT-only strategy.
+
+| Field | Type | Attributes |
+| ----- | ---- | ---------- |
+| `id` | String | PRIMARY KEY |
+| `sessionToken` | String | UNIQUE, NOT NULL, INDEXED |
+| `userId` | Int | FOREIGN KEY → User.id, NOT NULL, INDEXED |
+| `expires` | DateTime | NOT NULL |
+
+**Relationships:**
+
+- Many Sessions → One User (n:1)
+
+**Indexes:** `userId`, `sessionToken`  
+**Cascade:** ON DELETE CASCADE (delete session when user deleted)
+
+### VerificationToken
+
+**Description:** Tokens for email verification and password reset flows.
+
+| Field | Type | Attributes |
+| ----- | ---- | ---------- |
+| `identifier` | String | NOT NULL (email/phone) |
+| `token` | String | UNIQUE, NOT NULL |
+| `expires` | DateTime | NOT NULL |
+
+**Unique Constraints:** `identifier + token`
 
 ### Form
 
@@ -142,7 +224,7 @@ cp .env.sample .env
 npx prisma generate
 npx prisma migrate deploy
 
-# Optional: Seed database with sample data (first time only)
+# Optional: Seed database with sample data (includes auth users)
 npx prisma db seed
 ```
 
@@ -161,7 +243,7 @@ cp .env.sample .env
 npx prisma generate
 npx prisma migrate deploy
 
-# Optional: Seed database with sample data (first time only)
+# Optional: Seed database with sample data (includes auth users)
 npx prisma db seed
 ```
 
@@ -178,7 +260,7 @@ cp .env.sample .env
 npx prisma generate
 npx prisma migrate deploy
 
-# Optional: Seed database with sample data (first time only)
+# Optional: Seed database with sample data (includes auth users)
 npx prisma db seed
 ```
 
@@ -190,6 +272,7 @@ npx prisma db seed
 npx prisma generate              # Generate Prisma Client (TypeScript types)
 npx prisma migrate dev           # Create new migration (development)
 npx prisma migrate deploy        # Apply migrations (production)
+npx prisma migrate dev --name add_nextauth_tables  # Create named migration
 npx prisma migrate reset         # Reset database (deletes all data + re-runs migrations)
 npx prisma db push               # Sync schema without creating migration files
 npx prisma db seed               # Seed database with sample data

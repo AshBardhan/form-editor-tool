@@ -14,6 +14,9 @@
 - **Lucide React**: Lightweight, modern SVG icon library for clean, scalable icons.
 - **Prisma ORM**: Type-safe database ORM with auto-generated client and migration system for PostgreSQL.
 - **PostgreSQL**: Robust relational database for data persistence with ACID compliance.
+- **NextAuth.js**: Industry-standard authentication library for Next.js with built-in session management, OAuth providers, and JWT support.
+- **bcryptjs**: Secure password hashing library for credential-based authentication.
+- **@auth/prisma-adapter**: Official Prisma adapter for NextAuth.js to store sessions and accounts in database.
 
 ## Key Design Decisions
 
@@ -68,11 +71,47 @@
 - **Lazy Imports**: Dynamic imports for heavy components (where applicable)
 - **Optimized Form Rendering**: Efficient block updates and validation checks
 
+### Authentication & Authorization
+
+- **NextAuth.js Integration**: Production-ready authentication system
+  - Multiple providers: Credentials (email/password), Google OAuth, GitHub OAuth
+  - JWT-based sessions for stateless authentication
+  - Secure session management with automatic token refresh
+  - Built-in CSRF protection and secure cookie handling
+- **Role-Based Access Control (RBAC)**: Fine-grained permission system
+  - **CLIENT Role**: Form creators with full control over their own workspace
+    - Create, read, update, delete own forms
+    - View own submissions and analytics
+    - Manage own profile
+  - **ADMIN Role**: Platform administrators with superuser capabilities
+    - All CLIENT permissions plus system-wide access
+    - View/manage all users and forms
+    - User impersonation for customer support
+    - Platform-wide analytics and system configuration
+- **Permission System**: Granular permission checks
+  - Permission definitions: `form:read:own`, `form:read:all`, `user:impersonate`, etc.
+  - Role-permission mapping for consistent authorization
+  - Helper functions: `requireAuth()`, `requireAdmin()`, `requireOwnership()`
+- **Route Protection**: Middleware-based access control
+  - Public routes: `/auth/*`, `/f/[slug]` (published forms)
+  - Protected routes: `/forms/*` (requires authentication)
+  - Admin routes: `/admin/*` (requires ADMIN role)
+  - API route guards with ownership validation
+- **Security Best Practices**:
+  - Password hashing with bcryptjs (12 rounds)
+  - JWT signed with secret key
+  - HTTP-only cookies for token storage
+  - Session expiration (30 days default)
+  - Rate limiting on auth endpoints (future)
+
 ### Database Architecture
 
 - **Prisma ORM**: Type-safe database access with auto-generated TypeScript types
-- **Schema Design**: 5 models with clear separation of concerns
-  - **User**: Form creators with role-based access (CLIENT, ADMIN)
+- **Schema Design**: 8 models with clear separation of concerns
+  - **User**: Form creators with role-based access (CLIENT, ADMIN) and authentication fields
+  - **Account**: OAuth provider connections (Google, GitHub, etc.)
+  - **Session**: Active user sessions for multi-device support
+  - **VerificationToken**: Email verification and password reset tokens
   - **Form**: Form metadata with ownership, status tracking, public slug and analytics counters
   - **FormBlock**: Individual form fields/widgets with JSON props and ordering
   - **FormSubmission**: Anonymous submissions with timestamp tracking
@@ -88,6 +127,8 @@
   - `submitAttempts`: Total submit button clicks (success + failure)
 - **Relationships**:
   - User → Forms (1:n): One user creates many forms
+  - User → Accounts (1:n): One user can have multiple OAuth providers
+  - User → Sessions (1:n): One user can be logged in on multiple devices
   - Form → FormBlocks (1:n): One form contains many blocks
   - Form → FormSubmissions (1:n): One form receives many submissions
   - FormSubmission → FormFieldResponses (1:n): One submission contains many field responses
@@ -97,12 +138,20 @@
   - Index optimization purposes
   - Design decisions and constraints
 - **Data Integrity**:
-  - Cascade deletes ensure referential integrity (delete form → deletes blocks + submissions)
-  - Unique constraints on email (User) and slug (Form)
+  - Cascade deletes ensure referential integrity:
+    - Delete form → deletes blocks + submissions
+    - Delete user → deletes forms + accounts + sessions
+  - Unique constraints on email (User), slug (Form), sessionToken (Session)
+  - Composite unique constraint on provider + providerAccountId (Account)
   - Composite indexes for efficient queries (formId + order for FormBlock)
 - **Performance Optimization**:
-  - Strategic indexes on frequently queried fields (userId, formId, status, slug, submittedAt, respondentEmail, blockName)
-  - Composite index (formId + order) for efficient block ordering
+  - Strategic indexes on frequently queried fields:
+    - User: email, role
+    - Form: userId, status, slug, createdAt
+    - FormBlock: formId, formId + order
+    - FormSubmission: formId, submittedAt
+    - Session: userId, sessionToken
+    - Account: userId, provider + providerAccountId
   - JSON fields (props, value) for flexible schema evolution
 - **Schema Management**: Version-controlled database schema with migrations
 - **Connection Pooling**: Efficient database connections using `@prisma/adapter-pg`
