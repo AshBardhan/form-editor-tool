@@ -37,7 +37,7 @@ The application is crafted using `Next.js` and `React` to build scalable and reu
 | Route | Description |
 | ----- | ----------- |
 | `/api/forms` | **GET**: List all forms with filtering and pagination<br>**POST**: Create new draft form |
-| `/api/forms/[id]` | **GET**: Retrieve form with ordered blocks<br>**PUT**: Update form metadata and blocks in transaction<br>**DELETE**: Delete form with cascade |
+| `/api/forms/[id]` | **GET**: Retrieve form with ordered blocks<br>**PATCH**: Automatically update form metadata and blocks<br>**DELETE**: Delete form with cascade |
 | `/api/forms/[id]/status` | **PATCH**: Publish/unpublish/archive form with status updates |
 | `/api/forms/[id]/submissions` | **GET**: Retrieve all submissions with pagination<br>**POST**: Submit form response with field values |
 | `/api/forms/[id]/analytics` | **GET**: Comprehensive analytics (submissions over time, completion rates, field value distribution) |

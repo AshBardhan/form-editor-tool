@@ -33,16 +33,13 @@
   - Widget property help tooltips
 - **Form Lifecycle Management**: Implement save/discard/publish workflow
   - Discard changes (revert to last saved version)
-  - Auto-save functionality with periodic saves
   - "Last saved" timestamp indicator
 - **Enhanced Toast System**: Extend toast notifications
-  - Success/error messages for save, publish, delete actions
   - Real-time feedback for widget operations
   - Action undo functionality in toasts
 - **Loading States**: Add comprehensive loading indicators
   - Skeleton loaders for form preview loading
   - Spinner components for async operations
-  - Loading states for save/publish actions
 
 ## Medium Priority - Backend Integration & Data
 
