@@ -21,11 +21,6 @@ export function useAutoSave<T>({
   const previousDataRef = useRef(data);
 
   /**
-   * Latest value available to the timeout callback.
-   */
-  const latestDataRef = useRef(data);
-
-  /**
    * Skip first render.
    */
   const initializedRef = useRef(false);
@@ -34,8 +29,6 @@ export function useAutoSave<T>({
    * Debounce timer.
    */
   const timeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null);
-
-  latestDataRef.current = data;
 
   useEffect(() => {
     if (!enabled) return;
@@ -69,7 +62,7 @@ export function useAutoSave<T>({
     }
 
     timeoutRef.current = setTimeout(() => {
-      void onSave(latestDataRef.current);
+      onSave(data);
     }, debounceMs);
 
     return () => {
@@ -77,13 +70,5 @@ export function useAutoSave<T>({
         clearTimeout(timeoutRef.current);
       }
     };
-  }, [data, enabled, debounceMs, isEqual, onSave]);
-
-  useEffect(() => {
-    return () => {
-      if (timeoutRef.current) {
-        clearTimeout(timeoutRef.current);
-      }
-    };
-  }, []);
+  }, [data, enabled, debounceMs]);
 }

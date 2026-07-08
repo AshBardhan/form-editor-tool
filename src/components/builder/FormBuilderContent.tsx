@@ -115,14 +115,16 @@ export const FormBuilderContent = (): JSX.Element => {
         type: "success",
         title: "Changes saved",
         duration: 2000,
+        dismissible: true,
       });
     } catch (err) {
       toast.update(toastId, {
         type: "error",
         title: "Failed to save",
         description: err instanceof Error ? err.message : "Unknown error",
+        duration: 5000,
+        dismissible: true,
       });
-      throw err;
     }
   }, []);
 

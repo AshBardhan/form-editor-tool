@@ -51,23 +51,23 @@ export const CanvasForm = ({
   dragSource,
   onDeleteBlock,
 }: CanvasFormProps): JSX.Element => {
-  const formConfig = useFormConfigStore((state) => state.formConfig);
+  const form = useFormConfigStore((state) => state.formConfig);
   const { setNodeRef } = useDroppable({ id: "canvas" });
-  const isOverEnd = overId && !formConfig.blocks.some((f) => f.id === overId);
+  const isOverEnd = overId && !form.blocks.some((f) => f.id === overId);
 
   return (
     <div className="form-content" ref={setNodeRef}>
       <SortableContext
-        items={formConfig.blocks.map((f) => f.id)}
+        items={form.blocks.map((f) => f.id)}
         strategy={verticalListSortingStrategy}
       >
         {/* Empty canvas state */}
-        {formConfig.blocks.length === 0 && !overId ? (
+        {form.blocks.length === 0 && !overId ? (
           <DropZeroState />
         ) : (
           <>
             {/* Form canvas state with dropped and configured blocks */}
-            {formConfig.blocks.map((block) => (
+            {form.blocks.map((block) => (
               <div className="relative" key={block.id}>
                 {/* Drop placeholder in the middle of the list */}
                 {overId === block.id &&

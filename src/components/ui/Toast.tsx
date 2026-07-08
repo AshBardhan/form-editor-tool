@@ -32,6 +32,7 @@ export interface ToastData {
 let toasts: ToastData[] = [];
 let listeners: Array<(toasts: ToastData[]) => void> = [];
 let toastCount = 0;
+const toastTimeouts: Map<string, ReturnType<typeof setTimeout>> = new Map();
 
 function subscribe(listener: (toasts: ToastData[]) => void) {
   listeners.push(listener);
@@ -42,6 +43,24 @@ function subscribe(listener: (toasts: ToastData[]) => void) {
 
 function notify() {
   listeners.forEach((listener) => listener([...toasts]));
+}
+
+function addToastTimeout(id: string, duration: number | undefined) {
+  if (duration && duration !== Infinity && duration > 0) {
+    const timeoutId = setTimeout(() => {
+      removeToast(id);
+    }, duration);
+
+    toastTimeouts.set(id, timeoutId);
+  }
+}
+
+function removeToastTimeout(id: string) {
+  const existingTimeout = toastTimeouts.get(id);
+  if (existingTimeout) {
+    clearTimeout(existingTimeout);
+    toastTimeouts.delete(id);
+  }
 }
 
 function addToast(data: Omit<ToastData, "id">): string {
@@ -56,12 +75,8 @@ function addToast(data: Omit<ToastData, "id">): string {
   toasts = [...toasts, toast];
   notify();
 
-  // Auto dismiss (exclude Infinity since setTimeout(fn, Infinity) executes immediately)
-  if (toast.duration && toast.duration !== Infinity && toast.duration > 0) {
-    setTimeout(() => {
-      removeToast(id);
-    }, toast.duration);
-  }
+  // Add auto-dismiss timer if duration is specified
+  addToastTimeout(id, toast.duration);
 
   return id;
 }
@@ -80,19 +95,17 @@ function updateToast(id: string, data: Partial<Omit<ToastData, "id">>): void {
   ];
   notify();
 
-  // Set new auto-dismiss if duration changed
-  if (
-    updatedToast.duration &&
-    updatedToast.duration !== Infinity &&
-    updatedToast.duration > 0
-  ) {
-    setTimeout(() => {
-      removeToast(id);
-    }, updatedToast.duration);
-  }
+  // Clear existing timeout
+  removeToastTimeout(id);
+
+  // Set new auto-dismiss if duration specified
+  addToastTimeout(id, updatedToast.duration);
 }
 
 function removeToast(id: string) {
+  // Clear any pending timeout
+  removeToastTimeout(id);
+
   toasts = toasts.filter((t) => t.id !== id);
   notify();
 }
@@ -265,7 +278,6 @@ export function Toaster({ position = "bottom-right" }: ToasterProps = {}) {
   useEffect(() => {
     return subscribe(setToastList);
   }, []);
-
 
   if (toastList.length === 0) return null;
 
