@@ -27,8 +27,8 @@ enum FormStatus {
 }
 
 // ========================================
-// PHASE 1: Single User (No Auth)
-// User acts as CLIENT - creates forms, views submissions
+// AUTHENTICATION & USER MANAGEMENT
+// Supports both credentials (email/password) and OAuth providers
 // ========================================
 
 model User {
@@ -37,15 +37,68 @@ model User {
   name  String? // Optional display name
   role  UserRole @default(CLIENT) // User role (CLIENT creates forms, ADMIN manages platform)
 
+  // Authentication fields
+  password      String? // Hashed password for credentials provider (null for OAuth-only users)
+  image         String? // Profile picture URL (from OAuth or uploaded)
+  emailVerified DateTime? // Email verification timestamp (null if not verified)
+
   createdAt DateTime @default(now()) // Account creation timestamp
   updatedAt DateTime @updatedAt // Last profile update timestamp
 
   // Relations
-  forms Form[] // 1-n: One user can create many forms
+  forms    Form[]    // 1-n: One user can create many forms
+  accounts Account[] // 1-n: One user can have multiple auth providers (Google, GitHub, etc.)
+  sessions Session[] // 1-n: One user can have multiple active sessions (multi-device)
 
   // Indexes
   @@index([email]) // Fast lookup during login
   @@index([role]) // Filter users by role
+}
+
+// ========================================
+// NextAuth.js Authentication Tables
+// ========================================
+
+// Links users to OAuth providers (Google, GitHub, etc.)
+model Account {
+  id                String  @id @default(cuid())
+  userId            Int
+  type              String // "oauth", "email", "credentials"
+  provider          String // "google", "github", "credentials"
+  providerAccountId String // User ID from the provider
+  refresh_token     String? @db.Text // OAuth refresh token
+  access_token      String? @db.Text // OAuth access token
+  expires_at        Int? // Token expiration timestamp
+  token_type        String? // "Bearer", etc.
+  scope             String? // OAuth scopes granted
+  id_token          String? @db.Text // OpenID Connect ID token
+  session_state     String? // OAuth session state
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@unique([provider, providerAccountId]) // One account per provider per user
+  @@index([userId])
+}
+
+// Tracks active login sessions (for database session strategy)
+model Session {
+  id           String   @id @default(cuid())
+  sessionToken String   @unique
+  userId       Int
+  expires      DateTime
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([userId])
+}
+
+// Used for email verification and password reset tokens
+model VerificationToken {
+  identifier String // Email or phone number
+  token      String   @unique
+  expires    DateTime
+
+  @@unique([identifier, token])
 }
 
 // ========================================

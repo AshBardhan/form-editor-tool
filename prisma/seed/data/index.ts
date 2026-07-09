@@ -6,4 +6,4 @@
 export { seedForms } from "./forms";
 export { seedBlocks } from "./blocks";
 export { seedSubmissions } from "./submissions";
-export { seedUser } from "./users";
+export { seedUser, seedUsers } from "./users";
