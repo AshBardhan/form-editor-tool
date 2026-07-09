@@ -9,6 +9,7 @@ import {
   FORM_META_CACHE_TAG,
 } from "@/lib/queries/forms";
 import { generateFormSlug } from "@/lib/utils/formUtils";
+import { requireAuth } from "@/lib/utils/authUtils";
 
 /**
  * Generates a unique title and slug pair so newly created forms do not collide.
@@ -38,10 +39,14 @@ async function generateUniqueFormIdentity(baseTitle: string, baseSlug: string) {
 }
 
 /**
- * Creates a new form for the default user and returns the persisted record.
+ * Creates a new form for the authenticated user and returns the persisted record.
  */
 export async function POST(request: NextRequest) {
   return apiHandler(async () => {
+    // Require authentication
+    const session = await requireAuth();
+    const userId = parseInt(session.user.id);
+
     const body = await request.json();
     const parsed = CreateFormSchema.safeParse(body);
 
@@ -53,29 +58,19 @@ export async function POST(request: NextRequest) {
 
     const { title, theme, description, slug } = parsed.data;
 
-    // Phase 1 single-user fallback.
-    const user = await prisma.user.findFirst({
-      orderBy: { id: "asc" },
-      select: { id: true },
-    });
-
-    if (!user) {
-      throw new InternalServerError("No user found. Run seed first.");
-    }
-
     const baseTitle = title.trim() || "New Form";
     const baseSlug = generateFormSlug(slug?.trim() || baseTitle);
     const { title: uniqueTitle, slug: uniqueSlug } =
       await generateUniqueFormIdentity(baseTitle, baseSlug);
 
-    // Create form with blocks.
+    // Create form for authenticated user
     const form = await prisma.form.create({
       data: {
         title: uniqueTitle,
         theme,
         description: description ?? null,
         slug: uniqueSlug,
-        userId: user.id,
+        userId,
       },
     });
 
