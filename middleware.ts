@@ -14,7 +14,7 @@ const protectedRoutes = ["/forms", "/api/forms"];
 const adminRoutes = ["/admin"];
 
 // Public routes (no auth required)
-const publicRoutes = ["/auth/signin", "/auth/signup", "/auth/error", "/f"];
+const publicRoutes = ["/signin", "/signup", "/error", "/f", "/api/auth"];
 
 export default async function middleware(request: NextRequest) {
   const { pathname } = request.nextUrl;
@@ -28,7 +28,7 @@ export default async function middleware(request: NextRequest) {
 
   // Redirect to signin if not authenticated and accessing protected route
   if (!session && protectedRoutes.some((route) => pathname.startsWith(route))) {
-    const signInUrl = new URL("/auth/signin", request.url);
+    const signInUrl = new URL("/signin", request.url);
     signInUrl.searchParams.set("callbackUrl", pathname);
     return NextResponse.redirect(signInUrl);
   }
@@ -36,7 +36,7 @@ export default async function middleware(request: NextRequest) {
   // Check admin routes
   if (adminRoutes.some((route) => pathname.startsWith(route))) {
     if (!session) {
-      const signInUrl = new URL("/auth/signin", request.url);
+      const signInUrl = new URL("/signin", request.url);
       signInUrl.searchParams.set("callbackUrl", pathname);
       return NextResponse.redirect(signInUrl);
     }
