@@ -1,13 +1,17 @@
 import Link from "next/link";
 import { cn } from "@/lib/utils/styleUtils";
-import { CircleUserIcon, HomeIcon } from "lucide-react";
+import { HomeIcon } from "lucide-react";
+import { auth } from "@/lib/auth";
+import { UserMenu } from "@/components/auth/UserMenu";
 
 interface AppHeaderProps {
   theme?: string;
   className?: string;
 }
 
-export const AppHeader = ({ theme, className }: AppHeaderProps) => {
+export const AppHeader = async ({ theme, className }: AppHeaderProps) => {
+  const session = await auth();
+
   return (
     <header
       className={cn(
@@ -20,7 +24,17 @@ export const AppHeader = ({ theme, className }: AppHeaderProps) => {
         <Link href="/">
           <HomeIcon size={24} />
         </Link>
-        <CircleUserIcon size={20} />
+
+        {session?.user ? (
+          <UserMenu user={session.user} />
+        ) : (
+          <Link
+            href="/signin"
+            className="text-sm font-medium hover:opacity-80 transition-opacity"
+          >
+            Sign In
+          </Link>
+        )}
       </div>
     </header>
   );

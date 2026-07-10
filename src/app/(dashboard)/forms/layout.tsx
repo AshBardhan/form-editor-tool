@@ -1,5 +1,6 @@
 import { JSX } from "react";
-import { AppHeader, AppContent } from "@/components/layout";
+import { AppHeader } from "@/components/layout/AppHeader";
+import { AppContent } from "@/components/layout";
 
 /**
  * Forms Dashboard Layout

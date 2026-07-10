@@ -26,7 +26,7 @@ export async function POST(request: NextRequest) {
 
     if (!parsed.success) {
       throw new ValidationError(
-        parsed.error.issues[0]?.message || "Invalid request body"
+        parsed.error.issues[0]?.message || "Invalid request body",
       );
     }
 
@@ -67,7 +67,7 @@ export async function POST(request: NextRequest) {
         data: user,
         message: "Account created successfully",
       },
-      { status: 201 }
+      { status: 201 },
     );
   });
 }
