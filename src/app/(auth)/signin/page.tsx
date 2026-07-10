@@ -15,14 +15,7 @@ function SignInContent() {
             <h2 className="text-2xl font-bold text-gray-900">Welcome Back</h2>
             <p className="text-gray-600 mt-2">Sign in to your account</p>
           </div>
-
           <SignInForm />
-
-          <div className="mt-6 pt-6 border-t border-gray-200">
-            <p className="text-xs text-center text-gray-500">
-              Test Accounts: admin@formkit.dev / admin123 or client@formkit.dev / client123
-            </p>
-          </div>
         </div>
       </div>
     </div>

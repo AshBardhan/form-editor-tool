@@ -14,7 +14,6 @@ export default function SignUpPage() {
             <h2 className="text-2xl font-bold text-gray-900">Create Account</h2>
             <p className="text-gray-600 mt-2">Start building forms today</p>
           </div>
-
           <SignUpForm />
         </div>
       </div>

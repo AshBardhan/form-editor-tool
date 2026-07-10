@@ -12,7 +12,7 @@ import type { UserRole } from "@prisma/client";
 
 export const authConfig: NextAuthConfig = {
   adapter: PrismaAdapter(prisma),
-  
+
   providers: [
     // Email/Password Authentication
     CredentialsProvider({
@@ -36,7 +36,7 @@ export const authConfig: NextAuthConfig = {
 
         const isPasswordValid = await compare(
           credentials.password as string,
-          user.password
+          user.password,
         );
 
         if (!isPasswordValid) {

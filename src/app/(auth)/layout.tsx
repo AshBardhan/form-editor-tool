@@ -17,7 +17,6 @@ export default function AuthLayout({
             FormKit
           </h1>
         </div>
-        
         {/* Auth Content */}
         {children}
       </div>

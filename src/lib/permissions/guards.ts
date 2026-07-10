@@ -19,7 +19,7 @@ export function hasPermission(role: UserRole, permission: Permission): boolean {
  */
 export function hasAnyPermission(
   role: UserRole,
-  permissions: Permission[]
+  permissions: Permission[],
 ): boolean {
   return permissions.some((p) => hasPermission(role, p));
 }
@@ -29,7 +29,7 @@ export function hasAnyPermission(
  */
 export function hasAllPermissions(
   role: UserRole,
-  permissions: Permission[]
+  permissions: Permission[],
 ): boolean {
   return permissions.every((p) => hasPermission(role, p));
 }
@@ -47,7 +47,7 @@ export function isOwner(userId: number, resourceUserId: number): boolean {
 export function canAccessResource(
   userId: number,
   userRole: UserRole,
-  resourceUserId: number
+  resourceUserId: number,
 ): boolean {
   return isOwner(userId, resourceUserId) || userRole === "ADMIN";
 }

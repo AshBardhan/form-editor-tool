@@ -80,7 +80,7 @@ export async function requireOwnership(resourceUserId: number) {
  */
 export async function requireResourceAccess(
   resourceUserId: number,
-  permission: Permission
+  permission: Permission,
 ) {
   const session = await requireAuth();
   const currentUserId = parseInt(session.user.id);

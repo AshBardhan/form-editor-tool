@@ -103,7 +103,9 @@ export function SignUpForm() {
         label="Confirm Password"
         placeholder="••••••••"
         value={formData.confirmPassword}
-        onChange={(e) => setFormData({ ...formData, confirmPassword: e.target.value })}
+        onChange={(e) =>
+          setFormData({ ...formData, confirmPassword: e.target.value })
+        }
         required
         autoComplete="new-password"
       />
@@ -114,7 +116,10 @@ export function SignUpForm() {
 
       <div className="text-center text-sm text-gray-600">
         Already have an account?{" "}
-        <Link href="/signin" className="text-blue-600 hover:underline font-medium">
+        <Link
+          href="/signin"
+          className="text-blue-600 hover:underline font-medium"
+        >
           Sign in
         </Link>
       </div>

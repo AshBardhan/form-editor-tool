@@ -12,13 +12,23 @@ interface FormFieldProps extends ComponentProps<"input"> {
   hint?: string;
 }
 
-export function FormField({ label, error, hint, className, id, ...props }: FormFieldProps) {
+export function FormField({
+  label,
+  error,
+  hint,
+  className,
+  id,
+  ...props
+}: FormFieldProps) {
   const fieldId = id || `field-${label?.toLowerCase().replace(/\s+/g, "-")}`;
 
   return (
     <div className="space-y-2">
       {label && (
-        <label htmlFor={fieldId} className="block text-sm font-medium text-gray-700">
+        <label
+          htmlFor={fieldId}
+          className="block text-sm font-medium text-gray-700"
+        >
           {label}
         </label>
       )}

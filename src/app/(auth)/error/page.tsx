@@ -16,11 +16,14 @@ function AuthErrorContent() {
   const errorMessages: Record<string, string> = {
     Configuration: "There is a problem with the server configuration.",
     AccessDenied: "You do not have permission to sign in.",
-    Verification: "The verification token has expired or has already been used.",
+    Verification:
+      "The verification token has expired or has already been used.",
     Default: "An error occurred during authentication.",
   };
 
-  const errorMessage = error ? errorMessages[error] || errorMessages.Default : errorMessages.Default;
+  const errorMessage = error
+    ? errorMessages[error] || errorMessages.Default
+    : errorMessages.Default;
 
   return (
     <div className="min-h-screen flex items-center justify-center bg-gray-50">
@@ -43,11 +46,13 @@ function AuthErrorContent() {
 
 export default function AuthErrorPage() {
   return (
-    <Suspense fallback={
-      <div className="min-h-screen flex items-center justify-center bg-gray-50">
-        <div className="text-center">Loading...</div>
-      </div>
-    }>
+    <Suspense
+      fallback={
+        <div className="min-h-screen flex items-center justify-center bg-gray-50">
+          <div className="text-center">Loading...</div>
+        </div>
+      }
+    >
       <AuthErrorContent />
     </Suspense>
   );
