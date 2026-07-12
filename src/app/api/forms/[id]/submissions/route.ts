@@ -11,6 +11,7 @@ import {
   FORM_REPORT_CACHE_TAG,
   PUBLIC_FORM_CACHE_TAG,
 } from "@/lib/queries/forms";
+import { requireAuth, requireOwnership } from "@/lib/utils/authUtils";
 
 const SubmissionSchema = z.object({
   responses: z.array(
@@ -121,6 +122,7 @@ export async function DELETE(
   { params }: { params: Promise<{ id: string }> },
 ) {
   return apiHandler(async () => {
+    const session = await requireAuth();
     const { id: formId } = await params;
     if (!formId) {
       throw new ValidationError("Form ID is required");
@@ -131,6 +133,7 @@ export async function DELETE(
       where: { id: formId },
       select: {
         id: true,
+        userId: true,
         _count: {
           select: { submissions: true },
         },
@@ -140,6 +143,9 @@ export async function DELETE(
     if (!form) {
       throw new NotFoundError("Form not found");
     }
+
+    // Check ownership (admin can access any form)
+    await requireOwnership(form.userId);
 
     const submissionCount = form._count.submissions;
 

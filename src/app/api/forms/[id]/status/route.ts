@@ -10,6 +10,7 @@ import {
   FORM_REPORT_CACHE_TAG,
 } from "@/lib/queries/forms";
 import { revalidateTag } from "next/cache";
+import { requireAuth, requireOwnership } from "@/lib/utils/authUtils";
 
 /**
  * Updates the form status with proper state transition validation.
@@ -20,6 +21,7 @@ export async function PATCH(
   { params }: { params: Promise<{ id: string }> },
 ) {
   return apiHandler(async () => {
+    const session = await requireAuth();
     const { id } = await params;
     if (!id) {
       throw new ValidationError("Form ID is required");
@@ -38,12 +40,15 @@ export async function PATCH(
     // Get current form status to validate transition
     const currentForm = await prisma.form.findUnique({
       where: { id },
-      select: { status: true, publishedAt: true },
+      select: { status: true, publishedAt: true, userId: true },
     });
 
     if (!currentForm) {
       throw new NotFoundError("Form not found");
     }
+
+    // Check ownership (admin can access any form)
+    await requireOwnership(currentForm.userId);
 
     const currentStatus = currentForm.status;
 
