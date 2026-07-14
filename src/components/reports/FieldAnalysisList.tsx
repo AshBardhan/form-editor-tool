@@ -5,11 +5,7 @@ import { Card, CardContent } from "@/components/ui/Card";
 import Text from "@/components/ui/Text";
 import { Badge } from "@/components/ui/Badge";
 import Metric from "@/components/ui/Metric";
-import {
-  type FormSubmission,
-  type FormBlockProps,
-  type FormBlockType,
-} from "@/lib/types/form";
+import { type FormSubmission, type FormBlockType } from "@/lib/types/form";
 import { type FieldData } from "@/lib/types/reports";
 import {
   isChoiceBasedFieldBlock,

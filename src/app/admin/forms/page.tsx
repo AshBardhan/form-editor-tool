@@ -48,9 +48,9 @@ async function getForms() {
 export default async function AdminFormsPage() {
   const forms = await getForms();
 
-  const totalViews = forms.reduce((sum: number, f: any) => sum + f.views, 0);
+  const totalViews = forms.reduce((sum, f) => sum + f.views, 0);
   const totalSubmissions = forms.reduce(
-    (sum: number, f: any) => sum + f._count.submissions,
+    (sum, f) => sum + f._count.submissions,
     0,
   );
 
@@ -74,7 +74,7 @@ export default async function AdminFormsPage() {
           <div>
             <div className="text-sm text-gray-600">Published</div>
             <div className="text-2xl font-bold text-gray-900">
-              {forms.filter((f: any) => f.status === "published").length}
+              {forms.filter((f) => f.status === "published").length}
             </div>
           </div>
           <div>

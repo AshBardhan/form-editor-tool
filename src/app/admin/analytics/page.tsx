@@ -145,7 +145,7 @@ export default async function AdminAnalyticsPage() {
                 No forms yet
               </div>
             ) : (
-              recentActivity.forms.map((form: any) => (
+              recentActivity.forms.map((form) => (
                 <div key={form.id} className="px-6 py-4">
                   <div className="font-medium text-gray-900">{form.title}</div>
                   <div className="text-sm text-gray-500 mt-1">
@@ -169,7 +169,7 @@ export default async function AdminAnalyticsPage() {
                 No submissions yet
               </div>
             ) : (
-              recentActivity.submissions.map((submission: any) => (
+              recentActivity.submissions.map((submission) => (
                 <div key={submission.id} className="px-6 py-4">
                   <div className="font-medium text-gray-900">
                     {submission.form.title}

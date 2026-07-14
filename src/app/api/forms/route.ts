@@ -9,7 +9,7 @@ import {
   FORM_META_CACHE_TAG,
 } from "@/lib/queries/forms";
 import { generateFormSlug } from "@/lib/utils/formUtils";
-import { requireAuth } from "@/lib/utils/authUtils";
+import { requireAuthSession } from "@/lib/utils/authUtils";
 
 /**
  * Generates a unique title and slug pair so newly created forms do not collide.
@@ -44,7 +44,7 @@ async function generateUniqueFormIdentity(baseTitle: string, baseSlug: string) {
 export async function POST(request: NextRequest) {
   return apiHandler(async () => {
     // Require authentication
-    const session = await requireAuth();
+    const session = await requireAuthSession();
     const userId = parseInt(session.user.id);
 
     const body = await request.json();

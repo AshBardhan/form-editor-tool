@@ -91,7 +91,7 @@
 - **Permission System**: Granular permission checks
   - Permission definitions: `form:read:own`, `form:read:all`, `user:impersonate`, etc.
   - Role-permission mapping for consistent authorization
-  - Helper functions: `requireAuth()`, `requireAdmin()`, `requireOwnership()`
+  - Helper functions: `requireAuthSession()`, `requireAdmin()`, `requireOwnership()`
 - **Route Protection**: Middleware-based access control
   - Public routes: `/auth/*`, `/f/[slug]` (published forms)
   - Protected routes: `/forms/*` (requires authentication)

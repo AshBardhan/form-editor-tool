@@ -12,8 +12,7 @@ import {
 } from "@/lib/queries/forms";
 import { revalidateTag } from "next/cache";
 import { generateFormSlug } from "@/lib/utils/formUtils";
-import { requireAuth, requireOwnership } from "@/lib/utils/authUtils";
-import { PERMISSIONS } from "@/lib/permissions";
+import { requireAuthSession, requireOwnership } from "@/lib/utils/authUtils";
 
 /**
  * Returns the full form payload for editing and preview flows.
@@ -24,7 +23,7 @@ export async function GET(
   { params }: { params: Promise<{ id: string }> },
 ) {
   return apiHandler(async () => {
-    const session = await requireAuth();
+    const session = await requireAuthSession();
     const { id } = await params;
     if (!id) {
       throw new ValidationError("Form ID is required");
@@ -44,7 +43,7 @@ export async function GET(
     }
 
     // Check ownership (admin can access any form)
-    await requireOwnership(form.userId);
+    await requireOwnership(session, form.userId);
 
     return NextResponse.json({ success: true, data: form }, { status: 200 });
   });
@@ -60,7 +59,7 @@ export async function PATCH(
   { params }: { params: Promise<{ id: string }> },
 ) {
   return apiHandler(async () => {
-    const session = await requireAuth();
+    const session = await requireAuthSession();
     const { id } = await params;
     if (!id) {
       throw new ValidationError("Form ID is required");
@@ -93,7 +92,7 @@ export async function PATCH(
     }
 
     // Check ownership (admin can update any form)
-    await requireOwnership(currentForm.userId);
+    await requireOwnership(session, currentForm.userId);
 
     // 1. Validate status permissions (security: use database state)
     const actualStatus = currentForm.status;
@@ -264,7 +263,7 @@ export async function DELETE(
   { params }: { params: Promise<{ id: string }> },
 ) {
   return apiHandler(async () => {
-    const session = await requireAuth();
+    const session = await requireAuthSession();
     const { id } = await params;
     if (!id) {
       throw new ValidationError("Form ID is required");
@@ -291,7 +290,7 @@ export async function DELETE(
     }
 
     // Check ownership (admin can delete any form)
-    await requireOwnership(form.userId);
+    await requireOwnership(session, form.userId);
 
     // Delete the form (cascade deletes blocks, submissions and responses)
     await prisma.form.delete({ where: { id } });

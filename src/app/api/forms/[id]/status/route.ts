@@ -10,7 +10,7 @@ import {
   FORM_REPORT_CACHE_TAG,
 } from "@/lib/queries/forms";
 import { revalidateTag } from "next/cache";
-import { requireAuth, requireOwnership } from "@/lib/utils/authUtils";
+import { requireAuthSession, requireOwnership } from "@/lib/utils/authUtils";
 
 /**
  * Updates the form status with proper state transition validation.
@@ -21,7 +21,7 @@ export async function PATCH(
   { params }: { params: Promise<{ id: string }> },
 ) {
   return apiHandler(async () => {
-    const session = await requireAuth();
+    const session = await requireAuthSession();
     const { id } = await params;
     if (!id) {
       throw new ValidationError("Form ID is required");
@@ -48,7 +48,7 @@ export async function PATCH(
     }
 
     // Check ownership (admin can access any form)
-    await requireOwnership(currentForm.userId);
+    await requireOwnership(session, currentForm.userId);
 
     const currentStatus = currentForm.status;
 

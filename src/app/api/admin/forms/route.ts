@@ -6,19 +6,31 @@
 import { NextRequest, NextResponse } from "next/server";
 import prisma from "@/lib/prisma";
 import { apiHandler } from "@/lib/utils/apiUtils";
-import { requireAdmin } from "@/lib/utils/authUtils";
+import { requireAuthSession, requireAdmin } from "@/lib/utils/authUtils";
+import { ValidationError } from "@/lib/errors";
+import { FormStatus } from "@/lib/types/form";
 
 export async function GET(request: NextRequest) {
   return apiHandler(async () => {
-    await requireAdmin();
+    const session = await requireAuthSession();
+    await requireAdmin(session);
 
     const searchParams = request.nextUrl.searchParams;
-    const status = searchParams.get("status");
-    const userId = searchParams.get("userId");
+    const status = searchParams.get("status") as FormStatus;
+    const userId = parseInt(searchParams.get("userId") || "");
 
-    const where: any = {};
-    if (status) where.status = status;
-    if (userId) where.userId = parseInt(userId);
+    if (!userId || isNaN(userId)) {
+      throw new ValidationError("Invalid user ID");
+    }
+
+    if (!status || !["DRAFT", "PUBLISHED", "ARCHIVED"].includes(status)) {
+      throw new ValidationError("Invalid status");
+    }
+
+    const where = {
+      status,
+      userId,
+    };
 
     const forms = await prisma.form.findMany({
       where,

@@ -59,13 +59,13 @@ export default async function AdminUsersPage() {
           <div>
             <div className="text-sm text-gray-600">Admins</div>
             <div className="text-2xl font-bold text-gray-900">
-              {users.filter((u: any) => u.role === "ADMIN").length}
+              {users.filter((u) => u.role === "ADMIN").length}
             </div>
           </div>
           <div>
             <div className="text-sm text-gray-600">Clients</div>
             <div className="text-2xl font-bold text-gray-900">
-              {users.filter((u: any) => u.role === "CLIENT").length}
+              {users.filter((u) => u.role === "CLIENT").length}
             </div>
           </div>
         </div>

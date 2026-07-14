@@ -6,7 +6,7 @@
 import { NextRequest, NextResponse } from "next/server";
 import prisma from "@/lib/prisma";
 import { apiHandler } from "@/lib/utils/apiUtils";
-import { requireAdmin } from "@/lib/utils/authUtils";
+import { requireAuthSession, requireAdmin } from "@/lib/utils/authUtils";
 import { ValidationError, NotFoundError } from "@/lib/errors";
 
 export async function DELETE(
@@ -14,7 +14,8 @@ export async function DELETE(
   { params }: { params: Promise<{ id: string }> },
 ) {
   return apiHandler(async () => {
-    await requireAdmin();
+    const session = await requireAuthSession();
+    await requireAdmin(session);
 
     const { id } = await params;
     const userId = parseInt(id);
@@ -48,7 +49,8 @@ export async function PATCH(
   { params }: { params: Promise<{ id: string }> },
 ) {
   return apiHandler(async () => {
-    await requireAdmin();
+    const session = await requireAuthSession();
+    await requireAdmin(session);
 
     const { id } = await params;
     const userId = parseInt(id);
