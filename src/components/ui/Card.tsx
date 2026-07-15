@@ -13,7 +13,7 @@ function Card({ className, clickable, ...props }: CardProps) {
       data-slot="card"
       className={cn(
         "block py-6 bg-white border border-gray-200 rounded-lg shadow transition-colors duration-200",
-        clickable && "hover:bg-gray-100 hover:shadow-md cursor-pointer",
+        clickable && "hover:bg-gray-50 hover:shadow-md cursor-pointer",
         className,
       )}
       {...props}

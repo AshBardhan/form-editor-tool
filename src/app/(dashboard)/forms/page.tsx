@@ -20,7 +20,7 @@ export default async function FormsPage(): Promise<JSX.Element> {
   let error = false;
   try {
     forms = await prisma.form.findMany({
-      where: isAdmin ? undefined : { userId }, // ADMIN sees all, CLIENT sees only own
+      where: isAdmin ? undefined : { userId },
       orderBy: { updatedAt: "desc" },
       select: {
         id: true,
@@ -28,6 +28,14 @@ export default async function FormsPage(): Promise<JSX.Element> {
         title: true,
         status: true,
         views: true,
+        createdAt: true,
+        publishedAt: true,
+        user: {
+          select: {
+            name: true,
+            email: true,
+          },
+        },
         blocks: {
           select: { id: true, type: true },
         },
@@ -44,6 +52,10 @@ export default async function FormsPage(): Promise<JSX.Element> {
     slug: form.slug,
     title: form.title,
     status: form.status,
+    isAdmin,
+    createdBy: isAdmin ? form.user.name || form.user.email : undefined,
+    createdAt: form.createdAt,
+    publishedAt: form.publishedAt,
     metrics: {
       fields: form.blocks.filter(
         (block) => block.type && isFieldBasedBlock(block.type as FormBlockType),

@@ -16,6 +16,7 @@ import {
 } from "@/components/ui/DropdownMenu";
 import { getFormMetrics } from "@/lib/utils/formUtils";
 import { formStatusLabel, formStatusVariant } from "@/lib/constants/form";
+import { formatDate } from "@/lib/utils/dateUtils";
 
 interface FormCardProps {
   form: DashboardForm;
@@ -123,6 +124,26 @@ export function FormCard({
                 </DropdownMenuContent>
               </DropdownMenu>
             </div>
+          </div>
+
+          {/* Metadata Section */}
+          <div className="flex flex-wrap items-center gap-x-4 gap-y-1 text-xs text-gray-500">
+            {form.isAdmin && form.createdBy && (
+              <div className="flex items-center gap-1">
+                <span className="font-medium">Created by:</span>
+                <span>{form.createdBy}</span>
+              </div>
+            )}
+            <div className="flex items-center gap-1">
+              <span className="font-medium">Created:</span>
+              <span>{formatDate(form.createdAt)}</span>
+            </div>
+            {form.status === "published" && form.publishedAt && (
+              <div className="flex items-center gap-1">
+                <span className="font-medium">Published:</span>
+                <span>{formatDate(form.publishedAt)}</span>
+              </div>
+            )}
           </div>
 
           {form.status !== "draft" && (
