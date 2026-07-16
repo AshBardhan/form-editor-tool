@@ -2,16 +2,11 @@
 
 import { useState, FormEvent } from "react";
 import { signIn } from "next-auth/react";
-import { useRouter, useSearchParams } from "next/navigation";
 import Link from "next/link";
 import { Button } from "@/components/ui/Button";
 import { FormField } from "@/components/ui/FormField";
 
 export function SignInForm() {
-  const router = useRouter();
-  const searchParams = useSearchParams();
-  const callbackUrl = searchParams.get("callbackUrl") || "/forms";
-
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
@@ -31,11 +26,9 @@ export function SignInForm() {
 
       if (result?.error) {
         setError("Invalid email or password");
-        return;
+      } else if (result?.ok) {
+        window.location.href = "/forms";
       }
-
-      router.push(callbackUrl);
-      router.refresh();
     } catch (_err) {
       setError("An error occurred. Please try again.");
     } finally {

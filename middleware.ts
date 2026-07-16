@@ -3,49 +3,55 @@
  * Handles authentication and authorization for protected routes
  */
 
-import { auth } from "@/lib/auth";
+/// <reference types="./src/types/next-auth" />
+
+import { auth } from "./auth";
 import { NextResponse } from "next/server";
 import type { NextRequest } from "next/server";
+import {
+  PUBLIC_ROUTES,
+  ADMIN_ROUTES,
+  PROTECTED_ROUTES,
+} from "./src/lib/constants/routes";
 
-// Routes that require authentication
-const protectedRoutes = ["/forms", "/api/forms"];
-
-// Admin-only routes
-const adminRoutes = ["/admin"];
-
-// Public routes (no auth required)
-const publicRoutes = ["/signin", "/signup", "/error", "/f", "/api/auth"];
-
-export default async function middleware(request: NextRequest) {
+export async function middleware(request: NextRequest) {
   const { pathname } = request.nextUrl;
 
-  // Allow public routes
-  if (publicRoutes.some((route) => pathname.startsWith(route))) {
+  // Get session and compute authentication states
+  const session = await auth();
+  const isLoggedIn = !!session?.user;
+  const isAdmin = isLoggedIn && session?.user?.role === "ADMIN";
+
+  // Compute route types
+  const isPublicRoute = PUBLIC_ROUTES.some((route) => pathname.startsWith(route));
+  const isAdminRoute = ADMIN_ROUTES.some((route) => pathname.startsWith(route));
+  const isProtectedRoute = PROTECTED_ROUTES.some((route) => pathname.startsWith(route));
+
+  // Public routes - allow access
+  if (isPublicRoute) {
     return NextResponse.next();
   }
 
-  const session = await auth();
-
-  // Redirect to signin if not authenticated and accessing protected route
-  if (!session && protectedRoutes.some((route) => pathname.startsWith(route))) {
-    const signInUrl = new URL("/signin", request.url);
-    signInUrl.searchParams.set("callbackUrl", pathname);
-    return NextResponse.redirect(signInUrl);
-  }
-
-  // Check admin routes
-  if (adminRoutes.some((route) => pathname.startsWith(route))) {
-    if (!session) {
-      const signInUrl = new URL("/signin", request.url);
-      signInUrl.searchParams.set("callbackUrl", pathname);
-      return NextResponse.redirect(signInUrl);
+  // Admin routes - require ADMIN role
+  if (isAdminRoute) {
+    if (!isLoggedIn) {
+      return NextResponse.redirect(new URL("/signin", request.url));
     }
-
-    if (session.user.role !== "ADMIN") {
+    if (!isAdmin) {
       return NextResponse.redirect(new URL("/forbidden", request.url));
     }
+    return NextResponse.next();
   }
 
+  // Protected routes - require authentication
+  if (isProtectedRoute) {
+    if (!isLoggedIn) {
+      return NextResponse.redirect(new URL("/signin", request.url));
+    }
+    return NextResponse.next();
+  }
+
+  // All other routes - allow access
   return NextResponse.next();
 }
 

@@ -25,11 +25,16 @@
     "paths": {
       "@/*": [
         "./src/*"
+      ],
+      "@/auth": [
+        "./auth"
       ]
     }
   },
   "include": [
     "next-env.d.ts",
+    "auth.ts",
+    "middleware.ts",
     "src",
     ".next/types/**/*.ts"
   ],

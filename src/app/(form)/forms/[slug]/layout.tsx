@@ -2,7 +2,7 @@ import { PageHeader, PageContent, PageContainer } from "@/components/layout";
 import { notFound, redirect } from "next/navigation";
 import { FormHeader } from "@/components/form/FormHeader";
 import { getFormMetaData } from "@/lib/queries/forms";
-import { auth } from "@/lib/auth";
+import { auth } from "@/auth";
 
 interface LayoutProps {
   children: React.ReactNode;
@@ -21,6 +21,9 @@ export default async function FormLayout({ children, params }: LayoutProps) {
   if (!session?.user) {
     redirect("/signin");
   }
+  
+  const userId = parseInt(session.user.id);
+  const isAdmin = session.user.role === "ADMIN";
 
   const form = await getFormMetaData(slug);
 
@@ -30,8 +33,6 @@ export default async function FormLayout({ children, params }: LayoutProps) {
   }
 
   // Check ownership: CLIENT users can only access their own forms, ADMIN can access all
-  const userId = parseInt(session.user.id);
-  const isAdmin = session.user.role === "ADMIN";
 
   if (!isAdmin && form.userId !== userId) {
     redirect("/forms"); // Redirect to dashboard if not authorized

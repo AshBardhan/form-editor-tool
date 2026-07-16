@@ -1,8 +1,10 @@
 /**
- * NextAuth.js Configuration
- * Handles authentication providers, callbacks, and session management
+ * Auth.js Configuration
+ * Root-level authentication setup following Auth.js conventions
+ * https://authjs.dev/getting-started/installation?framework=next.js
  */
 
+import NextAuth from "next-auth";
 import type { NextAuthConfig } from "next-auth";
 import CredentialsProvider from "next-auth/providers/credentials";
 import { PrismaAdapter } from "@auth/prisma-adapter";
@@ -97,5 +99,10 @@ export const authConfig: NextAuthConfig = {
     maxAge: 30 * 24 * 60 * 60, // 30 days
   },
 
-  secret: process.env.NEXTAUTH_SECRET,
+  // Trust host in production (required for Next.js deployment)
+  trustHost: true,
+
+  secret: process.env.AUTH_SECRET,
 };
+
+export const { handlers, auth, signIn, signOut } = NextAuth(authConfig);

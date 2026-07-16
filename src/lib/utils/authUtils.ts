@@ -3,7 +3,7 @@
  * Helper functions for authentication and authorization checks
  */
 
-import { auth } from "@/lib/auth";
+import { auth } from "@/auth";
 import type { Session } from "next-auth";
 import type { UserRole } from "@prisma/client";
 import type { Permission } from "@/lib/permissions";

@@ -1,7 +1,7 @@
 import Link from "next/link";
 import { cn } from "@/lib/utils/styleUtils";
 import { HomeIcon } from "lucide-react";
-import { auth } from "@/lib/auth";
+import { auth } from "@/auth";
 import { UserMenu } from "@/components/auth/UserMenu";
 
 interface AppHeaderProps {

@@ -3,7 +3,7 @@ import { notFound, redirect } from "next/navigation";
 import { DashboardForm, FormBlockType } from "@/lib/types/form";
 import { isFieldBasedBlock } from "@/lib/utils/formUtils";
 import { FormsDashboard } from "@/components/dashboard/FormsDashboard";
-import { auth } from "@/lib/auth";
+import { auth } from "@/auth";
 import { JSX } from "react";
 
 export default async function FormsPage(): Promise<JSX.Element> {
