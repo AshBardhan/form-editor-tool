@@ -34,7 +34,7 @@ function AuthErrorContent() {
         </h1>
         <p className="text-gray-600 mb-8">{errorMessage}</p>
         <Link
-          href="/auth/signin"
+          href="/signin"
           className="inline-block px-6 py-3 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors"
         >
           Try Again

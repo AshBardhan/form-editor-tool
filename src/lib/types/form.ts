@@ -168,8 +168,8 @@ export interface DashboardForm {
   metrics: FormMetrics;
   createdBy?: string | null;
   isAdmin?: boolean;
-  createdAt: Date;
-  publishedAt?: Date | null;
+  createdAt: string;
+  publishedAt?: string | null;
 }
 
 /**

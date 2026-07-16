@@ -54,8 +54,8 @@ export default async function FormsPage(): Promise<JSX.Element> {
     status: form.status,
     isAdmin,
     createdBy: isAdmin ? form.user.name || form.user.email : undefined,
-    createdAt: form.createdAt,
-    publishedAt: form.publishedAt,
+    createdAt: form.createdAt.toISOString(),
+    publishedAt: form.publishedAt?.toISOString() || null,
     metrics: {
       fields: form.blocks.filter(
         (block) => block.type && isFieldBasedBlock(block.type as FormBlockType),

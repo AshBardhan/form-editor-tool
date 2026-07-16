@@ -88,8 +88,8 @@ export const authConfig: NextAuthConfig = {
   },
 
   pages: {
-    signIn: "/auth/signin",
-    error: "/auth/error",
+    signIn: "/signin",
+    error: "/error",
   },
 
   session: {

@@ -16,14 +16,14 @@ export async function GET(request: NextRequest) {
     await requireAdmin(session);
 
     const searchParams = request.nextUrl.searchParams;
-    const status = searchParams.get("status") as FormStatus;
-    const userId = parseInt(searchParams.get("userId") || "");
+     const status = searchParams.get("status") as FormStatus | null;
+     const userId = parseInt(searchParams.get("userId") || "", 10);
 
     if (!userId || isNaN(userId)) {
       throw new ValidationError("Invalid user ID");
     }
 
-    if (!status || !["DRAFT", "PUBLISHED", "ARCHIVED"].includes(status)) {
+    if (!status || !["draft", "published", "archived"].includes(status)) {
       throw new ValidationError("Invalid status");
     }
 
