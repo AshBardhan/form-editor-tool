@@ -16,8 +16,8 @@ export async function GET(request: NextRequest) {
     await requireAdmin(session);
 
     const searchParams = request.nextUrl.searchParams;
-     const status = searchParams.get("status") as FormStatus | null;
-     const userId = parseInt(searchParams.get("userId") || "", 10);
+    const status = searchParams.get("status") as FormStatus | null;
+    const userId = parseInt(searchParams.get("userId") || "", 10);
 
     if (!userId || isNaN(userId)) {
       throw new ValidationError("Invalid user ID");

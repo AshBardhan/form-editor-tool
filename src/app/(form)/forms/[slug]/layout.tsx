@@ -21,7 +21,7 @@ export default async function FormLayout({ children, params }: LayoutProps) {
   if (!session?.user) {
     redirect("/signin");
   }
-  
+
   const userId = parseInt(session.user.id);
   const isAdmin = session.user.role === "ADMIN";
 

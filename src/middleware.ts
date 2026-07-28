@@ -3,16 +3,16 @@
  * Handles authentication and authorization for protected routes
  */
 
-/// <reference types="./src/types/next-auth" />
+/// <reference types="./types/next-auth" />
 
-import { auth } from "./auth";
+import { auth } from "@/auth";
 import { NextResponse } from "next/server";
 import type { NextRequest } from "next/server";
 import {
   PUBLIC_ROUTES,
   ADMIN_ROUTES,
   PROTECTED_ROUTES,
-} from "./src/lib/constants/routes";
+} from "./lib/constants/routes";
 
 export async function middleware(request: NextRequest) {
   const { pathname } = request.nextUrl;
@@ -23,9 +23,15 @@ export async function middleware(request: NextRequest) {
   const isAdmin = isLoggedIn && session?.user?.role === "ADMIN";
 
   // Compute route types
-  const isPublicRoute = PUBLIC_ROUTES.some((route) => pathname.startsWith(route));
-  const isAdminRoute = ADMIN_ROUTES.some((route) => pathname.startsWith(route));
-  const isProtectedRoute = PROTECTED_ROUTES.some((route) => pathname.startsWith(route));
+  const isPublicRoute = PUBLIC_ROUTES.some(
+    (route) => pathname === route || pathname.startsWith(route + "/"),
+  );
+  const isAdminRoute = ADMIN_ROUTES.some(
+    (route) => pathname === route || pathname.startsWith(route + "/"),
+  );
+  const isProtectedRoute = PROTECTED_ROUTES.some(
+    (route) => pathname === route || pathname.startsWith(route + "/"),
+  );
 
   // Public routes - allow access
   if (isPublicRoute) {
@@ -56,6 +62,7 @@ export async function middleware(request: NextRequest) {
 }
 
 export const config = {
+  runtime: "nodejs", // Use Node.js runtime to support Prisma and auth
   matcher: [
     /*
      * Match all request paths except:

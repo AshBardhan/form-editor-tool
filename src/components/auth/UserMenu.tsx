@@ -5,7 +5,6 @@
  * Dropdown menu for authenticated users
  */
 
-import { useRouter } from "next/navigation";
 import Link from "next/link";
 import { CircleUserIcon, LogOutIcon, ShieldIcon } from "lucide-react";
 import { signOut } from "next-auth/react";
@@ -28,12 +27,9 @@ interface UserMenuProps {
 }
 
 export function UserMenu({ user }: UserMenuProps) {
-  const router = useRouter();
-
   const handleSignOut = async () => {
-    await signOut({ redirect: false });
-    router.push("/signin");
-    router.refresh();
+    // Force full page redirect to properly clear session
+    await signOut({ callbackUrl: "/signin" });
   };
 
   return (

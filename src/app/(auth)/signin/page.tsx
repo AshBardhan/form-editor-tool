@@ -15,7 +15,9 @@ export default function SignInPage() {
             <h2 className="text-2xl font-bold text-gray-900">Welcome Back</h2>
             <p className="text-gray-600 mt-2">Sign in to your account</p>
           </div>
-          <Suspense fallback={<div className="text-center py-4">Loading...</div>}>
+          <Suspense
+            fallback={<div className="text-center py-4">Loading...</div>}
+          >
             <SignInForm />
           </Suspense>
         </div>
