@@ -1,18 +1,21 @@
 /**
- * Auth.js Configuration
- * Root-level authentication setup following Auth.js conventions
+ * Auth.js Configuration (Node.js runtime only)
+ * Extends the edge-safe authConfig with the Prisma adapter and
+ * CredentialsProvider that rely on Node.js-only modules (pg, bcryptjs).
  * https://authjs.dev/getting-started/installation?framework=next.js
  */
 
 import NextAuth from "next-auth";
-import type { NextAuthConfig } from "next-auth";
 import CredentialsProvider from "next-auth/providers/credentials";
 import { PrismaAdapter } from "@auth/prisma-adapter";
 import { compare } from "bcryptjs";
 import prisma from "@/lib/prisma";
 import type { UserRole } from "@prisma/client";
+import { authConfig } from "./auth.config";
 
-export const authConfig: NextAuthConfig = {
+export const { handlers, auth, signIn, signOut } = NextAuth({
+  ...authConfig,
+
   adapter: PrismaAdapter(prisma),
 
   providers: [
@@ -58,27 +61,32 @@ export const authConfig: NextAuthConfig = {
 
   callbacks: {
     /**
-     * JWT callback - runs when JWT is created or updated
-     * Adds custom fields to the token
+     * JWT callback - runs when JWT is created or updated.
+     * Adds custom fields to the token on sign-in; on session update only
+     * safe profile fields are allowed to prevent privilege escalation.
      */
     async jwt({ token, user, trigger, session }) {
       // Initial sign in
       if (user) {
-        token.id = user.id;
+        token.id = user.id as string;
         token.role = user.role as UserRole;
       }
 
-      // Session update
+      // Session update — only allow safe, non-privileged profile fields.
+      // Never let a client-supplied session payload overwrite id, role, or
+      // other security-sensitive token claims.
       if (trigger === "update" && session) {
-        token = { ...token, ...session };
+        if (session.name !== undefined) token.name = session.name;
+        if (session.email !== undefined) token.email = session.email;
+        if (session.image !== undefined) token.picture = session.image;
       }
 
       return token;
     },
 
     /**
-     * Session callback - runs whenever session is checked
-     * Adds custom fields from JWT to session
+     * Session callback - runs whenever session is checked.
+     * Adds custom fields from JWT to session.
      */
     async session({ session, token }) {
       if (session.user) {
@@ -88,21 +96,4 @@ export const authConfig: NextAuthConfig = {
       return session;
     },
   },
-
-  pages: {
-    signIn: "/signin",
-    error: "/error",
-  },
-
-  session: {
-    strategy: "jwt",
-    maxAge: 30 * 24 * 60 * 60, // 30 days
-  },
-
-  // Trust host in production (required for Next.js deployment)
-  trustHost: true,
-
-  secret: process.env.AUTH_SECRET,
-};
-
-export const { handlers, auth, signIn, signOut } = NextAuth(authConfig);
+});

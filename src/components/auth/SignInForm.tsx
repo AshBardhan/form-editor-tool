@@ -1,19 +1,33 @@
 "use client";
 
-import { useState, FormEvent } from "react";
+import { FormEvent, useMemo, useState } from "react";
 import { signIn } from "next-auth/react";
 import Link from "next/link";
+import { useRouter, useSearchParams } from "next/navigation";
+
 import { Button } from "@/components/ui/Button";
 import { FormField } from "@/components/ui/FormField";
 
 export function SignInForm() {
+  const router = useRouter();
+  const searchParams = useSearchParams();
+
+  const callbackUrl = useMemo(() => {
+    const url = searchParams.get("callbackUrl");
+
+    // Prevent open redirects
+    return url?.startsWith("/") ? url : "/forms";
+  }, [searchParams]);
+
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+
   const [error, setError] = useState("");
   const [isLoading, setIsLoading] = useState(false);
 
-  const handleSubmit = async (e: FormEvent) => {
+  const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
+
     setError("");
     setIsLoading(true);
 
@@ -21,16 +35,21 @@ export function SignInForm() {
       const result = await signIn("credentials", {
         email,
         password,
+        callbackUrl,
         redirect: false,
       });
 
       if (result?.error) {
         setError("Invalid email or password");
-      } else if (result?.ok) {
-        window.location.href = "/forms";
+        return;
       }
-    } catch (_err) {
-      setError("An error occurred. Please try again.");
+
+      if (result?.ok && result.url) {
+        router.replace(result.url);
+        router.refresh();
+      }
+    } catch {
+      setError("An unexpected error occurred. Please try again.");
     } finally {
       setIsLoading(false);
     }

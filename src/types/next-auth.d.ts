@@ -21,6 +21,7 @@ declare module "next-auth" {
    * Extended user interface with role
    */
   interface User {
+    id: string;
     role: UserRole;
   }
 }
