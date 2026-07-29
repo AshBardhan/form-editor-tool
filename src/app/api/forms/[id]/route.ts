@@ -12,15 +12,18 @@ import {
 } from "@/lib/queries/forms";
 import { revalidateTag } from "next/cache";
 import { generateFormSlug } from "@/lib/utils/formUtils";
+import { requireAuthSession, requireOwnership } from "@/lib/utils/authUtils";
 
 /**
  * Returns the full form payload for editing and preview flows.
+ * Requires authentication and ownership or ADMIN role.
  */
 export async function GET(
   request: NextRequest,
   { params }: { params: Promise<{ id: string }> },
 ) {
   return apiHandler(async () => {
+    const session = await requireAuthSession();
     const { id } = await params;
     if (!id) {
       throw new ValidationError("Form ID is required");
@@ -39,6 +42,9 @@ export async function GET(
       throw new NotFoundError("Form not found");
     }
 
+    // Check ownership (admin can access any form)
+    await requireOwnership(session, form.userId);
+
     return NextResponse.json({ success: true, data: form }, { status: 200 });
   });
 }
@@ -46,12 +52,14 @@ export async function GET(
 /**
  * Updates a form's content and/or metadata.
  * Edit permissions enforced based on actual database status and submission count.
+ * Requires authentication and ownership or ADMIN role.
  */
 export async function PATCH(
   request: NextRequest,
   { params }: { params: Promise<{ id: string }> },
 ) {
   return apiHandler(async () => {
+    const session = await requireAuthSession();
     const { id } = await params;
     if (!id) {
       throw new ValidationError("Form ID is required");
@@ -82,6 +90,9 @@ export async function PATCH(
     if (!currentForm) {
       throw new NotFoundError("Form not found");
     }
+
+    // Check ownership (admin can update any form)
+    await requireOwnership(session, currentForm.userId);
 
     // 1. Validate status permissions (security: use database state)
     const actualStatus = currentForm.status;
@@ -245,12 +256,14 @@ export async function PATCH(
 /**
  * Permanently deletes a form and clears related cached page and report data.
  * Frontend should show warnings for published/archived forms with submissions.
+ * Requires authentication and ownership or ADMIN role.
  */
 export async function DELETE(
   request: NextRequest,
   { params }: { params: Promise<{ id: string }> },
 ) {
   return apiHandler(async () => {
+    const session = await requireAuthSession();
     const { id } = await params;
     if (!id) {
       throw new ValidationError("Form ID is required");
@@ -263,6 +276,7 @@ export async function DELETE(
         id: true,
         title: true,
         status: true,
+        userId: true,
         _count: {
           select: {
             submissions: true,
@@ -274,6 +288,9 @@ export async function DELETE(
     if (!form) {
       throw new NotFoundError("Form not found");
     }
+
+    // Check ownership (admin can delete any form)
+    await requireOwnership(session, form.userId);
 
     // Delete the form (cascade deletes blocks, submissions and responses)
     await prisma.form.delete({ where: { id } });

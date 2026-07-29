@@ -166,6 +166,10 @@ export interface DashboardForm {
   title: string;
   status: FormStatus;
   metrics: FormMetrics;
+  createdBy?: string | null;
+  isAdmin?: boolean;
+  createdAt: string;
+  publishedAt?: string | null;
 }
 
 /**

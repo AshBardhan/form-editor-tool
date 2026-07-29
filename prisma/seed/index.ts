@@ -1,7 +1,8 @@
 import { PrismaClient } from "@prisma/client";
-import { seedUser, seedForms, seedBlocks, seedSubmissions } from "./data";
+import { seedUsers, seedForms, seedBlocks, seedSubmissions } from "./data";
 import { PrismaPg } from "@prisma/adapter-pg";
 import { Pool } from "pg";
+import { hash } from "bcryptjs";
 import "dotenv/config";
 
 const pool = new Pool({
@@ -23,17 +24,32 @@ async function main() {
   await prisma.formSubmission.deleteMany();
   await prisma.formBlock.deleteMany();
   await prisma.form.deleteMany();
+  await prisma.account.deleteMany();
+  await prisma.session.deleteMany();
   await prisma.user.deleteMany();
   console.log("✓ Existing data cleaned");
 
-  // 1. Create user
-  console.log("\n👤 Creating user...");
-  const user = await prisma.user.upsert({
-    where: { email: seedUser.email },
-    update: {},
-    create: seedUser,
-  });
-  console.log(`✓ User created: ${user.email} (ID: ${user.id})`);
+  // 1. Create users
+  console.log("\n👤 Creating users...");
+  const createdUsers = [];
+  for (const userData of seedUsers) {
+    // Hash password before creating user
+    const hashedPassword = await hash(userData.password, 12);
+    
+    const user = await prisma.user.upsert({
+      where: { email: userData.email },
+      update: {},
+      create: {
+        ...userData,
+        password: hashedPassword,
+      },
+    });
+    createdUsers.push(user);
+    console.log(`✓ User created: ${user.email} (${user.role}, ID: ${user.id})`);
+  }
+
+  // Use admin user for seed data
+  const adminUser = createdUsers.find(u => u.role === "ADMIN") || createdUsers[0];
 
   // 2. Create forms with blocks
   console.log("\n📝 Creating forms with blocks...");
@@ -48,7 +64,7 @@ async function main() {
     const form = await prisma.form.create({
       data: {
         ...formData,
-        userId: user.id, // Use the actual user ID
+        userId: adminUser.id, // Use the admin user ID
         publishedAt: formData.status === "published" ? new Date() : null,
         blocks: {
           create: blocks,
@@ -133,7 +149,7 @@ async function main() {
   // 4. Display summary
   console.log("\n🎉 Database seeding completed!");
   console.log("\n📊 Summary:");
-  console.log(`   - Users: 1`);
+  console.log(`   - Users: ${createdUsers.length}`);
   console.log(`   - Forms: ${seedForms.length}`);
   console.log(
     `     • Published: ${seedForms.filter((f) => f.status === "published").length}`,

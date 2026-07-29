@@ -2,62 +2,40 @@
 
 ## High Priority - Authentication & Authorization
 
-- **User Authentication**: End-to-end authentication system
-  - NextAuth.js integration with multiple providers
-  - Sign in/Sign up pages with credential-based auth
-  - OAuth integration (Google, GitHub)
-  - Password hashing with bcryptjs
-  - JWT-based session management
-  - Secure cookie handling with HTTP-only flags
-- **Role-Based Access Control (RBAC)**: Fine-grained permissions
-  - CLIENT role: Full control over own forms
-  - ADMIN role: Platform-wide superuser access
-  - Permission system with granular checks
-  - Middleware for route protection
-  - API authorization with ownership validation
-- **Admin Dashboard**: User and system management
-  - User management interface (list, view, edit, delete)
-  - User impersonation for customer support
-  - Platform-wide analytics dashboard
-  - Form management across all users
-- **Database Schema Updates**:
-  - User table updated with auth fields (password, image, emailVerified)
-  - Account table for OAuth provider connections
-  - Session table for multi-device support
-  - VerificationToken for email verification and password resets
+- **OAuth Integration**: Add social login providers
+  - Google and GitHub OAuth providers
+  - Account linking for existing credential users
+- **User Impersonation**: Admin support tooling
+  - Impersonate any user for customer support
+  - Audit log of impersonation sessions
 
 ## High Priority - User Experience & Features
 
 - **Modal System Enhancements**: Expand modal functionality
   - Form builder help/documentation modals
   - Widget property help tooltips
-- **Form Lifecycle Management**: Implement save/discard/publish workflow
+- **Form Lifecycle Management**: Improve save/discard workflow
   - Discard changes (revert to last saved version)
   - "Last saved" timestamp indicator
 - **Enhanced Toast System**: Extend toast notifications
-  - Real-time feedback for widget operations
   - Action undo functionality in toasts
-- **Loading States**: Add comprehensive loading indicators
-  - Skeleton loaders for form preview loading
-  - Spinner components for async operations
 
 ## Medium Priority - Backend Integration & Data
 
-- **Persisted Preferences**: Save user preferences
-  - Save `theme` preferences in `localStorage`
-  - Save `device mode` preferences
-  - Save sidebar collapse/expand states
-  - Form layout preferences across sessions
+- **Persisted Preferences**: Save user preferences across sessions
+  - `theme` and `device mode` preferences in `localStorage`
+  - Sidebar collapse/expand state persistence
+  - Form layout preferences
 
 ## Medium Priority - Analytics & Metrics
 
 - **Enhanced Analytics Dashboard**: Extend existing analytics features
-  - Time-based filtering for analytics (last 7/30/90 days)
+  - Time-based filtering (last 7/30/90 days)
   - Export analytics data to CSV/PDF
   - Comparative analytics across multiple forms
   - Response time tracking and analysis
-  - Geographic distribution of respondents (if location data available)
-  - Real-time dashboard updates with WebSocket or polling
+  - Geographic distribution of respondents
+  - Real-time updates with WebSocket or polling
 
 ## Low Priority - Advanced Features
 
@@ -75,11 +53,6 @@
   - Column widget (multi-column layout)
   - Nested drag-and-drop support
   - Updated data store for hierarchical widgets
-- **Form Versioning**: Track and manage form versions
-  - Version history with changes log
-  - Restore previous versions
-  - Compare version differences
-  - Branch and merge forms
 - **Conditional Logic**: Dynamic form behavior
   - Show/hide fields based on other field values
   - Conditional validation rules
@@ -89,17 +62,14 @@
   - Contact forms, surveys, registration forms
   - Custom template creation and sharing
   - Template marketplace/gallery
-  - Template categories and search
 - **Advanced Validation**: Enhanced validation capabilities
   - Cross-field validation
   - Custom validation functions
   - Async validation (API-based checks)
-  - Regex pattern validation
 - **File Upload**: Add file upload widget
   - Single/multiple file upload
   - File type and size restrictions
-  - Image preview functionality
-  - Drag-and-drop file uploads
+  - Image preview and drag-and-drop
 - **Internationalization**: Multi-language support
   - UI translation support
   - Form field label translations
@@ -117,7 +87,6 @@
   - Lazy loading for routes and components
   - Code splitting and bundle optimization
   - Caching strategies with `React Query`
-  - More efficient rendering techniques
   - Virtual scrolling for large form lists
 - **Accessibility Improvements**: Enhance accessibility
   - ARIA labels and roles
