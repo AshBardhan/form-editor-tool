@@ -8,7 +8,11 @@
 
 export function formatDate(date: string | null) {
   if (!date) return null;
-  return new Date(date).toLocaleDateString("en-US", {
+
+  const d = new Date(date);
+  if (Number.isNaN(d.getTime())) return null;
+
+  return d.toLocaleDateString("en-US", {
     month: "short",
     day: "numeric",
     year: "numeric",

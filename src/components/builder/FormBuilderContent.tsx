@@ -304,7 +304,7 @@ export const FormBuilderContent = (): JSX.Element => {
 
       {/* Uneditable Form Overlay */}
       {!isFormEditable && (
-        <div className="absolute inset-0 bg-white/20 z-50 cursor-not-allowed flex items-center justify-center">
+        <div className="absolute inset-0 bg-white/20 z-30 cursor-not-allowed flex items-center justify-center">
           <div className="bg-white p-6 rounded-lg shadow-lg max-w-md text-center">
             <h3 className="text-lg font-semibold mb-2">Form Uneditable</h3>
             <p className="text-sm text-gray-600 dark:text-gray-400">

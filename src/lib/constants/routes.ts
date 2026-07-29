@@ -7,7 +7,7 @@ export const PUBLIC_ROUTES = [
   "/signin",
   "/signup",
   "/error",
-  "/f", // Public form submission routes
+  "/f/", // Public form submission routes
 ] as const;
 
 export const ADMIN_ROUTES = ["/admin", "/api/admin"] as const;

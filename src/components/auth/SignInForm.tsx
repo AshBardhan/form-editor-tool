@@ -39,7 +39,7 @@ export function SignInForm() {
   return (
     <form onSubmit={handleSubmit} className="space-y-6">
       {error && (
-        <div className="bg-red-50 border border-red-200 text-red-700 px-4 py-3 rounded-lg text-sm">
+        <div className="rounded-lg border border-red-200 bg-red-50 px-4 py-3 text-sm text-red-700">
           {error}
         </div>
       )}
@@ -72,7 +72,7 @@ export function SignInForm() {
         Don't have an account?{" "}
         <Link
           href="/signup"
-          className="text-blue-600 hover:underline font-medium"
+          className="font-medium text-blue-600 hover:underline"
         >
           Sign up
         </Link>
