@@ -93,7 +93,7 @@
   - Role-permission mapping for consistent authorization
   - Helper functions: `requireAuthSession()`, `requireAdmin()`, `requireOwnership()`
 - **Route Protection**: Middleware-based access control
-  - Public routes: `/auth/*`, `/f/[slug]` (published forms)
+  - Public routes: `/f/[slug]` (published forms)
   - Protected routes: `/forms/*` (requires authentication)
   - Admin routes: `/admin/*` (requires ADMIN role)
   - API route guards with ownership validation

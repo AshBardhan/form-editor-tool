@@ -1,6 +1,6 @@
 /**
  * Admin Forms API
- * List all forms across all users
+ * List of forms filtered by user and status
  */
 
 import { NextRequest, NextResponse } from "next/server";

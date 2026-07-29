@@ -218,7 +218,9 @@ GRANT ALL PRIVILEGES ON DATABASE formkit_dev TO formkit_user;
 
 # Configure environment
 cp .env.sample .env
-# Edit .env: DATABASE_URL="postgresql://formkit_user:your_password@localhost:5432/formkit_dev?sslmode=disable"
+
+# Edit .env and paste the DATABASE_URL
+DATABASE_URL="postgresql://formkit_user:your_password@localhost:5432/formkit_dev?sslmode=disable"
 
 # Generate Prisma Client and Run migrations
 npx prisma generate
@@ -237,6 +239,7 @@ npx create-db
 
 # Configure environment
 cp .env.sample .env
+
 # Edit .env and paste the DATABASE_URL
 
 # Run migrations
@@ -250,11 +253,14 @@ npx prisma db seed
 ### Option C: Other Cloud (Supabase, Railway, Neon)
 
 ```bash
-# 1. Create database on provider's website, copy connection string
+# Create database on provider's website
+# Copy connection string
 
 # Configure environment
 cp .env.sample .env
-# Edit .env: DATABASE_URL="postgresql://user:password@host:5432/database?sslmode=require"
+
+# Edit .env and paste the DATABASE_URL
+DATABASE_URL="postgresql://user:password@host:5432/database?sslmode=require"
 
 # Run migrations
 npx prisma generate
@@ -272,7 +278,6 @@ npx prisma db seed
 npx prisma generate              # Generate Prisma Client (TypeScript types)
 npx prisma migrate dev           # Create new migration (development)
 npx prisma migrate deploy        # Apply migrations (production)
-npx prisma migrate dev --name add_nextauth_tables  # Create named migration
 npx prisma migrate reset         # Reset database (deletes all data + re-runs migrations)
 npx prisma db push               # Sync schema without creating migration files
 npx prisma db seed               # Seed database with sample data

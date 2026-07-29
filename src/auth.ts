@@ -11,7 +11,7 @@ import { PrismaAdapter } from "@auth/prisma-adapter";
 import { compare } from "bcryptjs";
 import prisma from "@/lib/prisma";
 import type { UserRole } from "@prisma/client";
-import { authConfig } from "./auth.config";
+import { authConfig } from "@/auth.config";
 
 export const { handlers, auth, signIn, signOut } = NextAuth({
   ...authConfig,
