@@ -155,10 +155,12 @@ export async function PATCH(
           blocks.filter((b) => b.id).map((b) => b.id!),
         );
 
-        // Determine blocks to add, update and delete
-        const blocksToAdd = blocks.filter((block) => !block.id);
-        const blocksToUpdate = blocks.filter(
-          (block) => block.id && existingBlocksMap.has(block.id),
+        // Determine which blocks to add, update and delete based on the incoming data
+        const blocksToAdd = blocks.filter(
+          (block) => !existingBlocksMap.has(block.id!),
+        );
+        const blocksToUpdate = blocks.filter((block) =>
+          existingBlocksMap.has(block.id!),
         );
         const blocksToDelete = currentForm.blocks
           .filter((block) => !incomingBlockIds.has(block.id))
@@ -188,6 +190,7 @@ export async function PATCH(
               const order = blocks.findIndex((b) => b === block);
               return tx.formBlock.create({
                 data: {
+                  id: block.id!,
                   formId: id,
                   type: block.type,
                   name: block.name,
