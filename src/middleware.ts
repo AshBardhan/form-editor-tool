@@ -4,11 +4,7 @@ import { NextResponse } from "next/server";
 
 const { auth } = NextAuth(authConfig);
 
-import {
-  ADMIN_ROUTES,
-  PROTECTED_ROUTES,
-  PUBLIC_ROUTES,
-} from "@/lib/constants/routes";
+import { ADMIN_ROUTES, PUBLIC_ROUTES } from "@/lib/constants/routes";
 
 export function matchesRoute(
   pathname: string,
@@ -27,11 +23,11 @@ export default auth((req) => {
   const { pathname } = req.nextUrl;
 
   const session = req.auth;
-  const isAuthenticated = !!session;
-  const isAdmin = session?.user.role === "ADMIN";
+  // Require session.user to be present — a bare session object (stale JWT) is not sufficient.
+  const isAuthenticated = !!session?.user;
+  const isAdmin = isAuthenticated && session?.user?.role === "ADMIN";
 
   const isPublicRoute = matchesRoute(pathname, PUBLIC_ROUTES);
-  const isProtectedRoute = matchesRoute(pathname, PROTECTED_ROUTES);
   const isAdminRoute = matchesRoute(pathname, ADMIN_ROUTES);
 
   // Prevent authenticated users from accessing auth pages.
@@ -39,8 +35,8 @@ export default auth((req) => {
     return NextResponse.redirect(new URL("/forms", req.url));
   }
 
-  // Redirect unauthenticated users to sign-in, preserving the original URL.
-  if (!isAuthenticated && isProtectedRoute) {
+  // Default-deny: redirect unauthenticated users from all non-public routes.
+  if (!isAuthenticated && !isPublicRoute) {
     const loginUrl = new URL("/signin", req.url);
     loginUrl.searchParams.set("callbackUrl", pathname);
 

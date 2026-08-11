@@ -7,6 +7,7 @@ export const PUBLIC_ROUTES = [
   "/signin",
   "/signup",
   "/error",
+  "/forbidden",
   "/f/", // Public form submission routes
 ] as const;
 
