@@ -8,7 +8,110 @@ The application uses **PostgreSQL** with **Prisma ORM** for data persistence. Th
 - **Form Management**: Form, FormBlock
 - **Submissions**: FormSubmission, FormFieldResponse
 
-## Database Schema
+Migrations are applied automatically as part of `npm run build` (via `prisma migrate deploy`), so production deploys stay in sync with committed migrations without a manual step.
+
+## Setup
+
+### 1. Choice of database
+
+Choose the database option that fits your use case:
+
+| Option | Best For | Persistence | Setup Time |
+| ------ | -------- | ----------- | ---------- |
+| **Local PostgreSQL** | Solo development, offline work | Persistent | 5-10 min |
+| **Prisma Cloud** | Team collaboration, staging | Persistent | 1-2 min |
+| **Other Cloud** | Production, advanced features | Persistent | 2-5 min |
+
+**Quick Guide:** Solo offline development → Local PostgreSQL | Team collaboration or production → Cloud
+
+#### Option A: Local PostgreSQL
+
+```bash
+# Install and start PostgreSQL
+sudo apt update && sudo apt install postgresql postgresql-contrib  # Ubuntu
+brew install postgresql@16                                         # macOS
+sudo systemctl start postgresql  # Ubuntu
+brew services start postgresql@16  # macOS
+
+# Create database and user
+sudo -u postgres psql
+CREATE DATABASE formkit_dev;
+CREATE USER formkit_user WITH PASSWORD 'your_password';
+GRANT ALL PRIVILEGES ON DATABASE formkit_dev TO formkit_user;
+\q
+
+# Configure environment
+cp .env.sample .env
+# Edit .env and paste the DATABASE_URL
+DATABASE_URL="postgresql://formkit_user:your_password@localhost:5432/formkit_dev?sslmode=disable"
+```
+
+#### Option B: Prisma Cloud
+
+```bash
+npx create-db  # Creates a free cloud database and prints the DATABASE_URL
+
+cp .env.sample .env
+# Edit .env and paste the DATABASE_URL
+```
+
+#### Option C: Other Cloud (Supabase, Railway, Neon)
+
+```bash
+# Create a database on the provider's website and copy its connection string
+
+cp .env.sample .env
+# Edit .env and paste the DATABASE_URL
+DATABASE_URL="postgresql://user:password@host:5432/database?sslmode=require"
+```
+
+### 2. Initial migrations with existing schema and optional seed data
+
+With `DATABASE_URL` set in `.env`, bring a fresh database up to date:
+
+```bash
+npx prisma generate              # Generate Prisma Client (also runs automatically via postinstall)
+npx prisma migrate deploy        # Apply all existing migrations, in order
+npx prisma db seed               # Optional: seed sample data (forms, blocks, submissions, auth users)
+```
+
+### 3. Update existing schema and migrations
+
+- Edit `prisma/schema.prisma` file with the model changes
+- Run `npx prisma migrate dev --name your_change` generate and apply a new migration locally.
+  - This diffs the schema against migration history, writes `prisma/migrations/<timestamp>_your_change/migration.sql`, applies it locally, and regenerates the Prisma Client.
+  - You can also edit `migration.sql` before committing if it needs manual steps (e.g. a data backfill, or safely enforcing `NOT NULL`). But **DO NOT** edit a migration already applied elsewhere as `npx prisma migrate deploy` checksums each file and fails if a previously-applied one changes.
+- Run `npx prisma migrate deploy` to run the new (and edited) migration file, see the changes take effect in the database.
+
+### 4. Additional commands
+
+```bash
+npx prisma generate              # Generate Prisma Client (TypeScript types)
+npx prisma migrate dev           # Create new migration (development)
+npx prisma migrate deploy        # Apply migrations
+npx prisma migrate reset         # Reset database (deletes all data + re-runs migrations)
+npx prisma db push               # Sync schema without creating migration files
+npx prisma db seed               # Seed database with sample data
+npx prisma db pull               # Pull schema from existing database (reverse engineering)
+npx prisma studio                # Open Prisma Studio (database GUI at http://localhost:5555)
+npx prisma validate              # Validate schema file syntax
+npx prisma format                # Format schema file
+
+# Database inspection (local PostgreSQL)
+psql -U formkit_user -d formkit_dev -h localhost -p 5432
+# Or using DATABASE_URL from .env:
+psql "$(grep DATABASE_URL .env | cut -d '=' -f2-)"
+
+# Useful psql commands:
+# \l              - List all databases
+# \dt             - List all tables in current database
+# \d table_name   - Describe table structure
+# \du             - List all database users/roles
+# \dT+            - List all custom types (enums)
+# \q              - Quit psql
+```
+
+## Schema
 
 ### User
 
@@ -185,120 +288,6 @@ The application uses **PostgreSQL** with **Prisma ORM** for data persistence. Th
 
 **Indexes:** `submissionId`, `blockId`  
 **Cascade:** ON DELETE CASCADE (delete responses when submission deleted)
-
-## Database Options
-
-Choose the database option that fits your use case:
-
-| Option | Best For | Persistence | Setup Time |
-| ------ | -------- | ----------- | ---------- |
-| **Local PostgreSQL** | Solo development, offline work | Persistent | 5-10 min |
-| **Prisma Cloud** | Team collaboration, staging | Persistent | 1-2 min |
-| **Other Cloud** | Production, advanced features | Persistent | 2-5 min |
-
-**Quick Guide:** Solo offline development → Local PostgreSQL | Team collaboration or production → Cloud
-
-### Option A: Local PostgreSQL
-
-```bash
-# Install PostgreSQL
-sudo apt update && sudo apt install postgresql postgresql-contrib  # Ubuntu
-brew install postgresql@16                                         # macOS
-
-# Start PostgreSQL
-sudo systemctl start postgresql  # Ubuntu
-brew services start postgresql@16  # macOS
-
-# Create database
-sudo -u postgres psql
-CREATE DATABASE formkit_dev;
-CREATE USER formkit_user WITH PASSWORD 'your_password';
-GRANT ALL PRIVILEGES ON DATABASE formkit_dev TO formkit_user;
-\q
-
-# Configure environment
-cp .env.sample .env
-
-# Edit .env and paste the DATABASE_URL
-DATABASE_URL="postgresql://formkit_user:your_password@localhost:5432/formkit_dev?sslmode=disable"
-
-# Generate Prisma Client and Run migrations
-npx prisma generate
-npx prisma migrate deploy
-
-# Optional: Seed database with sample data (includes auth users)
-npx prisma db seed
-```
-
-### Option B: Prisma Cloud
-
-```bash
-# Create free cloud database
-npx create-db
-# Copy the DATABASE_URL shown
-
-# Configure environment
-cp .env.sample .env
-
-# Edit .env and paste the DATABASE_URL
-
-# Run migrations
-npx prisma generate
-npx prisma migrate deploy
-
-# Optional: Seed database with sample data (includes auth users)
-npx prisma db seed
-```
-
-### Option C: Other Cloud (Supabase, Railway, Neon)
-
-```bash
-# Create database on provider's website
-# Copy connection string
-
-# Configure environment
-cp .env.sample .env
-
-# Edit .env and paste the DATABASE_URL
-DATABASE_URL="postgresql://user:password@host:5432/database?sslmode=require"
-
-# Run migrations
-npx prisma generate
-npx prisma migrate deploy
-
-# Optional: Seed database with sample data (includes auth users)
-npx prisma db seed
-```
-
-## Additional Commands
-
-**Database Management:**
-
-```bash
-npx prisma generate              # Generate Prisma Client (TypeScript types)
-npx prisma migrate dev           # Create new migration (development)
-npx prisma migrate deploy        # Apply migrations (production)
-npx prisma migrate reset         # Reset database (deletes all data + re-runs migrations)
-npx prisma db push               # Sync schema without creating migration files
-npx prisma db seed               # Seed database with sample data
-npx prisma db pull               # Pull schema from existing database (reverse engineering)
-npx prisma studio                # Open Prisma Studio (database GUI at http://localhost:5555)
-npx prisma validate              # Validate schema file syntax
-npx prisma format                # Format schema file
-
-# Database inspection (local PostgreSQL)
-psql -U formkit_user -d formkit_dev -h localhost -p 5432
-# Or using DATABASE_URL from .env:
-psql "$(grep DATABASE_URL .env | cut -d '=' -f2-)"
-
-# Useful psql commands:
-# \l              - List all databases
-# \dt             - List all tables in current database
-# \d table_name   - Describe table structure
-# \du             - List all database users/roles
-# \dT+            - List all custom types (enums)
-# \q              - Quit psql
-```
 
 ## Troubleshooting
 
