@@ -55,13 +55,15 @@ export const ConfigurationPanel = memo(function ConfigurationPanel({
 }): JSX.Element {
   const formTitle = useFormConfigStore((state) => state.formConfig.title);
   const formTheme = useFormConfigStore((state) => state.formConfig.theme);
-  const formCta = useFormConfigStore((state) => state.formConfig.cta);
+  const formActions = useFormConfigStore((state) => state.formConfig.actions);
   const formBlocks = useFormConfigStore((state) => state.formConfig.blocks);
   const updateFormBlock = useFormConfigStore((state) => state.updateFormBlock);
   const updateFormConfig = useFormConfigStore(
     (state) => state.updateFormConfig,
   );
-  const updateFormCta = useFormConfigStore((state) => state.updateFormCta);
+  const updateFormActions = useFormConfigStore(
+    (state) => state.updateFormActions,
+  );
   const cloneFormBlock = useFormConfigStore((state) => state.cloneFormBlock);
   const updateFormBlockErrors = useFormBlockValidationStore(
     (state) => state.updateFormBlockErrors,
@@ -377,53 +379,59 @@ export const ConfigurationPanel = memo(function ConfigurationPanel({
               </div>
 
               <div className="flex flex-col gap-2 pt-2 border-t border-t-[#2d2d2d]">
-                <h4 className="text-xs font-semibold">CTA Buttons</h4>
+                <h4 className="text-xs font-semibold">Form Actions</h4>
               </div>
 
               <div className="flex flex-col gap-2">
                 <Label
-                  htmlFor="form-cta-submit-label"
+                  htmlFor="form-actions-submit-label"
                   className="text-xs font-semibold"
                 >
                   Submit Label
                 </Label>
                 <Input
-                  id="form-cta-submit-label"
-                  value={formCta.submitLabel}
+                  id="form-actions-submit-label"
+                  value={formActions.submitLabel}
                   className="focus-visible:ring-0 focus-visible:shadow-none!"
-                  onChange={(e) => updateFormCta("submitLabel", e.target.value)}
+                  onChange={(e) =>
+                    updateFormActions("submitLabel", e.target.value)
+                  }
                 />
               </div>
 
               <div className="flex flex-col gap-2">
                 <Label
-                  htmlFor="form-cta-reset-label"
+                  htmlFor="form-actions-reset-label"
                   className="text-xs font-semibold"
                 >
                   Reset Label
                 </Label>
                 <Input
-                  id="form-cta-reset-label"
-                  value={formCta.resetLabel}
+                  id="form-actions-reset-label"
+                  value={formActions.resetLabel}
                   className="focus-visible:ring-0 focus-visible:shadow-none!"
-                  onChange={(e) => updateFormCta("resetLabel", e.target.value)}
-                  disabled={formCta.hideReset}
+                  onChange={(e) =>
+                    updateFormActions("resetLabel", e.target.value)
+                  }
+                  disabled={formActions.hideReset}
                 />
               </div>
 
               <div className="flex flex-col gap-2">
                 <Label
-                  htmlFor="form-cta-alignment"
+                  htmlFor="form-actions-alignment"
                   className="text-xs font-semibold"
                 >
                   Alignment
                 </Label>
                 <Select
-                  value={formCta.alignment}
-                  onValueChange={(value) => updateFormCta("alignment", value)}
+                  value={formActions.alignment}
+                  onValueChange={(value) =>
+                    updateFormActions("alignment", value)
+                  }
                 >
                   <SelectTrigger
-                    id="form-cta-alignment"
+                    id="form-actions-alignment"
                     className="w-full focus-visible:ring-0 focus-visible:shadow-none!"
                   >
                     <SelectValue placeholder="Select alignment" />
@@ -439,17 +447,17 @@ export const ConfigurationPanel = memo(function ConfigurationPanel({
               </div>
 
               <CheckboxConfig
-                id="form-cta-reverse"
+                id="form-actions-reverse"
                 label="Reverse order"
-                value={formCta.reverse}
-                onChange={(value) => updateFormCta("reverse", value)}
+                value={formActions.reverse}
+                onChange={(value) => updateFormActions("reverse", value)}
               />
 
               <CheckboxConfig
-                id="form-cta-hide-reset"
+                id="form-actions-hide-reset"
                 label="Hide reset button"
-                value={formCta.hideReset}
-                onChange={(value) => updateFormCta("hideReset", value)}
+                value={formActions.hideReset}
+                onChange={(value) => updateFormActions("hideReset", value)}
               />
             </div>
           </>

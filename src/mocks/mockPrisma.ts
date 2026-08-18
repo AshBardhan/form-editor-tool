@@ -467,8 +467,8 @@ export const mockPrisma: MockPrismaClient = {
         submitAttempts: 0,
         submitLabel: "Submit",
         resetLabel: "Reset",
-        ctaAlignment: "left",
-        ctaReverse: false,
+        actionsAlignment: "left",
+        actionsReverse: false,
         hideReset: false,
       };
 
@@ -503,8 +503,9 @@ export const mockPrisma: MockPrismaClient = {
         status: args.data.status || currentForm.status,
         submitLabel: args.data.submitLabel ?? currentForm.submitLabel,
         resetLabel: args.data.resetLabel ?? currentForm.resetLabel,
-        ctaAlignment: args.data.ctaAlignment ?? currentForm.ctaAlignment,
-        ctaReverse: args.data.ctaReverse ?? currentForm.ctaReverse,
+        actionsAlignment:
+          args.data.actionsAlignment ?? currentForm.actionsAlignment,
+        actionsReverse: args.data.actionsReverse ?? currentForm.actionsReverse,
         hideReset: args.data.hideReset ?? currentForm.hideReset,
         publishedAt: currentForm.publishedAt
           ? new Date(currentForm.publishedAt)

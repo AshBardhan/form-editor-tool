@@ -1,5 +1,5 @@
 -- Data backfill: copy each form's legacy "buttons" block props onto the new
--- Form.submitLabel/resetLabel/ctaAlignment/ctaReverse columns, then remove the
+-- Form.submitLabel/resetLabel/actionsAlignment/actionsReverse columns, then remove the
 -- now-unsupported block rows. Submit/reset button themes are intentionally
 -- discarded here since they are fixed constants in code going forward.
 -- Uses DISTINCT ON to stay deterministic even if a form ever had more than
@@ -16,8 +16,8 @@ UPDATE "Form" f
 SET
   "submitLabel" = COALESCE(NULLIF(b.props->>'submitLabel', ''), f."submitLabel"),
   "resetLabel" = COALESCE(NULLIF(b.props->>'resetLabel', ''), f."resetLabel"),
-  "ctaAlignment" = COALESCE(NULLIF(b.props->>'alignment', ''), f."ctaAlignment"),
-  "ctaReverse" = COALESCE((b.props->>'reverse')::boolean, f."ctaReverse")
+  "actionsAlignment" = COALESCE(NULLIF(b.props->>'alignment', ''), f."actionsAlignment"),
+  "actionsReverse" = COALESCE((b.props->>'reverse')::boolean, f."actionsReverse")
 FROM latest_buttons_block b
 WHERE b."formId" = f.id;
 

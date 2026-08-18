@@ -1,10 +1,10 @@
-import { FormCta } from "@/lib/types/form";
+import { FormActions } from "@/lib/types/form";
 import { Button } from "@/components/ui/Button";
 import { cn } from "@/lib/utils/styleUtils";
 import { JSX } from "react";
 
 interface FormSubmitControlsProps {
-  cta: FormCta;
+  actions: FormActions;
 }
 
 /**
@@ -19,26 +19,27 @@ const ALIGNMENT_CLASS_MAP: Record<string, string> = {
 
 /**
  * Form Submit Controls
- * - Renders the form-wide submit/reset button pair driven by form-level `cta` config.
+ * - Renders the form-wide submit/reset button pair driven by form-level `actions` config.
  * - Submit is always styled "primary" and reset is always "outline" (fixed, not configurable).
  *
  * @param {FormSubmitControlsProps} props - The props for the component.
  * @returns {JSX.Element} The rendered component.
  */
 export const FormSubmitControls = ({
-  cta,
+  actions,
 }: FormSubmitControlsProps): JSX.Element => {
-  const alignmentClass = ALIGNMENT_CLASS_MAP[cta.alignment] || "justify-start";
+  const alignmentClass =
+    ALIGNMENT_CLASS_MAP[actions.alignment] || "justify-start";
 
   const submitButton = (
     <Button type="submit" variant="default">
-      {cta.submitLabel}
+      {actions.submitLabel}
     </Button>
   );
 
-  const resetButton = cta.hideReset ? null : (
+  const resetButton = actions.hideReset ? null : (
     <Button type="reset" variant="outline">
-      {cta.resetLabel}
+      {actions.resetLabel}
     </Button>
   );
 
@@ -46,7 +47,7 @@ export const FormSubmitControls = ({
     <div
       className={cn("form-block flex flex-row gap-2 @sm:gap-3", alignmentClass)}
     >
-      {cta.reverse ? (
+      {actions.reverse ? (
         <>
           {resetButton}
           {submitButton}

@@ -51,8 +51,8 @@ const getFormBuilderDataCached = cache(
         status: true,
         submitLabel: true,
         resetLabel: true,
-        ctaAlignment: true,
-        ctaReverse: true,
+        actionsAlignment: true,
+        actionsReverse: true,
         hideReset: true,
         blocks: {
           orderBy: { order: "asc" },
@@ -83,11 +83,11 @@ const getFormBuilderDataCached = cache(
       theme: form.theme,
       status: form.status,
       submissionCount: form._count.submissions,
-      cta: {
+      actions: {
         submitLabel: form.submitLabel,
         resetLabel: form.resetLabel,
-        alignment: form.ctaAlignment as ButtonAlignment,
-        reverse: form.ctaReverse,
+        alignment: form.actionsAlignment as ButtonAlignment,
+        reverse: form.actionsReverse,
         hideReset: form.hideReset,
       },
       blocks: form.blocks.map((block) => ({
@@ -188,8 +188,8 @@ const getPublicFormDataCached = cache(
         status: true,
         submitLabel: true,
         resetLabel: true,
-        ctaAlignment: true,
-        ctaReverse: true,
+        actionsAlignment: true,
+        actionsReverse: true,
         hideReset: true,
         blocks: {
           orderBy: { order: "asc" },
@@ -214,11 +214,11 @@ const getPublicFormDataCached = cache(
       description: form.description ?? undefined,
       theme: form.theme,
       status: form.status,
-      cta: {
+      actions: {
         submitLabel: form.submitLabel,
         resetLabel: form.resetLabel,
-        alignment: form.ctaAlignment as ButtonAlignment,
-        reverse: form.ctaReverse,
+        alignment: form.actionsAlignment as ButtonAlignment,
+        reverse: form.actionsReverse,
         hideReset: form.hideReset,
       },
       blocks: form.blocks.map((block) => ({

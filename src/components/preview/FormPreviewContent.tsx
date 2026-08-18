@@ -225,7 +225,7 @@ export const FormPreviewContent = ({
         ) : (
           <form onSubmit={handleSubmit} onReset={handleReset} noValidate>
             {form.blocks.map((block) => renderFormBlock(block))}
-            <FormSubmitControls cta={form.cta} />
+            <FormSubmitControls actions={form.actions} />
           </form>
         )}
       </div>

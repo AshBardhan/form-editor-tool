@@ -245,7 +245,7 @@ export function PublicFormContent({ form }: PublicFormContentProps) {
               {(status.type === "editing" || status.type === "submitting") && (
                 <form onSubmit={handleSubmit} onReset={handleReset} noValidate>
                   {form.blocks.map((block) => renderFormBlock(block))}
-                  <FormSubmitControls cta={form.cta} />
+                  <FormSubmitControls actions={form.actions} />
                 </form>
               )}
               {status.type === "submitted" && (

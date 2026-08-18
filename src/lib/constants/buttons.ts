@@ -1,7 +1,7 @@
 import { ButtonAlignment } from "@/lib/types/form";
 
 /**
- * Alignment options for the form-wide submit/reset CTA, shared between the
+ * Alignment options for the form-wide submit/reset action buttons, shared between the
  * Configuration Panel select and any future consumers.
  */
 export const BUTTON_ALIGNMENT_OPTIONS: {

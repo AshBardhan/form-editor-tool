@@ -268,7 +268,7 @@ export const FormBuilderContent = (): JSX.Element => {
           )}
         </AnimatePresence>
 
-        {/* Main Content Area with Canvas and Save/Cancel CTA Buttons */}
+        {/* Main Content Area with Canvas and Save/Cancel Action Buttons */}
         <MainContent className="flex flex-col">
           <div className="flex-1 py-10 overflow-y-auto">
             <PageContainer

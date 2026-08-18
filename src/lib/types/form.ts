@@ -100,10 +100,10 @@ export interface FormBlock {
 }
 
 /**
- * Form-wide submit/reset call-to-action config.
+ * Form-wide submit/reset actions config.
  * Button themes are fixed in code (submit = primary, reset = outline) and not part of this shape.
  */
-export interface FormCta {
+export interface FormActions {
   submitLabel: string;
   resetLabel: string;
   alignment: ButtonAlignment;
@@ -119,7 +119,7 @@ export interface FormConfig {
   status?: FormStatus;
   theme: FormTheme;
   blocks: FormBlock[];
-  cta: FormCta;
+  actions: FormActions;
   submissionCount?: number;
 }
 
@@ -150,7 +150,7 @@ export interface FormPageData {
   theme: FormTheme;
   status: FormStatus;
   blocks: FormBlock[];
-  cta: FormCta;
+  actions: FormActions;
   submissionCount?: number;
 }
 
