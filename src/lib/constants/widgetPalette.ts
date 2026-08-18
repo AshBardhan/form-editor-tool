@@ -8,7 +8,6 @@ import {
   HeadingIcon,
   LinkIcon,
   SquareChevronDownIcon,
-  MousePointerClickIcon,
   UnfoldVerticalIcon,
   SquareCheckBigIcon,
   TypeIcon,
@@ -27,11 +26,6 @@ export const widgetPalette: WidgetCategory[] = [
       { type: "paragraph", label: "Paragraph", icon: ALargeSmallIcon },
       { type: "separator", label: "Separator", icon: UnfoldVerticalIcon },
     ],
-  },
-  {
-    category: "control-widget",
-    label: "Media and Control",
-    items: [{ type: "buttons", label: "Buttons", icon: MousePointerClickIcon }],
   },
   {
     category: "input-widget",

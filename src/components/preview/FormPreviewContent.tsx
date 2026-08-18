@@ -4,6 +4,7 @@ import React, { JSX, useState, useEffect } from "react";
 import { FormBlock, FormBlockValueType } from "@/lib/types/form";
 import Text from "@/components/ui/Text";
 import { widgetBlockRenderers } from "@/components/form/blocks";
+import { FormSubmitControls } from "@/components/form/FormSubmitControls";
 import { useFormConfigStore, useFormDataStore } from "@/lib/stores";
 import { getFieldKey, isFieldBasedBlock } from "@/lib/utils/formUtils";
 import { validateFormBlock } from "@/lib/utils/formValidationUtils";
@@ -224,6 +225,7 @@ export const FormPreviewContent = ({
         ) : (
           <form onSubmit={handleSubmit} onReset={handleReset} noValidate>
             {form.blocks.map((block) => renderFormBlock(block))}
+            <FormSubmitControls cta={form.cta} />
           </form>
         )}
       </div>

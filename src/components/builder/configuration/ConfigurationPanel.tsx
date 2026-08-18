@@ -10,6 +10,7 @@ import {
   SelectValue,
 } from "@/components/ui/Select";
 import { THEME_OPTIONS } from "@/lib/constants/theme";
+import { BUTTON_ALIGNMENT_OPTIONS } from "@/lib/constants/buttons";
 import { getFormBlock, getFormBlockProps } from "@/lib/utils/formUtils";
 import { ScrollTextIcon, MoreVertical, Copy, Trash2 } from "lucide-react";
 import {
@@ -54,11 +55,13 @@ export const ConfigurationPanel = memo(function ConfigurationPanel({
 }): JSX.Element {
   const formTitle = useFormConfigStore((state) => state.formConfig.title);
   const formTheme = useFormConfigStore((state) => state.formConfig.theme);
+  const formCta = useFormConfigStore((state) => state.formConfig.cta);
   const formBlocks = useFormConfigStore((state) => state.formConfig.blocks);
   const updateFormBlock = useFormConfigStore((state) => state.updateFormBlock);
   const updateFormConfig = useFormConfigStore(
     (state) => state.updateFormConfig,
   );
+  const updateFormCta = useFormConfigStore((state) => state.updateFormCta);
   const cloneFormBlock = useFormConfigStore((state) => state.cloneFormBlock);
   const updateFormBlockErrors = useFormBlockValidationStore(
     (state) => state.updateFormBlockErrors,
@@ -372,6 +375,82 @@ export const ConfigurationPanel = memo(function ConfigurationPanel({
                   </SelectContent>
                 </Select>
               </div>
+
+              <div className="flex flex-col gap-2 pt-2 border-t border-t-[#2d2d2d]">
+                <h4 className="text-xs font-semibold">CTA Buttons</h4>
+              </div>
+
+              <div className="flex flex-col gap-2">
+                <Label
+                  htmlFor="form-cta-submit-label"
+                  className="text-xs font-semibold"
+                >
+                  Submit Label
+                </Label>
+                <Input
+                  id="form-cta-submit-label"
+                  value={formCta.submitLabel}
+                  className="focus-visible:ring-0 focus-visible:shadow-none!"
+                  onChange={(e) => updateFormCta("submitLabel", e.target.value)}
+                />
+              </div>
+
+              <div className="flex flex-col gap-2">
+                <Label
+                  htmlFor="form-cta-reset-label"
+                  className="text-xs font-semibold"
+                >
+                  Reset Label
+                </Label>
+                <Input
+                  id="form-cta-reset-label"
+                  value={formCta.resetLabel}
+                  className="focus-visible:ring-0 focus-visible:shadow-none!"
+                  onChange={(e) => updateFormCta("resetLabel", e.target.value)}
+                  disabled={formCta.hideReset}
+                />
+              </div>
+
+              <div className="flex flex-col gap-2">
+                <Label
+                  htmlFor="form-cta-alignment"
+                  className="text-xs font-semibold"
+                >
+                  Alignment
+                </Label>
+                <Select
+                  value={formCta.alignment}
+                  onValueChange={(value) => updateFormCta("alignment", value)}
+                >
+                  <SelectTrigger
+                    id="form-cta-alignment"
+                    className="w-full focus-visible:ring-0 focus-visible:shadow-none!"
+                  >
+                    <SelectValue placeholder="Select alignment" />
+                  </SelectTrigger>
+                  <SelectContent>
+                    {BUTTON_ALIGNMENT_OPTIONS.map(({ value, label }) => (
+                      <SelectItem key={value} value={value}>
+                        {label}
+                      </SelectItem>
+                    ))}
+                  </SelectContent>
+                </Select>
+              </div>
+
+              <CheckboxConfig
+                id="form-cta-reverse"
+                label="Reverse order"
+                value={formCta.reverse}
+                onChange={(value) => updateFormCta("reverse", value)}
+              />
+
+              <CheckboxConfig
+                id="form-cta-hide-reset"
+                label="Hide reset button"
+                value={formCta.hideReset}
+                onChange={(value) => updateFormCta("hideReset", value)}
+              />
             </div>
           </>
         )}

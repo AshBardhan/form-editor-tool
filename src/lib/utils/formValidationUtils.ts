@@ -17,7 +17,7 @@ export const validateFormBlock = (
   const required = getPropValue(block, "required");
   const label = getPropValue(block, "label") || block.name;
 
-  // Skip non-input blocks (heading, paragraph, separator, button, buttons)
+  // Skip non-input blocks (heading, paragraph, separator)
   if (
     !ALL_FIELD_BLOCKS.includes(block.type as (typeof ALL_FIELD_BLOCKS)[number])
   ) {
