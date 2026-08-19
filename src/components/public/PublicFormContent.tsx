@@ -6,7 +6,7 @@ import Text from "@/components/ui/Text";
 import { Button } from "@/components/ui/Button";
 import { FormBlock, FormBlockValueType, FormConfig } from "@/lib/types/form";
 import { widgetBlockRenderers } from "@/components/form/blocks";
-import { FormSubmitControls } from "@/components/form/FormSubmitControls";
+import { FormActionGroup } from "@/components/form/FormActionGroup";
 import {
   getFieldKey,
   getPropValue,
@@ -245,7 +245,7 @@ export function PublicFormContent({ form }: PublicFormContentProps) {
               {(status.type === "editing" || status.type === "submitting") && (
                 <form onSubmit={handleSubmit} onReset={handleReset} noValidate>
                   {form.blocks.map((block) => renderFormBlock(block))}
-                  <FormSubmitControls actions={form.actions} />
+                  <FormActionGroup actions={form.actions} />
                 </form>
               )}
               {status.type === "submitted" && (

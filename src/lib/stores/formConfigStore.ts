@@ -13,9 +13,9 @@ interface FormConfigState {
   formConfig: FormConfig;
   setFormConfig: (data: FormConfig) => void;
   updateFormConfig: (key: string, value: string) => void;
-  updateFormActions: (
-    key: keyof FormActions,
-    value: FormActions[keyof FormActions],
+  updateFormActions: <K extends keyof FormActions>(
+    key: K,
+    value: FormActions[K],
   ) => void;
   resetFormConfig: () => void;
   addFormBlock: (type: FormBlockType, index?: number) => string;

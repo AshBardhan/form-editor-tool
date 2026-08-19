@@ -2,15 +2,16 @@ import { FormActions } from "@/lib/types/form";
 import { Button } from "@/components/ui/Button";
 import { cn } from "@/lib/utils/styleUtils";
 import { JSX } from "react";
+import type { ButtonAlignment } from "@/lib/types/form";
 
-interface FormSubmitControlsProps {
+interface FormActionGroupProps {
   actions: FormActions;
 }
 
 /**
  * Maps alignment options to CSS classes for horizontal alignment.
  */
-const ALIGNMENT_CLASS_MAP: Record<string, string> = {
+const ALIGNMENT_CLASS_MAP: Record<ButtonAlignment, string> = {
   left: "justify-start",
   center: "justify-center",
   right: "justify-end",
@@ -18,16 +19,16 @@ const ALIGNMENT_CLASS_MAP: Record<string, string> = {
 };
 
 /**
- * Form Submit Controls
+ * Form Action Group
  * - Renders the form-wide submit/reset button pair driven by form-level `actions` config.
- * - Submit is always styled "primary" and reset is always "outline" (fixed, not configurable).
+ * - Submit is always styled "primary" and reset is always "outline".
  *
- * @param {FormSubmitControlsProps} props - The props for the component.
+ * @param {FormActionGroupProps} props - The props for the component.
  * @returns {JSX.Element} The rendered component.
  */
-export const FormSubmitControls = ({
+export const FormActionGroup = ({
   actions,
-}: FormSubmitControlsProps): JSX.Element => {
+}: FormActionGroupProps): JSX.Element => {
   const alignmentClass =
     ALIGNMENT_CLASS_MAP[actions.alignment] || "justify-start";
 

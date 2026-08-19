@@ -23,7 +23,7 @@ import { Button } from "@/components/ui/Button";
 import { JSX, useEffect, useState, useMemo, memo, useCallback } from "react";
 import z from "zod";
 import { FormBlock } from "@/lib/types/form";
-import type { FormBlockPropTemplate } from "@/lib/types/form";
+import type { ButtonAlignment, FormBlockPropTemplate } from "@/lib/types/form";
 import {
   InputConfig,
   LongTextConfig,
@@ -342,123 +342,127 @@ export const ConfigurationPanel = memo(function ConfigurationPanel({
         ) : (
           <>
             {/* Form Configuration Panel */}
-            <div className="p-4 flex flex-col gap-4 dark">
-              <div className="flex flex-col gap-2">
-                <Label htmlFor="form-title" className="text-xs font-semibold">
-                  Title
-                </Label>
-                <Input
-                  id="form-title"
-                  value={formTitle}
-                  className="focus-visible:ring-0 focus-visible:shadow-none!"
-                  onChange={(e) => updateFormConfig("title", e.target.value)}
-                />
+            <div className="p-4 flex flex-col gap-6 dark">
+              <div className="flex flex-col gap-4 ">
+                <h3 className="text-sm font-semibold">General</h3>
+
+                <div className="flex flex-col gap-2">
+                  <Label htmlFor="form-title" className="text-xs font-semibold">
+                    Title
+                  </Label>
+                  <Input
+                    id="form-title"
+                    value={formTitle}
+                    className="focus-visible:ring-0 focus-visible:shadow-none!"
+                    onChange={(e) => updateFormConfig("title", e.target.value)}
+                  />
+                </div>
+
+                <div className="flex flex-col gap-2">
+                  <Label htmlFor="form-theme" className="text-xs font-semibold">
+                    Theme
+                  </Label>
+                  <Select value={formTheme} onValueChange={onThemeChange}>
+                    <SelectTrigger
+                      id="form-theme"
+                      className="w-full focus-visible:ring-0 focus-visible:shadow-none!"
+                    >
+                      <SelectValue placeholder="Select theme">
+                        {THEME_OPTIONS[formTheme]}
+                      </SelectValue>
+                    </SelectTrigger>
+                    <SelectContent>
+                      {Object.entries(THEME_OPTIONS).map(([value, label]) => (
+                        <SelectItem key={value} value={value}>
+                          {label}
+                        </SelectItem>
+                      ))}
+                    </SelectContent>
+                  </Select>
+                </div>
               </div>
 
-              <div className="flex flex-col gap-2">
-                <Label htmlFor="form-theme" className="text-xs font-semibold">
-                  Theme
-                </Label>
-                <Select value={formTheme} onValueChange={onThemeChange}>
-                  <SelectTrigger
-                    id="form-theme"
-                    className="w-full focus-visible:ring-0 focus-visible:shadow-none!"
+              <div className="flex flex-col gap-4 ">
+                <h3 className="text-sm font-semibold">Action Group</h3>
+
+                <div className="flex flex-col gap-2">
+                  <Label
+                    htmlFor="form-actions-submit-label"
+                    className="text-xs font-semibold"
                   >
-                    <SelectValue placeholder="Select theme">
-                      {THEME_OPTIONS[formTheme]}
-                    </SelectValue>
-                  </SelectTrigger>
-                  <SelectContent>
-                    {Object.entries(THEME_OPTIONS).map(([value, label]) => (
-                      <SelectItem key={value} value={value}>
-                        {label}
-                      </SelectItem>
-                    ))}
-                  </SelectContent>
-                </Select>
-              </div>
+                    Submit Label
+                  </Label>
+                  <Input
+                    id="form-actions-submit-label"
+                    value={formActions.submitLabel}
+                    className="focus-visible:ring-0 focus-visible:shadow-none!"
+                    onChange={(e) =>
+                      updateFormActions("submitLabel", e.target.value)
+                    }
+                  />
+                </div>
 
-              <div className="flex flex-col gap-2 pt-2 border-t border-t-[#2d2d2d]">
-                <h4 className="text-xs font-semibold">Form Actions</h4>
-              </div>
-
-              <div className="flex flex-col gap-2">
-                <Label
-                  htmlFor="form-actions-submit-label"
-                  className="text-xs font-semibold"
-                >
-                  Submit Label
-                </Label>
-                <Input
-                  id="form-actions-submit-label"
-                  value={formActions.submitLabel}
-                  className="focus-visible:ring-0 focus-visible:shadow-none!"
-                  onChange={(e) =>
-                    updateFormActions("submitLabel", e.target.value)
-                  }
-                />
-              </div>
-
-              <div className="flex flex-col gap-2">
-                <Label
-                  htmlFor="form-actions-reset-label"
-                  className="text-xs font-semibold"
-                >
-                  Reset Label
-                </Label>
-                <Input
-                  id="form-actions-reset-label"
-                  value={formActions.resetLabel}
-                  className="focus-visible:ring-0 focus-visible:shadow-none!"
-                  onChange={(e) =>
-                    updateFormActions("resetLabel", e.target.value)
-                  }
-                  disabled={formActions.hideReset}
-                />
-              </div>
-
-              <div className="flex flex-col gap-2">
-                <Label
-                  htmlFor="form-actions-alignment"
-                  className="text-xs font-semibold"
-                >
-                  Alignment
-                </Label>
-                <Select
-                  value={formActions.alignment}
-                  onValueChange={(value) =>
-                    updateFormActions("alignment", value)
-                  }
-                >
-                  <SelectTrigger
-                    id="form-actions-alignment"
-                    className="w-full focus-visible:ring-0 focus-visible:shadow-none!"
+                <div className="flex flex-col gap-2">
+                  <Label
+                    htmlFor="form-actions-reset-label"
+                    className="text-xs font-semibold"
                   >
-                    <SelectValue placeholder="Select alignment" />
-                  </SelectTrigger>
-                  <SelectContent>
-                    {BUTTON_ALIGNMENT_OPTIONS.map(({ value, label }) => (
-                      <SelectItem key={value} value={value}>
-                        {label}
-                      </SelectItem>
-                    ))}
-                  </SelectContent>
-                </Select>
+                    Reset Label
+                  </Label>
+                  <Input
+                    id="form-actions-reset-label"
+                    value={formActions.resetLabel}
+                    className="focus-visible:ring-0 focus-visible:shadow-none!"
+                    onChange={(e) =>
+                      updateFormActions("resetLabel", e.target.value)
+                    }
+                    disabled={formActions.hideReset}
+                  />
+                </div>
+
+                <div className="flex flex-col gap-2">
+                  <Label
+                    htmlFor="form-actions-alignment"
+                    className="text-xs font-semibold"
+                  >
+                    Alignment
+                  </Label>
+                  <Select
+                    value={formActions.alignment}
+                    onValueChange={(value) =>
+                      updateFormActions("alignment", value as ButtonAlignment)
+                    }
+                  >
+                    <SelectTrigger
+                      id="form-actions-alignment"
+                      className="w-full focus-visible:ring-0 focus-visible:shadow-none!"
+                    >
+                      <SelectValue placeholder="Select alignment" />
+                    </SelectTrigger>
+                    <SelectContent>
+                      {BUTTON_ALIGNMENT_OPTIONS.map(({ value, label }) => (
+                        <SelectItem key={value} value={value}>
+                          {label}
+                        </SelectItem>
+                      ))}
+                    </SelectContent>
+                  </Select>
+                </div>
+
+                <CheckboxConfig
+                  id="form-actions-reverse"
+                  label="Reverse order"
+                  value={formActions.reverse}
+                  onChange={(value) => updateFormActions("reverse", value)}
+                />
+
+                <CheckboxConfig
+                  id="form-actions-hide-reset"
+                  label="Hide reset button"
+                  value={formActions.hideReset}
+                  onChange={(value) => updateFormActions("hideReset", value)}
+                />
               </div>
-
-              <CheckboxConfig
-                id="form-actions-reverse"
-                label="Reverse order"
-                value={formActions.reverse}
-                onChange={(value) => updateFormActions("reverse", value)}
-              />
-
-              <CheckboxConfig
-                id="form-actions-hide-reset"
-                label="Hide reset button"
-                value={formActions.hideReset}
-                onChange={(value) => updateFormActions("hideReset", value)}
-              />
             </div>
           </>
         )}
