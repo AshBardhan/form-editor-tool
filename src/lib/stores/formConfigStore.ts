@@ -3,6 +3,7 @@ import {
   FormBlockType,
   FormBlockValueType,
   FormConfig,
+  FormActions,
 } from "@/lib/types/form";
 import { nanoid } from "nanoid";
 import { create } from "zustand";
@@ -12,6 +13,10 @@ interface FormConfigState {
   formConfig: FormConfig;
   setFormConfig: (data: FormConfig) => void;
   updateFormConfig: (key: string, value: string) => void;
+  updateFormActions: <K extends keyof FormActions>(
+    key: K,
+    value: FormActions[K],
+  ) => void;
   resetFormConfig: () => void;
   addFormBlock: (type: FormBlockType, index?: number) => string;
   moveFormBlock: (fromIndex: number, toIndex: number) => void;
@@ -30,6 +35,13 @@ const initialFormConfig: FormConfig = {
   theme: "light",
   status: "draft",
   blocks: [],
+  actions: {
+    submitLabel: "Submit",
+    resetLabel: "Reset",
+    alignment: "left",
+    reverse: false,
+    hideReset: false,
+  },
 };
 
 /**
@@ -52,11 +64,23 @@ export const useFormConfigStore = create<FormConfigState>()((set, get) => ({
       },
     }));
   },
+  updateFormActions: (key, value) => {
+    set((state) => ({
+      formConfig: {
+        ...state.formConfig,
+        actions: {
+          ...state.formConfig.actions,
+          [key]: value,
+        },
+      },
+    }));
+  },
   resetFormConfig: () => {
     set({
       formConfig: initialFormConfig,
     });
   },
+
   addFormBlock: (type, index) => {
     const state = get();
     const id = nanoid();

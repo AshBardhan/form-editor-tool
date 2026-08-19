@@ -98,20 +98,6 @@ export const seedBlocks: Record<string, any[]> = {
         placeholder: "Share any additional thoughts or suggestions...",
       },
     },
-    {
-      id: "block-001-08",
-      type: "buttons",
-      name: "buttons-submit",
-      order: 7,
-      props: {
-        submitLabel: "Submit",
-        submitTheme: "primary",
-        resetLabel: "Reset",
-        resetTheme: "outline",
-        alignment: "left",
-        reverse: false,
-      },
-    },
   ],
 
   "seed-form-002": [
@@ -253,20 +239,6 @@ export const seedBlocks: Record<string, any[]> = {
         grouped: false,
       },
     },
-    {
-      id: "block-002-11",
-      type: "buttons",
-      name: "buttons-submit",
-      order: 10,
-      props: {
-        submitLabel: "Complete Onboarding",
-        submitTheme: "primary",
-        resetLabel: "Clear Form",
-        resetTheme: "outline",
-        alignment: "left",
-        reverse: false,
-      },
-    },
   ],
 
   "seed-form-003": [
@@ -386,20 +358,6 @@ export const seedBlocks: Record<string, any[]> = {
         placeholder: "Share your suggestions...",
       },
     },
-    {
-      id: "block-003-10",
-      type: "buttons",
-      name: "buttons-submit",
-      order: 9,
-      props: {
-        submitLabel: "Submit Feedback",
-        submitTheme: "primary",
-        resetLabel: "Reset",
-        resetTheme: "outline",
-        alignment: "left",
-        reverse: false,
-      },
-    },
   ],
 
   "seed-form-004": [
@@ -469,20 +427,6 @@ export const seedBlocks: Record<string, any[]> = {
           "VIP - $599",
           "Student - $99",
         ],
-      },
-    },
-    {
-      id: "block-004-07",
-      type: "buttons",
-      name: "buttons-submit",
-      order: 6,
-      props: {
-        submitLabel: "Register Now",
-        submitTheme: "primary",
-        resetLabel: "Clear",
-        resetTheme: "outline",
-        alignment: "left",
-        reverse: false,
       },
     },
   ],
@@ -604,20 +548,6 @@ export const seedBlocks: Record<string, any[]> = {
         key: "browser_env",
         required: false,
         placeholder: "e.g., Chrome 126, Safari 17, Node 20.x",
-      },
-    },
-    {
-      id: "block-005-10",
-      type: "buttons",
-      name: "buttons-submit",
-      order: 9,
-      props: {
-        submitLabel: "Submit Bug Report",
-        submitTheme: "primary",
-        resetLabel: "Reset",
-        resetTheme: "outline",
-        alignment: "left",
-        reverse: false,
       },
     },
   ],

@@ -7,6 +7,7 @@ import {
   FormBlockType,
   FormPageData,
   FormReportPageData,
+  ButtonAlignment,
 } from "@/lib/types/form";
 
 const FORM_BUILDER_CACHE_TAG = "form-builder";
@@ -48,6 +49,11 @@ const getFormBuilderDataCached = cache(
         description: true,
         theme: true,
         status: true,
+        submitLabel: true,
+        resetLabel: true,
+        actionsAlignment: true,
+        actionsReverse: true,
+        hideReset: true,
         blocks: {
           orderBy: { order: "asc" },
           select: {
@@ -77,6 +83,13 @@ const getFormBuilderDataCached = cache(
       theme: form.theme,
       status: form.status,
       submissionCount: form._count.submissions,
+      actions: {
+        submitLabel: form.submitLabel,
+        resetLabel: form.resetLabel,
+        alignment: form.actionsAlignment as ButtonAlignment,
+        reverse: form.actionsReverse,
+        hideReset: form.hideReset,
+      },
       blocks: form.blocks.map((block) => ({
         id: block.id,
         type: block.type as FormBlockType,
@@ -173,6 +186,11 @@ const getPublicFormDataCached = cache(
         description: true,
         theme: true,
         status: true,
+        submitLabel: true,
+        resetLabel: true,
+        actionsAlignment: true,
+        actionsReverse: true,
+        hideReset: true,
         blocks: {
           orderBy: { order: "asc" },
           select: {
@@ -196,6 +214,13 @@ const getPublicFormDataCached = cache(
       description: form.description ?? undefined,
       theme: form.theme,
       status: form.status,
+      actions: {
+        submitLabel: form.submitLabel,
+        resetLabel: form.resetLabel,
+        alignment: form.actionsAlignment as ButtonAlignment,
+        reverse: form.actionsReverse,
+        hideReset: form.hideReset,
+      },
       blocks: form.blocks.map((block) => ({
         id: block.id,
         type: block.type as FormBlockType,

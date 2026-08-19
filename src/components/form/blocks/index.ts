@@ -7,7 +7,6 @@ import { TextareaBlock } from "./TextareaBlock";
 import { CheckboxBlock } from "./CheckboxBlock";
 import { SelectBlock } from "./SelectBlock";
 import { SeparatorBlock } from "./SeparatorBlock";
-import { ButtonsBlock } from "./ButtonsBlock";
 import { RadioBlock } from "./RadioBlock";
 
 /**
@@ -37,5 +36,4 @@ export const widgetBlockRenderers: Record<FormBlockType, WidgetBlockRenderer> =
     select: SelectBlock,
     radio: RadioBlock,
     separator: SeparatorBlock,
-    buttons: ButtonsBlock,
   };

@@ -144,20 +144,22 @@ export const formBlockSchemas: Record<string, z.ZodSchema> = {
     level: z.enum(["primary", "secondary"]),
     position: z.enum(["left", "center", "right"]),
   }),
-
-  buttons: z.object({
-    submitLabel: requiredString("Submit button label"),
-    submitTheme: z.enum(["primary", "secondary", "outline", "destructive"]),
-    resetLabel: requiredString("Reset button label"),
-    resetTheme: z.enum(["primary", "secondary", "outline", "destructive"]),
-    alignment: z.enum(["left", "center", "right", "justified"]),
-    reverse: z.boolean(),
-  }),
 };
 
 const nonEmptyString = z.string().trim().min(1);
 const formThemeSchema = z.enum(["light", "dark"]);
 const formStatusSchema = z.enum(["draft", "published", "archived"]);
+
+/**
+ * Schema for the form-wide submit/reset actions config.
+ */
+const formActionsSchema = z.object({
+  submitLabel: requiredString("Submit button label"),
+  resetLabel: requiredString("Reset button label"),
+  alignment: z.enum(["left", "center", "right", "justified"]),
+  reverse: z.boolean(),
+  hideReset: z.boolean(),
+});
 
 /**
  * Form block request schema.
@@ -219,6 +221,7 @@ export const UpdateFormSchema = z
     description: z.string().optional().nullable(),
     slug: z.string().optional().nullable(),
     blocks: z.array(formBlockInputSchema).optional(),
+    actions: formActionsSchema.optional(),
   })
   .refine((data) => Object.keys(data).length > 0, {
     message: "At least one field is required for update",

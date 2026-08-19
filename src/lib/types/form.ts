@@ -9,9 +9,10 @@ export type InputBlockType =
   | "radio"
   | "checkbox"
   | "select";
-export type MediaBlockType = "buttons";
 
-export type FormBlockType = TextBlockType | InputBlockType | MediaBlockType;
+export type FormBlockType = TextBlockType | InputBlockType;
+
+export type ButtonAlignment = "left" | "center" | "right" | "justified";
 
 export type FormBlockValueType =
   | string
@@ -98,6 +99,18 @@ export interface FormBlock {
   props: FormBlockProps;
 }
 
+/**
+ * Form-wide submit/reset actions config.
+ * Button themes are fixed in code (submit = primary, reset = outline) and not part of this shape.
+ */
+export interface FormActions {
+  submitLabel: string;
+  resetLabel: string;
+  alignment: ButtonAlignment;
+  reverse: boolean;
+  hideReset: boolean;
+}
+
 export interface FormConfig {
   id?: string; // Form ID for tracking (undefined for new forms)
   title: string;
@@ -106,6 +119,7 @@ export interface FormConfig {
   status?: FormStatus;
   theme: FormTheme;
   blocks: FormBlock[];
+  actions: FormActions;
   submissionCount?: number;
 }
 
@@ -136,6 +150,7 @@ export interface FormPageData {
   theme: FormTheme;
   status: FormStatus;
   blocks: FormBlock[];
+  actions: FormActions;
   submissionCount?: number;
 }
 

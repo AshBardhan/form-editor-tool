@@ -74,7 +74,7 @@ export async function PATCH(
       );
     }
 
-    const { title, theme, description, slug, blocks } = parsed.data;
+    const { title, theme, description, slug, blocks, actions } = parsed.data;
 
     // Fetch complete current form including blocks for comparison
     const currentForm = await prisma.form.findUnique({
@@ -139,6 +139,11 @@ export async function PATCH(
         theme: theme ?? currentForm.theme,
         description: description ?? currentForm.description ?? null,
         slug: generatedSlug ?? currentForm.slug,
+        submitLabel: actions?.submitLabel ?? currentForm.submitLabel,
+        resetLabel: actions?.resetLabel ?? currentForm.resetLabel,
+        actionsAlignment: actions?.alignment ?? currentForm.actionsAlignment,
+        actionsReverse: actions?.reverse ?? currentForm.actionsReverse,
+        hideReset: actions?.hideReset ?? currentForm.hideReset,
       };
 
       await tx.form.update({

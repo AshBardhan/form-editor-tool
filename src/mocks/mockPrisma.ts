@@ -465,6 +465,11 @@ export const mockPrisma: MockPrismaClient = {
         starts: 0,
         completions: 0,
         submitAttempts: 0,
+        submitLabel: "Submit",
+        resetLabel: "Reset",
+        actionsAlignment: "left",
+        actionsReverse: false,
+        hideReset: false,
       };
 
       // Add to mock database
@@ -496,6 +501,12 @@ export const mockPrisma: MockPrismaClient = {
         description: args.data.description || currentForm.description || null,
         theme: args.data.theme || currentForm.theme || "light",
         status: args.data.status || currentForm.status,
+        submitLabel: args.data.submitLabel ?? currentForm.submitLabel,
+        resetLabel: args.data.resetLabel ?? currentForm.resetLabel,
+        actionsAlignment:
+          args.data.actionsAlignment ?? currentForm.actionsAlignment,
+        actionsReverse: args.data.actionsReverse ?? currentForm.actionsReverse,
+        hideReset: args.data.hideReset ?? currentForm.hideReset,
         publishedAt: currentForm.publishedAt
           ? new Date(currentForm.publishedAt)
           : new Date(),

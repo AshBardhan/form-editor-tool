@@ -105,21 +105,6 @@ export const mockBlocks: Array<{
       grouped: false,
     },
   },
-  {
-    id: "block-001-08",
-    formId: "mock-form-001",
-    type: "buttons",
-    name: "buttons_cta",
-    order: 7,
-    props: {
-      submitLabel: "Submit Feedback",
-      submitTheme: "primary",
-      resetLabel: "Reset",
-      resetTheme: "secondary",
-      alignment: "center",
-      reverse: false,
-    },
-  },
 
   // ============================================================================
   // Form 2: Long employee survey (28 blocks - edge case)
@@ -463,21 +448,6 @@ export const mockBlocks: Array<{
       grouped: false,
     },
   },
-  {
-    id: "block-002-28",
-    formId: "mock-form-002",
-    type: "buttons",
-    name: "buttons_cta",
-    order: 27,
-    props: {
-      submitLabel: "Submit Survey",
-      submitTheme: "primary",
-      resetLabel: "Reset",
-      resetTheme: "secondary",
-      alignment: "justified",
-      reverse: false,
-    },
-  },
 
   // ============================================================================
   // Form 3: International form with unicode (6 blocks)
@@ -540,21 +510,6 @@ export const mockBlocks: Array<{
       label: "反馈 / Feedback / Commentaires",
       key: "feedback_text",
       rows: 4,
-    },
-  },
-  {
-    id: "block-003-06",
-    formId: "mock-form-003",
-    type: "buttons",
-    name: "buttons_cta",
-    order: 5,
-    props: {
-      submitLabel: "提交 / Submit / Soumettre",
-      submitTheme: "primary",
-      resetLabel: "重置 / Reset / Réinitialiser",
-      resetTheme: "secondary",
-      alignment: "center",
-      reverse: false,
     },
   },
 
@@ -754,21 +709,6 @@ export const mockBlocks: Array<{
       grouped: false,
     },
   },
-  {
-    id: "block-005-15",
-    formId: "mock-form-005",
-    type: "buttons",
-    name: "buttons_cta",
-    order: 14,
-    props: {
-      submitLabel: "Submit Bug Report",
-      submitTheme: "primary",
-      resetLabel: "Reset",
-      resetTheme: "secondary",
-      alignment: "center",
-      reverse: false,
-    },
-  },
 
   // ============================================================================
   // Form 6: Simple contact (5 blocks - minimal)
@@ -804,21 +744,6 @@ export const mockBlocks: Array<{
     name: "message",
     order: 3,
     props: { label: "Message", key: "message", required: true, rows: 5 },
-  },
-  {
-    id: "block-006-05",
-    formId: "mock-form-006",
-    type: "buttons",
-    name: "buttons_cta",
-    order: 4,
-    props: {
-      submitLabel: "Send Message",
-      submitTheme: "primary",
-      resetLabel: "Reset",
-      resetTheme: "secondary",
-      alignment: "center",
-      reverse: false,
-    },
   },
 
   // ============================================================================
@@ -999,21 +924,6 @@ export const mockBlocks: Array<{
       grouped: false,
     },
   },
-  {
-    id: "block-007-18",
-    formId: "mock-form-007",
-    type: "buttons",
-    name: "buttons_cta",
-    order: 17,
-    props: {
-      submitLabel: "Complete Registration",
-      submitTheme: "primary",
-      resetLabel: "Reset",
-      resetTheme: "secondary",
-      alignment: "center",
-      reverse: false,
-    },
-  },
 
   // ============================================================================
   // Form 8: Draft performance review (12 blocks)
@@ -1119,21 +1029,6 @@ export const mockBlocks: Array<{
     order: 11,
     props: { label: "Q4 Goals", key: "q4_goals", rows: 5, required: true },
   },
-  {
-    id: "block-008-13",
-    formId: "mock-form-008",
-    type: "buttons",
-    name: "buttons_cta",
-    order: 12,
-    props: {
-      submitLabel: "Submit Review",
-      submitTheme: "primary",
-      resetLabel: "Reset",
-      resetTheme: "secondary",
-      alignment: "center",
-      reverse: false,
-    },
-  },
 
   // ============================================================================
   // Form 9: Research consent with very long text (7 blocks)
@@ -1196,21 +1091,6 @@ export const mockBlocks: Array<{
       key: "consent_agree",
       required: true,
       grouped: false,
-    },
-  },
-  {
-    id: "block-009-07",
-    formId: "mock-form-009",
-    type: "buttons",
-    name: "buttons_cta",
-    order: 6,
-    props: {
-      submitLabel: "Submit Consent",
-      submitTheme: "primary",
-      resetLabel: "Reset",
-      resetTheme: "secondary",
-      alignment: "center",
-      reverse: false,
     },
   },
 
@@ -1327,21 +1207,6 @@ export const mockBlocks: Array<{
         "Medium - Nice to have",
         "Low - Optional enhancement",
       ],
-    },
-  },
-  {
-    id: "block-010-10",
-    formId: "mock-form-010",
-    type: "buttons",
-    name: "buttons_cta",
-    order: 9,
-    props: {
-      submitLabel: "Submit Feature Request",
-      submitTheme: "primary",
-      resetLabel: "Reset",
-      resetTheme: "secondary",
-      alignment: "center",
-      reverse: false,
     },
   },
 ];

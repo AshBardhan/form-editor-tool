@@ -116,6 +116,13 @@ model Form {
   completions Int        @default(0) // Sessions that reached all required fields filled
   submitAttempts Int     @default(0) // Total submit button clicks (success + failure)
 
+  // Form-wide submit/reset actions config (button themes are fixed in code, not persisted)
+  submitLabel     String  @default("Submit") // Label shown on the submit button
+  resetLabel      String  @default("Reset") // Label shown on the reset button
+  actionsAlignment String @default("left") // Horizontal alignment: left, center, right, justified
+  actionsReverse  Boolean @default(false) // Swap the visual order of submit/reset buttons
+  hideReset       Boolean @default(false) // Hide the reset button entirely
+
   // Ownership
   userId Int // Foreign key to form creator
   user   User @relation(fields: [userId], references: [id], onDelete: Cascade) // n-1: Many forms belong to one user

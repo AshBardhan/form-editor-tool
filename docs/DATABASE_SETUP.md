@@ -77,11 +77,20 @@ npx prisma db seed               # Optional: seed sample data (forms, blocks, su
 
 ### 3. Update existing schema and migrations
 
-- Edit `prisma/schema.prisma` file with the model changes
-- Run `npx prisma migrate dev --name your_change` generate and apply a new migration locally.
-  - This diffs the schema against migration history, writes `prisma/migrations/<timestamp>_your_change/migration.sql`, applies it locally, and regenerates the Prisma Client.
-  - You can also edit `migration.sql` before committing if it needs manual steps (e.g. a data backfill, or safely enforcing `NOT NULL`). But **DO NOT** edit a migration already applied elsewhere as `npx prisma migrate deploy` checksums each file and fails if a previously-applied one changes.
-- Run `npx prisma migrate deploy` to run the new (and edited) migration file, see the changes take effect in the database.
+You'll typically be in one of three scenarios. All three finish with the same two commands, run in order:
+
+1. **Schema change with a generated migration** — edit `prisma/schema.prisma`, then run `npx prisma migrate dev --name your_change`. This diffs the schema against migration history and writes `prisma/migrations/<timestamp>_your_change/migration.sql`.
+2. **Editing that newly generated migration** — e.g. adding a manual data backfill or safely enforcing `NOT NULL`. Edit the same `migration.sql` file directly. **DO NOT** edit a migration that's already been applied elsewhere — `npx prisma migrate deploy` checksums each file and fails if a previously-applied one changes; add a new migration instead.
+3. **A separate, schema-neutral migration for a data-only backfill** — run `npx prisma migrate dev --create-only --name your_change` to scaffold an empty migration file, then add the backfill SQL (`UPDATE`/`DELETE`, etc.) into that generated `migration.sql`.
+
+Regardless of which scenario(s) applied, run these two commands in this sequence to bring both the Prisma Client and the database fully in sync with whatever you just edited:
+
+```bash
+npx prisma generate        # Regenerate the Prisma Client so its types match schema.prisma
+npx prisma migrate deploy  # Apply any pending migration(s) to the database
+```
+
+This is required even though `migrate dev` already applies+generates for scenario 1 — it's the safe, idempotent way to catch scenarios 2 and 3, where `migrate dev`/`--create-only` may leave the client stale or the migration unapplied.
 
 ### 4. Additional commands
 
