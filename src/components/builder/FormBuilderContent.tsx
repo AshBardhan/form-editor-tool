@@ -138,7 +138,8 @@ export const FormBuilderContent = (): JSX.Element => {
       a.title === b.title &&
       a.description === b.description &&
       a.theme === b.theme &&
-      JSON.stringify(a.blocks) === JSON.stringify(b.blocks),
+      JSON.stringify(a.blocks) === JSON.stringify(b.blocks) &&
+      JSON.stringify(a.actions) === JSON.stringify(b.actions),
   });
 
   /**
