@@ -1,6 +1,8 @@
 # Future Improvements
 
-## High Priority - Authentication & Authorization
+## High Priority
+
+### Authentication & Authorization
 
 - **OAuth Integration**: Add social login providers
   - Google and GitHub OAuth providers
@@ -9,7 +11,7 @@
   - Impersonate any user for customer support
   - Audit log of impersonation sessions
 
-## High Priority - User Experience & Features
+### User Experience & Features
 
 - **Modal System Enhancements**: Expand modal functionality
   - Form builder help/documentation modals
@@ -20,14 +22,16 @@
 - **Enhanced Toast System**: Extend toast notifications
   - Action undo functionality in toasts
 
-## Medium Priority - Backend Integration & Data
+## Medium Priority 
+
+### Backend Integration & Data
 
 - **Persisted Preferences**: Save user preferences across sessions
   - `theme` and `device mode` preferences in `localStorage`
   - Sidebar collapse/expand state persistence
   - Form layout preferences
 
-## Medium Priority - Analytics & Metrics
+### Analytics & Metrics
 
 - **Enhanced Analytics Dashboard**: Extend existing analytics features
   - Time-based filtering (last 7/30/90 days)
@@ -37,7 +41,9 @@
   - Geographic distribution of respondents
   - Real-time updates with WebSocket or polling
 
-## Low Priority - Advanced Features
+## Low Priority
+
+### Advanced Features
 
 - **Form Status Management**: Enhanced status tracking
   - Scheduled publishing (publish at specific date/time)
@@ -76,7 +82,7 @@
   - RTL language support
   - Locale-specific formatting
 
-## Code Quality & Testing
+### Code Quality & Testing
 
 - **Testing**: Implement comprehensive test coverage
   - Unit tests with `Vitest + React Testing Library`
