@@ -171,6 +171,7 @@ export interface FormReportPageData {
     id: string;
     title: string;
   };
+  fieldBlocks: FormBlock[];
   metrics: FormReportMetrics;
   submissions: FormSubmission[];
 }

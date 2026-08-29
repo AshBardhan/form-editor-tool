@@ -37,7 +37,10 @@ export default async function SubmissionsPage({
 
       {/* Submissions List */}
       {data.submissions.length > 0 && (
-        <SubmissionsList submissions={data.submissions} />
+        <SubmissionsList
+          fieldBlocks={data.fieldBlocks}
+          submissions={data.submissions}
+        />
       )}
     </>
   );

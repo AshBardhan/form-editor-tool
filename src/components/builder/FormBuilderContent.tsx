@@ -12,7 +12,7 @@ import {
   useSensor,
   useSensors,
 } from "@dnd-kit/core";
-import { JSX, useState, useEffect, useMemo, useCallback } from "react";
+import { JSX, useState, useEffect, useCallback } from "react";
 import { hybridKeyboardCoordinates } from "@/lib/utils/keyboardUtils";
 import { switchFormTheme } from "@/lib/utils/domUtils";
 import {
@@ -37,6 +37,7 @@ import {
   ModalFooter,
 } from "@/components/ui/Modal";
 import { Button } from "@/components/ui/Button";
+import { Alert, AlertDescription, AlertTitle } from "@/components/ui/Alert";
 import { AlertTriangle } from "lucide-react";
 import { useAutoSave } from "@/lib/hooks/useAutoSave";
 import { toast } from "@/components/ui/Toast";
@@ -52,7 +53,7 @@ interface DragState {
  * Form Builder Content
  * - Renders form with prefilled and empty data
  * - Provides drag-and-drop and configuration for form
- * - Manages form editability based on status and submissions
+ * - Manages form editability (archived forms are read-only)
  * - Auto-saves changes with debouncing and toast notifications
  *
  * @returns {JSX.Element} The rendered component.
@@ -79,17 +80,9 @@ export const FormBuilderContent = (): JSX.Element => {
     blockId: string | null;
   }>({ isOpen: false, blockId: null });
 
-  // Determine if form is editable based on status and submission count
-  const isFormEditable = useMemo(() => {
-    switch (form.status) {
-      case "archived":
-        return false;
-      case "published":
-        return (form.submissionCount ?? 0) === 0;
-      default:
-        return true;
-    }
-  }, [form.status, form.submissionCount]);
+  const isFormEditable = form.status !== "archived";
+  const showPublishedSubmissionsWarning =
+    form.status === "published" && (form.submissionCount ?? 0) > 0;
 
   // Auto-save callback: handles API call and toast notifications
   const handleSave = useCallback(async (data: FormConfig) => {
@@ -281,6 +274,18 @@ export const FormBuilderContent = (): JSX.Element => {
                 }
               }}
             >
+              {showPublishedSubmissionsWarning && (
+                <Alert variant="warning" className="mb-6">
+                  <AlertTriangle className="size-4" />
+                  <AlertTitle>Editing a published form</AlertTitle>
+                  <AlertDescription>
+                    This form already has submissions. Adding, removing, or
+                    changing input fields (including type or options) may alter
+                    report answers. Submission records and analytics metrics
+                    stay the same. Missing answers show as "-".
+                  </AlertDescription>
+                </Alert>
+              )}
               <div className="form-container">
                 <CanvasForm
                   overId={dragState.overId}
@@ -309,9 +314,8 @@ export const FormBuilderContent = (): JSX.Element => {
           <div className="bg-white p-6 rounded-lg shadow-lg max-w-md text-center">
             <h3 className="text-lg font-semibold mb-2">Form Uneditable</h3>
             <p className="text-sm text-gray-600 dark:text-gray-400">
-              {form.status === "archived"
-                ? "This form is archived and cannot be edited. Restore it to 'published' status to make changes."
-                : "This form has submissions and cannot be edited. Archive it first if you need to make changes."}
+              This form is archived and cannot be edited. Restore it to
+              &apos;published&apos; status to make changes.
             </p>
           </div>
         </div>

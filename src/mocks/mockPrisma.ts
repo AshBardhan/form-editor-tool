@@ -114,6 +114,7 @@ interface MockPrismaClient {
   };
   formFieldResponse: {
     count: (args?: any) => Promise<number>;
+    deleteMany: (args?: any) => Promise<{ count: number }>;
   };
   user: {
     findFirst: (args?: any) => Promise<any | null>;
@@ -910,6 +911,32 @@ export const mockPrisma: MockPrismaClient = {
 
       // Default: return 0 for unhandled filters
       return 0;
+    },
+    deleteMany: async (args?: any) => {
+      console.log(
+        "[Mock Prisma] formFieldResponse.deleteMany called with:",
+        args,
+      );
+
+      if (args?.where?.blockId?.in) {
+        const blockIds = args.where.blockId.in as string[];
+        let count = 0;
+
+        mockDatabase.submissions = mockDatabase.submissions.map(
+          (submission) => {
+            const before = submission.responses.length;
+            const responses = submission.responses.filter(
+              (response) => !blockIds.includes(response.blockId),
+            );
+            count += before - responses.length;
+            return { ...submission, responses };
+          },
+        );
+
+        return { count };
+      }
+
+      return { count: 0 };
     },
   },
 

@@ -11,8 +11,13 @@ import {
   FORM_REPORT_CACHE_TAG,
 } from "@/lib/queries/forms";
 import { revalidateTag } from "next/cache";
-import { generateFormSlug } from "@/lib/utils/formUtils";
+import {
+  generateFormSlug,
+  isFieldBasedBlock,
+  shouldWipeFieldResponses,
+} from "@/lib/utils/formUtils";
 import { requireAuthSession, requireOwnership } from "@/lib/utils/authUtils";
+import { FormBlockType } from "@/lib/types/form";
 
 /**
  * Returns the full form payload for editing and preview flows.
@@ -51,7 +56,8 @@ export async function GET(
 
 /**
  * Updates a form's content and/or metadata.
- * Edit permissions enforced based on actual database status and submission count.
+ * Archived forms cannot be edited. Published forms can be edited; input-field
+ * removals, type changes, and option changes clear matching field responses.
  * Requires authentication and ownership or ADMIN role.
  */
 export async function PATCH(
@@ -83,7 +89,6 @@ export async function PATCH(
         blocks: {
           orderBy: { order: "asc" },
         },
-        _count: { select: { submissions: true } },
       },
     });
 
@@ -95,20 +100,9 @@ export async function PATCH(
     await requireOwnership(session, currentForm.userId);
 
     // 1. Validate status permissions (security: use database state)
-    const actualStatus = currentForm.status;
-    const actualSubmissionsCount = currentForm._count.submissions;
-
-    // Archived forms cannot be edited
-    if (actualStatus === "archived") {
+    if (currentForm.status === "archived") {
       throw new ValidationError(
         "Cannot edit archived form. Restore it to 'published' state first.",
-      );
-    }
-
-    // For published forms with submissions, block updates are forbidden
-    if (actualStatus === "published" && actualSubmissionsCount > 0) {
-      throw new ValidationError(
-        `You are not allowed to update a 'published' form with submissions. Clear the report first.`,
       );
     }
 
@@ -167,25 +161,33 @@ export async function PATCH(
         const blocksToUpdate = blocks.filter((block) =>
           existingBlocksMap.has(block.id!),
         );
-        const blocksToDelete = currentForm.blocks
-          .filter((block) => !incomingBlockIds.has(block.id))
-          .map((block) => block.id);
+        const blocksToDelete = currentForm.blocks.filter(
+          (block) => !incomingBlockIds.has(block.id),
+        );
 
-        // Validate: cannot delete blocks that have field responses
-        if (blocksToDelete.length > 0) {
-          const usedResponseCount = await tx.formFieldResponse.count({
+        const responseBlockIdsToWipe = new Set<string>();
+
+        for (const block of blocksToDelete) {
+          if (isFieldBasedBlock(block.type as FormBlockType)) {
+            responseBlockIdsToWipe.add(block.id);
+          }
+        }
+
+        for (const incoming of blocksToUpdate) {
+          const existing = existingBlocksMap.get(incoming.id!);
+          if (existing && shouldWipeFieldResponses(existing, incoming)) {
+            responseBlockIdsToWipe.add(incoming.id!);
+          }
+        }
+
+        if (responseBlockIdsToWipe.size > 0) {
+          await tx.formFieldResponse.deleteMany({
             where: {
               blockId: {
-                in: blocksToDelete,
+                in: [...responseBlockIdsToWipe],
               },
             },
           });
-
-          if (usedResponseCount > 0) {
-            throw new ValidationError(
-              "Cannot remove fields that already have submissions. Keep the existing field or clear submissions first.",
-            );
-          }
         }
 
         // Add new blocks
@@ -230,7 +232,7 @@ export async function PATCH(
           await tx.formBlock.deleteMany({
             where: {
               id: {
-                in: blocksToDelete,
+                in: blocksToDelete.map((block) => block.id),
               },
             },
           });

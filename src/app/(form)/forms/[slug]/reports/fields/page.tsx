@@ -30,7 +30,10 @@ export default async function FieldAnalysisPage({
           </Text>
         </Card>
       ) : (
-        <FieldAnalysisList submissions={data.submissions} />
+        <FieldAnalysisList
+          fieldBlocks={data.fieldBlocks}
+          submissions={data.submissions}
+        />
       )}
     </>
   );

@@ -5,15 +5,17 @@ import { Card, CardContent } from "@/components/ui/Card";
 import Text from "@/components/ui/Text";
 import { Badge } from "@/components/ui/Badge";
 import Metric from "@/components/ui/Metric";
-import { type FormSubmission, type FormBlockType } from "@/lib/types/form";
+import { type FormBlock, type FormBlockType, type FormSubmission } from "@/lib/types/form";
 import { type FieldData } from "@/lib/types/reports";
 import {
+  getFieldBlockLabel,
   isChoiceBasedFieldBlock,
   isTextBasedFieldBlock,
 } from "@/lib/utils/formUtils";
 import { BarChart } from "@/components/charts/Bar";
 
 interface FieldAnalysisListProps {
+  fieldBlocks: FormBlock[];
   submissions: FormSubmission[];
 }
 
@@ -101,39 +103,34 @@ function analyzeField(field: FieldData): FieldAnalysisResult {
   };
 }
 
-export function FieldAnalysisList({ submissions }: FieldAnalysisListProps) {
+export function FieldAnalysisList({
+  fieldBlocks,
+  submissions,
+}: FieldAnalysisListProps) {
   const { summaryMetrics, fieldAnalysis } = useMemo(() => {
-    const fieldMap = new Map<string, FieldData>();
+    const fields: FieldData[] = fieldBlocks.map((block) => {
+      const required =
+        block.props?.required === true || block.props?.required === "true";
+      const options = (block.props?.options ?? []) as string[];
 
-    submissions.forEach((submission) => {
-      submission.responses.forEach((response) => {
-        if (!fieldMap.has(response.blockId)) {
-          const labelValue = response.blockProps?.label;
-          const label =
-            typeof labelValue === "string" ? labelValue : response.blockName;
+      const field: FieldData = {
+        blockId: block.id,
+        blockName: block.name,
+        blockType: block.type,
+        label: getFieldBlockLabel(block),
+        required,
+        responses: [],
+        responded: 0,
+        skipped: 0,
+        options,
+      };
 
-          // Extract required flag from blockProps
-          const required =
-            response.blockProps?.required === true ||
-            response.blockProps?.required === "true";
+      for (const submission of submissions) {
+        const response = submission.responses.find(
+          (item) => item.blockId === block.id,
+        );
 
-          const options = (response.blockProps?.options ?? []) as string[];
-
-          fieldMap.set(response.blockId, {
-            blockId: response.blockId,
-            blockName: response.blockName,
-            blockType: response.blockType,
-            label,
-            required,
-            responses: [],
-            responded: 0,
-            skipped: 0,
-            options,
-          });
-        }
-
-        const field = fieldMap.get(response.blockId)!;
-        if (response.value === null) {
+        if (response == null || response.value === null) {
           field.skipped += 1;
         } else {
           field.responses.push(response.value);
@@ -141,12 +138,11 @@ export function FieldAnalysisList({ submissions }: FieldAnalysisListProps) {
             ? response.value.length
             : 1;
         }
-      });
+      }
+
+      return field;
     });
 
-    const fields = Array.from(fieldMap.values());
-
-    // Calculate summary metrics
     const summary: SummaryMetrics = {
       totalFields: fields.length,
       totalResponses: fields.reduce((sum, field) => sum + field.responded, 0),
@@ -156,7 +152,7 @@ export function FieldAnalysisList({ submissions }: FieldAnalysisListProps) {
       summaryMetrics: summary,
       fieldAnalysis: fields,
     };
-  }, [submissions]);
+  }, [fieldBlocks, submissions]);
 
   return (
     <div className="space-y-6">
@@ -179,7 +175,12 @@ export function FieldAnalysisList({ submissions }: FieldAnalysisListProps) {
       {/* Field Cards */}
       <Card>
         <CardContent className="space-y-4 px-6">
-          {fieldAnalysis.map((field, index, arr) => {
+          {fieldAnalysis.length === 0 ? (
+            <Text className="text-muted-foreground">
+              No input fields on this form.
+            </Text>
+          ) : (
+            fieldAnalysis.map((field, index, arr) => {
             const isLast = index === arr.length - 1;
             const analysis = analyzeField(field);
 
@@ -298,7 +299,8 @@ export function FieldAnalysisList({ submissions }: FieldAnalysisListProps) {
                 </div>
               </div>
             );
-          })}
+          })
+          )}
         </CardContent>
       </Card>
     </div>

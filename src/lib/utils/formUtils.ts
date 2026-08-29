@@ -178,6 +178,57 @@ export const isFieldBasedBlock = (blockType: FormBlockType): boolean =>
   ALL_FIELD_BLOCKS.includes(blockType);
 
 /**
+ * Display label for a field block in reports.
+ * Falls back to the block name when label is missing.
+ */
+export function getFieldBlockLabel(block: {
+  name: string;
+  props: FormBlockProps;
+}): string {
+  const label = block.props?.label;
+  return typeof label === "string" && label.trim() ? label : block.name;
+}
+
+function getBlockOptions(props: unknown): unknown {
+  if (!props || typeof props !== "object" || Array.isArray(props)) {
+    return [];
+  }
+
+  const options = (props as Record<string, unknown>).options;
+  return options ?? [];
+}
+
+/**
+ * Whether saving an updated input field should clear existing field responses.
+ * Wipes when the field type changes or when choice options change.
+ * Layout blocks (heading, paragraph, separator) never trigger a wipe.
+ */
+export function shouldWipeFieldResponses(
+  existing: { type: string; props: unknown },
+  incoming: { type: string; props: unknown },
+): boolean {
+  const existingIsField = isFieldBasedBlock(existing.type as FormBlockType);
+  const incomingIsField = isFieldBasedBlock(incoming.type as FormBlockType);
+
+  if (!existingIsField && !incomingIsField) {
+    return false;
+  }
+
+  if (existing.type !== incoming.type) {
+    return true;
+  }
+
+  if (!existingIsField) {
+    return false;
+  }
+
+  return (
+    JSON.stringify(getBlockOptions(existing.props)) !==
+    JSON.stringify(getBlockOptions(incoming.props))
+  );
+}
+
+/**
  * Converts normalized metrics (object with values only) to array with metadata
  * @param {FormMetrics} metrics - Object mapping metric keys to values
  * @returns {FormMetric[]} Array of metrics with labels and values

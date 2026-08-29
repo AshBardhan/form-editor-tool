@@ -9,6 +9,7 @@ import {
   FormReportPageData,
   ButtonAlignment,
 } from "@/lib/types/form";
+import { isFieldBasedBlock } from "@/lib/utils/formUtils";
 
 const FORM_BUILDER_CACHE_TAG = "form-builder";
 const FORM_META_CACHE_TAG = "form-meta";
@@ -115,6 +116,15 @@ const getFormReportDataCached = cache(
         starts: true,
         completions: true,
         submitAttempts: true,
+        blocks: {
+          orderBy: { order: "asc" },
+          select: {
+            id: true,
+            type: true,
+            name: true,
+            props: true,
+          },
+        },
         submissions: {
           orderBy: { submittedAt: "desc" },
           select: {
@@ -148,6 +158,14 @@ const getFormReportDataCached = cache(
         id: form.id,
         title: form.title,
       },
+      fieldBlocks: form.blocks
+        .filter((block) => isFieldBasedBlock(block.type as FormBlockType))
+        .map((block) => ({
+          id: block.id,
+          type: block.type as FormBlockType,
+          name: block.name,
+          props: block.props as FormBlockProps,
+        })),
       metrics: {
         submissions: form.submissions.length,
         views: form.views ?? 0,
