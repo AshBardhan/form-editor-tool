@@ -8,6 +8,8 @@
 import { Suspense } from "react";
 import { useSearchParams } from "next/navigation";
 import Link from "next/link";
+import { AuthFormCard } from "@/components/auth/AuthFormCard";
+import { Button } from "@/components/ui/Button";
 
 function AuthErrorContent() {
   const searchParams = useSearchParams();
@@ -26,33 +28,17 @@ function AuthErrorContent() {
     : errorMessages.Default;
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-gray-50">
-      <div className="text-center px-4 max-w-md">
-        <div className="text-6xl mb-4">⚠️</div>
-        <h1 className="text-3xl font-bold text-gray-900 mb-4">
-          Authentication Error
-        </h1>
-        <p className="text-gray-600 mb-8">{errorMessage}</p>
-        <Link
-          href="/signin"
-          className="inline-block px-6 py-3 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors"
-        >
-          Try Again
-        </Link>
-      </div>
-    </div>
+    <AuthFormCard title="Authentication error" description={errorMessage}>
+      <Button asChild className="w-full">
+        <Link href="/signin">Try again</Link>
+      </Button>
+    </AuthFormCard>
   );
 }
 
 export default function AuthErrorPage() {
   return (
-    <Suspense
-      fallback={
-        <div className="min-h-screen flex items-center justify-center bg-gray-50">
-          <div className="text-center">Loading...</div>
-        </div>
-      }
-    >
+    <Suspense fallback={<div className="py-4 text-center">Loading...</div>}>
       <AuthErrorContent />
     </Suspense>
   );
