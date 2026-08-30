@@ -11,6 +11,11 @@ export function matchesRoute(
   routes: readonly string[],
 ): boolean {
   return routes.some((route) => {
+    // When the route is the root path, we need to check if the pathname is exactly the same.
+    if (route === "/") {
+      return pathname === "/";
+    }
+
     const normalizedRoute = route.endsWith("/") ? route.slice(0, -1) : route;
 
     return (
@@ -21,6 +26,11 @@ export function matchesRoute(
 
 export default auth((req) => {
   const { pathname } = req.nextUrl;
+
+  // Landing is always public; skip auth redirects
+  if (pathname === "/") {
+    return NextResponse.next();
+  }
 
   const session = req.auth;
   // Require session.user to be present — a bare session object (stale JWT) is not sufficient.

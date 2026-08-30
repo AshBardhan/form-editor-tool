@@ -4,6 +4,7 @@
  */
 
 export const PUBLIC_ROUTES = [
+  "/", // Landing page (unauthenticated)
   "/signin",
   "/signup",
   "/error",
