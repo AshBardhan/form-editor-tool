@@ -42,7 +42,7 @@
 - **Toast System**: Non-blocking notifications for user feedback with Motion animations
 - **Route Groups**: Next.js route groups for logical organization
   - `(dashboard)/` - Dashboard-related pages
-  - `(form)/` - Form management pages (builder, reports)
+  - `(form)/` - Form management pages (builder, analytics, submissions)
   - Enables shared layouts without affecting URL structure
 
 ### Responsive Design

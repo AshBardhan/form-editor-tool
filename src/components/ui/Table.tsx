@@ -34,6 +34,7 @@ interface TableProps<TRow extends TableRow> {
   emptyMessage?: string;
   /** Key of the row object used as the React key. Defaults to "id". */
   rowKey?: keyof TRow & string;
+  onRowClick?: (row: TRow) => void;
 }
 
 function getNextDirection(currentDirection: SortDirection) {
@@ -62,6 +63,7 @@ export function Table<TRow extends TableRow>({
   className,
   emptyMessage = "No data available",
   rowKey = "id" as keyof TRow & string,
+  onRowClick,
 }: TableProps<TRow>) {
   const [sortKey, setSortKey] = useState<SortKey>({
     id: null,
@@ -197,7 +199,32 @@ export function Table<TRow extends TableRow>({
                 );
 
                 return (
-                  <tr key={key} className="bg-white even:bg-gray-100">
+                  <tr
+                    key={key}
+                    className={cn(
+                      "bg-white even:bg-gray-100",
+                      onRowClick && "cursor-pointer hover:bg-gray-50",
+                    )}
+                    onClick={
+                      onRowClick
+                        ? () => {
+                            onRowClick(row);
+                          }
+                        : undefined
+                    }
+                    onKeyDown={
+                      onRowClick
+                        ? (event) => {
+                            if (event.key === "Enter" || event.key === " ") {
+                              event.preventDefault();
+                              onRowClick(row);
+                            }
+                          }
+                        : undefined
+                    }
+                    tabIndex={onRowClick ? 0 : undefined}
+                    role={onRowClick ? "link" : undefined}
+                  >
                     {data.columns.map((column) => (
                       <td
                         key={column.id}

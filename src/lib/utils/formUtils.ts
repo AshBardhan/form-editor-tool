@@ -178,7 +178,7 @@ export const isFieldBasedBlock = (blockType: FormBlockType): boolean =>
   ALL_FIELD_BLOCKS.includes(blockType);
 
 /**
- * Display label for a field block in reports.
+ * Display label for a field block in analytics and submissions.
  * Falls back to the block name when label is missing.
  */
 export function getFieldBlockLabel(block: {

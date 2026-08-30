@@ -1,20 +1,16 @@
 import { notFound } from "next/navigation";
 import Text from "@/components/ui/Text";
 import { Card } from "@/components/ui/Card";
-import { FieldAnalysisList } from "@/components/reports/FieldAnalysisList";
-import { getFormReportData } from "@/lib/queries/forms";
+import { SubmissionsList } from "@/components/submissions/SubmissionsList";
+import { getFormSubmissionsListData } from "@/lib/queries/forms";
 
-/**
- * Renders the field analysis report using the shared cached submissions payload.
- */
-export default async function FieldAnalysisPage({
+export default async function SubmissionsPage({
   params,
 }: {
   params: Promise<{ slug: string }>;
 }) {
   const { slug } = await params;
-
-  const data = await getFormReportData(slug);
+  const data = await getFormSubmissionsListData(slug);
 
   if (!data) {
     notFound();
@@ -30,7 +26,7 @@ export default async function FieldAnalysisPage({
           </Text>
         </Card>
       ) : (
-        <FieldAnalysisList
+        <SubmissionsList
           fieldBlocks={data.fieldBlocks}
           submissions={data.submissions}
         />

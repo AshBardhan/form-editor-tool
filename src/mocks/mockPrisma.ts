@@ -166,7 +166,7 @@ export const mockPrisma: MockPrismaClient = {
     },
 
     /**
-     * Find unique form - Used by builder and reports
+     * Find unique form - Used by builder, analytics, and submissions
      */
     findUnique: async (args: any = {}) => {
       console.log("[Mock Prisma] form.findUnique called with:", args);
@@ -189,7 +189,7 @@ export const mockPrisma: MockPrismaClient = {
       // Get blocks for this form
       const blocks = getBlocksForForm(form.id);
 
-      // Get submissions for this form (for report data with submissions include)
+      // Get submissions for this form (analytics and submissions pages)
       const submissions = getSubmissionsForForm(form.id);
 
       // Return form in expected format
@@ -219,7 +219,7 @@ export const mockPrisma: MockPrismaClient = {
         })),
       };
 
-      // Handle select option (for report data with nested submissions)
+      // Handle select option (nested submissions)
       if (args?.select) {
         const selectedResult: any = {};
 
@@ -228,7 +228,36 @@ export const mockPrisma: MockPrismaClient = {
             // Handle nested submissions with select
             const submissionsConfig = args.select.submissions;
 
-            selectedResult.submissions = submissions.map((submission: any) => {
+            let selectedSubmissions = submissions;
+
+            if (submissionsConfig.where?.id) {
+              selectedSubmissions = selectedSubmissions.filter(
+                (submission: any) => submission.id === submissionsConfig.where.id,
+              );
+            }
+
+            if (submissionsConfig.orderBy?.submittedAt === "desc") {
+              selectedSubmissions = [...selectedSubmissions].sort(
+                (a: any, b: any) =>
+                  new Date(b.submittedAt).getTime() -
+                  new Date(a.submittedAt).getTime(),
+              );
+            } else if (submissionsConfig.orderBy?.submittedAt === "asc") {
+              selectedSubmissions = [...selectedSubmissions].sort(
+                (a: any, b: any) =>
+                  new Date(a.submittedAt).getTime() -
+                  new Date(b.submittedAt).getTime(),
+              );
+            }
+
+            if (typeof submissionsConfig.take === "number") {
+              selectedSubmissions = selectedSubmissions.slice(
+                0,
+                submissionsConfig.take,
+              );
+            }
+
+            selectedResult.submissions = selectedSubmissions.map((submission: any) => {
               const submissionResult: any = {
                 id: submission.id,
                 submittedAt: new Date(submission.submittedAt),
@@ -332,7 +361,7 @@ export const mockPrisma: MockPrismaClient = {
         return selectedResult;
       }
 
-      // Handle submissions include (for report data)
+      // Handle submissions include
       if (args?.include?.submissions) {
         result.submissions = submissions.map((submission: any) => ({
           id: submission.id,
@@ -512,7 +541,7 @@ export const mockPrisma: MockPrismaClient = {
           ? new Date(currentForm.publishedAt)
           : new Date(),
         updatedAt: new Date(),
-        // Handle analytics counters (used by clear report)
+        // Handle analytics counters (used by clear submissions)
         ...(args.data.starts !== undefined && { starts: args.data.starts }),
         ...(args.data.completions !== undefined && {
           completions: args.data.completions,
@@ -632,7 +661,7 @@ export const mockPrisma: MockPrismaClient = {
   // ============================================
   formSubmission: {
     /**
-     * Find many submissions - Used by reports
+     * Find many submissions - Used by submissions and field analysis
      */
     findMany: async (args?: any) => {
       console.log("[Mock Prisma] formSubmission.findMany called with:", args);
@@ -662,7 +691,7 @@ export const mockPrisma: MockPrismaClient = {
       const form = formId ? getFormById(formId) : null;
       const formBlocks = form ? getBlocksForForm(form.id) : [];
 
-      // Return submissions in the format expected by reports
+      // Return submissions in the format expected by submissions and field analysis
       return submissions.map((submission) => ({
         id: submission.id,
         formId: submission.formId,
@@ -741,7 +770,7 @@ export const mockPrisma: MockPrismaClient = {
     },
 
     /**
-     * Delete many submissions - Used by clear report functionality
+     * Delete many submissions - Used by clear submissions
      */
     deleteMany: async (args: any) => {
       console.log("[Mock Prisma] formSubmission.deleteMany called with:", args);

@@ -258,7 +258,7 @@ export function PublicFormContent({ form }: PublicFormContentProps) {
                   </Text>
                   <div className="flex gap-3 justify-center mt-4">
                     <Button onClick={handleSubmitAnotherResponse}>
-                      Submit another response
+                      Submit another
                     </Button>
                     <Link href="/forms">
                       <Button variant="outline">Go Home</Button>

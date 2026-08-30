@@ -155,25 +155,14 @@ export interface FormPageData {
 }
 
 /**
- * Form report page data - used for displaying form submissions and analytics
+ * Funnel counters used by analytics overview
  */
-
-export interface FormReportMetrics {
+export interface FormAnalyticsMetrics {
   submissions: number;
   views: number;
   starts: number;
   completions: number;
   submitAttempts: number;
-}
-
-export interface FormReportPageData {
-  form: {
-    id: string;
-    title: string;
-  };
-  fieldBlocks: FormBlock[];
-  metrics: FormReportMetrics;
-  submissions: FormSubmission[];
 }
 
 export interface DashboardForm {

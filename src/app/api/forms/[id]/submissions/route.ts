@@ -4,13 +4,7 @@ import prisma from "@/lib/prisma";
 import { apiHandler } from "@/lib/utils/apiUtils";
 import { ValidationError, NotFoundError } from "@/lib/errors";
 import { z } from "zod";
-import { revalidateTag } from "next/cache";
-import {
-  FORM_BUILDER_CACHE_TAG,
-  FORM_META_CACHE_TAG,
-  FORM_REPORT_CACHE_TAG,
-  PUBLIC_FORM_CACHE_TAG,
-} from "@/lib/queries/forms";
+import { revalidateFormMutationCache } from "@/lib/cache/formCache";
 import { requireAuthSession, requireOwnership } from "@/lib/utils/authUtils";
 
 const SubmissionSchema = z.object({
@@ -94,10 +88,7 @@ export async function POST(
       },
     });
 
-    revalidateTag(FORM_BUILDER_CACHE_TAG);
-    revalidateTag(FORM_META_CACHE_TAG);
-    revalidateTag(FORM_REPORT_CACHE_TAG);
-    revalidateTag(PUBLIC_FORM_CACHE_TAG);
+    revalidateFormMutationCache();
 
     return NextResponse.json(
       {
@@ -166,10 +157,7 @@ export async function DELETE(
       }),
     ]);
 
-    revalidateTag(FORM_BUILDER_CACHE_TAG);
-    revalidateTag(FORM_META_CACHE_TAG);
-    revalidateTag(FORM_REPORT_CACHE_TAG);
-    revalidateTag(PUBLIC_FORM_CACHE_TAG);
+    revalidateFormMutationCache();
 
     return NextResponse.json({
       success: true,

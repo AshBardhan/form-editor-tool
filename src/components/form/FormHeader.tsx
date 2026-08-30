@@ -64,18 +64,12 @@ export function FormHeader({ form }: FormHeaderProps) {
       path: "builder",
     },
     {
-      label: "Reports",
-      path: "reports",
-      children: [
-        {
-          label: "Submissions",
-          path: "submissions",
-        },
-        {
-          label: "Fields",
-          path: "fields",
-        },
-      ],
+      label: "Analytics",
+      path: "analytics",
+    },
+    {
+      label: "Submissions",
+      path: "submissions",
     },
   ];
 
@@ -136,21 +130,21 @@ export function FormHeader({ form }: FormHeaderProps) {
       }>;
       if (!response.ok || !result.success) {
         throw new Error(
-          result.error?.message || "Unable to clear report right now.",
+          result.error?.message || "Unable to clear submissions right now.",
         );
       }
 
       const deletedCount = result.data?.deletedSubmissions || 0;
-      toast.success("Report cleared successfully", {
+      toast.success("Submissions cleared successfully", {
         description: `Deleted ${deletedCount} submission${deletedCount !== 1 ? "s" : ""} and all field responses.`,
       });
       router.refresh();
     } catch (error) {
-      toast.error("Clear report failed", {
+      toast.error("Clear submissions failed", {
         description:
           error instanceof Error
             ? error.message
-            : "We could not clear the report. Please try again.",
+            : "We could not clear submissions. Please try again.",
       });
     } finally {
       setIsSubmitting(false);
@@ -259,13 +253,13 @@ export function FormHeader({ form }: FormHeaderProps) {
                 </DropdownMenuItem>
               )}
 
-              {/* Clear Report option: shown in published and archived forms */}
+              {/* Clear submissions: shown in published and archived forms */}
               {(form.status === "published" || form.status === "archived") && (
                 <DropdownMenuItem
                   onSelect={() => setIsClearReportConfirmOpen(true)}
                 >
                   <BrushCleaning className="size-4 mr-2" />
-                  Clear Report
+                  Clear submissions
                 </DropdownMenuItem>
               )}
 
@@ -372,7 +366,7 @@ export function FormHeader({ form }: FormHeaderProps) {
               }}
               disabled={isSubmitting}
             >
-              Clear report
+              Clear submissions
             </Button>
           </ModalFooter>
         </ModalContent>

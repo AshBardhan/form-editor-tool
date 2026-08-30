@@ -281,7 +281,7 @@ export const FormBuilderContent = (): JSX.Element => {
                   <AlertDescription>
                     This form already has submissions. Adding, removing, or
                     changing input fields (including type or options) may alter
-                    report answers. Submission records and analytics metrics
+                    field responses. Submission records and analytics metrics
                     stay the same. Missing answers show as "-".
                   </AlertDescription>
                 </Alert>

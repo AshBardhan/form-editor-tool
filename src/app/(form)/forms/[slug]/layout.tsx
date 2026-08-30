@@ -11,7 +11,7 @@ interface LayoutProps {
 
 /**
  * Fetches minimal form metadata for the header and validates form exists.
- * Child pages (builder, reports) fetch their own specific data as needed.
+ * Child pages (builder, analytics, submissions) fetch their own specific data as needed.
  */
 export default async function FormLayout({ children, params }: LayoutProps) {
   const { slug } = await params;

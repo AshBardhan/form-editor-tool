@@ -1,10 +1,9 @@
 import { NextRequest, NextResponse } from "next/server";
 import { z } from "zod";
-import { revalidateTag } from "next/cache";
 import prisma from "@/lib/prisma";
 import { apiHandler } from "@/lib/utils/apiUtils";
 import { NotFoundError, ValidationError } from "@/lib/errors";
-import { FORM_REPORT_CACHE_TAG } from "@/lib/queries/forms";
+import { revalidateFormAnalyticsCache } from "@/lib/cache/formCache";
 
 const AnalyticsEventSchema = z.object({
   event: z.enum(["view", "start", "completion", "submit_attempt"]),
@@ -66,7 +65,7 @@ export async function POST(
       throw new NotFoundError("Form not found or not published");
     }
 
-    revalidateTag(FORM_REPORT_CACHE_TAG);
+    revalidateFormAnalyticsCache();
 
     return NextResponse.json({ success: true }, { status: 200 });
   });

@@ -4,13 +4,7 @@ import prisma from "@/lib/prisma";
 import { apiHandler } from "@/lib/utils/apiUtils";
 import { NotFoundError, ValidationError } from "@/lib/errors";
 import { UpdateFormSchema } from "@/lib/schema/formSchema";
-import {
-  FORM_BUILDER_CACHE_TAG,
-  FORM_META_CACHE_TAG,
-  PUBLIC_FORM_CACHE_TAG,
-  FORM_REPORT_CACHE_TAG,
-} from "@/lib/queries/forms";
-import { revalidateTag } from "next/cache";
+import { revalidateFormMutationCache } from "@/lib/cache/formCache";
 import {
   generateFormSlug,
   isFieldBasedBlock,
@@ -254,17 +248,14 @@ export async function PATCH(
       throw new NotFoundError("Form not found");
     }
 
-    revalidateTag(FORM_BUILDER_CACHE_TAG);
-    revalidateTag(FORM_META_CACHE_TAG);
-    revalidateTag(FORM_REPORT_CACHE_TAG);
-    revalidateTag(PUBLIC_FORM_CACHE_TAG);
+    revalidateFormMutationCache();
 
     return NextResponse.json({ success: true, data: form }, { status: 200 });
   });
 }
 
 /**
- * Permanently deletes a form and clears related cached page and report data.
+ * Permanently deletes a form and clears related cached page data.
  * Frontend should show warnings for published/archived forms with submissions.
  * Requires authentication and ownership or ADMIN role.
  */
@@ -305,10 +296,7 @@ export async function DELETE(
     // Delete the form (cascade deletes blocks, submissions and responses)
     await prisma.form.delete({ where: { id } });
 
-    revalidateTag(FORM_BUILDER_CACHE_TAG);
-    revalidateTag(FORM_META_CACHE_TAG);
-    revalidateTag(FORM_REPORT_CACHE_TAG);
-    revalidateTag(PUBLIC_FORM_CACHE_TAG);
+    revalidateFormMutationCache();
 
     return NextResponse.json(
       {

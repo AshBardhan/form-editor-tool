@@ -90,7 +90,7 @@ The Mock Prisma client implements only the methods actually used in the applicat
 ### Form Model
 
 - `findMany()` - Dashboard form list
-- `findUnique()` - Builder and reports
+- `findUnique()` - Builder, analytics, and submissions
 - `findFirst()` - API route lookups
 - `create()` - Form creation
 - `update()` - Form updates

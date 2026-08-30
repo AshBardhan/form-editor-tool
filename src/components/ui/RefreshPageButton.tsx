@@ -5,7 +5,11 @@ import { useTransition } from "react";
 import { RefreshCwIcon } from "lucide-react";
 import { Button } from "@/components/ui/Button";
 
-export function RefreshReportsButton() {
+interface RefreshPageButtonProps {
+  label: string;
+}
+
+export function RefreshPageButton({ label }: RefreshPageButtonProps) {
   const router = useRouter();
   const [isPending, startTransition] = useTransition();
 
@@ -21,8 +25,8 @@ export function RefreshReportsButton() {
       size="icon"
       onClick={handleRefresh}
       disabled={isPending}
-      aria-label="Refresh submissions report"
-      title="Refresh report"
+      aria-label={label}
+      title={label}
     >
       <RefreshCwIcon className={isPending ? "animate-spin" : ""} />
     </Button>

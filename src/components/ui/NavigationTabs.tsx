@@ -79,8 +79,10 @@ function NavigationNode({
       <Link
         href={href}
         className={cn(
-          isActive ? " text-blue-600" : "text-gray-600 hover:text-gray-900",
-          "font-medium",
+          "inline-flex py-2 font-medium border-b-2",
+          isActive
+            ? "text-blue-600 border-blue-600"
+            : "text-gray-600 border-transparent hover:text-gray-900",
         )}
       >
         {item.label}

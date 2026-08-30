@@ -10,7 +10,7 @@ The application is crafted using `Next.js` and `React` to build scalable and reu
 - **Drag-and-Drop Builder**: Visual form builder with configurable widgets and reorderable blocks.
 - **Form Preview**: Fully functional preview modal with submission handling and multi-device responsive views.
 - **Public Form Access**: Renders published form which records user's interaction and field response.
-- **Form Submission Reports**: Anonymous form submission with analytics (response tracking, completion rates, value distribution).
+- **Form Submissions and Analytics**: Anonymous submissions with funnel metrics, field-level response analysis, and a per-submission detail view.
 - **UI Component Library**: Reusable primitive components with interactive demos and documentation.
 - **Database Integration**: RESTful API with PostgreSQL and Prisma for forms CRUD actions, publishing, submissions and analytics.
 
@@ -23,11 +23,12 @@ The application is crafted using `Next.js` and `React` to build scalable and reu
 | `/` | Dashboard with form grid and creation button (via `/forms`) |
 | `/demo` | Interactive showcase of 15+ UI primitives with code examples |
 | `/forms` | Dashboard page listing all forms with statistics |
-| `/forms/[slug]` | Form overview page with navigation to builder and reports |
+| `/forms/[slug]` | Form page with navigation to builder, analytics, and submissions |
 | `/forms/[slug]/builder` | Form builder interface for creating and editing forms |
-| `/forms/[slug]/reports` | Form analytics and submission reports |
-| `/forms/[slug]/reports/submissions` | List all form submissions with pagination |
-| `/forms/[slug]/reports/fields` | Field-level analytics and value distribution |
+| `/forms/[slug]/analytics` | Redirects to analytics overview |
+| `/forms/[slug]/analytics/overview` | Funnel metrics and reserved trends slot |
+| `/forms/[slug]/analytics/fields` | Field-level response analysis and value distribution |
+| `/forms/[slug]/submissions` | Table of all form submissions; row click opens field responses in a modal |
 | `/f/[slug]` | Public form view for respondents to fill and submit |
 | `/f/[slug]/success` | Form submission success confirmation page |
 | `/test` | Database connectivity test with statistics and health check links |
@@ -57,7 +58,8 @@ form-editor-tool/
 │  │  ├─ (form)/                     # Route group for form management
 │  │  │  └─ forms/[slug]/            # Dynamic form routes
 │  │  │     ├─ builder/              # Form builder interface
-│  │  │     └─ reports/              # Form reports and analytics
+│  │  │     ├─ analytics/            # Funnel metrics and field analysis
+│  │  │     └─ submissions/          # Submission list and detail
 │  │  ├─ api/                        # API routes
 │  │  │  └─ forms/                   # Forms-based API
 │  │  │     ├─ route.ts              # Form-dashboard endpoints
@@ -83,7 +85,8 @@ form-editor-tool/
 │  │  ├─ layout/                     # Layout wrapper components
 │  │  ├─ preview/                    # Form preview components
 │  │  ├─ public/                     # Public form components
-│  │  ├─ reports/                    # Reports and analytics components
+│  │  ├─ analytics/                  # Analytics overview and field analysis
+│  │  ├─ submissions/                # Submission list and detail
 │  │  └─ ui/                         # Primitive UI components
 │  ├─ lib/
 │  │  ├─ constants/                  # App constants (themes, styles, templates)
@@ -169,7 +172,7 @@ npm run dev
 
 - Dashboard with 10 sample forms
 - Form builder with full editing capabilities
-- Form reports with 20 sample submissions
+- Form analytics, field analysis, and sample submissions
 - Public form rendering and submission
 - All API routes (create, update, delete, publish)
 

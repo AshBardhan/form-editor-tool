@@ -3,13 +3,15 @@
 import { Card, CardContent } from "@/components/ui/Card";
 import Text from "@/components/ui/Text";
 import Metric from "@/components/ui/Metric";
-import { FormReportMetrics } from "@/lib/types/form";
+import { FormAnalyticsMetrics } from "@/lib/types/form";
 
-interface ResponseMetricsProps {
-  metrics: FormReportMetrics;
+interface AnalyticsOverviewMetricsProps {
+  metrics: FormAnalyticsMetrics;
 }
 
-export function ReportMetrics({ metrics }: ResponseMetricsProps) {
+export function AnalyticsOverviewMetrics({
+  metrics,
+}: AnalyticsOverviewMetricsProps) {
   const {
     views = 0,
     submissions = 0,

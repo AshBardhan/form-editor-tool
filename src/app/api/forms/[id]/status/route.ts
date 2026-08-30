@@ -3,13 +3,7 @@ import prisma from "@/lib/prisma";
 import { apiHandler } from "@/lib/utils/apiUtils";
 import { NotFoundError, ValidationError } from "@/lib/errors";
 import { PatchFormStatusSchema } from "@/lib/schema/formSchema";
-import {
-  FORM_BUILDER_CACHE_TAG,
-  FORM_META_CACHE_TAG,
-  PUBLIC_FORM_CACHE_TAG,
-  FORM_REPORT_CACHE_TAG,
-} from "@/lib/queries/forms";
-import { revalidateTag } from "next/cache";
+import { revalidateFormMutationCache } from "@/lib/cache/formCache";
 import { requireAuthSession, requireOwnership } from "@/lib/utils/authUtils";
 
 /**
@@ -117,10 +111,7 @@ export async function PATCH(
       },
     });
 
-    revalidateTag(FORM_BUILDER_CACHE_TAG);
-    revalidateTag(FORM_META_CACHE_TAG);
-    revalidateTag(FORM_REPORT_CACHE_TAG);
-    revalidateTag(PUBLIC_FORM_CACHE_TAG);
+    revalidateFormMutationCache();
 
     return NextResponse.json({ success: true, data: form }, { status: 200 });
   });

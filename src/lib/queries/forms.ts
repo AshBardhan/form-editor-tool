@@ -3,18 +3,48 @@ import { unstable_cache } from "next/cache";
 import prisma from "@/lib/prisma";
 import {
   FormConfig,
+  FormBlock,
   FormBlockProps,
   FormBlockType,
   FormPageData,
-  FormReportPageData,
   ButtonAlignment,
 } from "@/lib/types/form";
+import {
+  FormAnalyticsOverviewData,
+  FormFieldAnalysisData,
+  FormFieldResponseValue,
+  FormSubmissionsListData,
+} from "@/lib/types/analytics";
 import { isFieldBasedBlock } from "@/lib/utils/formUtils";
 
 const FORM_BUILDER_CACHE_TAG = "form-builder";
 const FORM_META_CACHE_TAG = "form-meta";
-const FORM_REPORT_CACHE_TAG = "form-report";
+const FORM_ANALYTICS_CACHE_TAG = "form-analytics";
+const FORM_FIELD_ANALYSIS_CACHE_TAG = "form-field-analysis";
+const FORM_SUBMISSIONS_CACHE_TAG = "form-submissions";
 const PUBLIC_FORM_CACHE_TAG = "public-form";
+
+function mapFieldBlocks(
+  blocks: {
+    id: string;
+    type: string;
+    name: string;
+    props: unknown;
+  }[],
+): FormBlock[] {
+  return blocks
+    .filter((block) => isFieldBasedBlock(block.type as FormBlockType))
+    .map((block) => ({
+      id: block.id,
+      type: block.type as FormBlockType,
+      name: block.name,
+      props: block.props as FormBlockProps,
+    }));
+}
+
+function mapFieldResponseValue(value: unknown): FormFieldResponseValue["value"] {
+  return value as FormFieldResponseValue["value"];
+}
 
 /**
  * Loads minimal form metadata for the layout header.
@@ -101,12 +131,28 @@ const getFormBuilderDataCached = cache(
   },
 );
 
+const fieldBlockSelect = {
+  orderBy: { order: "asc" as const },
+  select: {
+    id: true,
+    type: true,
+    name: true,
+    props: true,
+  },
+};
+
+const fieldResponseSelect = {
+  select: {
+    blockId: true,
+    value: true,
+  },
+};
+
 /**
- * Loads the report payload for responses and field analysis views.
- * Wrapped in React cache so both report pages can reuse the same fetch result.
+ * Funnel counters only — no field values or submission rows.
  */
-const getFormReportDataCached = cache(
-  async (slug: string): Promise<FormReportPageData | null> => {
+const getFormAnalyticsOverviewDataCached = cache(
+  async (slug: string): Promise<FormAnalyticsOverviewData | null> => {
     const form = await prisma.form.findUnique({
       where: { slug },
       select: {
@@ -116,34 +162,49 @@ const getFormReportDataCached = cache(
         starts: true,
         completions: true,
         submitAttempts: true,
-        blocks: {
-          orderBy: { order: "asc" },
-          select: {
-            id: true,
-            type: true,
-            name: true,
-            props: true,
-          },
+        _count: {
+          select: { submissions: true },
         },
+      },
+    });
+
+    if (!form) {
+      return null;
+    }
+
+    return {
+      form: {
+        id: form.id,
+        title: form.title,
+      },
+      metrics: {
+        submissions: form._count.submissions,
+        views: form.views ?? 0,
+        starts: form.starts ?? 0,
+        completions: form.completions ?? 0,
+        submitAttempts: form.submitAttempts ?? 0,
+      },
+    };
+  },
+);
+
+/**
+ * Field-centric payload: blocks plus flat { blockId, value } answers.
+ */
+const getFormFieldAnalysisDataCached = cache(
+  async (slug: string): Promise<FormFieldAnalysisData | null> => {
+    const form = await prisma.form.findUnique({
+      where: { slug },
+      select: {
+        id: true,
+        title: true,
+        _count: {
+          select: { submissions: true },
+        },
+        blocks: fieldBlockSelect,
         submissions: {
-          orderBy: { submittedAt: "desc" },
           select: {
-            id: true,
-            submittedAt: true,
-            responses: {
-              select: {
-                id: true,
-                blockId: true,
-                value: true,
-                block: {
-                  select: {
-                    type: true,
-                    name: true,
-                    props: true,
-                  },
-                },
-              },
-            },
+            responses: fieldResponseSelect,
           },
         },
       },
@@ -158,31 +219,58 @@ const getFormReportDataCached = cache(
         id: form.id,
         title: form.title,
       },
-      fieldBlocks: form.blocks
-        .filter((block) => isFieldBasedBlock(block.type as FormBlockType))
-        .map((block) => ({
-          id: block.id,
-          type: block.type as FormBlockType,
-          name: block.name,
-          props: block.props as FormBlockProps,
+      fieldBlocks: mapFieldBlocks(form.blocks),
+      submissionCount: form._count.submissions,
+      responses: form.submissions.flatMap((submission) =>
+        submission.responses.map((response) => ({
+          blockId: response.blockId,
+          value: mapFieldResponseValue(response.value),
         })),
-      metrics: {
-        submissions: form.submissions.length,
-        views: form.views ?? 0,
-        starts: form.starts ?? 0,
-        completions: form.completions ?? 0,
-        submitAttempts: form.submitAttempts ?? 0,
+      ),
+    };
+  },
+);
+
+/**
+ * Row-centric submissions list. Isolated so pagination can be added later.
+ */
+const getFormSubmissionsListDataCached = cache(
+  async (slug: string): Promise<FormSubmissionsListData | null> => {
+    const form = await prisma.form.findUnique({
+      where: { slug },
+      select: {
+        id: true,
+        slug: true,
+        title: true,
+        blocks: fieldBlockSelect,
+        submissions: {
+          orderBy: { submittedAt: "desc" },
+          select: {
+            id: true,
+            submittedAt: true,
+            responses: fieldResponseSelect,
+          },
+        },
       },
+    });
+
+    if (!form || !form.slug) {
+      return null;
+    }
+
+    return {
+      form: {
+        id: form.id,
+        slug: form.slug,
+        title: form.title,
+      },
+      fieldBlocks: mapFieldBlocks(form.blocks),
       submissions: form.submissions.map((submission) => ({
         id: submission.id,
         submittedAt: submission.submittedAt.toISOString(),
         responses: submission.responses.map((response) => ({
-          id: response.id,
           blockId: response.blockId,
-          blockType: response.block.type as FormBlockType,
-          blockName: response.block.name,
-          blockProps: response.block.props as FormBlockProps,
-          value: response.value as string | number | boolean | string[] | null,
+          value: mapFieldResponseValue(response.value),
         })),
       })),
     };
@@ -273,14 +361,29 @@ export const getFormBuilderData = unstable_cache(
   },
 );
 
-/**
- * Returns cached report data and marks it with the form-report tag for invalidation.
- */
-export const getFormReportData = unstable_cache(
-  getFormReportDataCached,
-  [FORM_REPORT_CACHE_TAG],
+export const getFormAnalyticsOverviewData = unstable_cache(
+  getFormAnalyticsOverviewDataCached,
+  [FORM_ANALYTICS_CACHE_TAG],
   {
-    tags: [FORM_REPORT_CACHE_TAG],
+    tags: [FORM_ANALYTICS_CACHE_TAG],
+    revalidate: 300,
+  },
+);
+
+export const getFormFieldAnalysisData = unstable_cache(
+  getFormFieldAnalysisDataCached,
+  [FORM_FIELD_ANALYSIS_CACHE_TAG],
+  {
+    tags: [FORM_FIELD_ANALYSIS_CACHE_TAG],
+    revalidate: 300,
+  },
+);
+
+export const getFormSubmissionsListData = unstable_cache(
+  getFormSubmissionsListDataCached,
+  [FORM_SUBMISSIONS_CACHE_TAG],
+  {
+    tags: [FORM_SUBMISSIONS_CACHE_TAG],
     revalidate: 300,
   },
 );
@@ -300,6 +403,8 @@ export const getPublicFormData = unstable_cache(
 export {
   FORM_BUILDER_CACHE_TAG,
   FORM_META_CACHE_TAG,
-  FORM_REPORT_CACHE_TAG,
+  FORM_ANALYTICS_CACHE_TAG,
+  FORM_FIELD_ANALYSIS_CACHE_TAG,
+  FORM_SUBMISSIONS_CACHE_TAG,
   PUBLIC_FORM_CACHE_TAG,
 };
