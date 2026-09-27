@@ -21,7 +21,7 @@ export const AppHeader = async ({ theme, className }: AppHeaderProps) => {
       )}
     >
       <div className="flex items-center justify-between">
-        <Link href="/">
+        <Link href="/forms">
           <HomeIcon size={24} />
         </Link>
 
