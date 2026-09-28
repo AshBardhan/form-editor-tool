@@ -13,6 +13,18 @@
 
 ### User Experience & Features
 
+- **Design System Foundation**: Replace the hardwired `components/ui` layer with a tokenised system
+  - Three token tiers — semantic (must change per theme), structural (optional per theme), global primitives (constant across themes)
+  - Scope-neutral `--ds-*` alias contract so one component follows whichever theme scope it renders in
+  - Primitive layer for behaviour and accessibility, derived layer for visual variants, compositions for surface-specific semantics
+  - Adopt a headless behaviour library for `Select` / `Modal` / `DropdownMenu` / `Toast` / `Tabs` instead of hand-rolled implementations
+  - Decommission `components/ui` one component at a time once every consumer has migrated
+- **Theme Management**: Support independent application and form themes
+  - Replace imperative `.dark` class switching with server-rendered scoped CSS variables, removing the theme flash on public forms
+  - App-wide light/dark from the user's persisted preference, applied to app chrome only
+  - Per-form theme selection from predefined presets, applied to the editor canvas, preview and public view only
+  - Keep each form's theme configuration independent from the application theme
+  - Replace the `FormTheme` light/dark enum with a preset id, so the theme set grows without a schema change
 - **Modal System Enhancements**: Expand modal functionality
   - Form builder help/documentation modals
   - Widget property help tooltips
@@ -22,12 +34,12 @@
 - **Enhanced Toast System**: Extend toast notifications
   - Action undo functionality in toasts
 
-## Medium Priority 
+## Medium Priority
 
 ### Backend Integration & Data
 
 - **Persisted Preferences**: Save user preferences across sessions
-  - `theme` and `device mode` preferences in `localStorage`
+  - `theme` and `device mode` preferences (prefer a cookie or the database over `localStorage`, which reintroduces a hydration flash)
   - Sidebar collapse/expand state persistence
   - Form layout preferences
 
@@ -45,6 +57,12 @@
 
 ### Advanced Features
 
+- **Custom Form Themes**: Let users author and reuse their own form themes
+  - `FormTheme` table storing a token record, plus per-form token overrides
+  - Layered resolution: defaults ← preset ← form overrides
+  - Token editor in the configuration panel with live canvas preview (no save round-trip)
+  - Save-as-custom-theme and reset-to-preset, with ownership checks on shared themes
+  - Strict allow-list validation of token values before they reach a public page, plus a contrast check so an unreadable theme cannot be published
 - **Form Status Management**: Enhanced status tracking
   - Scheduled publishing (publish at specific date/time)
   - Automatic archiving after expiration date
