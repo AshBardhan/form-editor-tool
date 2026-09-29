@@ -42,7 +42,9 @@ function mapFieldBlocks(
     }));
 }
 
-function mapFieldResponseValue(value: unknown): FormFieldResponseValue["value"] {
+function mapFieldResponseValue(
+  value: unknown,
+): FormFieldResponseValue["value"] {
   return value as FormFieldResponseValue["value"];
 }
 
