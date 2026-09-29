@@ -32,8 +32,8 @@
     --app-font-family-body: system-ui, sans-serif;
     --app-font-family-heading: system-ui, sans-serif;
     --app-radius-theme: 0.5rem;
-    --app-shadow-theme: 0 1px 3px rgb(15 23 42 / 0.12),
-      0 1px 2px rgb(15 23 42 / 0.08);
+    --app-shadow-theme:
+      0 1px 3px rgb(15 23 42 / 0.12), 0 1px 2px rgb(15 23 42 / 0.08);
 
     --app-header-bg: #ababab;
     --app-header-fg: #ffffff;
@@ -71,8 +71,8 @@
     --app-font-family-body: system-ui, sans-serif;
     --app-font-family-heading: system-ui, sans-serif;
     --app-radius-theme: 0.5rem;
-    --app-shadow-theme: 0 1px 3px rgb(0 0 0 / 0.4),
-      0 8px 24px rgb(0 0 0 / 0.24);
+    --app-shadow-theme:
+      0 1px 3px rgb(0 0 0 / 0.4), 0 8px 24px rgb(0 0 0 / 0.24);
 
     --app-header-bg: #050914;
     --app-header-fg: #f8fafc;
@@ -110,8 +110,8 @@
     --form-font-family-body: system-ui, sans-serif;
     --form-font-family-heading: system-ui, sans-serif;
     --form-radius-theme: 0.5rem;
-    --form-shadow-theme: 0 1px 3px rgb(15 23 42 / 0.12),
-      0 1px 2px rgb(15 23 42 / 0.08);
+    --form-shadow-theme:
+      0 1px 3px rgb(15 23 42 / 0.12), 0 1px 2px rgb(15 23 42 / 0.08);
   }
 
   [data-form-theme="dark"] {
@@ -138,8 +138,8 @@
     --form-font-family-body: system-ui, sans-serif;
     --form-font-family-heading: system-ui, sans-serif;
     --form-radius-theme: 0.5rem;
-    --form-shadow-theme: 0 1px 3px rgb(0 0 0 / 0.4),
-      0 8px 24px rgb(0 0 0 / 0.24);
+    --form-shadow-theme:
+      0 1px 3px rgb(0 0 0 / 0.4), 0 8px 24px rgb(0 0 0 / 0.24);
   }
 
   [data-form-theme="forest"] {
@@ -166,8 +166,8 @@
     --form-font-family-body: system-ui, sans-serif;
     --form-font-family-heading: Georgia, "Times New Roman", serif;
     --form-radius-theme: 0.375rem;
-    --form-shadow-theme: 0 2px 5px rgb(20 37 27 / 0.12),
-      0 10px 24px rgb(20 37 27 / 0.08);
+    --form-shadow-theme:
+      0 2px 5px rgb(20 37 27 / 0.12), 0 10px 24px rgb(20 37 27 / 0.08);
   }
 
   [data-form-theme="beach"] {
@@ -194,8 +194,8 @@
     --form-font-family-body: "Trebuchet MS", sans-serif;
     --form-font-family-heading: "Trebuchet MS", sans-serif;
     --form-radius-theme: 0.75rem;
-    --form-shadow-theme: 0 3px 8px rgb(73 52 33 / 0.1),
-      0 14px 30px rgb(73 52 33 / 0.08);
+    --form-shadow-theme:
+      0 3px 8px rgb(73 52 33 / 0.1), 0 14px 30px rgb(73 52 33 / 0.08);
   }
 
   [data-form-theme="frost"] {
@@ -222,8 +222,8 @@
     --form-font-family-body: system-ui, sans-serif;
     --form-font-family-heading: Arial, sans-serif;
     --form-radius-theme: 0.25rem;
-    --form-shadow-theme: 0 1px 4px rgb(20 36 58 / 0.1),
-      0 8px 22px rgb(20 36 58 / 0.08);
+    --form-shadow-theme:
+      0 1px 4px rgb(20 36 58 / 0.1), 0 8px 22px rgb(20 36 58 / 0.08);
   }
 
   [data-form-theme="fire"] {
@@ -250,8 +250,8 @@
     --form-font-family-body: system-ui, sans-serif;
     --form-font-family-heading: Georgia, "Times New Roman", serif;
     --form-radius-theme: 0.125rem;
-    --form-shadow-theme: 0 2px 5px rgb(53 23 19 / 0.12),
-      0 10px 24px rgb(53 23 19 / 0.08);
+    --form-shadow-theme:
+      0 2px 5px rgb(53 23 19 / 0.12), 0 10px 24px rgb(53 23 19 / 0.08);
   }
 
   html,
@@ -438,4 +438,3 @@
     @apply @5xl:px-8;
   }
 }
-
