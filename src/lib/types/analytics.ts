@@ -1,4 +1,8 @@
-import { type FormBlock, type FormBlockType, type FormAnalyticsMetrics } from "./form";
+import {
+  type FormBlock,
+  type FormBlockType,
+  type FormAnalyticsMetrics,
+} from "./form";
 
 /**
  * One field answer. A submission is the fill; a response is a value for one block.

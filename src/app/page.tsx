@@ -43,9 +43,9 @@ export default function Home() {
           Design forms by dragging blocks, then publish them in minutes
         </h1>
         <p className="mt-5 max-w-2xl text-base leading-relaxed text-paragraph sm:text-lg">
-          FormKit is a Next.js form builder for teams that want a canvas, a
-          live preview, and a public share link — plus submissions and
-          analytics once responses start coming in.
+          FormKit is a Next.js form builder for teams that want a canvas, a live
+          preview, and a public share link — plus submissions and analytics once
+          responses start coming in.
         </p>
         <div className="mt-8">
           <Button asChild size="lg">
@@ -60,7 +60,9 @@ export default function Home() {
               key={item.title}
               className="rounded-xl border border-white/80 bg-white/80 p-6 shadow-sm"
             >
-              <h2 className="text-lg font-semibold text-heading">{item.title}</h2>
+              <h2 className="text-lg font-semibold text-heading">
+                {item.title}
+              </h2>
               <p className="mt-2 text-sm leading-relaxed text-paragraph">
                 {item.description}
               </p>

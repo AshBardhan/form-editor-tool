@@ -232,7 +232,8 @@ export const mockPrisma: MockPrismaClient = {
 
             if (submissionsConfig.where?.id) {
               selectedSubmissions = selectedSubmissions.filter(
-                (submission: any) => submission.id === submissionsConfig.where.id,
+                (submission: any) =>
+                  submission.id === submissionsConfig.where.id,
               );
             }
 
@@ -257,49 +258,51 @@ export const mockPrisma: MockPrismaClient = {
               );
             }
 
-            selectedResult.submissions = selectedSubmissions.map((submission: any) => {
-              const submissionResult: any = {
-                id: submission.id,
-                submittedAt: new Date(submission.submittedAt),
-              };
+            selectedResult.submissions = selectedSubmissions.map(
+              (submission: any) => {
+                const submissionResult: any = {
+                  id: submission.id,
+                  submittedAt: new Date(submission.submittedAt),
+                };
 
-              // Handle responses with nested select
-              if (submissionsConfig.select?.responses) {
-                const responsesConfig = submissionsConfig.select.responses;
+                // Handle responses with nested select
+                if (submissionsConfig.select?.responses) {
+                  const responsesConfig = submissionsConfig.select.responses;
 
-                submissionResult.responses = submission.responses.map(
-                  (response: any) => {
-                    const block = blocks.find(
-                      (b: any) => b.id === response.blockId,
-                    );
-                    const responseResult: any = {
-                      id: `response-${submission.id}-${response.blockId}`,
-                      blockId: response.blockId,
-                      value: response.value,
-                    };
+                  submissionResult.responses = submission.responses.map(
+                    (response: any) => {
+                      const block = blocks.find(
+                        (b: any) => b.id === response.blockId,
+                      );
+                      const responseResult: any = {
+                        id: `response-${submission.id}-${response.blockId}`,
+                        blockId: response.blockId,
+                        value: response.value,
+                      };
 
-                    // Handle nested block select
-                    if (responsesConfig.select?.block) {
-                      const blockSelect = responsesConfig.select.block.select;
-                      if (block && blockSelect) {
-                        responseResult.block = {};
-                        Object.keys(blockSelect).forEach((blockKey) => {
-                          if (blockSelect[blockKey]) {
-                            responseResult.block[blockKey] = (block as any)[
-                              blockKey
-                            ];
-                          }
-                        });
+                      // Handle nested block select
+                      if (responsesConfig.select?.block) {
+                        const blockSelect = responsesConfig.select.block.select;
+                        if (block && blockSelect) {
+                          responseResult.block = {};
+                          Object.keys(blockSelect).forEach((blockKey) => {
+                            if (blockSelect[blockKey]) {
+                              responseResult.block[blockKey] = (block as any)[
+                                blockKey
+                              ];
+                            }
+                          });
+                        }
                       }
-                    }
 
-                    return responseResult;
-                  },
-                );
-              }
+                      return responseResult;
+                    },
+                  );
+                }
 
-              return submissionResult;
-            });
+                return submissionResult;
+              },
+            );
           } else if (key === "_count" && args.select[key]) {
             // Handle _count select (used by builder for submission count)
             selectedResult._count = {
