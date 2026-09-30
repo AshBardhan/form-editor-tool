@@ -7,8 +7,7 @@
 }
 
 @layer base {
-  :root,
-  [data-app-theme="light"] {
+  :root {
     color-scheme: light;
     --app-canvas: #fafafa;
     --app-surface: #ffffff;
@@ -47,7 +46,8 @@
     --app-main-content-bg: #fafafa;
   }
 
-  [data-app-theme="dark"] {
+  /* Dark applies only while a themed route (AppThemeContainer) is mounted. */
+  :root[data-app-theme="dark"]:has([data-app-scope]) {
     color-scheme: dark;
     --app-canvas: #0b1120;
     --app-surface: #111827;

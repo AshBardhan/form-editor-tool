@@ -11,17 +11,14 @@ export function AppThemeContainer({
   children,
   ...props
 }: AppThemeContainerProps) {
-  const appTheme = useUIStateStore((state) => state.appTheme);
-  const initializeAppTheme = useUIStateStore(
-    (state) => state.initializeAppTheme,
-  );
+  const hydrateAppTheme = useUIStateStore((state) => state.hydrateAppTheme);
 
   useEffect(() => {
-    initializeAppTheme();
-  }, [initializeAppTheme]);
+    hydrateAppTheme();
+  }, [hydrateAppTheme]);
 
   return (
-    <div data-app-theme={appTheme} {...props}>
+    <div data-app-scope {...props}>
       {children}
     </div>
   );

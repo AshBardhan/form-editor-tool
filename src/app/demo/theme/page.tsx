@@ -3,7 +3,6 @@
 import { AppThemeContainer } from "@/design-system/containers/AppThemeContainer";
 import { FormThemeContainer } from "@/design-system/containers/FormThemeContainer";
 import { AppThemeSwitcher } from "@/components/layout/AppThemeSwitcher";
-import { useUIStateStore } from "@/lib/stores";
 import type { FormTheme } from "@/lib/types/form";
 
 const FORM_THEME_PREVIEWS = [
@@ -120,8 +119,6 @@ function FormPreview({
 }
 
 export default function ThemeDemoPage() {
-  const appTheme = useUIStateStore((state) => state.appTheme);
-
   return (
     <AppThemeContainer className="min-h-screen p-4 sm:p-8">
       <main className="mx-auto max-w-7xl rounded-app-brand bg-app-canvas p-5 text-app-fg sm:p-8">
