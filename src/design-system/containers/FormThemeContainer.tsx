@@ -1,5 +1,5 @@
 import type { ReactNode } from "react";
-import { FormTheme } from "@/lib/types/form";
+import type { FormTheme } from "@/lib/types/themes";
 
 interface FormThemeContainerProps {
   theme: FormTheme;
