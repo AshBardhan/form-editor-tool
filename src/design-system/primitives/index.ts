@@ -49,10 +49,20 @@ export { TextArea } from "./TextArea";
 
 // Select
 export {
-  Select,
+  SelectRoot,
+  SelectLabel,
   SelectTrigger,
-  SelectContent,
+  SelectValue,
+  SelectIcon,
+  SelectPortal,
+  SelectPositioner,
+  SelectPopup,
+  SelectScrollUpArrow,
+  SelectList,
   SelectItem,
+  SelectItemText,
+  SelectItemIndicator,
+  SelectScrollDownArrow,
   SelectGroup,
   SelectGroupLabel,
 } from "./Select";
