@@ -3,6 +3,24 @@
 import { useState } from "react";
 import { AppButton } from "@/design-system/app/AppButton";
 import { FormButton } from "@/design-system/form/FormButton";
+import { AppInput } from "@/design-system/app/AppInput";
+import { AppTextArea } from "@/design-system/app/AppTextArea";
+import {
+  AppSelect,
+  AppSelectTrigger,
+  AppSelectValue,
+  AppSelectContent,
+  AppSelectItem,
+} from "@/design-system/app/AppSelect";
+import { FormInput } from "@/design-system/form/FormInput";
+import { FormTextArea } from "@/design-system/form/FormTextArea";
+import {
+  FormSelect,
+  FormSelectTrigger,
+  FormSelectValue,
+  FormSelectContent,
+  FormSelectItem,
+} from "@/design-system/form/FormSelect";
 import { AppThemeContainer } from "@/design-system/containers/AppThemeContainer";
 import { FormThemeContainer } from "@/design-system/containers/FormThemeContainer";
 import { AppThemeSwitcher } from "@/components/layout/AppThemeSwitcher";
@@ -24,8 +42,8 @@ export default function ComponentsDemo() {
   const [formTheme, setFormTheme] = useState<FormTheme>("light");
 
   return (
-    <AppThemeContainer className="min-h-screen bg-app-canvas text-app-fg">
-      <div className="p-8">
+    <AppThemeContainer>
+      <div className="bg-app-canvas text-app-fg p-8">
         <div className="max-w-7xl mx-auto">
           <header className="mb-12 flex items-start justify-between gap-6">
             <div className="flex-1">
@@ -54,95 +72,29 @@ export default function ComponentsDemo() {
           </header>
 
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-12">
-            {/* App-wide Components Column */}
-            <div className="space-y-12">
-              <section className="space-y-6">
-                <div>
-                  <h2 className="text-2xl font-bold text-app-fg-heading mb-2">
-                    App Button
-                  </h2>
-                  <p className="text-sm text-app-fg-muted">
-                    Flexible button component with variants, colors, and sizes
-                  </p>
-                </div>
-
-                {/* Variants Section */}
-                <div className="space-y-3">
-                  <h3 className="text-lg font-semibold text-app-fg-heading">
-                    Variants
-                  </h3>
-                  <div className="bg-app-surface p-6 rounded-lg border border-app-border-subtle">
-                    <div className="space-y-4">
+            {/* App Components Column */}
+            <div>
+              <h2 className="text-2xl font-bold text-app-fg-heading mb-2">
+                App Components
+              </h2>
+              <p className="text-sm text-app-fg-muted mb-6">
+                Core components for application-wide usage
+              </p>
+              <div className="bg-app-surface p-6 rounded-lg border border-app-border-subtle">
+                <div className="flex flex-col gap-12">
+                  {/* Button Component */}
+                  <div>
+                    <h3 className="text-lg font-semibold text-app-fg-heading mb-1">
+                      Button
+                    </h3>
+                    <p className="text-sm text-app-fg-muted mb-4">
+                      Flexible button with variants, colors, and sizes
+                    </p>
+                    <div className="flex flex-col gap-6">
                       <div>
-                        <p className="text-xs font-medium text-app-fg-muted mb-2">
-                          Solid
-                        </p>
-                        <div className="flex items-center gap-2 flex-wrap">
-                          <AppButton variant="solid" color="primary">
-                            Solid
-                          </AppButton>
-                          <AppButton variant="solid" color="primary" disabled>
-                            Disabled
-                          </AppButton>
-                        </div>
-                      </div>
-
-                      <div>
-                        <p className="text-xs font-medium text-app-fg-muted mb-2">
-                          Outline
-                        </p>
-                        <div className="flex items-center gap-2 flex-wrap">
-                          <AppButton variant="outline" color="primary">
-                            Outline
-                          </AppButton>
-                          <AppButton variant="outline" color="primary" disabled>
-                            Disabled
-                          </AppButton>
-                        </div>
-                      </div>
-
-                      <div>
-                        <p className="text-xs font-medium text-app-fg-muted mb-2">
-                          Ghost
-                        </p>
-                        <div className="flex items-center gap-2 flex-wrap">
-                          <AppButton variant="ghost" color="primary">
-                            Ghost
-                          </AppButton>
-                          <AppButton variant="ghost" color="primary" disabled>
-                            Disabled
-                          </AppButton>
-                        </div>
-                      </div>
-
-                      <div>
-                        <p className="text-xs font-medium text-app-fg-muted mb-2">
-                          Link
-                        </p>
-                        <div className="flex items-center gap-2 flex-wrap">
-                          <AppButton variant="link" color="primary">
-                            Link Button
-                          </AppButton>
-                          <AppButton variant="link" color="primary" disabled>
-                            Disabled
-                          </AppButton>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-
-                {/* Colors Section */}
-                <div className="space-y-3">
-                  <h3 className="text-lg font-semibold text-app-fg-heading">
-                    Colors
-                  </h3>
-                  <div className="bg-app-surface p-6 rounded-lg border border-app-border-subtle">
-                    <div className="space-y-4">
-                      <div>
-                        <p className="text-xs font-medium text-app-fg-muted mb-2">
-                          Primary
-                        </p>
+                        <h4 className="text-sm font-semibold text-app-fg-heading mb-2">
+                          Variants
+                        </h4>
                         <div className="flex items-center gap-2 flex-wrap">
                           <AppButton variant="solid" color="primary">
                             Solid
@@ -160,214 +112,195 @@ export default function ComponentsDemo() {
                       </div>
 
                       <div>
-                        <p className="text-xs font-medium text-app-fg-muted mb-2">
-                          Secondary
-                        </p>
+                        <h4 className="text-sm font-semibold text-app-fg-heading mb-2">
+                          Colors
+                        </h4>
                         <div className="flex items-center gap-2 flex-wrap">
+                          <AppButton variant="solid" color="primary">
+                            Primary
+                          </AppButton>
                           <AppButton variant="solid" color="secondary">
-                            Solid
+                            Secondary
                           </AppButton>
-                          <AppButton variant="outline" color="secondary">
-                            Outline
-                          </AppButton>
-                          <AppButton variant="ghost" color="secondary">
-                            Ghost
-                          </AppButton>
-                          <AppButton variant="link" color="secondary">
-                            Link
-                          </AppButton>
-                        </div>
-                      </div>
-
-                      <div>
-                        <p className="text-xs font-medium text-app-fg-muted mb-2">
-                          Positive
-                        </p>
-                        <div className="flex items-center gap-2 flex-wrap">
                           <AppButton variant="solid" color="positive">
-                            Solid
+                            Positive
                           </AppButton>
-                          <AppButton variant="outline" color="positive">
-                            Outline
-                          </AppButton>
-                          <AppButton variant="ghost" color="positive">
-                            Ghost
-                          </AppButton>
-                          <AppButton variant="link" color="positive">
-                            Link
-                          </AppButton>
-                        </div>
-                      </div>
-
-                      <div>
-                        <p className="text-xs font-medium text-app-fg-muted mb-2">
-                          Negative
-                        </p>
-                        <div className="flex items-center gap-2 flex-wrap">
                           <AppButton variant="solid" color="negative">
-                            Solid
-                          </AppButton>
-                          <AppButton variant="outline" color="negative">
-                            Outline
-                          </AppButton>
-                          <AppButton variant="ghost" color="negative">
-                            Ghost
-                          </AppButton>
-                          <AppButton variant="link" color="negative">
-                            Link
+                            Negative
                           </AppButton>
                         </div>
                       </div>
-                    </div>
-                  </div>
-                </div>
 
-                {/* Sizes Section */}
-                <div className="space-y-3">
-                  <h3 className="text-lg font-semibold text-app-fg-heading">
-                    Sizes
-                  </h3>
-                  <div className="bg-app-surface p-6 rounded-lg border border-app-border-subtle">
-                    <div className="space-y-4">
                       <div>
-                        <p className="text-xs font-medium text-app-fg-muted mb-2">
-                          Small
-                        </p>
+                        <h4 className="text-sm font-semibold text-app-fg-heading mb-2">
+                          Sizes
+                        </h4>
                         <div className="flex items-center gap-2 flex-wrap">
                           <AppButton variant="solid" color="primary" size="sm">
-                            Small Button
-                          </AppButton>
-                          <AppButton
-                            variant="outline"
-                            color="primary"
-                            size="sm"
-                          >
                             Small
                           </AppButton>
-                          <AppButton variant="ghost" color="primary" size="sm">
-                            Small
-                          </AppButton>
-                        </div>
-                      </div>
-
-                      <div>
-                        <p className="text-xs font-medium text-app-fg-muted mb-2">
-                          Medium (Default)
-                        </p>
-                        <div className="flex items-center gap-2 flex-wrap">
                           <AppButton variant="solid" color="primary" size="md">
-                            Medium Button
-                          </AppButton>
-                          <AppButton
-                            variant="outline"
-                            color="primary"
-                            size="md"
-                          >
                             Medium
                           </AppButton>
-                          <AppButton variant="ghost" color="primary" size="md">
-                            Medium
+                          <AppButton variant="solid" color="primary" size="lg">
+                            Large
                           </AppButton>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+
+                  {/* Input Component */}
+                  <div>
+                    <h3 className="text-lg font-semibold text-app-fg-heading mb-1">
+                      Input
+                    </h3>
+                    <p className="text-sm text-app-fg-muted mb-4">
+                      Text input with multiple types and sizes
+                    </p>
+                    <div className="flex flex-col gap-6">
+                      <div>
+                        <h4 className="text-sm font-semibold text-app-fg-heading mb-2">
+                          Types
+                        </h4>
+                        <div className="flex flex-col gap-2">
+                          <AppInput type="text" placeholder="Text" />
+                          <AppInput type="number" placeholder="Number" />
+                          <AppInput type="url" placeholder="URL" />
+                          <AppInput type="password" placeholder="Password" />
+                          <AppInput
+                            type="text"
+                            placeholder="Disabled"
+                            disabled
+                          />
+                          <AppInput
+                            type="email"
+                            placeholder="Invalid"
+                            aria-invalid
+                          />
                         </div>
                       </div>
 
                       <div>
-                        <p className="text-xs font-medium text-app-fg-muted mb-2">
-                          Large
-                        </p>
-                        <div className="flex items-center gap-2 flex-wrap">
-                          <AppButton variant="solid" color="primary" size="lg">
-                            Large Button
-                          </AppButton>
-                          <AppButton
-                            variant="outline"
-                            color="primary"
-                            size="lg"
-                          >
-                            Large
-                          </AppButton>
-                          <AppButton variant="ghost" color="primary" size="lg">
-                            Large
-                          </AppButton>
+                        <h4 className="text-sm font-semibold text-app-fg-heading mb-2">
+                          Sizes
+                        </h4>
+                        <div className="flex flex-col gap-2">
+                          <AppInput
+                            inputSize="sm"
+                            type="text"
+                            placeholder="Small"
+                          />
+                          <AppInput
+                            inputSize="md"
+                            type="text"
+                            placeholder="Medium"
+                          />
+                          <AppInput
+                            inputSize="lg"
+                            type="text"
+                            placeholder="Large"
+                          />
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+
+                  {/* TextArea Component */}
+                  <div>
+                    <h3 className="text-lg font-semibold text-app-fg-heading mb-1">
+                      TextArea
+                    </h3>
+                    <p className="text-sm text-app-fg-muted mb-4">
+                      Multi-line text input
+                    </p>
+                    <div className="flex flex-col gap-6">
+                      <div>
+                        <h4 className="text-sm font-semibold text-app-fg-heading mb-2">
+                          States
+                        </h4>
+                        <div className="flex flex-col gap-2">
+                          <AppTextArea placeholder="Default state" />
+                          <AppTextArea placeholder="Disabled" disabled />
+                          <AppTextArea placeholder="Invalid" aria-invalid />
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+
+                  {/* Select Component */}
+                  <div>
+                    <h3 className="text-lg font-semibold text-app-fg-heading mb-1">
+                      Select
+                    </h3>
+                    <p className="text-sm text-app-fg-muted mb-4">
+                      Dropdown selection component
+                    </p>
+                    <div className="flex flex-col gap-6">
+                      <div>
+                        <h4 className="text-sm font-semibold text-app-fg-heading mb-2">
+                          Single Select
+                        </h4>
+                        <div className="flex flex-col gap-2">
+                          <AppSelect size="sm">
+                            <AppSelectTrigger>
+                              <AppSelectValue placeholder="Small" />
+                            </AppSelectTrigger>
+                            <AppSelectContent>
+                              <AppSelectItem value="1">Option 1</AppSelectItem>
+                              <AppSelectItem value="2">Option 2</AppSelectItem>
+                            </AppSelectContent>
+                          </AppSelect>
+                          <AppSelect size="md">
+                            <AppSelectTrigger>
+                              <AppSelectValue placeholder="Medium" />
+                            </AppSelectTrigger>
+                            <AppSelectContent>
+                              <AppSelectItem value="1">Option 1</AppSelectItem>
+                              <AppSelectItem value="2">Option 2</AppSelectItem>
+                            </AppSelectContent>
+                          </AppSelect>
+                          <AppSelect size="lg">
+                            <AppSelectTrigger>
+                              <AppSelectValue placeholder="Large" />
+                            </AppSelectTrigger>
+                            <AppSelectContent>
+                              <AppSelectItem value="1">Option 1</AppSelectItem>
+                              <AppSelectItem value="2">Option 2</AppSelectItem>
+                            </AppSelectContent>
+                          </AppSelect>
                         </div>
                       </div>
                     </div>
                   </div>
                 </div>
-              </section>
+              </div>
             </div>
 
-            {/* Form-specific Components Column */}
+            {/* Form Components Column */}
             <FormThemeContainer theme={formTheme}>
-              <div className="space-y-12">
-                <section className="space-y-6">
-                  <div>
-                    <h2 className="text-2xl font-bold text-app-fg-heading">
-                      Form Button
-                    </h2>
-                    <p className="text-sm text-app-fg-muted">
-                      Form-specific button component with variants, colors, and
-                      sizes
-                    </p>
-                  </div>
-
-                  {/* Variants Section */}
-                  <div className="space-y-3">
-                    <h3 className="text-lg font-semibold text-app-fg-heading">
-                      Variants
-                    </h3>
-                    <div className="bg-form-surface p-6 rounded-lg border border-form-border-subtle">
-                      <div className="space-y-4">
+              <div>
+                <h2 className="text-2xl font-bold text-form-fg-heading mb-2">
+                  Form Components
+                </h2>
+                <p className="text-sm text-form-fg-muted mb-6">
+                  Form-specific components with theme variants
+                </p>
+                <div className="bg-form-surface p-6 rounded-lg border border-form-border-subtle">
+                  <div className="flex flex-col gap-12">
+                    {/* Button Component */}
+                    <div>
+                      <h3 className="text-lg font-semibold text-form-fg-heading mb-1">
+                        Button
+                      </h3>
+                      <p className="text-sm text-form-fg-muted mb-4">
+                        Form-specific button component
+                      </p>
+                      <div className="flex flex-col gap-6">
                         <div>
-                          <p className="text-xs font-medium text-form-fg-muted mb-2">
-                            Solid
-                          </p>
-                          <div className="flex items-center gap-2 flex-wrap">
-                            <FormButton variant="solid" color="primary">
-                              Solid
-                            </FormButton>
-                            <FormButton
-                              variant="solid"
-                              color="primary"
-                              disabled
-                            >
-                              Disabled
-                            </FormButton>
-                          </div>
-                        </div>
-
-                        <div>
-                          <p className="text-xs font-medium text-form-fg-muted mb-2">
-                            Outline
-                          </p>
-                          <div className="flex items-center gap-2 flex-wrap">
-                            <FormButton variant="outline" color="primary">
-                              Outline
-                            </FormButton>
-                            <FormButton
-                              variant="outline"
-                              color="primary"
-                              disabled
-                            >
-                              Disabled
-                            </FormButton>
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-
-                  {/* Colors Section */}
-                  <div className="space-y-3">
-                    <h3 className="text-lg font-semibold text-app-fg-heading">
-                      Colors
-                    </h3>
-                    <div className="bg-form-surface p-6 rounded-lg border border-form-border-subtle">
-                      <div className="space-y-4">
-                        <div>
-                          <p className="text-xs font-medium text-form-fg-muted mb-2">
-                            Primary
-                          </p>
+                          <h4 className="text-sm font-semibold text-form-fg-heading mb-2">
+                            Variants
+                          </h4>
                           <div className="flex items-center gap-2 flex-wrap">
                             <FormButton variant="solid" color="primary">
                               Solid
@@ -379,65 +312,33 @@ export default function ComponentsDemo() {
                         </div>
 
                         <div>
-                          <p className="text-xs font-medium text-form-fg-muted mb-2">
-                            Secondary
-                          </p>
+                          <h4 className="text-sm font-semibold text-form-fg-heading mb-2">
+                            Colors
+                          </h4>
                           <div className="flex items-center gap-2 flex-wrap">
+                            <FormButton variant="solid" color="primary">
+                              Primary
+                            </FormButton>
                             <FormButton variant="solid" color="secondary">
-                              Solid
-                            </FormButton>
-                            <FormButton variant="outline" color="secondary">
-                              Outline
+                              Secondary
                             </FormButton>
                           </div>
                         </div>
-                      </div>
-                    </div>
-                  </div>
 
-                  {/* Sizes Section */}
-                  <div className="space-y-3">
-                    <h3 className="text-lg font-semibold text-app-fg-heading">
-                      Sizes
-                    </h3>
-                    <div className="bg-form-surface p-6 rounded-lg border border-form-border-subtle">
-                      <div className="space-y-4">
                         <div>
-                          <p className="text-xs font-medium text-form-fg-muted mb-2">
-                            Medium (Default)
-                          </p>
+                          <h4 className="text-sm font-semibold text-form-fg-heading mb-2">
+                            Sizes
+                          </h4>
                           <div className="flex items-center gap-2 flex-wrap">
                             <FormButton
                               variant="solid"
-                              color="primary"
-                              size="md"
-                            >
-                              Medium Button
-                            </FormButton>
-                            <FormButton
-                              variant="outline"
                               color="primary"
                               size="md"
                             >
                               Medium
                             </FormButton>
-                          </div>
-                        </div>
-
-                        <div>
-                          <p className="text-xs font-medium text-form-fg-muted mb-2">
-                            Large
-                          </p>
-                          <div className="flex items-center gap-2 flex-wrap">
                             <FormButton
                               variant="solid"
-                              color="primary"
-                              size="lg"
-                            >
-                              Large Button
-                            </FormButton>
-                            <FormButton
-                              variant="outline"
                               color="primary"
                               size="lg"
                             >
@@ -447,8 +348,144 @@ export default function ComponentsDemo() {
                         </div>
                       </div>
                     </div>
+
+                    {/* Input Component */}
+                    <div>
+                      <h3 className="text-lg font-semibold text-form-fg-heading mb-1">
+                        Input
+                      </h3>
+                      <p className="text-sm text-form-fg-muted mb-4">
+                        Text input with multiple types and sizes
+                      </p>
+                      <div className="flex flex-col gap-6">
+                        <div>
+                          <h4 className="text-sm font-semibold text-form-fg-heading mb-2">
+                            Types
+                          </h4>
+                          <div className="flex flex-col gap-2">
+                            <FormInput type="text" placeholder="Text" />
+                            <FormInput type="number" placeholder="Number" />
+                            <FormInput type="url" placeholder="URL" />
+                            <FormInput type="password" placeholder="Password" />
+                            <FormInput
+                              type="text"
+                              placeholder="Disabled"
+                              disabled
+                            />
+                            <FormInput
+                              type="email"
+                              placeholder="Invalid"
+                              aria-invalid
+                            />
+                          </div>
+                        </div>
+
+                        <div>
+                          <h4 className="text-sm font-semibold text-form-fg-heading mb-2">
+                            Sizes
+                          </h4>
+                          <div className="flex flex-col gap-2">
+                            <FormInput
+                              inputSize="sm"
+                              type="text"
+                              placeholder="Small"
+                            />
+                            <FormInput
+                              inputSize="md"
+                              type="text"
+                              placeholder="Medium"
+                            />
+                            <FormInput
+                              inputSize="lg"
+                              type="text"
+                              placeholder="Large"
+                            />
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+
+                    {/* TextArea Component */}
+                    <div>
+                      <h3 className="text-lg font-semibold text-form-fg-heading mb-1">
+                        TextArea
+                      </h3>
+                      <p className="text-sm text-form-fg-muted mb-4">
+                        Multi-line text input
+                      </p>
+                      <div className="flex flex-col gap-6">
+                        <div>
+                          <h4 className="text-sm font-semibold text-form-fg-heading mb-2">
+                            States
+                          </h4>
+                          <div className="flex flex-col gap-2">
+                            <FormTextArea placeholder="Default state" />
+                            <FormTextArea placeholder="Disabled" disabled />
+                            <FormTextArea placeholder="Invalid" aria-invalid />
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+
+                    {/* Select Component */}
+                    <div>
+                      <h3 className="text-lg font-semibold text-form-fg-heading mb-1">
+                        Select
+                      </h3>
+                      <p className="text-sm text-form-fg-muted mb-4">
+                        Dropdown selection component
+                      </p>
+                      <div className="flex flex-col gap-6">
+                        <div>
+                          <h4 className="text-sm font-semibold text-form-fg-heading mb-2">
+                            Single Select
+                          </h4>
+                          <div className="flex flex-col gap-2">
+                            <FormSelect size="sm">
+                              <FormSelectTrigger>
+                                <FormSelectValue placeholder="Small" />
+                              </FormSelectTrigger>
+                              <FormSelectContent>
+                                <FormSelectItem value="1">
+                                  Option 1
+                                </FormSelectItem>
+                                <FormSelectItem value="2">
+                                  Option 2
+                                </FormSelectItem>
+                              </FormSelectContent>
+                            </FormSelect>
+                            <FormSelect size="md">
+                              <FormSelectTrigger>
+                                <FormSelectValue placeholder="Medium" />
+                              </FormSelectTrigger>
+                              <FormSelectContent>
+                                <FormSelectItem value="1">
+                                  Option 1
+                                </FormSelectItem>
+                                <FormSelectItem value="2">
+                                  Option 2
+                                </FormSelectItem>
+                              </FormSelectContent>
+                            </FormSelect>
+                            <FormSelect size="lg">
+                              <FormSelectTrigger>
+                                <FormSelectValue placeholder="Large" />
+                              </FormSelectTrigger>
+                              <FormSelectContent>
+                                <FormSelectItem value="1">
+                                  Option 1
+                                </FormSelectItem>
+                                <FormSelectItem value="2">
+                                  Option 2
+                                </FormSelectItem>
+                              </FormSelectContent>
+                            </FormSelect>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
                   </div>
-                </section>
+                </div>
               </div>
             </FormThemeContainer>
           </div>

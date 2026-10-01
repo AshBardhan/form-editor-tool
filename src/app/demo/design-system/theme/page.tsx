@@ -120,7 +120,7 @@ function FormPreview({
 
 export default function ThemeDemoPage() {
   return (
-    <AppThemeContainer className="min-h-screen p-4 sm:p-8">
+    <AppThemeContainer>
       <main className="mx-auto max-w-7xl rounded-app-brand bg-app-canvas p-5 text-app-fg sm:p-8">
         <header className="mb-4 flex flex-wrap items-center justify-between gap-4 rounded-app-brand border border-app-header-border bg-app-header p-5 text-app-header-fg">
           <div>
