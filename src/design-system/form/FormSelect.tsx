@@ -38,7 +38,7 @@ export type FormSelectProps = {
 };
 
 const selectTriggerVariants = cva(
-  "inline-flex items-center justify-between w-full font-medium transition-all outline-none disabled:opacity-50 disabled:cursor-not-allowed focus-visible:ring-[3px] focus-visible:ring-offset-0 border border-form-border-subtle bg-form-surface text-form-fg rounded-md focus-visible:ring-form-brand/30",
+  "inline-flex items-center justify-between w-full font-medium transition-all outline-none disabled:opacity-50 disabled:cursor-not-allowed focus-visible:ring-[3px] focus-visible:ring-offset-0 border border-form-field-border bg-form-field text-form-fg rounded-md focus-visible:ring-form-brand/30",
   {
     variants: {
       size: {
@@ -114,7 +114,7 @@ export function FormSelect({
         <SelectValue
           data-slot="form-select-value"
           placeholder={placeholder}
-          className="flex items-center text-form-fg data-placeholder:text-form-fg-muted"
+          className="flex items-center text-form-fg data-placeholder:text-form-field-placeholder"
         />
         <SelectIcon
           data-slot="form-select-icon"

@@ -26,7 +26,7 @@ const buttonVariants = cva(
         variant: "solid",
         color: "primary",
         className:
-          "bg-form-brand border-form-brand text-white hover:bg-form-brand-hover hover:border-form-brand-hover focus-visible:ring-form-brand/30 active:opacity-90",
+          "bg-form-brand border-form-brand text-form-fg-on-brand hover:bg-form-brand-hover hover:border-form-brand-hover focus-visible:ring-form-brand/30 active:opacity-90",
       },
       // Outline + Primary
       {

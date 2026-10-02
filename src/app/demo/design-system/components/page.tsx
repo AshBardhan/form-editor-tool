@@ -287,10 +287,10 @@ export default function ComponentsDemo() {
             {/* Form Components Column */}
             <FormThemeContainer theme={formTheme}>
               <div>
-                <h2 className="text-2xl font-bold text-form-fg-heading mb-2">
+                <h2 className="text-2xl font-bold text-app-fg-heading mb-2">
                   Form Components
                 </h2>
-                <p className="text-sm text-form-fg-muted mb-6">
+                <p className="text-sm text-app-fg-muted mb-6">
                   Form-specific components with theme variants
                 </p>
                 <div className="bg-form-surface p-6 rounded-lg border border-form-border-subtle">

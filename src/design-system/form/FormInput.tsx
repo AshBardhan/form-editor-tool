@@ -4,7 +4,7 @@ import { cn } from "@/lib/utils/styleUtils";
 import { Input } from "@/design-system/primitives";
 
 const inputVariants = cva(
-  "w-full font-medium transition-all outline-none disabled:opacity-50 disabled:cursor-not-allowed [&::placeholder]:text-form-fg-muted focus-visible:ring-[3px] focus-visible:ring-offset-0 border border-form-border-subtle bg-form-surface text-form-fg rounded-md",
+  "w-full font-medium transition-all outline-none disabled:opacity-50 disabled:cursor-not-allowed placeholder:text-form-field-placeholder focus-visible:ring-[3px] focus-visible:ring-offset-0 border border-form-field-border bg-form-field text-form-fg rounded-md",
   {
     variants: {
       inputSize: {
@@ -30,7 +30,7 @@ export function FormInput({
   const inputClassName = cn(inputVariants({ inputSize, className }), {
     "border-form-error focus-visible:ring-form-error/30 data-[invalid]:border-form-error data-[invalid]:focus-visible:ring-form-error/30":
       ariaInvalid,
-    "border-form-border-subtle focus-visible:ring-form-brand/30": !ariaInvalid,
+    "border-form-field-border focus-visible:ring-form-brand/30": !ariaInvalid,
     "hover:border-form-border-strong": !disabled && !ariaInvalid,
   });
 
