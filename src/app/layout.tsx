@@ -28,10 +28,8 @@ export default function RootLayout({
         <script dangerouslySetInnerHTML={{ __html: appThemeScript }} />
       </head>
       <body suppressHydrationWarning>
-        <div id="app">
-          {children}
-          <Toaster position="bottom-center" />
-        </div>
+        {children}
+        <Toaster position="bottom-center" />
       </body>
     </html>
   );

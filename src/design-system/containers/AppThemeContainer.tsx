@@ -18,7 +18,7 @@ export function AppThemeContainer({
   }, [hydrateAppTheme]);
 
   return (
-    <div data-app-scope {...props}>
+    <div id="app" data-app-scope {...props}>
       {children}
     </div>
   );

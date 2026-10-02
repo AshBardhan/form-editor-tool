@@ -376,7 +376,8 @@
 
 @layer components {
   #app {
-    @apply flex flex-col h-screen w-screen;
+    isolation: isolate;
+    @apply flex flex-col h-screen;
   }
 
   .app-header {

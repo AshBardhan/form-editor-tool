@@ -56,7 +56,7 @@ export default async function AdminLayout({
         <div className="container mx-auto px-4 py-8">
           <div className="flex gap-8">
             {/* Sidebar */}
-            <aside className="w-64 flex-shrink-0">
+            <aside className="w-64 shrink-0">
               <nav className="space-y-1">
                 {navItems.map((item) => {
                   const Icon = item.icon;

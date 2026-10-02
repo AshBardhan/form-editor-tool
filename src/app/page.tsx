@@ -26,7 +26,7 @@ const highlights = [
 
 export default function Home() {
   return (
-    <div className="min-h-screen overflow-y-auto bg-gradient-to-br from-blue-50 to-indigo-100">
+    <div className="min-h-screen overflow-y-auto bg-linear-to-br from-blue-50 to-indigo-100">
       <header className="flex items-center justify-between px-6 py-6 sm:px-10">
         <p className="text-xl font-bold text-gray-900">FormKit</p>
         <Button asChild variant="outline">
