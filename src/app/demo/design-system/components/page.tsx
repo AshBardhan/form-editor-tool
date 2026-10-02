@@ -2,7 +2,9 @@
 
 import { useState } from "react";
 import { AppButton } from "@/design-system/app/AppButton";
+import { AppLabel } from "@/design-system/app/AppLabel";
 import { FormButton } from "@/design-system/form/FormButton";
+import { FormLabel } from "@/design-system/form/FormLabel";
 import { AppInput } from "@/design-system/app/AppInput";
 import { AppTextArea } from "@/design-system/app/AppTextArea";
 import { AppSelect } from "@/design-system/app/AppSelect";
@@ -52,48 +54,44 @@ const INITIAL_SELECT_VALUES: Record<SelectSize, string> = {
 export default function ComponentsDemo() {
   const [formTheme, setFormTheme] = useState<FormTheme>("light");
   const [appSelectValues, setAppSelectValues] = useState(INITIAL_SELECT_VALUES);
-  const [formSelectValues, setFormSelectValues] =
-    useState(INITIAL_SELECT_VALUES);
+  const [formSelectValues, setFormSelectValues] = useState(
+    INITIAL_SELECT_VALUES,
+  );
 
   return (
     <AppThemeContainer>
       <div className="bg-app-canvas text-app-fg p-8">
         <div className="max-w-7xl mx-auto">
-          <header className="mb-12 flex items-start justify-between gap-6">
-            <div className="flex-1">
-              <h1 className="text-4xl font-bold text-app-fg-heading mb-2">
-                Design System Components
-              </h1>
-              <p className="text-app-fg-muted">
-                Derived components with theme-aware styling and comprehensive
-                variants
-              </p>
-            </div>
-            <div className="flex items-center gap-3">
-              <div className="flex flex-col gap-2">
-                <span className="text-xs font-semibold text-app-fg-muted">
-                  App Theme
-                </span>
-                <AppThemeSwitcher />
-              </div>
-              <div className="flex flex-col gap-2">
-                <span className="text-xs font-semibold text-app-fg-muted">
-                  Form Theme
-                </span>
-                <FormThemeSelector value={formTheme} onChange={setFormTheme} />
-              </div>
-            </div>
+          <header className="mb-12">
+            <h1 className="text-4xl font-bold text-app-fg-heading mb-2">
+              Design System Components
+            </h1>
+            <p className="text-app-fg-muted">
+              Derived components with theme-aware styling and comprehensive
+              variants
+            </p>
           </header>
 
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-12">
             {/* App Components Column */}
             <div>
-              <h2 className="text-2xl font-bold text-app-fg-heading mb-2">
-                App Components
-              </h2>
-              <p className="text-sm text-app-fg-muted mb-6">
-                Core components for application-wide usage
-              </p>
+              <div className="flex items-center justify-between mb-6">
+                <div>
+                  <h2 className="text-2xl font-bold text-app-fg-heading mb-2">
+                    App Components
+                  </h2>
+                  <p className="text-sm text-app-fg-muted">
+                    Core components for application-wide usage
+                  </p>
+                </div>
+
+                <div className="flex flex-col gap-1 items-end justify-end">
+                  <span className="text-xs font-semibold text-app-fg-muted">
+                    App Theme
+                  </span>
+                  <AppThemeSwitcher />
+                </div>
+              </div>
               <div className="bg-app-surface p-6 rounded-lg border border-app-border-subtle">
                 <div className="flex flex-col gap-12">
                   {/* Button Component */}
@@ -280,6 +278,56 @@ export default function ComponentsDemo() {
                       </div>
                     </div>
                   </div>
+
+                  {/* Label Component */}
+                  <div>
+                    <h3 className="text-lg font-semibold text-app-fg-heading mb-1">
+                      Label
+                    </h3>
+                    <p className="text-sm text-app-fg-muted mb-4">
+                      Field label with small, medium, and large sizes
+                    </p>
+                    <div className="flex flex-col gap-6">
+                      <div>
+                        <h4 className="text-sm font-semibold text-app-fg-heading mb-2">
+                          Sizes
+                        </h4>
+                        <div className="flex flex-col gap-3">
+                          <AppLabel size="sm" htmlFor="app-label-sm">
+                            Small label
+                          </AppLabel>
+                          <AppLabel size="md" htmlFor="app-label-md">
+                            Medium label
+                          </AppLabel>
+                          <AppLabel size="lg" htmlFor="app-label-lg">
+                            Large label
+                          </AppLabel>
+                        </div>
+                      </div>
+
+                      <div>
+                        <h4 className="text-sm font-semibold text-app-fg-heading mb-2">
+                          States
+                        </h4>
+                        <div className="flex flex-col gap-3">
+                          <AppLabel
+                            size="md"
+                            required
+                            htmlFor="app-label-required"
+                          >
+                            Required
+                          </AppLabel>
+                          <AppLabel
+                            size="md"
+                            aria-invalid
+                            htmlFor="app-label-invalid"
+                          >
+                            Invalid
+                          </AppLabel>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
                 </div>
               </div>
             </div>
@@ -287,12 +335,25 @@ export default function ComponentsDemo() {
             {/* Form Components Column */}
             <FormThemeContainer theme={formTheme}>
               <div>
-                <h2 className="text-2xl font-bold text-app-fg-heading mb-2">
-                  Form Components
-                </h2>
-                <p className="text-sm text-app-fg-muted mb-6">
-                  Form-specific components with theme variants
-                </p>
+                <div className="flex items-center justify-between mb-6">
+                  <div>
+                    <h2 className="text-2xl font-bold text-app-fg-heading mb-2">
+                      Form Components
+                    </h2>
+                    <p className="text-sm text-app-fg-muted">
+                      Form-specific components with theme variants
+                    </p>
+                  </div>
+                  <div className="flex flex-col gap-2 items-end justify-end">
+                    <span className="text-xs font-semibold text-app-fg-muted">
+                      Form Theme
+                    </span>
+                    <FormThemeSelector
+                      value={formTheme}
+                      onChange={setFormTheme}
+                    />
+                  </div>
+                </div>
                 <div className="bg-form-surface p-6 rounded-lg border border-form-border-subtle">
                   <div className="flex flex-col gap-12">
                     {/* Button Component */}
@@ -468,6 +529,53 @@ export default function ComponentsDemo() {
                                 />
                               </div>
                             ))}
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+
+                    {/* Label Component */}
+                    <div>
+                      <h3 className="text-lg font-semibold text-form-fg-heading mb-1">
+                        Label
+                      </h3>
+                      <p className="text-sm text-form-fg-muted mb-4">
+                        Field label with medium and large sizes
+                      </p>
+                      <div className="flex flex-col gap-6">
+                        <div>
+                          <h4 className="text-sm font-semibold text-form-fg-heading mb-2">
+                            Sizes
+                          </h4>
+                          <div className="flex flex-col gap-3">
+                            <FormLabel size="md" htmlFor="form-label-md">
+                              Medium label
+                            </FormLabel>
+                            <FormLabel size="lg" htmlFor="form-label-lg">
+                              Large label
+                            </FormLabel>
+                          </div>
+                        </div>
+
+                        <div>
+                          <h4 className="text-sm font-semibold text-form-fg-heading mb-2">
+                            States
+                          </h4>
+                          <div className="flex flex-col gap-3">
+                            <FormLabel
+                              size="md"
+                              required
+                              htmlFor="form-label-required"
+                            >
+                              Required
+                            </FormLabel>
+                            <FormLabel
+                              size="md"
+                              aria-invalid
+                              htmlFor="form-label-invalid"
+                            >
+                              Invalid
+                            </FormLabel>
                           </div>
                         </div>
                       </div>

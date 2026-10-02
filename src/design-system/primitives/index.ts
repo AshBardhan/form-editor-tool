@@ -67,6 +67,9 @@ export {
   SelectGroupLabel,
 } from "./Select";
 
+// Label
+export { Label } from "./Label";
+
 // Text
 export { Text } from "./Text";
 
