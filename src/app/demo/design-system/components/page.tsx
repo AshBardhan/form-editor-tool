@@ -5,27 +5,38 @@ import { AppButton } from "@/design-system/app/AppButton";
 import { FormButton } from "@/design-system/form/FormButton";
 import { AppInput } from "@/design-system/app/AppInput";
 import { AppTextArea } from "@/design-system/app/AppTextArea";
-import {
-  AppSelect,
-  AppSelectTrigger,
-  AppSelectValue,
-  AppSelectContent,
-  AppSelectItem,
-} from "@/design-system/app/AppSelect";
+import { AppSelect } from "@/design-system/app/AppSelect";
 import { FormInput } from "@/design-system/form/FormInput";
 import { FormTextArea } from "@/design-system/form/FormTextArea";
-import {
-  FormSelect,
-  FormSelectTrigger,
-  FormSelectValue,
-  FormSelectContent,
-  FormSelectItem,
-} from "@/design-system/form/FormSelect";
+import { FormSelect } from "@/design-system/form/FormSelect";
 import { AppThemeContainer } from "@/design-system/containers/AppThemeContainer";
 import { FormThemeContainer } from "@/design-system/containers/FormThemeContainer";
 import { AppThemeSwitcher } from "@/components/layout/AppThemeSwitcher";
 import { FormThemeSelector } from "@/components/layout/FormThemeSelector";
 import type { FormTheme } from "@/lib/types/themes";
+
+const SELECT_OPTIONS = [
+  { value: "draft", label: "Draft" },
+  { value: "review", label: "In review" },
+  { value: "published", label: "Published" },
+  { value: "archived", label: "Archived" },
+];
+
+const SELECT_SIZES = ["sm", "md", "lg"] as const;
+
+const SELECT_SIZE_LABELS = {
+  sm: "Small",
+  md: "Medium",
+  lg: "Large",
+} as const;
+
+type SelectSize = (typeof SELECT_SIZES)[number];
+
+const INITIAL_SELECT_VALUES: Record<SelectSize, string> = {
+  sm: "draft",
+  md: "review",
+  lg: "published",
+};
 
 /**
  * Design System Components Demo
@@ -40,6 +51,9 @@ import type { FormTheme } from "@/lib/types/themes";
  */
 export default function ComponentsDemo() {
   const [formTheme, setFormTheme] = useState<FormTheme>("light");
+  const [appSelectValues, setAppSelectValues] = useState(INITIAL_SELECT_VALUES);
+  const [formSelectValues, setFormSelectValues] =
+    useState(INITIAL_SELECT_VALUES);
 
   return (
     <AppThemeContainer>
@@ -242,33 +256,26 @@ export default function ComponentsDemo() {
                           Single Select
                         </h4>
                         <div className="flex flex-col gap-2">
-                          <AppSelect size="sm">
-                            <AppSelectTrigger>
-                              <AppSelectValue placeholder="Small" />
-                            </AppSelectTrigger>
-                            <AppSelectContent>
-                              <AppSelectItem value="1">Option 1</AppSelectItem>
-                              <AppSelectItem value="2">Option 2</AppSelectItem>
-                            </AppSelectContent>
-                          </AppSelect>
-                          <AppSelect size="md">
-                            <AppSelectTrigger>
-                              <AppSelectValue placeholder="Medium" />
-                            </AppSelectTrigger>
-                            <AppSelectContent>
-                              <AppSelectItem value="1">Option 1</AppSelectItem>
-                              <AppSelectItem value="2">Option 2</AppSelectItem>
-                            </AppSelectContent>
-                          </AppSelect>
-                          <AppSelect size="lg">
-                            <AppSelectTrigger>
-                              <AppSelectValue placeholder="Large" />
-                            </AppSelectTrigger>
-                            <AppSelectContent>
-                              <AppSelectItem value="1">Option 1</AppSelectItem>
-                              <AppSelectItem value="2">Option 2</AppSelectItem>
-                            </AppSelectContent>
-                          </AppSelect>
+                          {SELECT_SIZES.map((size) => (
+                            <div key={size} className="flex flex-col gap-1">
+                              <span className="text-xs font-medium text-app-fg-muted">
+                                {SELECT_SIZE_LABELS[size]}
+                              </span>
+                              <AppSelect
+                                size={size}
+                                items={SELECT_OPTIONS}
+                                value={appSelectValues[size]}
+                                placeholder="Choose status"
+                                onValueChange={(next) => {
+                                  if (!next) return;
+                                  setAppSelectValues((current) => ({
+                                    ...current,
+                                    [size]: next,
+                                  }));
+                                }}
+                              />
+                            </div>
+                          ))}
                         </div>
                       </div>
                     </div>
@@ -441,45 +448,26 @@ export default function ComponentsDemo() {
                             Single Select
                           </h4>
                           <div className="flex flex-col gap-2">
-                            <FormSelect size="sm">
-                              <FormSelectTrigger>
-                                <FormSelectValue placeholder="Small" />
-                              </FormSelectTrigger>
-                              <FormSelectContent>
-                                <FormSelectItem value="1">
-                                  Option 1
-                                </FormSelectItem>
-                                <FormSelectItem value="2">
-                                  Option 2
-                                </FormSelectItem>
-                              </FormSelectContent>
-                            </FormSelect>
-                            <FormSelect size="md">
-                              <FormSelectTrigger>
-                                <FormSelectValue placeholder="Medium" />
-                              </FormSelectTrigger>
-                              <FormSelectContent>
-                                <FormSelectItem value="1">
-                                  Option 1
-                                </FormSelectItem>
-                                <FormSelectItem value="2">
-                                  Option 2
-                                </FormSelectItem>
-                              </FormSelectContent>
-                            </FormSelect>
-                            <FormSelect size="lg">
-                              <FormSelectTrigger>
-                                <FormSelectValue placeholder="Large" />
-                              </FormSelectTrigger>
-                              <FormSelectContent>
-                                <FormSelectItem value="1">
-                                  Option 1
-                                </FormSelectItem>
-                                <FormSelectItem value="2">
-                                  Option 2
-                                </FormSelectItem>
-                              </FormSelectContent>
-                            </FormSelect>
+                            {SELECT_SIZES.map((size) => (
+                              <div key={size} className="flex flex-col gap-1">
+                                <span className="text-xs font-medium text-form-fg-muted">
+                                  {SELECT_SIZE_LABELS[size]}
+                                </span>
+                                <FormSelect
+                                  size={size}
+                                  items={SELECT_OPTIONS}
+                                  value={formSelectValues[size]}
+                                  placeholder="Choose status"
+                                  onValueChange={(next) => {
+                                    if (!next) return;
+                                    setFormSelectValues((current) => ({
+                                      ...current,
+                                      [size]: next,
+                                    }));
+                                  }}
+                                />
+                              </div>
+                            ))}
                           </div>
                         </div>
                       </div>

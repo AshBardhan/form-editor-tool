@@ -1,5 +1,6 @@
 "use client";
 
+import { useLayoutEffect, useRef, useState } from "react";
 import { Select as BaseSelect } from "@base-ui/react/select";
 import { ChevronUp, ChevronDown, Check } from "lucide-react";
 
@@ -95,22 +96,58 @@ export function SelectIcon({ ...props }: BaseSelect.Icon.Props) {
 }
 
 /**
- * SelectPortal - Portals the dropdown outside DOM flow
+ * SelectPortal - Portals the dropdown outside DOM flow.
+ *
+ * Form theme tokens live on `[data-form-theme]`, which the portaled popup
+ * would otherwise leave behind. The theme attribute is copied onto the portal
+ * so popup colors resolve to the same tokens as the trigger.
  */
 export function SelectPortal({ ...props }: BaseSelect.Portal.Props) {
-  return <BaseSelect.Portal data-slot="select-portal" {...props} />;
+  const markerRef = useRef<HTMLSpanElement>(null);
+  const [formTheme, setFormTheme] = useState<string | null>(null);
+
+  useLayoutEffect(() => {
+    const nextTheme =
+      markerRef.current
+        ?.closest("[data-form-theme]")
+        ?.getAttribute("data-form-theme") ?? null;
+    setFormTheme(nextTheme);
+  });
+
+  return (
+    <>
+      <span ref={markerRef} hidden aria-hidden="true" />
+      <BaseSelect.Portal
+        data-slot="select-portal"
+        {...(formTheme ? { "data-form-theme": formTheme } : {})}
+        {...props}
+      />
+    </>
+  );
 }
 
 /**
- * SelectPositioner - Positions dropdown relative to trigger
+ * SelectPositioner - Positions dropdown relative to trigger.
  *
- * Props:
- * - sideOffset: Distance from trigger (default: 0)
- * - align: Alignment relative to trigger
- * - side: Which side to position (top/bottom/left/right)
+ * Opens below the trigger. Base UI flips to the top side when the popup
+ * would cross the bottom of the viewport. `alignItemWithTrigger` stays off
+ * so the popup does not cover the trigger.
  */
-export function SelectPositioner({ ...props }: BaseSelect.Positioner.Props) {
-  return <BaseSelect.Positioner data-slot="select-positioner" {...props} />;
+export function SelectPositioner({
+  alignItemWithTrigger = false,
+  side = "bottom",
+  align = "start",
+  ...props
+}: BaseSelect.Positioner.Props) {
+  return (
+    <BaseSelect.Positioner
+      data-slot="select-positioner"
+      alignItemWithTrigger={alignItemWithTrigger}
+      side={side}
+      align={align}
+      {...props}
+    />
+  );
 }
 
 /**
