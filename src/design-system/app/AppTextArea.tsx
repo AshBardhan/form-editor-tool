@@ -10,7 +10,7 @@ export function AppTextArea({
 }: ComponentProps<"textarea"> & {}) {
   const textareaClassName = cn(
     "w-full font-medium transition-all outline-none disabled:opacity-50 disabled:cursor-not-allowed [&::placeholder]:text-app-fg-muted",
-    "focus-visible:ring-[3px] focus-visible:ring-offset-0 border border-app-border-subtle bg-app-surface text-app-fg rounded-md p-3 resize-vertical min-h-24",
+    "focus-visible:ring-[3px] focus-visible:ring-offset-0 border border-app-border-subtle bg-app-surface text-app-fg rounded-md px-3 py-2 text-sm leading-5 resize-vertical min-h-24",
     {
       "border-app-error focus-visible:ring-app-error/30 data-[invalid]:border-app-error data-[invalid]:focus-visible:ring-app-error/30":
         ariaInvalid,

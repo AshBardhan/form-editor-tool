@@ -24,7 +24,8 @@ const SELECT_OPTIONS = [
   { value: "archived", label: "Archived" },
 ];
 
-const SELECT_SIZES = ["sm", "md", "lg"] as const;
+const APP_SELECT_SIZES = ["sm", "md", "lg"] as const;
+const FORM_SELECT_SIZES = ["md", "lg"] as const;
 
 const SELECT_SIZE_LABELS = {
   sm: "Small",
@@ -32,10 +33,16 @@ const SELECT_SIZE_LABELS = {
   lg: "Large",
 } as const;
 
-type SelectSize = (typeof SELECT_SIZES)[number];
+type AppSelectSize = (typeof APP_SELECT_SIZES)[number];
+type FormSelectSize = (typeof FORM_SELECT_SIZES)[number];
 
-const INITIAL_SELECT_VALUES: Record<SelectSize, string> = {
+const INITIAL_APP_SELECT_VALUES: Record<AppSelectSize, string> = {
   sm: "draft",
+  md: "review",
+  lg: "published",
+};
+
+const INITIAL_FORM_SELECT_VALUES: Record<FormSelectSize, string> = {
   md: "review",
   lg: "published",
 };
@@ -53,9 +60,11 @@ const INITIAL_SELECT_VALUES: Record<SelectSize, string> = {
  */
 export default function ComponentsDemo() {
   const [formTheme, setFormTheme] = useState<FormTheme>("light");
-  const [appSelectValues, setAppSelectValues] = useState(INITIAL_SELECT_VALUES);
+  const [appSelectValues, setAppSelectValues] = useState(
+    INITIAL_APP_SELECT_VALUES,
+  );
   const [formSelectValues, setFormSelectValues] = useState(
-    INITIAL_SELECT_VALUES,
+    INITIAL_FORM_SELECT_VALUES,
   );
 
   return (
@@ -254,7 +263,7 @@ export default function ComponentsDemo() {
                           Single Select
                         </h4>
                         <div className="flex flex-col gap-2">
-                          {SELECT_SIZES.map((size) => (
+                          {APP_SELECT_SIZES.map((size) => (
                             <div key={size} className="flex flex-col gap-1">
                               <span className="text-xs font-medium text-app-fg-muted">
                                 {SELECT_SIZE_LABELS[size]}
@@ -423,7 +432,8 @@ export default function ComponentsDemo() {
                         Input
                       </h3>
                       <p className="text-sm text-form-fg-muted mb-4">
-                        Text input with multiple types and sizes
+                        Text input with multiple types and medium and large
+                        sizes
                       </p>
                       <div className="flex flex-col gap-6">
                         <div>
@@ -453,11 +463,6 @@ export default function ComponentsDemo() {
                             Sizes
                           </h4>
                           <div className="flex flex-col gap-2">
-                            <FormInput
-                              inputSize="sm"
-                              type="text"
-                              placeholder="Small"
-                            />
                             <FormInput
                               inputSize="md"
                               type="text"
@@ -509,7 +514,7 @@ export default function ComponentsDemo() {
                             Single Select
                           </h4>
                           <div className="flex flex-col gap-2">
-                            {SELECT_SIZES.map((size) => (
+                            {FORM_SELECT_SIZES.map((size) => (
                               <div key={size} className="flex flex-col gap-1">
                                 <span className="text-xs font-medium text-form-fg-muted">
                                   {SELECT_SIZE_LABELS[size]}

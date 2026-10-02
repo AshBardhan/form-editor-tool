@@ -29,7 +29,7 @@ export type FormSelectProps = {
   value?: string | null;
   onValueChange?: (value: string | null) => void;
   placeholder?: string;
-  size?: "sm" | "md" | "lg";
+  size?: "md" | "lg";
   required?: boolean;
   disabled?: boolean;
   className?: string;
@@ -42,9 +42,8 @@ const selectTriggerVariants = cva(
   {
     variants: {
       size: {
-        sm: "h-8 px-3 py-1.5 text-sm gap-1.5",
-        md: "h-9 px-4 py-2 text-sm gap-2",
-        lg: "h-10 px-4 py-2.5 text-base gap-2",
+        md: "h-8 px-3 py-1 text-sm leading-5 gap-1.5 [&_svg]:size-3.5",
+        lg: "h-12 px-4 py-2.5 text-lg leading-6 gap-2 [&_svg]:size-4.5",
       },
     },
     defaultVariants: {
@@ -58,7 +57,18 @@ const selectPopupVariants = cva(
 );
 
 const selectItemVariants = cva(
-  "relative flex items-center gap-2 px-3 py-2 text-sm outline-none select-none cursor-pointer transition-colors data-[highlighted]:bg-form-surface-muted data-[selected]:bg-form-brand-subtle data-[selected]:text-form-brand data-[highlighted]:data-[selected]:bg-form-brand-subtle data-[disabled]:opacity-50 data-[disabled]:cursor-not-allowed",
+  "relative flex items-center outline-none select-none cursor-pointer transition-colors data-[highlighted]:bg-form-surface-muted data-[selected]:bg-form-brand-subtle data-[selected]:text-form-brand data-[highlighted]:data-[selected]:bg-form-brand-subtle data-[disabled]:opacity-50 data-[disabled]:cursor-not-allowed",
+  {
+    variants: {
+      size: {
+        md: "gap-1.5 px-3 py-1.5 text-sm leading-5 [&_svg]:size-3.5",
+        lg: "gap-2 px-4 py-3 text-lg leading-6 [&_svg]:size-4.5",
+      },
+    },
+    defaultVariants: {
+      size: "md",
+    },
+  },
 );
 
 function optionLabel(item: FormSelectOption, labelKey: string) {
@@ -138,7 +148,7 @@ export function FormSelect({
                   data-slot="form-select-item"
                   value={option.value}
                   disabled={option.disabled}
-                  className={selectItemVariants()}
+                  className={selectItemVariants({ size })}
                 >
                   <SelectItemText
                     data-slot="form-select-item-text"
