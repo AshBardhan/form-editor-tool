@@ -1,0 +1,24 @@
+@layer components {
+  .form-container {
+    @apply mx-auto w-full transition-[max-width];
+    /* Enable container queries for child elements */
+    @apply @container;
+  }
+
+  .form-content {
+    @apply bg-white dark:bg-black shadow dark:shadow-white/80 w-full transition-colors rounded-lg;
+    /* Mobile-first responsive padding using container queries */
+    @apply py-4 @sm:py-6 @5xl:py-8;
+  }
+
+  .form-overlay {
+    @apply absolute inset-0 bg-white/40 z-1  backdrop-blur-[1px] flex items-center justify-center;
+  }
+
+  .form-block {
+    /* Mobile-first responsive padding using container queries */
+    @apply px-4 py-1.5;
+    @apply @sm:px-6 @sm:py-2;
+    @apply @5xl:px-8;
+  }
+}

@@ -1,0 +1,117 @@
+/* App utilities use a token namespace disjoint from form utilities. */
+@layer base {
+  :root {
+    color-scheme: light;
+    --app-canvas: #fafafa;
+    --app-surface: #ffffff;
+    --app-surface-muted: #f8fafc;
+    --app-surface-inverse: #151515;
+    --app-fg: #1e293b;
+    --app-fg-muted: #64748b;
+    --app-fg-heading: #0f172a;
+    --app-fg-inverse: #f8fafc;
+    --app-fg-on-brand: #ffffff;
+    --app-brand: #1769aa;
+    --app-brand-hover: #0f548c;
+    --app-brand-subtle: #e0f2fe;
+    --app-border-subtle: #e2e8f0;
+    --app-border-strong: #94a3b8;
+    --app-field: #ffffff;
+    --app-field-border: #cbd5e1;
+    --app-field-placeholder: #64748b;
+    --app-error: #b42318;
+    --app-success: #166534;
+    --app-font-family-body: system-ui, sans-serif;
+    --app-font-family-heading: system-ui, sans-serif;
+    --app-radius-theme: 0.5rem;
+    --app-shadow-theme:
+      0 1px 3px rgb(15 23 42 / 0.12), 0 1px 2px rgb(15 23 42 / 0.08);
+
+    --app-header-bg: #ababab;
+    --app-header-fg: #ffffff;
+    --app-header-border: #a1a1a1;
+    --app-page-header-bg: #dedede;
+    --app-page-header-fg: #0f172a;
+    --app-page-header-border: #e2e8f0;
+    --app-sidebar-bg: #efefef;
+    --app-sidebar-fg: #1e293b;
+    --app-sidebar-border: #dedede;
+    --app-main-content-bg: #fafafa;
+  }
+
+  /* Dark applies only while a themed route (AppThemeContainer) is mounted. */
+  :root[data-app-theme="dark"]:has([data-app-scope]) {
+    color-scheme: dark;
+    --app-canvas: #0b1120;
+    --app-surface: #111827;
+    --app-surface-muted: #1f2937;
+    --app-surface-inverse: #050914;
+    --app-fg: #e5e7eb;
+    --app-fg-muted: #a1aab8;
+    --app-fg-heading: #f8fafc;
+    --app-fg-inverse: #f8fafc;
+    --app-fg-on-brand: #0b1120;
+    --app-brand: #60a5fa;
+    --app-brand-hover: #93c5fd;
+    --app-brand-subtle: #172b45;
+    --app-border-subtle: #334155;
+    --app-border-strong: #64748b;
+    --app-field: #0f172a;
+    --app-field-border: #475569;
+    --app-field-placeholder: #a1aab8;
+    --app-error: #f87171;
+    --app-success: #4ade80;
+    --app-font-family-body: system-ui, sans-serif;
+    --app-font-family-heading: system-ui, sans-serif;
+    --app-radius-theme: 0.5rem;
+    --app-shadow-theme:
+      0 1px 3px rgb(0 0 0 / 0.4), 0 8px 24px rgb(0 0 0 / 0.24);
+
+    --app-header-bg: #050914;
+    --app-header-fg: #f8fafc;
+    --app-header-border: #334155;
+    --app-page-header-bg: #111827;
+    --app-page-header-fg: #f8fafc;
+    --app-page-header-border: #334155;
+    --app-sidebar-bg: #1f2937;
+    --app-sidebar-fg: #e5e7eb;
+    --app-sidebar-border: #334155;
+    --app-main-content-bg: #0b1120;
+  }
+}
+
+@theme inline {
+  --color-app-canvas: var(--app-canvas);
+  --color-app-surface: var(--app-surface);
+  --color-app-surface-muted: var(--app-surface-muted);
+  --color-app-surface-inverse: var(--app-surface-inverse);
+  --color-app-fg: var(--app-fg);
+  --color-app-fg-muted: var(--app-fg-muted);
+  --color-app-fg-heading: var(--app-fg-heading);
+  --color-app-fg-inverse: var(--app-fg-inverse);
+  --color-app-fg-on-brand: var(--app-fg-on-brand);
+  --color-app-brand: var(--app-brand);
+  --color-app-brand-hover: var(--app-brand-hover);
+  --color-app-brand-subtle: var(--app-brand-subtle);
+  --color-app-border-subtle: var(--app-border-subtle);
+  --color-app-border-strong: var(--app-border-strong);
+  --color-app-field: var(--app-field);
+  --color-app-field-border: var(--app-field-border);
+  --color-app-field-placeholder: var(--app-field-placeholder);
+  --color-app-error: var(--app-error);
+  --color-app-success: var(--app-success);
+  --color-app-header: var(--app-header-bg);
+  --color-app-header-fg: var(--app-header-fg);
+  --color-app-header-border: var(--app-header-border);
+  --color-app-page-header: var(--app-page-header-bg);
+  --color-app-page-header-fg: var(--app-page-header-fg);
+  --color-app-page-header-border: var(--app-page-header-border);
+  --color-app-sidebar: var(--app-sidebar-bg);
+  --color-app-sidebar-fg: var(--app-sidebar-fg);
+  --color-app-sidebar-border: var(--app-sidebar-border);
+  --color-app-main-content: var(--app-main-content-bg);
+  --font-app-body: var(--app-font-family-body);
+  --font-app-heading: var(--app-font-family-heading);
+  --radius-app-brand: var(--app-radius-theme);
+  --shadow-app-brand: var(--app-shadow-theme);
+}

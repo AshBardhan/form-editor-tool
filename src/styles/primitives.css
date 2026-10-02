@@ -1,0 +1,18 @@
+/* Global design-system primitives: fixed across app and form themes. */
+@theme {
+  --spacing-control-x: 1rem;
+  --spacing-control-y: 0.5rem;
+  --spacing-block-y: 0.375rem;
+
+  --duration-fast: 150ms;
+  --duration-normal: 200ms;
+
+  --ds-z-overlay: 40;
+  --ds-z-modal: 50;
+  --ds-z-popover: 55;
+  --ds-z-toast: 60;
+
+  --ds-control-h: 2.25rem;
+  --ds-focus-ring-width: 3px;
+  --ds-disabled-opacity: 0.5;
+}
