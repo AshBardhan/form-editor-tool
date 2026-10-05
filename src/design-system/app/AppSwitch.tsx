@@ -108,7 +108,10 @@ export function AppSwitch({
 }: AppSwitchProps) {
   const invalid = isInvalid(ariaInvalid);
   const labelNode = label ? (
-    <FieldLabel data-slot="app-switch-label" className={labelVariants({ size })}>
+    <FieldLabel
+      data-slot="app-switch-label"
+      className={labelVariants({ size })}
+    >
       {label}
       {required ? (
         <span aria-hidden="true" className="text-app-error">
@@ -141,8 +144,7 @@ export function AppSwitch({
         className={cn(switchVariants({ size }), className, {
           "bg-app-error/30 focus-visible:ring-app-error/30 data-checked:bg-app-error":
             invalid,
-          "focus-visible:ring-app-brand/30 data-checked:bg-app-brand":
-            !invalid,
+          "focus-visible:ring-app-brand/30 data-checked:bg-app-brand": !invalid,
         })}
       >
         <SwitchThumb

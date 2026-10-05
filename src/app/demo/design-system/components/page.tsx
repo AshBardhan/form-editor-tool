@@ -675,8 +675,8 @@ export default function ComponentsDemo() {
                         Text
                       </h3>
                       <p className="text-sm text-form-fg-muted mb-4">
-                        Container-responsive type. Sizes step up at @sm and
-                        @5xl inside the form container.
+                        Container-responsive type. Sizes step up at @sm and @5xl
+                        inside the form container.
                       </p>
                       <div className="flex flex-col gap-3">
                         {TEXT_VARIANTS.map((variant) => (
