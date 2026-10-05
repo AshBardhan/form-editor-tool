@@ -1,20 +1,32 @@
 "use client";
 
-import type { ElementType } from "react";
+import type { ElementType, HTMLAttributes } from "react";
 
 /**
  * Text Primitive
  *
- * Polymorphic text element that renders as any text-based HTML tag.
- * Zero styling - all appearance delegated to derived components.
- *
- * Supports semantic HTML with 'as' or 'variant' prop.
+ * Polymorphic text element. `variant` selects the rendered tag.
+ * Zero styling — appearance is delegated to derived components.
  */
+export const TEXT_VARIANTS = [
+  "h1",
+  "h2",
+  "h3",
+  "h4",
+  "h5",
+  "h6",
+  "p",
+  "span",
+  "div",
+] as const;
+
+export type TextVariant = (typeof TEXT_VARIANTS)[number];
+
 export function Text({
-  variant = "p",
+  variant = "div",
   ...props
-}: React.HTMLAttributes<HTMLElement> & {
-  variant?: string;
+}: HTMLAttributes<HTMLElement> & {
+  variant?: TextVariant;
 }) {
   const Component = variant as ElementType;
   return <Component {...props} />;

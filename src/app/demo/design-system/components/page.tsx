@@ -3,8 +3,10 @@
 import { useState } from "react";
 import { AppButton } from "@/design-system/app/AppButton";
 import { AppLabel } from "@/design-system/app/AppLabel";
+import { AppText } from "@/design-system/app/AppText";
 import { FormButton } from "@/design-system/form/FormButton";
 import { FormLabel } from "@/design-system/form/FormLabel";
+import { FormText } from "@/design-system/form/FormText";
 import { AppInput } from "@/design-system/app/AppInput";
 import { AppTextArea } from "@/design-system/app/AppTextArea";
 import { AppSelect } from "@/design-system/app/AppSelect";
@@ -19,6 +21,7 @@ import { FormCheckboxGroup } from "@/design-system/form/FormCheckboxGroup";
 import { FormRadioGroup } from "@/design-system/form/FormRadioGroup";
 import { AppThemeContainer } from "@/design-system/containers/AppThemeContainer";
 import { FormThemeContainer } from "@/design-system/containers/FormThemeContainer";
+import { TEXT_VARIANTS, type TextVariant } from "@/design-system/primitives";
 import { AppThemeSwitcher } from "@/components/layout/AppThemeSwitcher";
 import { FormThemeSelector } from "@/components/layout/FormThemeSelector";
 import type { FormTheme } from "@/lib/types/themes";
@@ -53,6 +56,18 @@ const SELECT_SIZE_LABELS = {
   md: "Medium",
   lg: "Large",
 } as const;
+
+const TEXT_SAMPLES: Record<TextVariant, string> = {
+  h1: "Heading 1",
+  h2: "Heading 2",
+  h3: "Heading 3",
+  h4: "Heading 4",
+  h5: "Heading 5",
+  h6: "Heading 6",
+  p: "Paragraph copy that uses the body font and color.",
+  span: "Inline span",
+  div: "Block text",
+};
 
 type AppSelectSize = (typeof APP_SELECT_SIZES)[number];
 type FormSelectSize = (typeof FORM_SELECT_SIZES)[number];
@@ -134,6 +149,23 @@ export default function ComponentsDemo() {
               </div>
               <div className="bg-app-surface p-6 rounded-lg border border-app-border-subtle">
                 <div className="flex flex-col gap-12">
+                  {/* Text Component */}
+                  <div>
+                    <h3 className="text-lg font-semibold text-app-fg-heading mb-1">
+                      Text
+                    </h3>
+                    <p className="text-sm text-app-fg-muted mb-4">
+                      Viewport-responsive type. Sizes step up at sm and 2xl.
+                    </p>
+                    <div className="flex flex-col gap-3">
+                      {TEXT_VARIANTS.map((variant) => (
+                        <AppText key={variant} variant={variant}>
+                          {TEXT_SAMPLES[variant]}
+                        </AppText>
+                      ))}
+                    </div>
+                  </div>
+
                   {/* Button Component */}
                   <div>
                     <h3 className="text-lg font-semibold text-app-fg-heading mb-1">
@@ -585,6 +617,39 @@ export default function ComponentsDemo() {
                 </div>
                 <div className="bg-form-surface p-6 rounded-lg border border-form-border-subtle">
                   <div className="flex flex-col gap-12">
+                    {/* Text Component */}
+                    <div>
+                      <h3 className="text-lg font-semibold text-form-fg-heading mb-1">
+                        Text
+                      </h3>
+                      <p className="text-sm text-form-fg-muted mb-4">
+                        Container-responsive type. Sizes step up at @sm and
+                        @5xl inside the form container.
+                      </p>
+                      <div className="flex flex-col gap-3">
+                        {TEXT_VARIANTS.map((variant) => (
+                          <FormText key={variant} variant={variant}>
+                            {TEXT_SAMPLES[variant]}
+                          </FormText>
+                        ))}
+                      </div>
+                      <div className="mt-6 flex flex-col gap-4">
+                        <div className="@container w-64 rounded-md border border-form-border-subtle p-3">
+                          <FormText variant="h2">Narrow container</FormText>
+                          <FormText variant="p">
+                            This box is below the @sm container breakpoint.
+                          </FormText>
+                        </div>
+                        <div className="@container w-full rounded-md border border-form-border-subtle p-3">
+                          <FormText variant="h2">Wide container</FormText>
+                          <FormText variant="p">
+                            This box uses the form column width, so it steps up
+                            once the column reaches @sm.
+                          </FormText>
+                        </div>
+                      </div>
+                    </div>
+
                     {/* Button Component */}
                     <div>
                       <h3 className="text-lg font-semibold text-form-fg-heading mb-1">

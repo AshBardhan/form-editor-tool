@@ -74,7 +74,8 @@ export {
 export { Label } from "./Label";
 
 // Text
-export { Text } from "./Text";
+export { Text, TEXT_VARIANTS } from "./Text";
+export type { TextVariant } from "./Text";
 
 // Switch
 export { Switch } from "./Switch";
