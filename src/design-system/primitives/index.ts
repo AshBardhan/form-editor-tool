@@ -5,7 +5,7 @@
  * These primitives expose data-* attributes for state that derived components
  * can style against. No appearance classes, styles, or visual opinions.
  *
- * Built on Base UI for complex widgets (Button, Checkbox, RadioGroup, Select, Switch)
+ * Built on Base UI for complex widgets (Button, Checkbox, CheckboxGroup, RadioGroup, Select, Switch)
  * and native HTML elements for simple controls (Input, TextArea, Label, Text).
  *
  * State Attributes Contract:
@@ -39,10 +39,13 @@ export { Fieldset, FieldsetLegend } from "./Fieldset";
 export { Button } from "./Button";
 
 // Checkbox
-export { Checkbox } from "./Checkbox";
+export { Checkbox, CheckboxIndicator } from "./Checkbox";
+
+// Checkbox Group
+export { CheckboxGroup } from "./CheckboxGroup";
 
 // Radio Group
-export { RadioGroup, RadioGroupItem } from "./RadioGroup";
+export { RadioGroup, RadioGroupItem, RadioGroupIndicator } from "./RadioGroup";
 
 // Text Area
 export { TextArea } from "./TextArea";

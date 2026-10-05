@@ -28,3 +28,13 @@ export function Checkbox({
     />
   );
 }
+
+/**
+ * CheckboxIndicator Primitive
+ *
+ * Visual mark shown while the checkbox is checked or indeterminate.
+ * Zero styling - all appearance delegated to derived components.
+ */
+export function CheckboxIndicator({ ...props }: BaseCheckbox.Indicator.Props) {
+  return <BaseCheckbox.Indicator data-slot="checkbox-indicator" {...props} />;
+}

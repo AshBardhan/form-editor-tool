@@ -8,9 +8,15 @@ import { FormLabel } from "@/design-system/form/FormLabel";
 import { AppInput } from "@/design-system/app/AppInput";
 import { AppTextArea } from "@/design-system/app/AppTextArea";
 import { AppSelect } from "@/design-system/app/AppSelect";
+import { AppCheckbox } from "@/design-system/app/AppCheckbox";
+import { AppCheckboxGroup } from "@/design-system/app/AppCheckboxGroup";
+import { AppRadioGroup } from "@/design-system/app/AppRadioGroup";
 import { FormInput } from "@/design-system/form/FormInput";
 import { FormTextArea } from "@/design-system/form/FormTextArea";
 import { FormSelect } from "@/design-system/form/FormSelect";
+import { FormCheckbox } from "@/design-system/form/FormCheckbox";
+import { FormCheckboxGroup } from "@/design-system/form/FormCheckboxGroup";
+import { FormRadioGroup } from "@/design-system/form/FormRadioGroup";
 import { AppThemeContainer } from "@/design-system/containers/AppThemeContainer";
 import { FormThemeContainer } from "@/design-system/containers/FormThemeContainer";
 import { AppThemeSwitcher } from "@/components/layout/AppThemeSwitcher";
@@ -24,8 +30,23 @@ const SELECT_OPTIONS = [
   { value: "archived", label: "Archived" },
 ];
 
+const NOTIFICATION_OPTIONS = [
+  { value: "email", label: "Email" },
+  { value: "sms", label: "SMS" },
+  { value: "push", label: "Push", disabled: true },
+];
+
+const STATUS_OPTIONS = [
+  { value: "draft", label: "Draft" },
+  { value: "review", label: "In review" },
+  { value: "published", label: "Published" },
+  { value: "archived", label: "Archived", disabled: true },
+];
+
 const APP_SELECT_SIZES = ["sm", "md", "lg"] as const;
 const FORM_SELECT_SIZES = ["md", "lg"] as const;
+const APP_CHOICE_SIZES = APP_SELECT_SIZES;
+const FORM_CHOICE_SIZES = FORM_SELECT_SIZES;
 
 const SELECT_SIZE_LABELS = {
   sm: "Small",
@@ -66,6 +87,16 @@ export default function ComponentsDemo() {
   const [formSelectValues, setFormSelectValues] = useState(
     INITIAL_FORM_SELECT_VALUES,
   );
+  const [appCheckboxChecked, setAppCheckboxChecked] = useState(true);
+  const [appCheckboxValues, setAppCheckboxValues] = useState<string[]>([
+    "email",
+  ]);
+  const [appRadioValue, setAppRadioValue] = useState("review");
+  const [formCheckboxChecked, setFormCheckboxChecked] = useState(true);
+  const [formCheckboxValues, setFormCheckboxValues] = useState<string[]>([
+    "email",
+  ]);
+  const [formRadioValue, setFormRadioValue] = useState("review");
 
   return (
     <AppThemeContainer>
@@ -337,6 +368,195 @@ export default function ComponentsDemo() {
                       </div>
                     </div>
                   </div>
+
+                  {/* Checkbox Component */}
+                  <div>
+                    <h3 className="text-lg font-semibold text-app-fg-heading mb-1">
+                      Checkbox
+                    </h3>
+                    <p className="text-sm text-app-fg-muted mb-4">
+                      Single checkbox with a label
+                    </p>
+                    <div className="flex flex-col gap-6">
+                      <div>
+                        <h4 className="text-sm font-semibold text-app-fg-heading mb-2">
+                          States
+                        </h4>
+                        <div className="flex flex-col gap-3">
+                          <AppCheckbox
+                            label="Email me product updates"
+                            checked={appCheckboxChecked}
+                            onCheckedChange={setAppCheckboxChecked}
+                          />
+                          <AppCheckbox label="Disabled" disabled />
+                          <AppCheckbox
+                            label="Disabled checked"
+                            disabled
+                            defaultChecked
+                          />
+                          <AppCheckbox label="Invalid" aria-invalid />
+                          <AppCheckbox label="Required" required />
+                          <AppCheckbox label="Indeterminate" indeterminate />
+                        </div>
+                      </div>
+
+                      <div>
+                        <h4 className="text-sm font-semibold text-app-fg-heading mb-2">
+                          Sizes
+                        </h4>
+                        <div className="flex flex-col gap-3">
+                          {APP_CHOICE_SIZES.map((size) => (
+                            <AppCheckbox
+                              key={size}
+                              size={size}
+                              label={SELECT_SIZE_LABELS[size]}
+                              defaultChecked={size === "md"}
+                            />
+                          ))}
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+
+                  {/* Checkbox Group Component */}
+                  <div>
+                    <h3 className="text-lg font-semibold text-app-fg-heading mb-1">
+                      Checkbox Group
+                    </h3>
+                    <p className="text-sm text-app-fg-muted mb-4">
+                      Multiple checkboxes with a shared legend
+                    </p>
+                    <div className="flex flex-col gap-6">
+                      <div>
+                        <h4 className="text-sm font-semibold text-app-fg-heading mb-2">
+                          Orientation
+                        </h4>
+                        <div className="flex flex-col gap-6">
+                          <AppCheckboxGroup
+                            label="Notifications"
+                            options={NOTIFICATION_OPTIONS}
+                            value={appCheckboxValues}
+                            onValueChange={setAppCheckboxValues}
+                          />
+                          <AppCheckboxGroup
+                            label="Horizontal"
+                            orientation="horizontal"
+                            options={NOTIFICATION_OPTIONS}
+                            defaultValue={["sms"]}
+                          />
+                        </div>
+                      </div>
+
+                      <div>
+                        <h4 className="text-sm font-semibold text-app-fg-heading mb-2">
+                          States
+                        </h4>
+                        <div className="flex flex-col gap-6">
+                          <AppCheckboxGroup
+                            label="Invalid"
+                            options={NOTIFICATION_OPTIONS}
+                            defaultValue={["email"]}
+                            aria-invalid
+                            required
+                          />
+                          <AppCheckboxGroup
+                            label="Disabled"
+                            options={NOTIFICATION_OPTIONS}
+                            defaultValue={["email"]}
+                            disabled
+                          />
+                        </div>
+                      </div>
+
+                      <div>
+                        <h4 className="text-sm font-semibold text-app-fg-heading mb-2">
+                          Sizes
+                        </h4>
+                        <div className="flex flex-col gap-6">
+                          {APP_CHOICE_SIZES.map((size) => (
+                            <AppCheckboxGroup
+                              key={size}
+                              size={size}
+                              label={SELECT_SIZE_LABELS[size]}
+                              orientation="horizontal"
+                              options={NOTIFICATION_OPTIONS}
+                              defaultValue={["email"]}
+                            />
+                          ))}
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+
+                  {/* Radio Group Component */}
+                  <div>
+                    <h3 className="text-lg font-semibold text-app-fg-heading mb-1">
+                      Radio Group
+                    </h3>
+                    <p className="text-sm text-app-fg-muted mb-4">
+                      Single selection from a set of options
+                    </p>
+                    <div className="flex flex-col gap-6">
+                      <div>
+                        <h4 className="text-sm font-semibold text-app-fg-heading mb-2">
+                          Orientation
+                        </h4>
+                        <div className="flex flex-col gap-6">
+                          <AppRadioGroup
+                            label="Status"
+                            options={STATUS_OPTIONS}
+                            value={appRadioValue}
+                            onValueChange={setAppRadioValue}
+                          />
+                          <AppRadioGroup
+                            label="Horizontal"
+                            orientation="horizontal"
+                            options={STATUS_OPTIONS}
+                            defaultValue="published"
+                          />
+                        </div>
+                      </div>
+
+                      <div>
+                        <h4 className="text-sm font-semibold text-app-fg-heading mb-2">
+                          States
+                        </h4>
+                        <div className="flex flex-col gap-6">
+                          <AppRadioGroup
+                            label="Invalid"
+                            options={STATUS_OPTIONS}
+                            defaultValue="draft"
+                            aria-invalid
+                            required
+                          />
+                          <AppRadioGroup
+                            label="Disabled"
+                            options={STATUS_OPTIONS}
+                            defaultValue="review"
+                            disabled
+                          />
+                        </div>
+                      </div>
+
+                      <div>
+                        <h4 className="text-sm font-semibold text-app-fg-heading mb-2">
+                          Sizes
+                        </h4>
+                        <div className="flex flex-col gap-6">
+                          {APP_CHOICE_SIZES.map((size) => (
+                            <AppRadioGroup
+                              key={size}
+                              size={size}
+                              label={SELECT_SIZE_LABELS[size]}
+                              orientation="horizontal"
+                              options={STATUS_OPTIONS}
+                              defaultValue="review"
+                            />
+                          ))}
+                        </div>
+                      </div>
+                    </div>
+                  </div>
                 </div>
               </div>
             </div>
@@ -581,6 +801,195 @@ export default function ComponentsDemo() {
                             >
                               Invalid
                             </FormLabel>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+
+                    {/* Checkbox Component */}
+                    <div>
+                      <h3 className="text-lg font-semibold text-form-fg-heading mb-1">
+                        Checkbox
+                      </h3>
+                      <p className="text-sm text-form-fg-muted mb-4">
+                        Single checkbox with a label
+                      </p>
+                      <div className="flex flex-col gap-6">
+                        <div>
+                          <h4 className="text-sm font-semibold text-form-fg-heading mb-2">
+                            States
+                          </h4>
+                          <div className="flex flex-col gap-3">
+                            <FormCheckbox
+                              label="Email me product updates"
+                              checked={formCheckboxChecked}
+                              onCheckedChange={setFormCheckboxChecked}
+                            />
+                            <FormCheckbox label="Disabled" disabled />
+                            <FormCheckbox
+                              label="Disabled checked"
+                              disabled
+                              defaultChecked
+                            />
+                            <FormCheckbox label="Invalid" aria-invalid />
+                            <FormCheckbox label="Required" required />
+                            <FormCheckbox label="Indeterminate" indeterminate />
+                          </div>
+                        </div>
+
+                        <div>
+                          <h4 className="text-sm font-semibold text-form-fg-heading mb-2">
+                            Sizes
+                          </h4>
+                          <div className="flex flex-col gap-3">
+                            {FORM_CHOICE_SIZES.map((size) => (
+                              <FormCheckbox
+                                key={size}
+                                size={size}
+                                label={SELECT_SIZE_LABELS[size]}
+                                defaultChecked={size === "lg"}
+                              />
+                            ))}
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+
+                    {/* Checkbox Group Component */}
+                    <div>
+                      <h3 className="text-lg font-semibold text-form-fg-heading mb-1">
+                        Checkbox Group
+                      </h3>
+                      <p className="text-sm text-form-fg-muted mb-4">
+                        Multiple checkboxes with a shared legend
+                      </p>
+                      <div className="flex flex-col gap-6">
+                        <div>
+                          <h4 className="text-sm font-semibold text-form-fg-heading mb-2">
+                            Orientation
+                          </h4>
+                          <div className="flex flex-col gap-6">
+                            <FormCheckboxGroup
+                              label="Notifications"
+                              options={NOTIFICATION_OPTIONS}
+                              value={formCheckboxValues}
+                              onValueChange={setFormCheckboxValues}
+                            />
+                            <FormCheckboxGroup
+                              label="Horizontal"
+                              orientation="horizontal"
+                              options={NOTIFICATION_OPTIONS}
+                              defaultValue={["sms"]}
+                            />
+                          </div>
+                        </div>
+
+                        <div>
+                          <h4 className="text-sm font-semibold text-form-fg-heading mb-2">
+                            States
+                          </h4>
+                          <div className="flex flex-col gap-6">
+                            <FormCheckboxGroup
+                              label="Invalid"
+                              options={NOTIFICATION_OPTIONS}
+                              defaultValue={["email"]}
+                              aria-invalid
+                              required
+                            />
+                            <FormCheckboxGroup
+                              label="Disabled"
+                              options={NOTIFICATION_OPTIONS}
+                              defaultValue={["email"]}
+                              disabled
+                            />
+                          </div>
+                        </div>
+
+                        <div>
+                          <h4 className="text-sm font-semibold text-form-fg-heading mb-2">
+                            Sizes
+                          </h4>
+                          <div className="flex flex-col gap-6">
+                            {FORM_CHOICE_SIZES.map((size) => (
+                              <FormCheckboxGroup
+                                key={size}
+                                size={size}
+                                label={SELECT_SIZE_LABELS[size]}
+                                orientation="horizontal"
+                                options={NOTIFICATION_OPTIONS}
+                                defaultValue={["email"]}
+                              />
+                            ))}
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+
+                    {/* Radio Group Component */}
+                    <div>
+                      <h3 className="text-lg font-semibold text-form-fg-heading mb-1">
+                        Radio Group
+                      </h3>
+                      <p className="text-sm text-form-fg-muted mb-4">
+                        Single selection from a set of options
+                      </p>
+                      <div className="flex flex-col gap-6">
+                        <div>
+                          <h4 className="text-sm font-semibold text-form-fg-heading mb-2">
+                            Orientation
+                          </h4>
+                          <div className="flex flex-col gap-6">
+                            <FormRadioGroup
+                              label="Status"
+                              options={STATUS_OPTIONS}
+                              value={formRadioValue}
+                              onValueChange={setFormRadioValue}
+                            />
+                            <FormRadioGroup
+                              label="Horizontal"
+                              orientation="horizontal"
+                              options={STATUS_OPTIONS}
+                              defaultValue="published"
+                            />
+                          </div>
+                        </div>
+
+                        <div>
+                          <h4 className="text-sm font-semibold text-form-fg-heading mb-2">
+                            States
+                          </h4>
+                          <div className="flex flex-col gap-6">
+                            <FormRadioGroup
+                              label="Invalid"
+                              options={STATUS_OPTIONS}
+                              defaultValue="draft"
+                              aria-invalid
+                              required
+                            />
+                            <FormRadioGroup
+                              label="Disabled"
+                              options={STATUS_OPTIONS}
+                              defaultValue="review"
+                              disabled
+                            />
+                          </div>
+                        </div>
+
+                        <div>
+                          <h4 className="text-sm font-semibold text-form-fg-heading mb-2">
+                            Sizes
+                          </h4>
+                          <div className="flex flex-col gap-6">
+                            {FORM_CHOICE_SIZES.map((size) => (
+                              <FormRadioGroup
+                                key={size}
+                                size={size}
+                                label={SELECT_SIZE_LABELS[size]}
+                                orientation="horizontal"
+                                options={STATUS_OPTIONS}
+                                defaultValue="review"
+                              />
+                            ))}
                           </div>
                         </div>
                       </div>

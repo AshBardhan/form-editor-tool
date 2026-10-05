@@ -3,6 +3,9 @@
 import { RadioGroup as BaseRadioGroup } from "@base-ui/react/radio-group";
 import { Radio as BaseRadio } from "@base-ui/react/radio";
 
+type RadioGroupProps = BaseRadioGroup.Props<string>;
+type RadioGroupItemProps = BaseRadio.Root.Props<string>;
+
 /**
  * RadioGroup Primitive
  *
@@ -11,7 +14,7 @@ import { Radio as BaseRadio } from "@base-ui/react/radio";
  *
  * Wrap with RadioGroupItem components inside.
  */
-export function RadioGroup({ ...props }) {
+export function RadioGroup({ ...props }: RadioGroupProps) {
   const { disabled, "aria-invalid": ariaInvalid, ...rest } = props;
 
   return (
@@ -35,15 +38,27 @@ export function RadioGroup({ ...props }) {
  * - data-disabled: Set when item is disabled
  * - data-checked: Set when item is selected
  */
-export function RadioGroupItem({ ...props }) {
-  const { value, disabled, ...rest } = props;
+export function RadioGroupItem({ ...props }: RadioGroupItemProps) {
+  const { value, disabled, "aria-invalid": ariaInvalid, ...rest } = props;
 
   return (
     <BaseRadio.Root
       value={value}
       disabled={disabled}
+      aria-invalid={ariaInvalid}
       data-disabled={disabled || undefined}
+      data-invalid={ariaInvalid || undefined}
       {...rest}
     />
   );
+}
+
+/**
+ * RadioGroupIndicator Primitive
+ *
+ * Visual mark shown while a radio item is selected.
+ * Zero styling - all appearance delegated to derived components.
+ */
+export function RadioGroupIndicator({ ...props }: BaseRadio.Indicator.Props) {
+  return <BaseRadio.Indicator data-slot="radio-group-indicator" {...props} />;
 }
