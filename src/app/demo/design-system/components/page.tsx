@@ -13,12 +13,14 @@ import { AppSelect } from "@/design-system/app/AppSelect";
 import { AppCheckbox } from "@/design-system/app/AppCheckbox";
 import { AppCheckboxGroup } from "@/design-system/app/AppCheckboxGroup";
 import { AppRadioGroup } from "@/design-system/app/AppRadioGroup";
+import { AppSwitch } from "@/design-system/app/AppSwitch";
 import { FormInput } from "@/design-system/form/FormInput";
 import { FormTextArea } from "@/design-system/form/FormTextArea";
 import { FormSelect } from "@/design-system/form/FormSelect";
 import { FormCheckbox } from "@/design-system/form/FormCheckbox";
 import { FormCheckboxGroup } from "@/design-system/form/FormCheckboxGroup";
 import { FormRadioGroup } from "@/design-system/form/FormRadioGroup";
+import { FormSwitch } from "@/design-system/form/FormSwitch";
 import { AppThemeContainer } from "@/design-system/containers/AppThemeContainer";
 import { FormThemeContainer } from "@/design-system/containers/FormThemeContainer";
 import { TEXT_VARIANTS, type TextVariant } from "@/design-system/primitives";
@@ -107,11 +109,13 @@ export default function ComponentsDemo() {
     "email",
   ]);
   const [appRadioValue, setAppRadioValue] = useState("review");
+  const [appSwitchChecked, setAppSwitchChecked] = useState(true);
   const [formCheckboxChecked, setFormCheckboxChecked] = useState(true);
   const [formCheckboxValues, setFormCheckboxValues] = useState<string[]>([
     "email",
   ]);
   const [formRadioValue, setFormRadioValue] = useState("review");
+  const [formSwitchChecked, setFormSwitchChecked] = useState(true);
 
   return (
     <AppThemeContainer>
@@ -589,6 +593,54 @@ export default function ComponentsDemo() {
                       </div>
                     </div>
                   </div>
+
+                  {/* Switch Component */}
+                  <div>
+                    <h3 className="text-lg font-semibold text-app-fg-heading mb-1">
+                      Switch
+                    </h3>
+                    <p className="text-sm text-app-fg-muted mb-4">
+                      Toggle with a label to the right of the track
+                    </p>
+                    <div className="flex flex-col gap-6">
+                      <div>
+                        <h4 className="text-sm font-semibold text-app-fg-heading mb-2">
+                          States
+                        </h4>
+                        <div className="flex flex-col gap-3">
+                          <AppSwitch
+                            label="Email me product updates"
+                            checked={appSwitchChecked}
+                            onCheckedChange={setAppSwitchChecked}
+                          />
+                          <AppSwitch label="Disabled" disabled />
+                          <AppSwitch
+                            label="Disabled on"
+                            disabled
+                            defaultChecked
+                          />
+                          <AppSwitch label="Invalid" aria-invalid />
+                          <AppSwitch label="Required" required />
+                        </div>
+                      </div>
+
+                      <div>
+                        <h4 className="text-sm font-semibold text-app-fg-heading mb-2">
+                          Sizes
+                        </h4>
+                        <div className="flex flex-col gap-3">
+                          {APP_CHOICE_SIZES.map((size) => (
+                            <AppSwitch
+                              key={size}
+                              size={size}
+                              label={SELECT_SIZE_LABELS[size]}
+                              defaultChecked={size === "md"}
+                            />
+                          ))}
+                        </div>
+                      </div>
+                    </div>
+                  </div>
                 </div>
               </div>
             </div>
@@ -1053,6 +1105,54 @@ export default function ComponentsDemo() {
                                 orientation="horizontal"
                                 options={STATUS_OPTIONS}
                                 defaultValue="review"
+                              />
+                            ))}
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+
+                    {/* Switch Component */}
+                    <div>
+                      <h3 className="text-lg font-semibold text-form-fg-heading mb-1">
+                        Switch
+                      </h3>
+                      <p className="text-sm text-form-fg-muted mb-4">
+                        Toggle with a label to the right of the track
+                      </p>
+                      <div className="flex flex-col gap-6">
+                        <div>
+                          <h4 className="text-sm font-semibold text-form-fg-heading mb-2">
+                            States
+                          </h4>
+                          <div className="flex flex-col gap-3">
+                            <FormSwitch
+                              label="Email me product updates"
+                              checked={formSwitchChecked}
+                              onCheckedChange={setFormSwitchChecked}
+                            />
+                            <FormSwitch label="Disabled" disabled />
+                            <FormSwitch
+                              label="Disabled on"
+                              disabled
+                              defaultChecked
+                            />
+                            <FormSwitch label="Invalid" aria-invalid />
+                            <FormSwitch label="Required" required />
+                          </div>
+                        </div>
+
+                        <div>
+                          <h4 className="text-sm font-semibold text-form-fg-heading mb-2">
+                            Sizes
+                          </h4>
+                          <div className="flex flex-col gap-3">
+                            {FORM_CHOICE_SIZES.map((size) => (
+                              <FormSwitch
+                                key={size}
+                                size={size}
+                                label={SELECT_SIZE_LABELS[size]}
+                                defaultChecked={size === "lg"}
                               />
                             ))}
                           </div>

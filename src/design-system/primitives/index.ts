@@ -78,4 +78,4 @@ export { Text, TEXT_VARIANTS } from "./Text";
 export type { TextVariant } from "./Text";
 
 // Switch
-export { Switch } from "./Switch";
+export { Switch, SwitchThumb } from "./Switch";

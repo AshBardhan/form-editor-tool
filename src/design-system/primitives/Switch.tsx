@@ -13,16 +13,28 @@ import { Switch as BaseSwitch } from "@base-ui/react/switch";
  * - data-invalid: Set when switch has validation error
  * - data-checked: Set when switch is toggled on
  */
-export function Switch({ ...props }) {
-  const { disabled, "aria-invalid": ariaInvalid, ...rest } = props;
-
+export function Switch({
+  disabled,
+  "aria-invalid": ariaInvalid,
+  ...props
+}: BaseSwitch.Root.Props) {
   return (
     <BaseSwitch.Root
       disabled={disabled}
       aria-invalid={ariaInvalid}
       data-disabled={disabled || undefined}
       data-invalid={ariaInvalid || undefined}
-      {...rest}
+      {...props}
     />
   );
+}
+
+/**
+ * SwitchThumb Primitive
+ *
+ * Movable mark that indicates whether the switch is on or off.
+ * Zero styling - all appearance delegated to derived components.
+ */
+export function SwitchThumb({ ...props }: BaseSwitch.Thumb.Props) {
+  return <BaseSwitch.Thumb data-slot="switch-thumb" {...props} />;
 }
