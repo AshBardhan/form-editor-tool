@@ -1,5 +1,5 @@
 import { FormActions } from "@/lib/types/form";
-import { Button } from "@/components/ui/Button";
+import { FormButton } from "@/design-system/form/FormButton";
 import { cn } from "@/lib/utils/styleUtils";
 import { JSX } from "react";
 import type { ButtonAlignment } from "@/lib/types/form";
@@ -21,7 +21,7 @@ const ALIGNMENT_CLASS_MAP: Record<ButtonAlignment, string> = {
 /**
  * Form Action Group
  * - Renders the form-wide submit/reset button pair driven by form-level `actions` config.
- * - Submit is always styled "primary" and reset is always "outline".
+ * - Submit is always solid primary and reset is always outline secondary.
  *
  * @param {FormActionGroupProps} props - The props for the component.
  * @returns {JSX.Element} The rendered component.
@@ -33,15 +33,15 @@ export const FormActionGroup = ({
     ALIGNMENT_CLASS_MAP[actions.alignment] || "justify-start";
 
   const submitButton = (
-    <Button type="submit" variant="default">
+    <FormButton type="submit" variant="solid" color="primary">
       {actions.submitLabel}
-    </Button>
+    </FormButton>
   );
 
   const resetButton = actions.hideReset ? null : (
-    <Button type="reset" variant="outline">
+    <FormButton type="reset" variant="outline" color="secondary">
       {actions.resetLabel}
-    </Button>
+    </FormButton>
   );
 
   return (

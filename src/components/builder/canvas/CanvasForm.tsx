@@ -9,7 +9,7 @@ import { useDroppable } from "@dnd-kit/core";
 import { JSX } from "react";
 import { FormBlock } from "@/lib/types/form";
 import { useFormConfigStore } from "@/lib/stores/formConfigStore";
-import Text from "@/components/ui/Text";
+import { FormText } from "@/design-system/form/FormText";
 
 interface CanvasFormProps {
   overId: string | null;
@@ -29,11 +29,11 @@ const DropPlaceholder = (): JSX.Element => (
  * Drop Zero State Content
  */
 const DropZeroState = (): JSX.Element => (
-  <div className="h-full text-gray-500 dark:text-white transition-colors flex flex-col items-center justify-center">
-    <Text variant="h3">Empty form</Text>
-    <Text variant="p" className="text-sm">
+  <div className="h-full flex flex-col items-center justify-center">
+    <FormText variant="h3">Empty form</FormText>
+    <FormText variant="p" className="text-sm @sm:text-sm @5xl:text-sm">
       Please drop widgets to create form.
-    </Text>
+    </FormText>
   </div>
 );
 

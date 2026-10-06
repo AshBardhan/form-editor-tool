@@ -1,26 +1,28 @@
 import Link from "next/link";
-import { Button } from "@/components/ui/Button";
-import Text from "@/components/ui/Text";
+import { FormThemeContainer } from "@/design-system/containers/FormThemeContainer";
+import { FormButton } from "@/design-system/form/FormButton";
+import { FormText } from "@/design-system/form/FormText";
 
 export default function PublicFormNotFound() {
   return (
-    <div className="min-h-screen bg-background flex items-center justify-center p-4">
-      <div className="text-center space-y-6 max-w-md">
-        <div className="space-y-2">
-          <Text variant="h2" className="text-foreground">
-            Form Not Found
-          </Text>
-          <Text className="text-muted-foreground">
-            This form doesn&apos;t exist or is no longer accepting submissions.
-          </Text>
-        </div>
+    <FormThemeContainer theme="light">
+      <div className="min-h-screen bg-form-canvas flex items-center justify-center p-4">
+        <div className="text-center space-y-6 max-w-md">
+          <div className="space-y-2">
+            <FormText variant="h2">Form Not Found</FormText>
+            <FormText variant="p" className="text-form-fg-muted">
+              This form doesn&apos;t exist or is no longer accepting
+              submissions.
+            </FormText>
+          </div>
 
-        <Link href="/forms">
-          <Button variant="default" size="default">
-            Go to Dashboard
-          </Button>
-        </Link>
+          <Link href="/forms" className="inline-flex">
+            <FormButton variant="solid" color="primary">
+              Go to Dashboard
+            </FormButton>
+          </Link>
+        </div>
       </div>
-    </div>
+    </FormThemeContainer>
   );
 }

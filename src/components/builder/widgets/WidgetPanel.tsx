@@ -4,7 +4,8 @@ import { widgetPalette } from "@/lib/constants/widgetPalette";
 import { WidgetItem } from "./WidgetItem";
 import { ChevronDown, ComponentIcon, SearchIcon } from "lucide-react";
 import { useState, useMemo, useCallback, useEffect, JSX, memo } from "react";
-import { Input } from "@/components/ui/Input";
+import { AppInput } from "@/design-system/app/AppInput";
+import { AppText } from "@/design-system/app/AppText";
 import { Widget } from "@/lib/types/widget";
 import { AnimatePresence, motion } from "motion/react";
 import { collapsibleContentVariants } from "@/lib/constants/styles";
@@ -82,21 +83,24 @@ export const WidgetPanel = memo(function WidgetPanel(): JSX.Element {
     <>
       {/* Sidebar Header */}
       <div className="p-4 flex flex-col gap-4 border-b border-b-[#2d2d2d]">
-        <h2 className="text-sm font-semibold flex items-center gap-2">
+        <AppText
+          variant="h2"
+          className="text-sm font-semibold flex items-center gap-2 sm:text-sm 2xl:text-sm"
+        >
           <ComponentIcon size={20} />
           Form Widgets
-        </h2>
+        </AppText>
         {/* Search Bar */}
-        <div className="relative dark">
-          <Input
+        <div className="relative">
+          <AppInput
             type="text"
             name="search"
             placeholder="Search Widgets..."
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
-            className="w-full focus-visible:ring-0 focus-visible:shadow-none!"
+            className="pr-9"
           />
-          <SearchIcon className="absolute right-3 top-1/2 transform -translate-y-1/2 size-4 text-muted-foreground" />
+          <SearchIcon className="absolute right-3 top-1/2 transform -translate-y-1/2 size-4 text-app-fg-muted" />
         </div>
       </div>
 
@@ -110,7 +114,12 @@ export const WidgetPanel = memo(function WidgetPanel(): JSX.Element {
               ))}
             </div>
           ) : (
-            <div className="text-xs text-center pt-4">No widgets found</div>
+            <AppText
+              variant="p"
+              className="text-xs text-center pt-4 sm:text-xs 2xl:text-xs"
+            >
+              No widgets found
+            </AppText>
           )}
         </div>
       ) : (
@@ -126,7 +135,12 @@ export const WidgetPanel = memo(function WidgetPanel(): JSX.Element {
                 className="border-b border-b-[#2d2d2d] px-4 py-3 flex flex-col gap-3"
               >
                 <div className="flex items-center justify-between w-full">
-                  <h3 className="text-xs font-semibold">{group.label}</h3>
+                  <AppText
+                    variant="h3"
+                    className="text-xs font-semibold sm:text-xs 2xl:text-xs"
+                  >
+                    {group.label}
+                  </AppText>
                   <div
                     role="button"
                     onClick={() => toggleCategory(group.category)}

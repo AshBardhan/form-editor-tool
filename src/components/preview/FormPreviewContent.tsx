@@ -2,7 +2,7 @@
 
 import React, { JSX, useState, useEffect } from "react";
 import { FormBlock, FormBlockValueType } from "@/lib/types/form";
-import Text from "@/components/ui/Text";
+import { FormText } from "@/design-system/form/FormText";
 import { widgetBlockRenderers } from "@/components/form/blocks";
 import { FormActionGroup } from "@/components/form/FormActionGroup";
 import { useFormConfigStore, useFormDataStore } from "@/lib/stores";
@@ -216,11 +216,11 @@ export const FormPreviewContent = ({
     >
       <div className="form-content" data-form-theme={form.theme}>
         {form.blocks.length === 0 ? (
-          <div className="h-full text-gray-500 dark:text-white transition-colors flex flex-col items-center justify-center">
-            <Text variant="h3">Empty form</Text>
-            <Text variant="p" className="text-sm">
+          <div className="h-full flex flex-col items-center justify-center">
+            <FormText variant="h3">Empty form</FormText>
+            <FormText variant="p" className="text-sm @sm:text-sm @5xl:text-sm">
               Please add widgets from the form builder.
-            </Text>
+            </FormText>
           </div>
         ) : (
           <form onSubmit={handleSubmit} onReset={handleReset} noValidate>

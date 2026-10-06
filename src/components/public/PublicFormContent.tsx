@@ -2,8 +2,8 @@
 
 import React, { useEffect, useRef, useState } from "react";
 import Link from "next/link";
-import Text from "@/components/ui/Text";
-import { Button } from "@/components/ui/Button";
+import { FormButton } from "@/design-system/form/FormButton";
+import { FormText } from "@/design-system/form/FormText";
 import { FormBlock, FormBlockValueType, FormConfig } from "@/lib/types/form";
 import { widgetBlockRenderers } from "@/components/form/blocks";
 import { FormActionGroup } from "@/components/form/FormActionGroup";
@@ -229,16 +229,19 @@ export function PublicFormContent({ form }: PublicFormContentProps) {
         <div className="form-content relative" data-form-theme={form.theme}>
           {status.type === "submitting" && (
             <div className="form-overlay  rounded-lg">
-              <Text>Submitting form...</Text>
+              <FormText>Submitting form...</FormText>
             </div>
           )}
           {/* Form Blocks */}
           {form.blocks.length === 0 ? (
-            <div className="h-full text-gray-500 dark:text-white transition-colors flex flex-col items-center justify-center">
-              <Text variant="h3">Empty form</Text>
-              <Text variant="p" className="text-sm">
+            <div className="h-full flex flex-col items-center justify-center">
+              <FormText variant="h3">Empty form</FormText>
+              <FormText
+                variant="p"
+                className="text-sm @sm:text-sm @5xl:text-sm"
+              >
                 Please add widgets from the form builder.
-              </Text>
+              </FormText>
             </div>
           ) : (
             <>
@@ -250,30 +253,40 @@ export function PublicFormContent({ form }: PublicFormContentProps) {
               )}
               {status.type === "submitted" && (
                 <div className="p-4 text-center">
-                  <Text variant="h3" className="dark:text-white">
-                    Thank you!
-                  </Text>
-                  <Text variant="p" className="dark:text-white">
-                    {status.message}
-                  </Text>
+                  <FormText variant="h3">Thank you!</FormText>
+                  <FormText variant="p">{status.message}</FormText>
                   <div className="flex gap-3 justify-center mt-4">
-                    <Button onClick={handleSubmitAnotherResponse}>
+                    <FormButton
+                      variant="solid"
+                      color="primary"
+                      onClick={handleSubmitAnotherResponse}
+                    >
                       Submit another
-                    </Button>
+                    </FormButton>
                     <Link href="/forms">
-                      <Button variant="outline">Go Home</Button>
+                      <FormButton variant="outline" color="secondary">
+                        Go Home
+                      </FormButton>
                     </Link>
                   </div>
                 </div>
               )}
               {status.type === "failed" && (
                 <div className="p-4 text-center">
-                  <Text variant="h3">Error</Text>
-                  <p>{status.message}</p>
+                  <FormText variant="h3">Error</FormText>
+                  <FormText variant="p">{status.message}</FormText>
                   <div className="flex gap-3 justify-center mt-4">
-                    <Button onClick={retryFormAfterFailure}>Retry</Button>
+                    <FormButton
+                      variant="solid"
+                      color="primary"
+                      onClick={retryFormAfterFailure}
+                    >
+                      Retry
+                    </FormButton>
                     <Link href="/forms">
-                      <Button variant="outline">Go Home</Button>
+                      <FormButton variant="outline" color="secondary">
+                        Go Home
+                      </FormButton>
                     </Link>
                   </div>
                 </div>

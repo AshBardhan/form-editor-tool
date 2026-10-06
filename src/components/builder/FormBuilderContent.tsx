@@ -36,7 +36,8 @@ import {
   ModalDescription,
   ModalFooter,
 } from "@/components/ui/Modal";
-import { Button } from "@/components/ui/Button";
+import { AppButton } from "@/design-system/app/AppButton";
+import { AppText } from "@/design-system/app/AppText";
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/Alert";
 import { AlertTriangle } from "lucide-react";
 import { useAutoSave } from "@/lib/hooks/useAutoSave";
@@ -310,13 +311,21 @@ export const FormBuilderContent = (): JSX.Element => {
 
       {/* Uneditable Form Overlay */}
       {!isFormEditable && (
-        <div className="absolute inset-0 bg-white/20 z-30 cursor-not-allowed flex items-center justify-center">
-          <div className="bg-white p-6 rounded-lg shadow-lg max-w-md text-center">
-            <h3 className="text-lg font-semibold mb-2">Form Uneditable</h3>
-            <p className="text-sm text-gray-600 dark:text-gray-400">
+        <div className="absolute inset-0 bg-app-canvas/60 z-30 cursor-not-allowed flex items-center justify-center">
+          <div className="bg-app-surface border border-app-border-subtle p-6 rounded-lg shadow-lg max-w-md text-center">
+            <AppText
+              variant="h3"
+              className="mb-2 text-lg sm:text-lg 2xl:text-lg"
+            >
+              Form Uneditable
+            </AppText>
+            <AppText
+              variant="p"
+              className="text-sm text-app-fg-muted sm:text-sm 2xl:text-sm"
+            >
               This form is archived and cannot be edited. Restore it to
               &apos;published&apos; status to make changes.
-            </p>
+            </AppText>
           </div>
         </div>
       )}
@@ -340,12 +349,20 @@ export const FormBuilderContent = (): JSX.Element => {
             </div>
           </ModalHeader>
           <ModalFooter>
-            <Button variant="outline" onClick={handleCancelDelete}>
+            <AppButton
+              variant="outline"
+              color="secondary"
+              onClick={handleCancelDelete}
+            >
               Cancel
-            </Button>
-            <Button variant="destructive" onClick={handleConfirmDelete}>
+            </AppButton>
+            <AppButton
+              variant="solid"
+              color="negative"
+              onClick={handleConfirmDelete}
+            >
               Delete
-            </Button>
+            </AppButton>
           </ModalFooter>
         </ModalContent>
       </Modal>

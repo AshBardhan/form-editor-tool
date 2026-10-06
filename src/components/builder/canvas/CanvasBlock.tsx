@@ -5,7 +5,7 @@ import { useSortable } from "@dnd-kit/sortable";
 import { CSS } from "@dnd-kit/utilities";
 import { CopyIcon, SeparatorHorizontalIcon, TrashIcon } from "lucide-react";
 import { widgetBlockRenderers } from "@/components/form/blocks";
-import { Button } from "@/components/ui/Button";
+import { AppButton } from "@/design-system/app/AppButton";
 import { CSSProperties, JSX } from "react";
 import {
   useFormBlockValidationStore,
@@ -157,32 +157,38 @@ export const CanvasBlock = ({
           <div className="absolute top-1/2 -translate-y-1/2 right-2 @sm:right-4 flex gap-1 z-1">
             {/* Clone Block Button */}
             {!isInvalid && (
-              <Button
+              <AppButton
                 variant="ghost"
+                color="secondary"
+                size="sm"
                 tabIndex={-1}
-                className="cursor-pointer rounded-full p-1.5 text-gray-500 dark:text-gray-300 hover:text-black dark:hover:text-white hover:bg-black/10 dark:hover:bg-white/10 transition-colors"
+                className="size-8 rounded-full border-transparent bg-transparent p-0 shadow-none text-form-fg-muted hover:border-transparent hover:bg-form-surface-muted hover:text-form-fg"
                 onClick={(e) => {
                   e.stopPropagation();
                   cloneBlock(block.id);
                 }}
                 title="Duplicate Block"
+                aria-label="Duplicate block"
               >
-                <CopyIcon size={14} />
-              </Button>
+                <CopyIcon />
+              </AppButton>
             )}
             {/* Remove Block Button */}
-            <Button
+            <AppButton
               variant="ghost"
+              color="secondary"
+              size="sm"
               tabIndex={-1}
-              className="cursor-pointer rounded-full p-1.5 text-gray-500 dark:text-gray-300 hover:text-black dark:hover:text-white hover:bg-black/10 dark:hover:bg-white/10 transition-colors"
+              className="size-8 rounded-full border-transparent bg-transparent p-0 shadow-none text-form-fg-muted hover:border-transparent hover:bg-form-surface-muted hover:text-form-fg"
               onClick={(e) => {
                 e.stopPropagation();
                 onDeleteBlock?.(block.id);
               }}
               title="Delete Block"
+              aria-label="Delete block"
             >
-              <TrashIcon size={16} />
-            </Button>
+              <TrashIcon />
+            </AppButton>
           </div>
         </div>
       )}
