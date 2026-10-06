@@ -1,14 +1,17 @@
 "use client";
 
 import { TrashIcon } from "lucide-react";
-import { useEffect, useState } from "react";
-import { Input } from "@/components/ui/Input";
-import { Button } from "@/components/ui/Button";
-import { cn } from "@/lib/utils/styleUtils";
+import { useEffect, useState, type KeyboardEvent } from "react";
+import { AppButton } from "@/design-system/app/AppButton";
+import { AppInput } from "@/design-system/app/AppInput";
+import { Fieldset } from "@/design-system/primitives";
 
 interface ListConfigProps {
   id: string;
   value: string[];
+  labelledBy?: string;
+  "aria-invalid"?: boolean;
+  "aria-describedby"?: string;
   onChange: (val: string[]) => void;
 }
 
@@ -19,8 +22,17 @@ interface ListConfigProps {
  * @param {ListConfigProps} props - The props for the component.
  * @returns {JSX.Element} The rendered  component.
  */
-export const ListConfig = ({ id, value, onChange }: ListConfigProps) => {
+export const ListConfig = ({
+  id,
+  value,
+  labelledBy,
+  "aria-invalid": ariaInvalid,
+  "aria-describedby": ariaDescribedBy,
+  onChange,
+}: ListConfigProps) => {
   const [newOption, setNewOption] = useState("");
+  const newOptionId = `${id}-new`;
+  const addHintId = `${id}-add-hint`;
 
   /** Add a new option */
   const addOption = () => {
@@ -45,7 +57,7 @@ export const ListConfig = ({ id, value, onChange }: ListConfigProps) => {
   };
 
   /** Handle Enter keypress event to add a new option */
-  const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
+  const handleKeyDown = (e: KeyboardEvent<HTMLInputElement>) => {
     if (e.key === "Enter") {
       e.preventDefault();
       addOption();
@@ -58,39 +70,57 @@ export const ListConfig = ({ id, value, onChange }: ListConfigProps) => {
   }, [id]);
 
   return (
-    <div id={id} className="flex flex-col gap-2">
-      {/* List of existing options input with delete button */}
-      {value.map((option, i) => (
-        <div key={i} className="relative">
-          <Input
-            type="text"
-            value={option}
-            onChange={(e) => updateOption(i, e.target.value)}
-            className={cn(
-              "pr-8 py-2 focus-visible:ring-0 focus-visible:shadow-none!",
-              option.length === 0 && "border-destructive!",
-            )}
-          />
-          <Button
-            type="button"
-            variant="destructive"
-            onClick={() => removeOption(i)}
-            className="absolute right-0 top-1/2 -translate-y-1/2 rounded-l-none"
-            disabled={value.length <= 2}
-          >
-            <TrashIcon size={12} />
-          </Button>
-        </div>
-      ))}
-      {/* New option input field */}
-      <Input
+    <Fieldset
+      id={id}
+      aria-labelledby={labelledBy}
+      aria-describedby={ariaDescribedBy}
+      data-invalid={ariaInvalid || undefined}
+      className="flex flex-col gap-2"
+    >
+      {value.map((option, i) => {
+        const optionId = `${id}-option-${i}`;
+        const empty = option.length === 0;
+
+        return (
+          <div key={optionId} className="relative">
+            <AppInput
+              id={optionId}
+              type="text"
+              value={option}
+              aria-label={`Option ${i + 1}`}
+              aria-invalid={empty || ariaInvalid}
+              onChange={(e) => updateOption(i, e.target.value)}
+              className="pr-10"
+            />
+            <AppButton
+              type="button"
+              variant="solid"
+              color="negative"
+              size="md"
+              onClick={() => removeOption(i)}
+              className="absolute right-0 top-1/2 -translate-y-1/2 rounded-l-none"
+              disabled={value.length <= 2}
+              aria-label={`Remove option ${i + 1}`}
+            >
+              <TrashIcon size={12} />
+            </AppButton>
+          </div>
+        );
+      })}
+      <AppInput
+        id={newOptionId}
         type="text"
         placeholder="New option"
         value={newOption}
+        aria-label="New option"
+        aria-describedby={addHintId}
+        aria-keyshortcuts="Enter"
         onChange={(e) => setNewOption(e.target.value)}
         onKeyDown={handleKeyDown}
-        className="focus-visible:ring-0 focus-visible:shadow-none!"
       />
-    </div>
+      <span id={addHintId} className="sr-only">
+        Press Enter to add a new option.
+      </span>
+    </Fieldset>
   );
 };

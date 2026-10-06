@@ -157,14 +157,17 @@ export function AppButton({
   color,
   type = "button",
   children,
+  ref,
   ...props
-}: ComponentProps<"button"> & VariantProps<typeof buttonVariants>) {
+}: Omit<ComponentProps<"button">, "color"> &
+  VariantProps<typeof buttonVariants>) {
   const buttonClassName = cn(
     buttonVariants({ variant, size, color, className }),
   );
 
   return (
     <Button
+      ref={ref}
       type={type}
       data-slot="app-button"
       className={buttonClassName}

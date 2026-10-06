@@ -69,7 +69,9 @@ export type AppCheckboxProps = {
   id?: string;
   value?: string;
   className?: string;
+  tabIndex?: number;
   "aria-invalid"?: boolean | "true" | "false";
+  "aria-describedby"?: string;
 };
 
 function isInvalid(ariaInvalid: AppCheckboxProps["aria-invalid"]) {
@@ -78,9 +80,9 @@ function isInvalid(ariaInvalid: AppCheckboxProps["aria-invalid"]) {
 
 export function AppCheckbox({
   label,
-  checked,
-  defaultChecked,
-  onCheckedChange,
+  checked = false,
+  defaultChecked = false,
+  onCheckedChange = () => {},
   size = "md",
   required = false,
   disabled = false,
@@ -89,7 +91,9 @@ export function AppCheckbox({
   id,
   value,
   className,
+  tabIndex,
   "aria-invalid": ariaInvalid,
+  "aria-describedby": ariaDescribedBy,
 }: AppCheckboxProps) {
   const invalid = isInvalid(ariaInvalid);
 
@@ -107,12 +111,12 @@ export function AppCheckbox({
         disabled={disabled}
         required={required}
         indeterminate={indeterminate}
+        tabIndex={tabIndex}
         aria-invalid={ariaInvalid}
-        {...(checked !== undefined ? { checked } : {})}
-        {...(defaultChecked !== undefined ? { defaultChecked } : {})}
-        {...(onCheckedChange
-          ? { onCheckedChange: (next: boolean) => onCheckedChange(next) }
-          : {})}
+        aria-describedby={ariaDescribedBy}
+        checked={checked}
+        defaultChecked={defaultChecked}
+        onCheckedChange={onCheckedChange}
         data-slot="app-checkbox"
         className={cn(checkboxVariants({ size }), className, {
           "border-app-error focus-visible:ring-app-error/30 data-checked:border-app-error data-checked:bg-app-error data-indeterminate:border-app-error data-indeterminate:bg-app-error":

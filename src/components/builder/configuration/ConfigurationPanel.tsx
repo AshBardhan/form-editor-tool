@@ -1,14 +1,5 @@
 "use client";
 
-import { Label } from "@/components/ui/Label";
-import { Input } from "@/components/ui/Input";
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "@/components/ui/Select";
 import { THEME_OPTIONS } from "@/lib/constants/theme";
 import { BUTTON_ALIGNMENT_OPTIONS } from "@/lib/constants/buttons";
 import { getFormBlock, getFormBlockProps } from "@/lib/utils/formUtils";
@@ -19,7 +10,9 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from "@/components/ui/DropdownMenu";
-import { Button } from "@/components/ui/Button";
+import { AppButton } from "@/design-system/app/AppButton";
+import { AppLabel } from "@/design-system/app/AppLabel";
+import { AppText } from "@/design-system/app/AppText";
 import { JSX, useEffect, useState, useMemo, memo, useCallback } from "react";
 import z from "zod";
 import { FormBlock } from "@/lib/types/form";
@@ -38,7 +31,6 @@ import {
 } from "@/lib/stores";
 import { AnimatePresence, motion } from "motion/react";
 import { visibleContentVariants } from "@/lib/constants/styles";
-import { cn } from "@/lib/utils/styleUtils";
 import { switchFormTheme } from "@/lib/utils/domUtils";
 
 /**
@@ -180,16 +172,23 @@ export const ConfigurationPanel = memo(function ConfigurationPanel({
     if (!selected) return null;
 
     const selectedBlockPropKey = `${selected.id}-${prop.key}`;
-    // Label for non-boolean
+    const errorId = `${selectedBlockPropKey}-error`;
+    const labelId = `${selectedBlockPropKey}-label`;
+    const shouldShowError = Boolean(hasErrorProp(prop.key));
+    const describedBy = shouldShowError ? errorId : undefined;
+    const isList = prop.type === "list";
+
     const label =
       prop.type !== "boolean" ? (
-        <Label htmlFor={selectedBlockPropKey} className="text-xs font-semibold">
+        <AppLabel
+          htmlFor={isList ? undefined : selectedBlockPropKey}
+          id={isList ? labelId : undefined}
+          size="sm"
+          className="font-semibold"
+        >
           {prop.label}
-        </Label>
+        </AppLabel>
       ) : null;
-
-    // Error state
-    const shouldShowError = hasErrorProp(prop.key);
 
     let propConfig: JSX.Element | null = null;
     switch (prop.type) {
@@ -198,10 +197,8 @@ export const ConfigurationPanel = memo(function ConfigurationPanel({
           <InputConfig
             id={selectedBlockPropKey}
             value={prop.value == null ? "" : String(prop.value)}
-            className={cn(
-              "focus-visible:ring-0 focus-visible:shadow-none!",
-              shouldShowError && "border-destructive!",
-            )}
+            aria-invalid={shouldShowError}
+            aria-describedby={describedBy}
             onChange={(value) => updateFormBlock(selected.id, prop.key, value)}
           />
         );
@@ -211,10 +208,8 @@ export const ConfigurationPanel = memo(function ConfigurationPanel({
           <LongTextConfig
             id={selectedBlockPropKey}
             value={prop.value == null ? "" : String(prop.value)}
-            className={cn(
-              "resize-y focus-visible:ring-0 focus-visible:shadow-none!",
-              shouldShowError && "border-destructive!",
-            )}
+            aria-invalid={shouldShowError}
+            aria-describedby={describedBy}
             onChange={(value) => updateFormBlock(selected.id, prop.key, value)}
           />
         );
@@ -225,10 +220,8 @@ export const ConfigurationPanel = memo(function ConfigurationPanel({
             type="number"
             id={selectedBlockPropKey}
             value={typeof prop.value === "number" ? prop.value : 0}
-            className={cn(
-              "focus-visible:ring-0 focus-visible:shadow-none!",
-              shouldShowError && "border-destructive!",
-            )}
+            aria-invalid={shouldShowError}
+            aria-describedby={describedBy}
             onChange={(value) => updateFormBlock(selected.id, prop.key, value)}
           />
         );
@@ -239,6 +232,8 @@ export const ConfigurationPanel = memo(function ConfigurationPanel({
             id={selectedBlockPropKey}
             label={prop.label}
             value={Boolean(prop.value)}
+            aria-invalid={shouldShowError}
+            aria-describedby={describedBy}
             onChange={(value) => updateFormBlock(selected.id, prop.key, value)}
           />
         );
@@ -249,6 +244,8 @@ export const ConfigurationPanel = memo(function ConfigurationPanel({
             id={selectedBlockPropKey}
             value={prop.value as string}
             options={prop.options ?? []}
+            aria-invalid={shouldShowError}
+            aria-describedby={describedBy}
             onChange={(value) => updateFormBlock(selected.id, prop.key, value)}
           />
         );
@@ -257,7 +254,10 @@ export const ConfigurationPanel = memo(function ConfigurationPanel({
         propConfig = (
           <ListConfig
             id={selectedBlockPropKey}
+            labelledBy={labelId}
             value={Array.isArray(prop.value) ? (prop.value as string[]) : []}
+            aria-invalid={shouldShowError}
+            aria-describedby={describedBy}
             onChange={(val: string[]) =>
               updateFormBlock(selected.id, prop.key, val)
             }
@@ -268,14 +268,19 @@ export const ConfigurationPanel = memo(function ConfigurationPanel({
         propConfig = null;
     }
 
-    // Error messages
-    const errorMessages = hasErrorProp(prop.key)
-      ? errors[prop.key].map((err, idx) => (
-          <div key={idx} className="text-xs text-destructive">
+    const errorMessages = shouldShowError ? (
+      <div id={errorId} role="alert" className="flex flex-col gap-1">
+        {errors[prop.key].map((err, idx) => (
+          <AppText
+            key={idx}
+            variant="span"
+            className="text-xs text-app-error sm:text-xs 2xl:text-xs"
+          >
             {err}
-          </div>
-        ))
-      : null;
+          </AppText>
+        ))}
+      </div>
+    ) : null;
 
     return (
       <div
@@ -298,24 +303,28 @@ export const ConfigurationPanel = memo(function ConfigurationPanel({
         exit="exit"
         variants={visibleContentVariants}
       >
-        <div className="p-4 border-b border-b-[#2d2d2d] flex items-center justify-between gap-2">
-          <h3 className="text-sm font-semibold flex items-center gap-2">
+        <div className="p-4 border-b border-b-app-border-subtle flex items-center justify-between gap-2">
+          <AppText
+            variant="h3"
+            className="flex items-center gap-2 text-sm font-semibold sm:text-sm 2xl:text-sm"
+          >
             {Icon && <Icon size={20} />}
             {selected ? selectedMeta?.label : "Form"} Config
-          </h3>
+          </AppText>
           {selected && (
             <DropdownMenu>
               <DropdownMenuTrigger asChild>
-                <Button
+                <AppButton
                   variant="ghost"
-                  size="sm"
-                  className="h-8 w-8 p-0 hover:bg-[#1f1f1f]"
+                  color="secondary"
+                  size="md"
+                  className="size-8 p-0"
+                  aria-label="Open menu"
                 >
-                  <MoreVertical size={16} />
-                  <span className="sr-only">Open menu</span>
-                </Button>
+                  <MoreVertical />
+                </AppButton>
               </DropdownMenuTrigger>
-              <DropdownMenuContent align="end" className="dark">
+              <DropdownMenuContent align="end">
                 <DropdownMenuItem
                   onSelect={() => selected && cloneFormBlock(selected.id)}
                 >
@@ -335,118 +344,117 @@ export const ConfigurationPanel = memo(function ConfigurationPanel({
         {selected ? (
           <>
             {/* Block Configuration Panel */}
-            <div className="p-4 flex flex-col gap-4 dark">
+            <div className="p-4 flex flex-col gap-4">
               {visibleProps.map(renderPropConfig)}
             </div>
           </>
         ) : (
           <>
             {/* Form Configuration Panel */}
-            <div className="p-4 flex flex-col gap-6 dark">
+            <div className="p-4 flex flex-col gap-6">
               <div className="flex flex-col gap-4 ">
-                <h3 className="text-sm font-semibold">General</h3>
+                <AppText
+                  variant="h4"
+                  className="text-sm font-semibold sm:text-sm 2xl:text-sm"
+                >
+                  General
+                </AppText>
 
                 <div className="flex flex-col gap-2">
-                  <Label htmlFor="form-title" className="text-xs font-semibold">
+                  <AppLabel
+                    htmlFor="form-title"
+                    size="sm"
+                    className="font-semibold"
+                  >
                     Title
-                  </Label>
-                  <Input
+                  </AppLabel>
+                  <InputConfig
                     id="form-title"
                     value={formTitle}
-                    className="focus-visible:ring-0 focus-visible:shadow-none!"
-                    onChange={(e) => updateFormConfig("title", e.target.value)}
+                    onChange={(value) =>
+                      updateFormConfig("title", String(value))
+                    }
                   />
                 </div>
 
                 <div className="flex flex-col gap-2">
-                  <Label htmlFor="form-theme" className="text-xs font-semibold">
+                  <AppLabel
+                    htmlFor="form-theme"
+                    size="sm"
+                    className="font-semibold"
+                  >
                     Theme
-                  </Label>
-                  <Select value={formTheme} onValueChange={onThemeChange}>
-                    <SelectTrigger
-                      id="form-theme"
-                      className="w-full focus-visible:ring-0 focus-visible:shadow-none!"
-                    >
-                      <SelectValue placeholder="Select theme">
-                        {THEME_OPTIONS[formTheme]}
-                      </SelectValue>
-                    </SelectTrigger>
-                    <SelectContent>
-                      {Object.entries(THEME_OPTIONS).map(([value, label]) => (
-                        <SelectItem key={value} value={value}>
-                          {label}
-                        </SelectItem>
-                      ))}
-                    </SelectContent>
-                  </Select>
+                  </AppLabel>
+                  <SelectConfig
+                    id="form-theme"
+                    value={formTheme}
+                    options={Object.entries(THEME_OPTIONS).map(
+                      ([value, label]) => ({ value, label }),
+                    )}
+                    onChange={onThemeChange}
+                  />
                 </div>
               </div>
 
               <div className="flex flex-col gap-4 ">
-                <h3 className="text-sm font-semibold">Action Group</h3>
+                <AppText
+                  variant="h4"
+                  className="text-sm font-semibold sm:text-sm 2xl:text-sm"
+                >
+                  Action Group
+                </AppText>
 
                 <div className="flex flex-col gap-2">
-                  <Label
+                  <AppLabel
                     htmlFor="form-actions-submit-label"
-                    className="text-xs font-semibold"
+                    size="sm"
+                    className="font-semibold"
                   >
                     Submit Label
-                  </Label>
-                  <Input
+                  </AppLabel>
+                  <InputConfig
                     id="form-actions-submit-label"
                     value={formActions.submitLabel}
-                    className="focus-visible:ring-0 focus-visible:shadow-none!"
-                    onChange={(e) =>
-                      updateFormActions("submitLabel", e.target.value)
+                    onChange={(value) =>
+                      updateFormActions("submitLabel", String(value))
                     }
                   />
                 </div>
 
                 <div className="flex flex-col gap-2">
-                  <Label
+                  <AppLabel
                     htmlFor="form-actions-reset-label"
-                    className="text-xs font-semibold"
+                    size="sm"
+                    className="font-semibold"
                   >
                     Reset Label
-                  </Label>
-                  <Input
+                  </AppLabel>
+                  <InputConfig
                     id="form-actions-reset-label"
                     value={formActions.resetLabel}
-                    className="focus-visible:ring-0 focus-visible:shadow-none!"
-                    onChange={(e) =>
-                      updateFormActions("resetLabel", e.target.value)
-                    }
                     disabled={formActions.hideReset}
+                    onChange={(value) =>
+                      updateFormActions("resetLabel", String(value))
+                    }
                   />
                 </div>
 
                 <div className="flex flex-col gap-2">
-                  <Label
+                  <AppLabel
                     htmlFor="form-actions-alignment"
-                    className="text-xs font-semibold"
+                    size="sm"
+                    className="font-semibold"
                   >
                     Alignment
-                  </Label>
-                  <Select
+                  </AppLabel>
+                  <SelectConfig
+                    id="form-actions-alignment"
                     value={formActions.alignment}
-                    onValueChange={(value) =>
+                    options={BUTTON_ALIGNMENT_OPTIONS}
+                    onChange={(value) =>
                       updateFormActions("alignment", value as ButtonAlignment)
                     }
-                  >
-                    <SelectTrigger
-                      id="form-actions-alignment"
-                      className="w-full focus-visible:ring-0 focus-visible:shadow-none!"
-                    >
-                      <SelectValue placeholder="Select alignment" />
-                    </SelectTrigger>
-                    <SelectContent>
-                      {BUTTON_ALIGNMENT_OPTIONS.map(({ value, label }) => (
-                        <SelectItem key={value} value={value}>
-                          {label}
-                        </SelectItem>
-                      ))}
-                    </SelectContent>
-                  </Select>
+                  />
                 </div>
 
                 <CheckboxConfig

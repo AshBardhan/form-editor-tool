@@ -35,10 +35,17 @@ export type AppSelectProps = {
   className?: string;
   name?: string;
   id?: string;
+  tabIndex?: number;
+  "aria-invalid"?: boolean | "true" | "false";
+  "aria-describedby"?: string;
 };
 
+function isInvalid(ariaInvalid: AppSelectProps["aria-invalid"]) {
+  return ariaInvalid === true || ariaInvalid === "true";
+}
+
 const selectTriggerVariants = cva(
-  "inline-flex items-center justify-between w-full font-medium transition-all outline-none disabled:opacity-50 disabled:cursor-not-allowed focus-visible:ring-[3px] focus-visible:ring-offset-0 border border-app-border-subtle bg-app-surface text-app-fg rounded-md focus-visible:ring-app-brand/30",
+  "inline-flex items-center justify-between w-full font-medium transition-all outline-none disabled:opacity-50 disabled:cursor-not-allowed focus-visible:ring-[3px] focus-visible:ring-offset-0 border bg-app-surface text-app-fg rounded-md",
   {
     variants: {
       size: {
@@ -97,7 +104,11 @@ export function AppSelect({
   className,
   name,
   id,
+  tabIndex,
+  "aria-invalid": ariaInvalid,
+  "aria-describedby": ariaDescribedBy,
 }: AppSelectProps) {
+  const invalid = isInvalid(ariaInvalid);
   const options = items.map((item) => ({
     value: item.value,
     label: optionLabel(item, labelKey),
@@ -114,13 +125,20 @@ export function AppSelect({
       required={required}
       disabled={disabled}
       name={name}
-      id={id}
     >
       <SelectTrigger
-        data-slot="app-select-trigger"
+        id={id}
+        tabIndex={tabIndex}
         disabled={disabled}
+        aria-invalid={ariaInvalid}
+        aria-describedby={ariaDescribedBy}
+        aria-required={required || undefined}
+        data-invalid={invalid || undefined}
+        data-slot="app-select-trigger"
         className={cn(selectTriggerVariants({ size }), className, {
-          "hover:border-app-border-strong": !disabled,
+          "border-app-error focus-visible:ring-app-error/30": invalid,
+          "border-app-border-subtle focus-visible:ring-app-brand/30": !invalid,
+          "hover:border-app-border-strong": !disabled && !invalid,
         })}
       >
         <SelectValue
