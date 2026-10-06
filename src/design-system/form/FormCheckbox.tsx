@@ -66,7 +66,9 @@ export type FormCheckboxProps = {
   id?: string;
   value?: string;
   className?: string;
+  tabIndex?: number;
   "aria-invalid"?: boolean | "true" | "false";
+  "aria-describedby"?: string;
 };
 
 function isInvalid(ariaInvalid: FormCheckboxProps["aria-invalid"]) {
@@ -75,9 +77,9 @@ function isInvalid(ariaInvalid: FormCheckboxProps["aria-invalid"]) {
 
 export function FormCheckbox({
   label,
-  checked,
-  defaultChecked,
-  onCheckedChange,
+  checked = false,
+  defaultChecked = false,
+  onCheckedChange = () => {},
   size = "md",
   required = false,
   disabled = false,
@@ -86,7 +88,9 @@ export function FormCheckbox({
   id,
   value,
   className,
+  tabIndex,
   "aria-invalid": ariaInvalid,
+  "aria-describedby": ariaDescribedBy,
 }: FormCheckboxProps) {
   const invalid = isInvalid(ariaInvalid);
 
@@ -104,12 +108,12 @@ export function FormCheckbox({
         disabled={disabled}
         required={required}
         indeterminate={indeterminate}
+        tabIndex={tabIndex}
         aria-invalid={ariaInvalid}
-        {...(checked !== undefined ? { checked } : {})}
-        {...(defaultChecked !== undefined ? { defaultChecked } : {})}
-        {...(onCheckedChange
-          ? { onCheckedChange: (next: boolean) => onCheckedChange(next) }
-          : {})}
+        aria-describedby={ariaDescribedBy}
+        checked={checked}
+        defaultChecked={defaultChecked}
+        onCheckedChange={onCheckedChange}
         data-slot="form-checkbox"
         className={cn(checkboxVariants({ size }), className, {
           "border-form-error focus-visible:ring-form-error/30 data-checked:border-form-error data-checked:bg-form-error data-indeterminate:border-form-error data-indeterminate:bg-form-error":

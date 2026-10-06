@@ -1,6 +1,6 @@
 import { getPropValue } from "@/lib/utils/formUtils";
 import { FormBlock } from "@/lib/types/form";
-import { Separator } from "@/components/ui/Separator";
+import { FormSeparator } from "@/design-system/form/FormSeparator";
 import { JSX } from "react";
 
 interface SeparatorBlockProps {
@@ -19,11 +19,8 @@ export const SeparatorBlock = ({ block }: SeparatorBlockProps): JSX.Element => {
   const divider = Boolean(getPropValue(block, "divider"));
 
   return (
-    <div
-      className="mx-4 @sm:mx-6 @5xl:mx-8"
-      style={{ paddingTop: spacing, paddingBottom: spacing }}
-    >
-      {divider && <Separator />}
+    <div className="form-block flex flex-col" style={{ paddingBlock: spacing }}>
+      {divider ? <FormSeparator /> : null}
     </div>
   );
 };

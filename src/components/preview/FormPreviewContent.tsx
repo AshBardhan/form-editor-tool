@@ -214,7 +214,7 @@ export const FormPreviewContent = ({
       className="form-container"
       style={{ maxWidth: `${currentDeviceMeta?.size}px` }}
     >
-      <div className="form-content">
+      <div className="form-content" data-form-theme={form.theme}>
         {form.blocks.length === 0 ? (
           <div className="h-full text-gray-500 dark:text-white transition-colors flex flex-col items-center justify-center">
             <Text variant="h3">Empty form</Text>

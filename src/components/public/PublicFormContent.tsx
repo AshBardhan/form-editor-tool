@@ -226,7 +226,7 @@ export function PublicFormContent({ form }: PublicFormContentProps) {
     >
       <div className="max-w-7xl form-container">
         {/* Form */}
-        <div className="form-content relative">
+        <div className="form-content relative" data-form-theme={form.theme}>
           {status.type === "submitting" && (
             <div className="form-overlay  rounded-lg">
               <Text>Submitting form...</Text>

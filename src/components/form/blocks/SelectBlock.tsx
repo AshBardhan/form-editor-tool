@@ -1,17 +1,11 @@
 "use client";
 
 import { FormBlock } from "@/lib/types/form";
-import { Label } from "@/components/ui/Label";
-import { ErrorMessages } from "@/components/form/ErrorMessages";
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "@/components/ui/Select";
+import { FormLabel } from "@/design-system/form/FormLabel";
+import { FormSelect } from "@/design-system/form/FormSelect";
+import { FormError } from "@/design-system/form/FormError";
 import { JSX } from "react";
-import { getPropValue } from "@/lib/utils/formUtils";
+import { getFieldKey, getPropValue } from "@/lib/utils/formUtils";
 
 interface SelectBlockProps {
   block: FormBlock;
@@ -36,38 +30,44 @@ export const SelectBlock = ({
   errors = [],
 }: SelectBlockProps): JSX.Element => {
   const label = getPropValue(block, "label");
-  const required = getPropValue(block, "required") || false;
+  const required = Boolean(getPropValue(block, "required"));
   const options = (getPropValue(block, "options") ?? []) as string[];
   const blockValue = (getPropValue(block, "value") ?? "") as string;
   const controlledValue = value ?? blockValue;
   const placeholder = (getPropValue(block, "placeholder") ?? "") as string;
+  const fieldName = getFieldKey(block);
+  const selectId = `select-${block.id}`;
+  const errorId = `${selectId}-error`;
+  const invalid = errors.length > 0;
 
   return (
     <div className="form-block flex flex-col gap-1.5 @sm:gap-2">
-      {label && (
-        <Label htmlFor={`select-${block.id}`}>
-          {label}
-          {required && <span className="text-red-500 ml-1">*</span>}
-        </Label>
-      )}
-      <Select value={controlledValue} onValueChange={onChange}>
-        <SelectTrigger
-          id={`select-${block.id}`}
-          className="w-full"
-          tabIndex={editable ? 0 : -1}
-          disabled={!editable}
+      {label ? (
+        <FormLabel
+          htmlFor={selectId}
+          required={required}
+          aria-invalid={invalid}
         >
-          <SelectValue placeholder={placeholder} />
-        </SelectTrigger>
-        <SelectContent position="popper">
-          {options.map((opt: string, idx: number) => (
-            <SelectItem key={idx} value={opt}>
-              {opt}
-            </SelectItem>
-          ))}
-        </SelectContent>
-      </Select>
-      <ErrorMessages errors={errors} />
+          {label}
+        </FormLabel>
+      ) : null}
+      <FormSelect
+        id={selectId}
+        name={fieldName}
+        items={options.map((option) => ({
+          value: option,
+          label: option,
+        }))}
+        value={controlledValue}
+        placeholder={placeholder}
+        required={required}
+        disabled={!editable}
+        tabIndex={editable ? 0 : -1}
+        aria-invalid={invalid || undefined}
+        aria-describedby={invalid ? errorId : undefined}
+        onValueChange={(next) => onChange?.(next ?? "")}
+      />
+      <FormError id={errorId} errors={errors} />
     </div>
   );
 };

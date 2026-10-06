@@ -104,7 +104,9 @@ export type FormCheckboxGroupProps = {
   disabled?: boolean;
   name?: string;
   className?: string;
+  tabIndex?: number;
   "aria-invalid"?: boolean | "true" | "false";
+  "aria-describedby"?: string;
 };
 
 function isInvalid(ariaInvalid: FormCheckboxGroupProps["aria-invalid"]) {
@@ -114,16 +116,18 @@ function isInvalid(ariaInvalid: FormCheckboxGroupProps["aria-invalid"]) {
 export function FormCheckboxGroup({
   label,
   options,
-  value,
-  defaultValue,
-  onValueChange,
+  value = [],
+  defaultValue = [],
+  onValueChange = () => {},
   orientation = "vertical",
   size = "md",
   required = false,
   disabled = false,
   name,
   className,
+  tabIndex,
   "aria-invalid": ariaInvalid,
+  "aria-describedby": ariaDescribedBy,
 }: FormCheckboxGroupProps) {
   const invalid = isInvalid(ariaInvalid);
 
@@ -131,6 +135,7 @@ export function FormCheckboxGroup({
     <Fieldset
       disabled={disabled}
       data-disabled={disabled || undefined}
+      aria-describedby={ariaDescribedBy}
       data-slot="form-checkbox-group"
       className={cn(
         "group m-0 flex min-w-0 flex-col gap-3 border-0 p-0",
@@ -155,15 +160,12 @@ export function FormCheckboxGroup({
         disabled={disabled}
         aria-invalid={ariaInvalid}
         aria-required={required || undefined}
+        aria-describedby={ariaDescribedBy}
         data-slot="form-checkbox-group-options"
         className={optionsVariants({ orientation })}
-        {...(value !== undefined ? { value } : {})}
-        {...(defaultValue !== undefined ? { defaultValue } : {})}
-        {...(onValueChange
-          ? {
-              onValueChange: (next: string[]) => onValueChange(next),
-            }
-          : {})}
+        value={value}
+        defaultValue={defaultValue}
+        onValueChange={onValueChange}
       >
         {options.map((option) => {
           const optionDisabled = disabled || Boolean(option.disabled);
@@ -179,6 +181,7 @@ export function FormCheckboxGroup({
                 name={name}
                 value={option.value}
                 disabled={optionDisabled}
+                tabIndex={tabIndex}
                 aria-invalid={ariaInvalid}
                 data-slot="form-checkbox"
                 className={cn(checkboxVariants({ size }), {

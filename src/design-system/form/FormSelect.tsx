@@ -35,10 +35,17 @@ export type FormSelectProps = {
   className?: string;
   name?: string;
   id?: string;
+  tabIndex?: number;
+  "aria-invalid"?: boolean | "true" | "false";
+  "aria-describedby"?: string;
 };
 
+function isInvalid(ariaInvalid: FormSelectProps["aria-invalid"]) {
+  return ariaInvalid === true || ariaInvalid === "true";
+}
+
 const selectTriggerVariants = cva(
-  "inline-flex items-center justify-between w-full font-medium transition-all outline-none disabled:opacity-50 disabled:cursor-not-allowed focus-visible:ring-[3px] focus-visible:ring-offset-0 border border-form-field-border bg-form-field text-form-fg rounded-md focus-visible:ring-form-brand/30",
+  "inline-flex items-center justify-between w-full font-medium transition-all outline-none disabled:opacity-50 disabled:cursor-not-allowed focus-visible:ring-[3px] focus-visible:ring-offset-0 border bg-form-field text-form-fg rounded-md",
   {
     variants: {
       size: {
@@ -95,7 +102,11 @@ export function FormSelect({
   className,
   name,
   id,
+  tabIndex,
+  "aria-invalid": ariaInvalid,
+  "aria-describedby": ariaDescribedBy,
 }: FormSelectProps) {
+  const invalid = isInvalid(ariaInvalid);
   const options = items.map((item) => ({
     value: item.value,
     label: optionLabel(item, labelKey),
@@ -112,13 +123,20 @@ export function FormSelect({
       required={required}
       disabled={disabled}
       name={name}
-      id={id}
     >
       <SelectTrigger
-        data-slot="form-select-trigger"
+        id={id}
+        tabIndex={tabIndex}
         disabled={disabled}
+        aria-invalid={ariaInvalid}
+        aria-describedby={ariaDescribedBy}
+        aria-required={required || undefined}
+        data-invalid={invalid || undefined}
+        data-slot="form-select-trigger"
         className={cn(selectTriggerVariants({ size }), className, {
-          "hover:border-form-border-strong": !disabled,
+          "border-form-error focus-visible:ring-form-error/30": invalid,
+          "border-form-field-border focus-visible:ring-form-brand/30": !invalid,
+          "hover:border-form-border-strong": !disabled && !invalid,
         })}
       >
         <SelectValue
