@@ -24,7 +24,7 @@ const switchVariants = cva(
 );
 
 const thumbVariants = cva(
-  "pointer-events-none block rounded-full bg-form-canvas shadow-sm transition-[translate] duration-150 ease-[ease]",
+  "pointer-events-none block rounded-full bg-form-surface shadow-sm transition-[translate] duration-150 ease-[ease]",
   {
     variants: {
       size: {

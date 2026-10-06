@@ -6,7 +6,7 @@ import { FormText } from "@/design-system/form/FormText";
 export default function PublicFormNotFound() {
   return (
     <FormThemeContainer theme="light">
-      <div className="min-h-screen bg-form-canvas flex items-center justify-center p-4">
+      <div className="min-h-screen bg-form-surface flex items-center justify-center p-4">
         <div className="text-center space-y-6 max-w-md">
           <div className="space-y-2">
             <FormText variant="h2">Form Not Found</FormText>

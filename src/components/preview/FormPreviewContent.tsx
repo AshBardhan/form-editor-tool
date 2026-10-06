@@ -11,6 +11,7 @@ import { validateFormBlock } from "@/lib/utils/formValidationUtils";
 import { DeviceList, DeviceType } from "@/lib/constants/device";
 import { toast } from "@/components/ui/Toast";
 import { switchFormTheme } from "@/lib/utils/domUtils";
+import { FormThemeContainer } from "@/design-system/containers/FormThemeContainer";
 
 interface FormPreviewContentProps {
   editable?: boolean;
@@ -210,11 +211,12 @@ export const FormPreviewContent = ({
   };
 
   return (
-    <div
-      className="form-container"
+    <FormThemeContainer
+      theme={form.theme}
+      className="h-full"
       style={{ maxWidth: `${currentDeviceMeta?.size}px` }}
     >
-      <div className="form-content" data-form-theme={form.theme}>
+      <div className="form-content">
         {form.blocks.length === 0 ? (
           <div className="h-full flex flex-col items-center justify-center">
             <FormText variant="h3">Empty form</FormText>
@@ -229,6 +231,6 @@ export const FormPreviewContent = ({
           </form>
         )}
       </div>
-    </div>
+    </FormThemeContainer>
   );
 };

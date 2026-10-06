@@ -25,8 +25,8 @@ function SampleButton({
     <button
       className={
         scope === "app"
-          ? "rounded-app-brand bg-app-brand px-4 py-2 text-sm font-semibold text-app-fg-on-brand shadow-app-brand transition-colors hover:bg-app-brand-hover focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-app-brand"
-          : "rounded-form-brand bg-form-brand px-4 py-2 text-sm font-semibold text-form-fg-on-brand shadow-form-brand transition-colors hover:bg-form-brand-hover focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-form-brand"
+          ? "rounded-app-brand bg-app-brand px-4 py-2 text-sm font-semibold text-app-fg-on-brand shadow-app-shadow transition-colors hover:bg-app-brand-hover focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-app-brand"
+          : "rounded-form-brand bg-form-brand px-4 py-2 text-sm font-semibold text-form-fg-on-brand shadow-form-shadow transition-colors hover:bg-form-brand-hover focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-form-brand"
       }
       type="button"
     >
@@ -73,7 +73,7 @@ function FormPreview({
 }) {
   return (
     <FormThemeContainer theme={themeId as FormTheme}>
-      <div className="rounded-form-brand border border-form-border-subtle bg-form-surface p-5 text-form-fg shadow-form-brand">
+      <div className="rounded-form-brand border border-form-border-subtle bg-form-surface p-5 text-form-fg shadow-form-shadow">
         <div className="mb-4 flex items-start justify-between gap-4">
           <div>
             <p className="text-xs font-semibold uppercase tracking-widest text-form-fg-muted">
@@ -121,7 +121,7 @@ function FormPreview({
 export default function ThemeDemoPage() {
   return (
     <AppThemeContainer>
-      <main className="mx-auto max-w-7xl rounded-app-brand bg-app-canvas p-5 text-app-fg sm:p-8">
+      <main className="mx-auto max-w-7xl rounded-app-brand bg-app-backdrop p-5 text-app-fg sm:p-8">
         <header className="mb-4 flex flex-wrap items-center justify-between gap-4 rounded-app-brand border border-app-header-border bg-app-header p-5 text-app-header-fg">
           <div>
             <p className="text-sm font-semibold uppercase tracking-[0.2em] text-app-header-fg">
@@ -150,7 +150,7 @@ export default function ThemeDemoPage() {
         </div>
 
         <div className="grid gap-6 lg:grid-cols-[minmax(0,0.8fr)_minmax(0,1.2fr)]">
-          <aside className="rounded-app-brand border border-app-sidebar-border bg-app-sidebar p-5 text-app-sidebar-fg shadow-app-brand">
+          <aside className="rounded-app-brand border border-app-sidebar-border bg-app-sidebar p-5 text-app-sidebar-fg shadow-app-shadow">
             <p className="text-xs font-semibold uppercase tracking-widest opacity-70">
               App-scoped sample
             </p>

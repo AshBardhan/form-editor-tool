@@ -56,7 +56,7 @@ export const CanvasForm = ({
   const isOverEnd = overId && !form.blocks.some((f) => f.id === overId);
 
   return (
-    <div className="form-content" data-form-theme={form.theme} ref={setNodeRef}>
+    <div className="form-content" ref={setNodeRef}>
       <SortableContext
         items={form.blocks.map((f) => f.id)}
         strategy={verticalListSortingStrategy}

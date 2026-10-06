@@ -2,7 +2,7 @@
 @layer base {
   :root {
     color-scheme: light;
-    --app-canvas: #fafafa;
+    --app-backdrop: #fafafa;
     --app-surface: #ffffff;
     --app-surface-muted: #f8fafc;
     --app-surface-inverse: #151515;
@@ -24,7 +24,7 @@
     --app-font-family-body: system-ui, sans-serif;
     --app-font-family-heading: system-ui, sans-serif;
     --app-radius-theme: 0.5rem;
-    --app-shadow-theme:
+    --app-shadow:
       0 1px 3px rgb(15 23 42 / 0.12), 0 1px 2px rgb(15 23 42 / 0.08);
 
     --app-header-bg: #ababab;
@@ -42,7 +42,7 @@
   /* Dark applies only while a themed route (AppThemeContainer) is mounted. */
   :root[data-app-theme="dark"]:has([data-app-scope]) {
     color-scheme: dark;
-    --app-canvas: #0b1120;
+    --app-backdrop: #1f2532;
     --app-surface: #111827;
     --app-surface-muted: #1f2937;
     --app-surface-inverse: #050914;
@@ -64,7 +64,7 @@
     --app-font-family-body: system-ui, sans-serif;
     --app-font-family-heading: system-ui, sans-serif;
     --app-radius-theme: 0.5rem;
-    --app-shadow-theme:
+    --app-shadow:
       0 1px 3px rgb(0 0 0 / 0.4), 0 8px 24px rgb(0 0 0 / 0.24);
 
     --app-header-bg: #050914;
@@ -81,7 +81,7 @@
 }
 
 @theme inline {
-  --color-app-canvas: var(--app-canvas);
+  --color-app-backdrop: var(--app-backdrop);
   --color-app-surface: var(--app-surface);
   --color-app-surface-muted: var(--app-surface-muted);
   --color-app-surface-inverse: var(--app-surface-inverse);
@@ -113,5 +113,5 @@
   --font-app-body: var(--app-font-family-body);
   --font-app-heading: var(--app-font-family-heading);
   --radius-app-brand: var(--app-radius-theme);
-  --shadow-app-brand: var(--app-shadow-theme);
+  --color-app-shadow: var(--app-shadow);
 }

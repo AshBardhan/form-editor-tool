@@ -119,7 +119,7 @@ export default function ComponentsDemo() {
 
   return (
     <AppThemeContainer>
-      <div className="bg-app-canvas text-app-fg p-8">
+      <div className="bg-app-backdrop text-app-fg p-8">
         <div className="max-w-7xl mx-auto">
           <header className="mb-12">
             <h1 className="text-4xl font-bold text-app-fg-heading mb-2">

@@ -17,6 +17,7 @@ import { useFormDataStore } from "@/lib/stores/formDataStore";
 import { switchFormTheme } from "@/lib/utils/domUtils";
 import { sendAnalyticsEvent } from "@/lib/utils/analytics";
 import { isFormDataValid } from "@/lib/utils/formValidationUtils";
+import { FormThemeContainer } from "@/design-system/containers/FormThemeContainer";
 
 interface PublicFormContentProps {
   form: FormConfig;
@@ -220,15 +221,12 @@ export function PublicFormContent({ form }: PublicFormContentProps) {
   };
 
   return (
-    <div
-      className="bg-gray-200 px-6 py-4 h-screen overflow-y-auto"
-      data-theme={form.theme}
-    >
-      <div className="max-w-7xl form-container">
+    <div className="bg-gray-200 px-6 py-4 h-screen overflow-y-auto">
+      <FormThemeContainer theme={form.theme} className="max-w-7xl h-full">
         {/* Form */}
-        <div className="form-content relative" data-form-theme={form.theme}>
+        <div className="form-content relative">
           {status.type === "submitting" && (
-            <div className="form-overlay  rounded-lg">
+            <div className="form-overlay rounded-lg">
               <FormText>Submitting form...</FormText>
             </div>
           )}
@@ -294,7 +292,7 @@ export function PublicFormContent({ form }: PublicFormContentProps) {
             </>
           )}
         </div>
-      </div>
+      </FormThemeContainer>
     </div>
   );
 }

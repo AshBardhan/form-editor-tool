@@ -43,6 +43,7 @@ import { AlertTriangle } from "lucide-react";
 import { useAutoSave } from "@/lib/hooks/useAutoSave";
 import { toast } from "@/components/ui/Toast";
 import { ApiResponse } from "@/lib/types/api";
+import { FormThemeContainer } from "@/design-system/containers/FormThemeContainer";
 
 interface DragState {
   overId: string | null;
@@ -287,14 +288,14 @@ export const FormBuilderContent = (): JSX.Element => {
                   </AlertDescription>
                 </Alert>
               )}
-              <div className="form-container">
+              <FormThemeContainer theme={form.theme}>
                 <CanvasForm
                   overId={dragState.overId}
                   activeDragItem={dragState.activeItem as FormBlock}
                   dragSource={dragState.source}
                   onDeleteBlock={handleDeleteRequest}
                 />
-              </div>
+              </FormThemeContainer>
             </PageContainer>
           </div>
         </MainContent>
@@ -311,7 +312,7 @@ export const FormBuilderContent = (): JSX.Element => {
 
       {/* Uneditable Form Overlay */}
       {!isFormEditable && (
-        <div className="absolute inset-0 bg-app-canvas/60 z-30 cursor-not-allowed flex items-center justify-center">
+        <div className="absolute inset-0 bg-app-overlay z-30 cursor-not-allowed flex items-center justify-center">
           <div className="bg-app-surface border border-app-border-subtle p-6 rounded-lg shadow-lg max-w-md text-center">
             <AppText
               variant="h3"

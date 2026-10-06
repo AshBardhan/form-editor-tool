@@ -7,7 +7,7 @@ import { Card, CardContent } from "@/components/ui/Card";
 export default function SubmissionSuccessPage() {
   return (
     <FormThemeContainer theme="light">
-      <div className="min-h-screen bg-form-canvas flex items-center justify-center p-4">
+      <div className="min-h-screen bg-form-surface flex items-center justify-center p-4">
         <Card className="max-w-md w-full">
           <CardContent className="text-center space-y-6 py-12">
             <div className="w-16 h-16 bg-form-success/10 rounded-full flex items-center justify-center mx-auto">

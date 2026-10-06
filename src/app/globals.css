@@ -5,7 +5,7 @@
 @import "../styles/palette.css";
 @import "../styles/theme/app.css";
 @import "../styles/theme/form.css";
-@import "../styles/components/layout.css";
-@import "../styles/components/form-canvas.css";
+@import "../styles/components/app.css";
+@import "../styles/components/form.css";
 
 @custom-variant dark (&:where(.dark, .dark *));
