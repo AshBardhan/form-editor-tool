@@ -211,12 +211,11 @@ export const FormPreviewContent = ({
   };
 
   return (
-    <FormThemeContainer
-      theme={form.theme}
-      className="h-full"
-      style={{ maxWidth: `${currentDeviceMeta?.size}px` }}
-    >
-      <div className="form-content">
+    <FormThemeContainer theme={form.theme} className="justify-start">
+      <div
+        className="form-content"
+        style={{ maxWidth: `${currentDeviceMeta?.size}px` }}
+      >
         {form.blocks.length === 0 ? (
           <div className="h-full flex flex-col items-center justify-center">
             <FormText variant="h3">Empty form</FormText>

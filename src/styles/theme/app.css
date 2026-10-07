@@ -64,8 +64,7 @@
     --app-font-family-body: system-ui, sans-serif;
     --app-font-family-heading: system-ui, sans-serif;
     --app-radius-theme: 0.5rem;
-    --app-shadow:
-      0 1px 3px rgb(0 0 0 / 0.4), 0 8px 24px rgb(0 0 0 / 0.24);
+    --app-shadow: 0 1px 3px rgb(0 0 0 / 0.4), 0 8px 24px rgb(0 0 0 / 0.24);
 
     --app-header-bg: #050914;
     --app-header-fg: #f8fafc;

@@ -133,8 +133,8 @@ export default function ComponentsDemo() {
 
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-12">
             {/* App Components Column */}
-            <div>
-              <div className="flex items-center justify-between mb-6">
+            <div className="space-y-6">
+              <div className="flex items-center justify-between">
                 <div>
                   <h2 className="text-2xl font-bold text-app-fg-heading mb-2">
                     App Components
@@ -646,9 +646,12 @@ export default function ComponentsDemo() {
             </div>
 
             {/* Form Components Column */}
-            <FormThemeContainer theme={formTheme}>
-              <div>
-                <div className="flex items-center justify-between mb-6">
+            <FormThemeContainer
+              theme={formTheme}
+              className="p-0 block bg-transparent"
+            >
+              <div className="space-y-6">
+                <div className="flex items-center justify-between">
                   <div>
                     <h2 className="text-2xl font-bold text-app-fg-heading mb-2">
                       Form Components

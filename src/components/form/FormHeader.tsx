@@ -290,7 +290,7 @@ export function FormHeader({ form }: FormHeaderProps) {
               onDeviceChange={setCurrentDevice}
             />
           </ModalHeader>
-          <div className="bg-gray-200 px-6 py-4 h-[70vh] overflow-y-auto">
+          <div className="max-h-[70vh] overflow-y-auto">
             <FormPreviewContent editable={true} currentDevice={currentDevice} />
           </div>
         </ModalContent>

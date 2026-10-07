@@ -50,8 +50,7 @@
     --form-font-family-body: system-ui, sans-serif;
     --form-font-family-heading: system-ui, sans-serif;
     --form-radius-theme: 0.5rem;
-    --form-shadow:
-      0 1px 3px rgb(0 0 0 / 0.4), 0 8px 24px rgb(0 0 0 / 0.24);
+    --form-shadow: 0 1px 3px rgb(0 0 0 / 0.4), 0 8px 24px rgb(0 0 0 / 0.24);
   }
 
   [data-form-theme="forest"] {
@@ -163,8 +162,8 @@
   }
 
   [data-form-theme] {
-    --form-backdrop: color-mix(in oklab, var(--form-surface) 40%, white);
-    --form-overlay: color-mix(in oklab, var(--form-surface) 40%, black);
+    --form-backdrop: color-mix(in oklab, var(--form-surface) 60%, white 35%);
+    --form-overlay: color-mix(in oklab, var(--form-surface) 60%, black 15%);
   }
 }
 

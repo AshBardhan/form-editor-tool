@@ -266,37 +266,40 @@ export const FormBuilderContent = (): JSX.Element => {
 
         {/* Main Content Area with Canvas and Save/Cancel Action Buttons */}
         <MainContent className="flex flex-col">
-          <div className="flex-1 py-10 overflow-y-auto">
-            <PageContainer
-              className="px-6 min-w-md"
-              onClickCapture={(e) => {
-                const target = e.target as HTMLElement;
-                if (!target.closest("[data-slot='block']")) {
-                  selectFormBlock(null);
-                }
-              }}
+          <div
+            className="flex-1 overflow-y-auto"
+            onClickCapture={(e) => {
+              const target = e.target as HTMLElement;
+              if (!target.closest("[data-slot='block']")) {
+                selectFormBlock(null);
+              }
+            }}
+          >
+            <FormThemeContainer
+              theme={form.theme}
+              className="min-w-md px-6 py-10 justify-start"
             >
-              {showPublishedSubmissionsWarning && (
-                <Alert variant="warning" className="mb-6">
-                  <AlertTriangle className="size-4" />
-                  <AlertTitle>Editing a published form</AlertTitle>
-                  <AlertDescription>
-                    This form already has submissions. Adding, removing, or
-                    changing input fields (including type or options) may alter
-                    field responses. Submission records and analytics metrics
-                    stay the same. Missing answers show as "-".
-                  </AlertDescription>
-                </Alert>
-              )}
-              <FormThemeContainer theme={form.theme}>
+              <PageContainer>
+                {showPublishedSubmissionsWarning && (
+                  <Alert variant="warning" className="mb-6">
+                    <AlertTriangle className="size-4" />
+                    <AlertTitle>Editing a published form</AlertTitle>
+                    <AlertDescription>
+                      This form already has submissions. Adding, removing, or
+                      changing input fields (including type or options) may
+                      alter field responses. Submission records and analytics
+                      metrics stay the same.
+                    </AlertDescription>
+                  </Alert>
+                )}
                 <CanvasForm
                   overId={dragState.overId}
                   activeDragItem={dragState.activeItem as FormBlock}
                   dragSource={dragState.source}
                   onDeleteBlock={handleDeleteRequest}
                 />
-              </FormThemeContainer>
-            </PageContainer>
+              </PageContainer>
+            </FormThemeContainer>
           </div>
         </MainContent>
 

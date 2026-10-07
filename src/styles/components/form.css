@@ -1,18 +1,18 @@
 @layer components {
   .form-container {
-    @apply mx-auto w-full transition-[max-width];
+    @apply bg-form-backdrop px-6 py-4 min-h-screen overflow-y-auto flex flex-col items-center justify-center;
     /* Enable container queries for child elements */
     @apply @container;
   }
 
   .form-content {
-    @apply bg-form-surface shadow-form-shadow w-full transition-colors rounded-lg;
+    @apply bg-form-surface max-w-7xl border border-form-border-subtle shadow-form-shadow shadow-md w-full transition-[max-width,colors] duration-300 rounded-lg relative;
     /* Mobile-first responsive padding using container queries */
     @apply py-4 @sm:py-6 @5xl:py-8;
   }
 
   .form-overlay {
-    @apply absolute inset-0 bg-white/40 z-1  backdrop-blur-[1px] flex items-center justify-center;
+    @apply absolute inset-0 bg-form-overlay z-1 flex items-center justify-center rounded-lg;
   }
 
   .form-block {

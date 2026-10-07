@@ -63,56 +63,53 @@ function SampleField({
 }
 
 function FormPreview({
-  themeId,
-  name,
-  description,
+  theme,
 }: {
-  themeId: string;
-  name: string;
-  description: string;
+  theme: (typeof FORM_THEME_PREVIEWS)[number];
 }) {
   return (
-    <FormThemeContainer theme={themeId as FormTheme}>
-      <div className="rounded-form-brand border border-form-border-subtle bg-form-surface p-5 text-form-fg shadow-form-shadow">
-        <div className="mb-4 flex items-start justify-between gap-4">
-          <div>
-            <p className="text-xs font-semibold uppercase tracking-widest text-form-fg-muted">
-              Form theme
-            </p>
-            <h3 className="mt-1 font-form-heading text-xl font-semibold text-form-fg-heading">
-              {name}
-            </h3>
-            <p className="mt-1 text-sm text-form-fg-muted">{description}</p>
-          </div>
-          <span className="rounded-form-brand bg-form-brand-subtle px-2.5 py-1 text-xs font-semibold text-form-brand">
-            {themeId}
-          </span>
+    <FormThemeContainer
+      theme={theme.id as FormTheme}
+      className="p-4 block min-h-auto rounded-form-brand border border-form-border-strong text-form-fg shadow-form-shadow"
+    >
+      <div className="mb-4 flex items-start justify-between gap-4">
+        <div>
+          <p className="text-xs font-semibold uppercase tracking-widest text-form-fg-muted">
+            Form theme
+          </p>
+          <h3 className="mt-1 font-form-heading text-xl font-semibold text-form-fg-heading">
+            {theme.name}
+          </h3>
+          <p className="mt-1 text-sm text-form-fg-muted">{theme.description}</p>
         </div>
+        <span className="rounded-form-brand bg-form-surface px-2.5 py-1 text-xs font-semibold text-form-brand">
+          {theme.id}
+        </span>
+      </div>
 
-        <div className="rounded-form-brand border border-form-border-subtle bg-form-surface-muted p-4">
-          <h4 className="font-form-heading text-lg font-semibold text-form-fg-heading">
-            Contact details
-          </h4>
-          <p className="mb-4 mt-1 text-sm text-form-fg-muted">
-            This nested panel should follow its form theme, not the dark app
-            theme.
-          </p>
-          <div className="grid gap-4 sm:grid-cols-2">
-            <SampleField label="Full name" value="Jordan Lee" scope="form" />
-            <SampleField
-              label="Email address"
-              value="jordan@example.com"
-              scope="form"
-            />
-          </div>
-          <div className="mt-4 flex flex-wrap items-center gap-3">
-            <SampleButton scope="form">Send response</SampleButton>
-            <span className="text-sm text-form-success">Ready to submit</span>
-          </div>
-          <p className="mt-3 text-sm text-form-error">
-            Example validation error uses the semantic error token.
-          </p>
+      <div className="rounded-form-brand border border-form-border-subtle bg-form-surface p-4">
+        <h4 className="font-form-heading text-lg font-semibold text-form-fg-heading">
+          Contact details
+        </h4>
+        <p className="mb-4 mt-1 text-sm text-form-fg-muted">
+          This nested panel should follow its form theme, not the dark app
+          theme.
+        </p>
+        <div className="grid gap-4 sm:grid-cols-2">
+          <SampleField label="Full name" value="Jordan Lee" scope="form" />
+          <SampleField
+            label="Email address"
+            value="jordan@example.com"
+            scope="form"
+          />
         </div>
+        <div className="mt-4 flex flex-wrap items-center gap-3">
+          <SampleButton scope="form">Send response</SampleButton>
+          <span className="text-sm text-form-success">Ready to submit</span>
+        </div>
+        <p className="mt-3 text-sm text-form-error">
+          Example validation error uses the semantic error token.
+        </p>
       </div>
     </FormThemeContainer>
   );
@@ -178,9 +175,9 @@ export default function ThemeDemoPage() {
             </div>
           </aside>
 
-          <div className="grid content-start gap-4 rounded-app-brand bg-app-main-content p-4">
+          <div className="grid content-start gap-4 rounded-app-brand bg-app-main-content">
             {FORM_THEME_PREVIEWS.map((theme) => (
-              <FormPreview key={theme.id} {...theme} themeId={theme.id} />
+              <FormPreview key={theme.id} theme={theme} />
             ))}
           </div>
         </div>
