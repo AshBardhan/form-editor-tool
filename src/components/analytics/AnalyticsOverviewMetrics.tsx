@@ -1,7 +1,7 @@
 "use client";
 
 import { Card, CardContent } from "@/components/ui/Card";
-import Text from "@/components/ui/Text";
+import { AppText } from "@/design-system/app/AppText";
 import Metric from "@/components/ui/Metric";
 import { FormAnalyticsMetrics } from "@/lib/types/form";
 
@@ -33,7 +33,7 @@ export function AnalyticsOverviewMetrics({
       <CardContent className="px-6">
         <div className="space-y-6">
           <div className="space-y-2">
-            <Text variant="h5">Basic Metrics</Text>
+            <AppText variant="h5">Basic Metrics</AppText>
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
               <Metric
                 direction="column"
@@ -56,7 +56,7 @@ export function AnalyticsOverviewMetrics({
             </div>
           </div>
           <div className="space-y-2">
-            <Text variant="h5">Advanced Metrics</Text>
+            <AppText variant="h5">Advanced Metrics</AppText>
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
               <Metric
                 direction="column"

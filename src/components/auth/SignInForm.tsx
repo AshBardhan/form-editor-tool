@@ -4,8 +4,8 @@ import { FormEvent, useMemo, useState } from "react";
 import { signIn } from "next-auth/react";
 import Link from "next/link";
 import { useRouter, useSearchParams } from "next/navigation";
-
-import { Button } from "@/components/ui/Button";
+import { AppText } from "@/design-system/app/AppText";
+import { AppButton } from "@/design-system/app/AppButton";
 import { FormField } from "@/components/ui/FormField";
 
 export function SignInForm() {
@@ -58,8 +58,10 @@ export function SignInForm() {
   return (
     <form onSubmit={handleSubmit} className="space-y-6">
       {error && (
-        <div className="rounded-lg border border-red-200 bg-red-50 px-4 py-3 text-sm text-red-700">
-          {error}
+        <div className="bg-app-surface-negative border border-app-border-negative px-4 py-3 rounded-lg">
+          <AppText variant="p" className="text-sm text-app-fg-negative">
+            {error}
+          </AppText>
         </div>
       )}
 
@@ -83,17 +85,22 @@ export function SignInForm() {
         autoComplete="current-password"
       />
 
-      <Button type="submit" className="w-full" disabled={isLoading}>
+      <AppButton
+        variant="solid"
+        color="primary"
+        type="submit"
+        className="w-full"
+        disabled={isLoading}
+      >
         {isLoading ? "Signing in..." : "Sign In"}
-      </Button>
+      </AppButton>
 
-      <div className="text-center text-sm text-gray-600">
+      <div className="text-center text-sm text-app-fg-muted">
         Don't have an account?{" "}
-        <Link
-          href="/signup"
-          className="font-medium text-blue-600 hover:underline"
-        >
-          Sign up
+        <Link href="/signup">
+          <AppButton variant="link" color="secondary">
+            Sign up
+          </AppButton>
         </Link>
       </div>
     </form>

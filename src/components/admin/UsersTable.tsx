@@ -8,8 +8,8 @@
 import { useState } from "react";
 import { useRouter } from "next/navigation";
 import { Badge } from "@/components/ui/Badge";
-import { Button } from "@/components/ui/Button";
 import { Modal } from "@/components/ui/Modal";
+import { AppButton } from "@/design-system/app/AppButton";
 
 interface User {
   id: number;
@@ -127,23 +127,23 @@ export function UsersTable({ users }: UsersTableProps) {
                 </td>
                 <td className="px-6 py-4 text-right">
                   <div className="flex gap-2 justify-end">
-                    <Button
-                      size="sm"
+                    <AppButton
                       variant="outline"
+                      color="secondary"
                       onClick={() => handleToggleRole(user)}
                     >
                       {user.role === "ADMIN" ? "Demote" : "Promote"}
-                    </Button>
-                    <Button
-                      size="sm"
-                      variant="destructive"
+                    </AppButton>
+                    <AppButton
+                      variant="solid"
+                      color="negative"
                       onClick={() => {
                         setSelectedUser(user);
                         setShowDeleteModal(true);
                       }}
                     >
                       Delete
-                    </Button>
+                    </AppButton>
                   </div>
                 </td>
               </tr>
@@ -165,20 +165,22 @@ export function UsersTable({ users }: UsersTableProps) {
             submissions, and data.
           </p>
           <div className="flex justify-end gap-3">
-            <Button
+            <AppButton
               variant="outline"
+              color="secondary"
               onClick={() => setShowDeleteModal(false)}
               disabled={isDeleting}
             >
               Cancel
-            </Button>
-            <Button
-              variant="destructive"
+            </AppButton>
+            <AppButton
+              variant="solid"
+              color="negative"
               onClick={handleDelete}
               disabled={isDeleting}
             >
               {isDeleting ? "Deleting..." : "Delete User"}
-            </Button>
+            </AppButton>
           </div>
         </div>
       </Modal>

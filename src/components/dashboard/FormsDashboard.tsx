@@ -6,7 +6,6 @@ import { AlertTriangle } from "lucide-react";
 import { DashboardForm, FormStatus } from "@/lib/types/form";
 import { FormsHeader } from "./FormsHeader";
 import { FormList } from "./FormList";
-import Text from "@/components/ui/Text";
 import { PageContainer, PageHeader, PageContent } from "@/components/layout";
 import { cn } from "@/lib/utils/styleUtils";
 import {
@@ -17,7 +16,8 @@ import {
   ModalDescription,
   ModalFooter,
 } from "@/components/ui/Modal";
-import { Button } from "@/components/ui/Button";
+import { AppText } from "@/design-system/app/AppText";
+import { AppButton } from "@/design-system/app/AppButton";
 import { toast } from "@/components/ui/Toast";
 import { ApiResponse } from "@/lib/types/api";
 import { FormConfig } from "@/lib/types/form";
@@ -159,10 +159,10 @@ export function FormsDashboard({ forms }: FormsDashboardProps) {
         >
           {forms.length === 0 ? (
             <div className="empty-content flex-col gap-2">
-              <Text variant="h4">No forms yet</Text>
-              <Text variant="p" className="text-sm text-muted-foreground">
+              <AppText variant="h4">No forms yet</AppText>
+              <AppText variant="p" className="text-sm text-app-fg-muted">
                 Create your first form to get started.
-              </Text>
+              </AppText>
             </div>
           ) : (
             <FormList
@@ -193,22 +193,24 @@ export function FormsDashboard({ forms }: FormsDashboardProps) {
             </div>
           </ModalHeader>
           <ModalFooter>
-            <Button
+            <AppButton
               variant="outline"
+              color="secondary"
               onClick={() => setFormToDelete(null)}
               disabled={isSubmitting}
             >
               Cancel
-            </Button>
-            <Button
-              variant="destructive"
+            </AppButton>
+            <AppButton
+              variant="solid"
+              color="negative"
               onClick={() => {
                 handleDelete();
               }}
               disabled={isSubmitting}
             >
               Delete permanently
-            </Button>
+            </AppButton>
           </ModalFooter>
         </ModalContent>
       </Modal>

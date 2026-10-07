@@ -5,7 +5,7 @@
   }
 
   .app-header {
-    @apply shrink-0 border-b border-app-header-border bg-app-header p-4 text-app-header-fg;
+    @apply shrink-0 border-b border-app-header-border bg-app-header px-4 py-2 text-app-header-fg;
   }
 
   .app-content {
@@ -21,7 +21,7 @@
   }
 
   .sidebar {
-    @apply h-full shrink-0 overflow-y-auto border border-app-sidebar-border bg-app-sidebar text-app-sidebar-fg;
+    @apply h-full shrink-0 overflow-y-auto border-app-sidebar-border bg-app-sidebar text-app-sidebar-fg;
   }
 
   .sidebar--left {

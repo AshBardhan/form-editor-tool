@@ -277,7 +277,7 @@ export const FormBuilderContent = (): JSX.Element => {
           >
             <FormThemeContainer
               theme={form.theme}
-              className="min-w-md px-6 py-10 justify-start"
+              className="min-w-md min-h-auto h-full px-6 py-10 justify-start"
             >
               <PageContainer>
                 {showPublishedSubmissionsWarning && (

@@ -1,5 +1,5 @@
 import { notFound } from "next/navigation";
-import Text from "@/components/ui/Text";
+import { AppText } from "@/design-system/app/AppText";
 import { Card } from "@/components/ui/Card";
 import { SubmissionsList } from "@/components/submissions/SubmissionsList";
 import { getFormSubmissionsListData } from "@/lib/queries/forms";
@@ -20,10 +20,10 @@ export default async function SubmissionsPage({
     <>
       {data.submissions.length === 0 ? (
         <Card className="text-center py-20">
-          <Text variant="h5">No Data Recorded</Text>
-          <Text className="text-muted-foreground">
+          <AppText variant="h5">No Data Recorded</AppText>
+          <AppText variant="p" className="text-sm text-app-fg-muted">
             Share your form to start collecting submissions.
-          </Text>
+          </AppText>
         </Card>
       ) : (
         <SubmissionsList

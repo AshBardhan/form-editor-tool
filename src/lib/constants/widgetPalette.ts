@@ -20,7 +20,7 @@ import {
 export const widgetPalette: WidgetCategory[] = [
   {
     category: "text-widget",
-    label: "Text",
+    label: "Text and Spacing",
     items: [
       { type: "heading", label: "Heading", icon: HeadingIcon },
       { type: "paragraph", label: "Paragraph", icon: ALargeSmallIcon },
@@ -29,7 +29,7 @@ export const widgetPalette: WidgetCategory[] = [
   },
   {
     category: "input-widget",
-    label: "Input Fields",
+    label: "Fields",
     items: [
       { type: "text", label: "Short Text", icon: TypeIcon },
       { type: "textarea", label: "Long Text", icon: AlignLeftIcon },

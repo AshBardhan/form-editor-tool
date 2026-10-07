@@ -15,8 +15,8 @@ import {
   DropdownMenuItem,
   DropdownMenuSeparator,
 } from "@/components/ui/DropdownMenu";
-import Text from "@/components/ui/Text";
 import { Badge } from "@/components/ui/Badge";
+import { AppText } from "@/design-system/app/AppText";
 
 interface UserMenuProps {
   user: {
@@ -44,10 +44,12 @@ export function UserMenu({ user }: UserMenuProps) {
       <DropdownMenuContent align="end" className="w-64">
         {/* User Info */}
         <div className="px-2 py-3 border-b border-gray-100">
-          <Text className="font-medium text-gray-900 truncate">
+          <AppText variant="h6" className="truncate">
             {user.name || "User"}
-          </Text>
-          <Text className="text-xs text-gray-500 truncate">{user.email}</Text>
+          </AppText>
+          <AppText variant="p" className="text-sm text-app-fg-muted truncate">
+            {user.email}
+          </AppText>
           <Badge label={user.role} variant="info" size="sm" className="mt-1" />
         </div>
 

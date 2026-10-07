@@ -303,7 +303,7 @@ export const ConfigurationPanel = memo(function ConfigurationPanel({
         exit="exit"
         variants={visibleContentVariants}
       >
-        <div className="p-4 border-b border-b-app-border-subtle flex items-center justify-between gap-2">
+        <div className="p-4 border-b border-b-app-sidebar-border flex items-center justify-between gap-2">
           <AppText
             variant="h3"
             className="flex items-center gap-2 text-sm font-semibold sm:text-sm 2xl:text-sm"
@@ -344,133 +344,129 @@ export const ConfigurationPanel = memo(function ConfigurationPanel({
         {selected ? (
           <>
             {/* Block Configuration Panel */}
-            <div className="p-4 flex flex-col gap-4">
+            <div className="p-4 flex flex-col gap-4 border-b border-b-app-sidebar-border">
               {visibleProps.map(renderPropConfig)}
             </div>
           </>
         ) : (
           <>
             {/* Form Configuration Panel */}
-            <div className="p-4 flex flex-col gap-6">
-              <div className="flex flex-col gap-4 ">
-                <AppText
-                  variant="h4"
-                  className="text-sm font-semibold sm:text-sm 2xl:text-sm"
+            <div className="flex flex-col gap-4 p-4 border-b border-b-app-sidebar-border">
+              <AppText
+                variant="h4"
+                className="text-sm font-semibold sm:text-sm 2xl:text-sm"
+              >
+                General
+              </AppText>
+
+              <div className="flex flex-col gap-2">
+                <AppLabel
+                  htmlFor="form-title"
+                  size="sm"
+                  className="font-semibold"
                 >
-                  General
-                </AppText>
-
-                <div className="flex flex-col gap-2">
-                  <AppLabel
-                    htmlFor="form-title"
-                    size="sm"
-                    className="font-semibold"
-                  >
-                    Title
-                  </AppLabel>
-                  <InputConfig
-                    id="form-title"
-                    value={formTitle}
-                    onChange={(value) =>
-                      updateFormConfig("title", String(value))
-                    }
-                  />
-                </div>
-
-                <div className="flex flex-col gap-2">
-                  <AppLabel
-                    htmlFor="form-theme"
-                    size="sm"
-                    className="font-semibold"
-                  >
-                    Theme
-                  </AppLabel>
-                  <SelectConfig
-                    id="form-theme"
-                    value={formTheme}
-                    options={Object.entries(THEME_OPTIONS).map(
-                      ([value, label]) => ({ value, label }),
-                    )}
-                    onChange={onThemeChange}
-                  />
-                </div>
-              </div>
-
-              <div className="flex flex-col gap-4 ">
-                <AppText
-                  variant="h4"
-                  className="text-sm font-semibold sm:text-sm 2xl:text-sm"
-                >
-                  Action Group
-                </AppText>
-
-                <div className="flex flex-col gap-2">
-                  <AppLabel
-                    htmlFor="form-actions-submit-label"
-                    size="sm"
-                    className="font-semibold"
-                  >
-                    Submit Label
-                  </AppLabel>
-                  <InputConfig
-                    id="form-actions-submit-label"
-                    value={formActions.submitLabel}
-                    onChange={(value) =>
-                      updateFormActions("submitLabel", String(value))
-                    }
-                  />
-                </div>
-
-                <div className="flex flex-col gap-2">
-                  <AppLabel
-                    htmlFor="form-actions-reset-label"
-                    size="sm"
-                    className="font-semibold"
-                  >
-                    Reset Label
-                  </AppLabel>
-                  <InputConfig
-                    id="form-actions-reset-label"
-                    value={formActions.resetLabel}
-                    disabled={formActions.hideReset}
-                    onChange={(value) =>
-                      updateFormActions("resetLabel", String(value))
-                    }
-                  />
-                </div>
-
-                <div className="flex flex-col gap-2">
-                  <AppLabel
-                    htmlFor="form-actions-alignment"
-                    size="sm"
-                    className="font-semibold"
-                  >
-                    Alignment
-                  </AppLabel>
-                  <SelectConfig
-                    id="form-actions-alignment"
-                    value={formActions.alignment}
-                    options={BUTTON_ALIGNMENT_OPTIONS}
-                    onChange={(value) =>
-                      updateFormActions("alignment", value as ButtonAlignment)
-                    }
-                  />
-                </div>
-
-                <CheckboxConfig
-                  id="form-actions-reverse"
-                  label="Reverse order"
-                  value={formActions.reverse}
-                  onChange={(value) => updateFormActions("reverse", value)}
-                />
-
-                <CheckboxConfig
-                  id="form-actions-hide-reset"
-                  label="Hide reset button"
-                  value={formActions.hideReset}
-                  onChange={(value) => updateFormActions("hideReset", value)}
+                  Title
+                </AppLabel>
+                <InputConfig
+                  id="form-title"
+                  value={formTitle}
+                  onChange={(value) => updateFormConfig("title", String(value))}
                 />
               </div>
+
+              <div className="flex flex-col gap-2">
+                <AppLabel
+                  htmlFor="form-theme"
+                  size="sm"
+                  className="font-semibold"
+                >
+                  Theme
+                </AppLabel>
+                <SelectConfig
+                  id="form-theme"
+                  value={formTheme}
+                  options={Object.entries(THEME_OPTIONS).map(
+                    ([value, label]) => ({ value, label }),
+                  )}
+                  onChange={onThemeChange}
+                />
+              </div>
+            </div>
+
+            <div className="flex flex-col gap-4 p-4 border-b border-b-app-sidebar-border">
+              <AppText
+                variant="h4"
+                className="text-sm font-semibold sm:text-sm 2xl:text-sm"
+              >
+                Action Group
+              </AppText>
+
+              <div className="flex flex-col gap-2">
+                <AppLabel
+                  htmlFor="form-actions-submit-label"
+                  size="sm"
+                  className="font-semibold"
+                >
+                  Submit Label
+                </AppLabel>
+                <InputConfig
+                  id="form-actions-submit-label"
+                  value={formActions.submitLabel}
+                  onChange={(value) =>
+                    updateFormActions("submitLabel", String(value))
+                  }
+                />
+              </div>
+
+              <div className="flex flex-col gap-2">
+                <AppLabel
+                  htmlFor="form-actions-reset-label"
+                  size="sm"
+                  className="font-semibold"
+                >
+                  Reset Label
+                </AppLabel>
+                <InputConfig
+                  id="form-actions-reset-label"
+                  value={formActions.resetLabel}
+                  disabled={formActions.hideReset}
+                  onChange={(value) =>
+                    updateFormActions("resetLabel", String(value))
+                  }
+                />
+              </div>
+
+              <div className="flex flex-col gap-2">
+                <AppLabel
+                  htmlFor="form-actions-alignment"
+                  size="sm"
+                  className="font-semibold"
+                >
+                  Alignment
+                </AppLabel>
+                <SelectConfig
+                  id="form-actions-alignment"
+                  value={formActions.alignment}
+                  options={BUTTON_ALIGNMENT_OPTIONS}
+                  onChange={(value) =>
+                    updateFormActions("alignment", value as ButtonAlignment)
+                  }
+                />
+              </div>
+
+              <CheckboxConfig
+                id="form-actions-reverse"
+                label="Reverse order"
+                value={formActions.reverse}
+                onChange={(value) => updateFormActions("reverse", value)}
+              />
+
+              <CheckboxConfig
+                id="form-actions-hide-reset"
+                label="Hide reset button"
+                value={formActions.hideReset}
+                onChange={(value) => updateFormActions("hideReset", value)}
+              />
             </div>
           </>
         )}

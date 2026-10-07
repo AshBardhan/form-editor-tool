@@ -2,9 +2,9 @@
 
 import { useState } from "react";
 import { FileText, Plus, Search } from "lucide-react";
-import Text from "@/components/ui/Text";
-import { Button } from "@/components/ui/Button";
-import { Input } from "@/components/ui/Input";
+import { AppText } from "@/design-system/app/AppText";
+import { AppButton } from "@/design-system/app/AppButton";
+import { AppInput } from "@/design-system/app/AppInput";
 import {
   Select,
   SelectTrigger,
@@ -78,14 +78,14 @@ export function FormsHeader({ filter = {} }: FormsHeaderProps) {
     <>
       <div className="flex items-center justify-between">
         <div className="flex items-center gap-3">
-          <div className="p-3 bg-primary/10 rounded-lg">
-            <FileText className="size-6 sm:size-10 text-primary" />
+          <div className="p-3 bg-app-brand-subtle rounded-lg">
+            <FileText className="size-6 sm:size-10 text-app-brand" />
           </div>
           <div>
-            <Text variant="h1" className="mb-0.5 sm:mb-1">
+            <AppText variant="h1" className="mb-0.5 sm:mb-1">
               FormKit
-            </Text>
-            <Text variant="p">Create and manage your forms</Text>
+            </AppText>
+            <AppText variant="p">Create and manage your forms</AppText>
           </div>
         </div>
 
@@ -94,7 +94,7 @@ export function FormsHeader({ filter = {} }: FormsHeaderProps) {
             <>
               <div className="relative flex-1 max-w-md">
                 <Search className="absolute left-3 top-1/2 -translate-y-1/2 size-4 text-muted-foreground" />
-                <Input
+                <AppInput
                   type="text"
                   placeholder="Search forms..."
                   value={filter.search}
@@ -130,7 +130,9 @@ export function FormsHeader({ filter = {} }: FormsHeaderProps) {
               </Select>
             </>
           )}
-          <Button
+          <AppButton
+            variant="solid"
+            color="primary"
             onClick={handleCreateNewForm}
             size="lg"
             className="gap-2"
@@ -138,7 +140,7 @@ export function FormsHeader({ filter = {} }: FormsHeaderProps) {
           >
             <Plus className="size-5" />
             {isCreating ? "Creating..." : "Create Form"}
-          </Button>
+          </AppButton>
         </div>
       </div>
     </>

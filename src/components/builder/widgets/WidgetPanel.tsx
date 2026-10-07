@@ -82,7 +82,7 @@ export const WidgetPanel = memo(function WidgetPanel(): JSX.Element {
   return (
     <>
       {/* Sidebar Header */}
-      <div className="p-4 flex flex-col gap-4 border-b border-b-[#2d2d2d]">
+      <div className="p-4 flex flex-col gap-4 border-b border-b-app-sidebar-border">
         <AppText
           variant="h2"
           className="text-sm font-semibold flex items-center gap-2 sm:text-sm 2xl:text-sm"
@@ -106,7 +106,7 @@ export const WidgetPanel = memo(function WidgetPanel(): JSX.Element {
 
       {/* Filtered Results of Ungrouped Widgets */}
       {isSearching ? (
-        <div className="px-4 py-3">
+        <div className="p-4">
           {filteredComponents.length > 0 ? (
             <div className="grid grid-cols-2 gap-3">
               {filteredComponents.map((widget) => (
@@ -132,7 +132,7 @@ export const WidgetPanel = memo(function WidgetPanel(): JSX.Element {
               <div
                 key={group.category}
                 data-slot="component-category"
-                className="border-b border-b-[#2d2d2d] px-4 py-3 flex flex-col gap-3"
+                className="border-b border-b-app-sidebar-border p-4 flex flex-col gap-3"
               >
                 <div className="flex items-center justify-between w-full">
                   <AppText

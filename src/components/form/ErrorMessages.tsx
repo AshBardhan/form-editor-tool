@@ -1,4 +1,4 @@
-import Text from "@/components/ui/Text";
+import { AppText } from "@/design-system/app/AppText";
 
 /**
  * Props for the ErrorMessages component
@@ -27,13 +27,13 @@ export const ErrorMessages = ({ errors }: ErrorMessagesProps) => {
   return (
     <div className="space-y-1">
       {errors.map((error, index) => (
-        <Text
+        <AppText
           key={index}
-          insideContainer={true}
-          className="text-xs @sm:text-xs @5xl:text-sm text-red-600 dark:text-red-400"
+          variant="p"
+          className="text-xs text-app-fg-negative"
         >
           {error}
-        </Text>
+        </AppText>
       ))}
     </div>
   );

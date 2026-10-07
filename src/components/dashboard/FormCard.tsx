@@ -4,10 +4,10 @@ import { Archive, FileUp, MoreVertical, Trash2 } from "lucide-react";
 import { DashboardForm, FormStatus } from "@/lib/types/form";
 import { Card, CardContent } from "@/components/ui/Card";
 import Link from "next/link";
-import Text from "@/components/ui/Text";
 import Metric from "@/components/ui/Metric";
 import { Badge } from "@/components/ui/Badge";
-import { Button } from "@/components/ui/Button";
+import { AppText } from "@/design-system/app/AppText";
+import { AppButton } from "@/design-system/app/AppButton";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -45,12 +45,12 @@ export function FormCard({
         <CardContent className="px-6 space-y-2">
           <div className="flex items-center justify-between gap-3">
             <div className="flex-1 min-w-0 flex gap-3">
-              <Text
+              <AppText
                 variant="h4"
-                className="truncate group-hover:text-primary transition-colors"
+                className="truncate group-hover:text-app-brand transition-colors"
               >
                 {form.title}
-              </Text>
+              </AppText>
 
               <Badge
                 label={statusLabel}
@@ -69,8 +69,9 @@ export function FormCard({
             >
               <DropdownMenu>
                 <DropdownMenuTrigger asChild>
-                  <Button
+                  <AppButton
                     variant="ghost"
+                    color="secondary"
                     size="sm"
                     disabled={isSubmitting}
                     className="h-6 w-6 p-0"
@@ -81,7 +82,7 @@ export function FormCard({
                   >
                     <MoreVertical className="size-4" />
                     <span className="sr-only">Open form actions</span>
-                  </Button>
+                  </AppButton>
                 </DropdownMenuTrigger>
                 <DropdownMenuContent align="end">
                   {/* Publish option: shown in draft and archived forms */}

@@ -3,7 +3,7 @@
 import { useRouter } from "next/navigation";
 import { useTransition } from "react";
 import { RefreshCwIcon } from "lucide-react";
-import { Button } from "@/components/ui/Button";
+import { AppButton } from "@/design-system/app/AppButton";
 
 interface RefreshPageButtonProps {
   label: string;
@@ -20,15 +20,15 @@ export function RefreshPageButton({ label }: RefreshPageButtonProps) {
   };
 
   return (
-    <Button
+    <AppButton
       variant="ghost"
-      size="icon"
+      color="secondary"
       onClick={handleRefresh}
       disabled={isPending}
       aria-label={label}
       title={label}
     >
       <RefreshCwIcon className={isPending ? "animate-spin" : ""} />
-    </Button>
+    </AppButton>
   );
 }

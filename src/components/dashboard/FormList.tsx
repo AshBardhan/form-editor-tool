@@ -2,7 +2,7 @@
 
 import { DashboardForm, FormStatus } from "@/lib/types/form";
 import { FormCard } from "./FormCard";
-import Text from "@/components/ui/Text";
+import { AppText } from "@/design-system/app/AppText";
 
 interface FormListProps {
   forms: DashboardForm[];
@@ -28,10 +28,10 @@ export function FormList({
   if (!forms || forms.length === 0) {
     return (
       <div className="empty-content flex-col gap-2">
-        <Text variant="h4">No forms found</Text>
-        <Text variant="p" className="text-sm text-muted-foreground">
+        <AppText variant="h4">No forms found</AppText>
+        <AppText variant="p" className="text-sm text-app-fg-muted">
           Try adjusting your search or filter to find what you're looking for.
-        </Text>
+        </AppText>
       </div>
     );
   }

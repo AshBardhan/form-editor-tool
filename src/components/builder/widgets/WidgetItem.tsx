@@ -34,14 +34,14 @@ export const WidgetItem = memo(function WidgetItem({
       data-slot="widget-item"
       className={cn(
         "p-2 rounded-md flex items-center gap-2 cursor-move",
-        "border border-[#2d2d2d] bg-[#1e1e1e] text-white",
-        "hover:bg-[#0f0f0f]",
-        "focus-visible:border-white focus-visible:bg-[#0f0f0f] focus-visible:shadow-none! focus-visible:outline-none!",
+        "border border-app-border-subtle bg-app-surface text-app-sidebar-fg",
+        "hover:bg-app-surface-muted hover:border-app-border-strong",
+        "focus-visible:border-app-border-strong focus-visible:bg-app-border-strong focus-visible:shadow-none! focus-visible:outline-none!",
         "transition-all",
       )}
     >
       {Icon && (
-        <div className="p-1 border border-[#2d2d2d] rounded inline-flex">
+        <div className="p-1 border border-app-sidebar-border rounded inline-flex">
           <Icon size={12} />
         </div>
       )}

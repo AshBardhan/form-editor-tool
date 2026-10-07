@@ -3,7 +3,6 @@
 import { useState } from "react";
 import { useRouter, usePathname } from "next/navigation";
 import { Badge } from "@/components/ui/Badge";
-import { Button } from "@/components/ui/Button";
 import { NavigationTabs } from "@/components/ui/NavigationTabs";
 import { toast } from "@/components/ui/Toast";
 import { ApiResponse } from "@/lib/types/api";
@@ -35,7 +34,8 @@ import {
   MoreVertical,
   Trash2,
 } from "lucide-react";
-import Text from "@/components/ui/Text";
+import { AppText } from "@/design-system/app/AppText";
+import { AppButton } from "@/design-system/app/AppButton";
 import { formStatusLabel, formStatusVariant } from "@/lib/constants/form";
 
 interface FormHeaderProps {
@@ -197,22 +197,25 @@ export function FormHeader({ form }: FormHeaderProps) {
     <>
       <div className="flex items-start justify-between gap-4">
         <div className="flex items-center gap-3">
-          <Text variant="h1">{form.title}</Text>
+          <AppText variant="h1">{form.title}</AppText>
           <Badge label={statusLabel} variant={statusVariant} size="sm" />
         </div>
 
         <div className="flex items-center gap-4">
           {isBuilderPage && (
-            <Button
-              variant="secondary"
+            <AppButton
+              variant="outline"
+              color="secondary"
               onClick={handleOpenPreview}
               disabled={isSubmitting}
             >
               <Eye className="size-4" />
               Preview
-            </Button>
+            </AppButton>
           )}
-          <Button
+          <AppButton
+            variant="solid"
+            color="primary"
             onClick={handleAccess}
             disabled={isSubmitting || form.status !== "published"}
             title={
@@ -223,14 +226,19 @@ export function FormHeader({ form }: FormHeaderProps) {
           >
             <ExternalLink className="size-4" />
             Access
-          </Button>
+          </AppButton>
 
           <DropdownMenu>
             <DropdownMenuTrigger asChild>
-              <Button variant="ghost" size="sm" disabled={isSubmitting}>
+              <AppButton
+                variant="ghost"
+                color="secondary"
+                size="sm"
+                disabled={isSubmitting}
+              >
                 <MoreVertical className="size-4" />
                 <span className="sr-only">Open form actions</span>
-              </Button>
+              </AppButton>
             </DropdownMenuTrigger>
             <DropdownMenuContent align="end">
               {/* Publish option: shown in draft and archived forms */}
@@ -311,15 +319,17 @@ export function FormHeader({ form }: FormHeaderProps) {
             </div>
           </ModalHeader>
           <ModalFooter>
-            <Button
+            <AppButton
               variant="outline"
+              color="secondary"
               onClick={() => setIsDeleteConfirmOpen(false)}
               disabled={isSubmitting}
             >
               Keep form
-            </Button>
-            <Button
-              variant="destructive"
+            </AppButton>
+            <AppButton
+              variant="solid"
+              color="negative"
               onClick={() => {
                 setIsDeleteConfirmOpen(false);
                 handleDelete();
@@ -327,7 +337,7 @@ export function FormHeader({ form }: FormHeaderProps) {
               disabled={isSubmitting}
             >
               Delete permanently
-            </Button>
+            </AppButton>
           </ModalFooter>
         </ModalContent>
       </Modal>
@@ -351,15 +361,17 @@ export function FormHeader({ form }: FormHeaderProps) {
             </div>
           </ModalHeader>
           <ModalFooter>
-            <Button
+            <AppButton
               variant="outline"
+              color="secondary"
               onClick={() => setIsClearReportConfirmOpen(false)}
               disabled={isSubmitting}
             >
               Cancel
-            </Button>
-            <Button
-              variant="destructive"
+            </AppButton>
+            <AppButton
+              variant="solid"
+              color="negative"
               onClick={() => {
                 setIsClearReportConfirmOpen(false);
                 handleClearReport();
@@ -367,7 +379,7 @@ export function FormHeader({ form }: FormHeaderProps) {
               disabled={isSubmitting}
             >
               Clear submissions
-            </Button>
+            </AppButton>
           </ModalFooter>
         </ModalContent>
       </Modal>

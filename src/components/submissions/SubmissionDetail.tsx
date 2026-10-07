@@ -1,4 +1,4 @@
-import Text from "@/components/ui/Text";
+import { AppText } from "@/design-system/app/AppText";
 import { type FormBlock } from "@/lib/types/form";
 import { type FormSubmissionListItem } from "@/lib/types/analytics";
 import { getFieldBlockLabel } from "@/lib/utils/formUtils";
@@ -34,9 +34,9 @@ export function SubmissionDetail({
 
   if (fieldBlocks.length === 0) {
     return (
-      <Text className="text-muted-foreground">
+      <AppText variant="p" className="text-sm text-app-fg-muted">
         No input fields on this form.
-      </Text>
+      </AppText>
     );
   }
 
@@ -52,14 +52,15 @@ export function SubmissionDetail({
             key={block.id}
             className={`space-y-2 ${!isLast && "border-b border-border pb-4"}`}
           >
-            <Text variant="h5">{getFieldBlockLabel(block)}</Text>
-            <Text
+            <AppText variant="h5">{getFieldBlockLabel(block)}</AppText>
+            <AppText
+              variant="p"
               className={
-                isSkipped ? "text-muted-foreground" : "text-foreground"
+                isSkipped ? "text-app-fg-muted" : "text-app-fg-primary"
               }
             >
               {formatResponseValue(value)}
-            </Text>
+            </AppText>
           </div>
         );
       })}

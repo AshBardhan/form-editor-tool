@@ -3,8 +3,9 @@
 import { useState, FormEvent } from "react";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
-import { Button } from "@/components/ui/Button";
 import { FormField } from "@/components/ui/FormField";
+import { AppText } from "@/design-system/app/AppText";
+import { AppButton } from "@/design-system/app/AppButton";
 
 export function SignUpForm() {
   const router = useRouter();
@@ -63,8 +64,10 @@ export function SignUpForm() {
   return (
     <form onSubmit={handleSubmit} className="space-y-6">
       {error && (
-        <div className="bg-red-50 border border-red-200 text-red-700 px-4 py-3 rounded-lg text-sm">
-          {error}
+        <div className="bg-app-surface-negative border border-app-border-negative px-4 py-3 rounded-lg">
+          <AppText variant="p" className="text-sm text-app-fg-negative">
+            {error}
+          </AppText>
         </div>
       )}
 
@@ -110,17 +113,22 @@ export function SignUpForm() {
         autoComplete="new-password"
       />
 
-      <Button type="submit" className="w-full" disabled={isLoading}>
+      <AppButton
+        variant="solid"
+        color="primary"
+        type="submit"
+        className="w-full"
+        disabled={isLoading}
+      >
         {isLoading ? "Creating account..." : "Sign Up"}
-      </Button>
+      </AppButton>
 
-      <div className="text-center text-sm text-gray-600">
+      <div className="text-center text-sm text-app-fg-muted">
         Already have an account?{" "}
-        <Link
-          href="/signin"
-          className="text-blue-600 hover:underline font-medium"
-        >
-          Sign in
+        <Link href="/signin">
+          <AppButton variant="link" color="secondary">
+            Sign in
+          </AppButton>
         </Link>
       </div>
     </form>

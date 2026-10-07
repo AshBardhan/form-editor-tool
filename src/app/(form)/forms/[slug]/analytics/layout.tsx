@@ -1,7 +1,7 @@
 import { PageContainer } from "@/components/layout";
 import { NavigationTabs } from "@/components/ui/NavigationTabs";
 import { RefreshPageButton } from "@/components/ui/RefreshPageButton";
-import Text from "@/components/ui/Text";
+import { AppText } from "@/design-system/app/AppText";
 
 interface FormAnalyticsLayoutProps {
   children: React.ReactNode;
@@ -18,9 +18,9 @@ export default async function FormAnalyticsLayout({
     <PageContainer className="py-8">
       <div className="space-y-6">
         <div className="flex items-center justify-between">
-          <Text variant="h3" className="text-foreground">
+          <AppText variant="h3" className="text-app-fg-primary">
             Analytics
-          </Text>
+          </AppText>
           <RefreshPageButton label="Refresh analytics" />
         </div>
         <NavigationTabs

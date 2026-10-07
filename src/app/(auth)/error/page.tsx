@@ -9,7 +9,7 @@ import { Suspense } from "react";
 import { useSearchParams } from "next/navigation";
 import Link from "next/link";
 import { AuthFormCard } from "@/components/auth/AuthFormCard";
-import { Button } from "@/components/ui/Button";
+import { AppButton } from "@/design-system/app/AppButton";
 
 function AuthErrorContent() {
   const searchParams = useSearchParams();
@@ -29,9 +29,11 @@ function AuthErrorContent() {
 
   return (
     <AuthFormCard title="Authentication error" description={errorMessage}>
-      <Button asChild className="w-full">
-        <Link href="/signin">Try again</Link>
-      </Button>
+      <Link href="/signin">
+        <AppButton variant="outline" color="secondary" className="w-full">
+          Try again
+        </AppButton>
+      </Link>
     </AuthFormCard>
   );
 }

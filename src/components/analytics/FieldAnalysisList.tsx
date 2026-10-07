@@ -2,7 +2,7 @@
 
 import { useMemo } from "react";
 import { Card, CardContent } from "@/components/ui/Card";
-import Text from "@/components/ui/Text";
+import { AppText } from "@/design-system/app/AppText";
 import { Badge } from "@/components/ui/Badge";
 import Metric from "@/components/ui/Metric";
 import { type FormBlock, type FormBlockType } from "@/lib/types/form";
@@ -165,9 +165,9 @@ export function FieldAnalysisList({
       <Card>
         <CardContent className="space-y-4 px-6">
           {fieldAnalysis.length === 0 ? (
-            <Text className="text-muted-foreground">
+            <AppText variant="p" className="text-sm text-app-fg-muted">
               No input fields on this form.
-            </Text>
+            </AppText>
           ) : (
             fieldAnalysis.map((field, index, arr) => {
               const isLast = index === arr.length - 1;
@@ -179,9 +179,9 @@ export function FieldAnalysisList({
                   key={field.blockId}
                 >
                   <div className="space-y-2">
-                    <Text variant="h4" className="text-foreground">
+                    <AppText variant="h4" className="text-app-fg-primary">
                       {field.label}
-                    </Text>
+                    </AppText>
                     <div className="flex flex-wrap gap-2 items-center">
                       <Badge
                         label={field.blockType}
@@ -221,12 +221,12 @@ export function FieldAnalysisList({
                     </div>
 
                     <div className="space-y-3">
-                      <Text
+                      <AppText
                         variant="p"
-                        className="text-sm font-medium text-foreground"
+                        className="text-sm font-medium text-app-fg-primary"
                       >
                         Responses
-                      </Text>
+                      </AppText>
 
                       {isChoiceBasedFieldBlock(analysis.blockType) && (
                         <div className="space-y-3 p-3 bg-muted/30 rounded border border-border">
@@ -234,9 +234,12 @@ export function FieldAnalysisList({
                             (item, itemIndex) => (
                               <div key={itemIndex} className="space-y-1">
                                 <div className="flex justify-between items-center">
-                                  <Text className="font-medium text-foreground text-sm">
+                                  <AppText
+                                    variant="p"
+                                    className="text-sm font-medium text-app-fg-primary"
+                                  >
                                     {item.label}
-                                  </Text>
+                                  </AppText>
                                   <Badge
                                     label={`${item.count} (${item.percentage}%)`}
                                     variant="neutral"
@@ -265,9 +268,12 @@ export function FieldAnalysisList({
                                     key={valueIndex}
                                     className="py-1 px-2 bg-white even:bg-gray-100"
                                   >
-                                    <Text className="text-xs text-foreground">
+                                    <AppText
+                                      variant="p"
+                                      className="text-xs text-app-fg-primary"
+                                    >
                                       {formatValue(value)}
-                                    </Text>
+                                    </AppText>
                                   </li>
                                 ),
                               )}

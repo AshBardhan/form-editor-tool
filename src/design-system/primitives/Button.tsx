@@ -1,5 +1,6 @@
 "use client";
 
+import { ComponentProps } from "react";
 import { Button as BaseButton } from "@base-ui/react/button";
 
 /**
@@ -14,7 +15,7 @@ import { Button as BaseButton } from "@base-ui/react/button";
 export function Button({
   disabled,
   ...props
-}: React.ButtonHTMLAttributes<HTMLButtonElement>) {
+}: ComponentProps<typeof BaseButton>) {
   return (
     <BaseButton
       disabled={disabled}

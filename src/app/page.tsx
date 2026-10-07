@@ -4,7 +4,7 @@
  */
 
 import Link from "next/link";
-import { Button } from "@/components/ui/Button";
+import { AppButton } from "@/design-system/app/AppButton";
 
 const highlights = [
   {
@@ -29,10 +29,12 @@ export default function Home() {
     <div className="min-h-screen overflow-y-auto bg-linear-to-br from-blue-50 to-indigo-100">
       <header className="flex items-center justify-between px-6 py-6 sm:px-10">
         <p className="text-xl font-bold text-gray-900">FormKit</p>
-        <Button asChild variant="outline">
-          {/* Header CTA */}
-          <Link href="/signin">Sign in</Link>
-        </Button>
+
+        <Link href="/signin">
+          <AppButton variant="outline" color="secondary">
+            Sign in
+          </AppButton>
+        </Link>
       </header>
 
       <main className="mx-auto flex max-w-5xl flex-col items-center px-6 pb-20 pt-10 text-center sm:px-10 sm:pt-16">
@@ -48,10 +50,11 @@ export default function Home() {
           responses start coming in.
         </p>
         <div className="mt-8">
-          <Button asChild size="lg">
-            {/* Primary CTA */}
-            <Link href="/signin">Get started</Link>
-          </Button>
+          <Link href="/signin">
+            <AppButton variant="solid" color="primary" size="lg">
+              Get started
+            </AppButton>
+          </Link>
         </div>
 
         <ul className="mt-16 grid w-full gap-4 text-left sm:grid-cols-3">
