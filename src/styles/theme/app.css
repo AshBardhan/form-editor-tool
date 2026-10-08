@@ -8,6 +8,8 @@
     --app-fg: #1e293b;
     --app-fg-muted: #64748b;
     --app-fg-heading: #0f172a;
+    --app-metric-label: #64748b;
+    --app-metric-value: #0f172a;
     --app-fg-on-brand: #ffffff;
     --app-brand: #1769aa;
     --app-brand-hover: #0f548c;
@@ -46,6 +48,8 @@
     --app-fg: #e5e7eb;
     --app-fg-muted: #a1aab8;
     --app-fg-heading: #f8fafc;
+    --app-metric-label: #a1aab8;
+    --app-metric-value: #f8fafc;
     --app-fg-on-brand: #0b1120;
     --app-brand: #60a5fa;
     --app-brand-hover: #93c5fd;
@@ -82,6 +86,8 @@
   --color-app-fg: var(--app-fg);
   --color-app-fg-muted: var(--app-fg-muted);
   --color-app-fg-heading: var(--app-fg-heading);
+  --color-app-metric-label: var(--app-metric-label);
+  --color-app-metric-value: var(--app-metric-value);
   --color-app-fg-on-brand: var(--app-fg-on-brand);
   --color-app-brand: var(--app-brand);
   --color-app-brand-hover: var(--app-brand-hover);

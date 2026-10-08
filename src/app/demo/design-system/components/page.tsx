@@ -14,6 +14,9 @@ import { AppCheckbox } from "@/design-system/app/AppCheckbox";
 import { AppCheckboxGroup } from "@/design-system/app/AppCheckboxGroup";
 import { AppRadioGroup } from "@/design-system/app/AppRadioGroup";
 import { AppSwitch } from "@/design-system/app/AppSwitch";
+import { AppBadge } from "@/design-system/app/AppBadge";
+import { AppMetric } from "@/design-system/app/AppMetric";
+import { AppCard } from "@/design-system/app/AppCard";
 import { FormInput } from "@/design-system/form/FormInput";
 import { FormTextArea } from "@/design-system/form/FormTextArea";
 import { FormSelect } from "@/design-system/form/FormSelect";
@@ -638,6 +641,152 @@ export default function ComponentsDemo() {
                             />
                           ))}
                         </div>
+                      </div>
+                    </div>
+                  </div>
+
+                  {/* Badge Component */}
+                  <div>
+                    <h3 className="text-lg font-semibold text-app-fg-heading mb-1">
+                      Badge
+                    </h3>
+                    <p className="text-sm text-app-fg-muted mb-4">
+                      Status pill with variants and sizes
+                    </p>
+                    <div className="flex flex-col gap-6">
+                      <div>
+                        <h4 className="text-sm font-semibold text-app-fg-heading mb-2">
+                          Variants
+                        </h4>
+                        <div className="flex items-center gap-2 flex-wrap">
+                          <AppBadge label="Success" variant="success" />
+                          <AppBadge label="Warning" variant="warning" />
+                          <AppBadge label="Error" variant="error" />
+                          <AppBadge label="Info" variant="info" />
+                          <AppBadge label="Neutral" variant="neutral" />
+                        </div>
+                      </div>
+
+                      <div>
+                        <h4 className="text-sm font-semibold text-app-fg-heading mb-2">
+                          Sizes
+                        </h4>
+                        <div className="flex items-center gap-2 flex-wrap">
+                          <AppBadge label="Small" variant="info" size="sm" />
+                          <AppBadge label="Medium" variant="info" size="md" />
+                          <AppBadge label="Large" variant="info" size="lg" />
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+
+                  {/* Metric Component */}
+                  <div>
+                    <h3 className="text-lg font-semibold text-app-fg-heading mb-1">
+                      Metric
+                    </h3>
+                    <p className="text-sm text-app-fg-muted mb-4">
+                      Label and value pair for dashboard stats
+                    </p>
+                    <div className="flex flex-col gap-6">
+                      <div>
+                        <h4 className="text-sm font-semibold text-app-fg-heading mb-2">
+                          Sizes
+                        </h4>
+                        <div className="flex items-start gap-6 flex-wrap">
+                          <AppMetric label="Views" value={1234} size="sm" />
+                          <AppMetric
+                            label="Submissions"
+                            value={342}
+                            size="md"
+                          />
+                          <AppMetric
+                            label="Conversion"
+                            value="3.2%"
+                            size="lg"
+                          />
+                        </div>
+                      </div>
+
+                      <div>
+                        <h4 className="text-sm font-semibold text-app-fg-heading mb-2">
+                          Direction
+                        </h4>
+                        <div className="flex items-start gap-6 flex-wrap">
+                          <AppMetric
+                            label="Total sales"
+                            value="$125,430"
+                            direction="column"
+                          />
+                          <AppMetric
+                            label="New orders"
+                            value={342}
+                            direction="row"
+                          />
+                        </div>
+                      </div>
+
+                      <div>
+                        <h4 className="text-sm font-semibold text-app-fg-heading mb-2">
+                          Reverse
+                        </h4>
+                        <div className="flex items-start gap-6 flex-wrap">
+                          <AppMetric
+                            label="Active sessions"
+                            value={573}
+                            reverse
+                          />
+                          <AppMetric
+                            label="Success rate"
+                            value="98.5%"
+                            reverse
+                          />
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+
+                  {/* Card Component */}
+                  <div>
+                    <h3 className="text-lg font-semibold text-app-fg-heading mb-1">
+                      Card
+                    </h3>
+                    <p className="text-sm text-app-fg-muted mb-4">
+                      Surface container with optional hover affordance
+                    </p>
+                    <div className="flex flex-col gap-6">
+                      <div>
+                        <h4 className="text-sm font-semibold text-app-fg-heading mb-2">
+                          Default
+                        </h4>
+                        <AppCard className="space-y-2">
+                          <AppText variant="h5">Project Alpha</AppText>
+                          <AppText variant="p" className="text-app-fg-muted">
+                            Static card for grouping related content.
+                          </AppText>
+                        </AppCard>
+                      </div>
+
+                      <div>
+                        <h4 className="text-sm font-semibold text-app-fg-heading mb-2">
+                          Clickable
+                        </h4>
+                        <AppCard clickable className="space-y-2">
+                          <div className="flex items-center justify-between gap-2">
+                            <AppText variant="h5">Published form</AppText>
+                            <AppBadge
+                              label="Published"
+                              variant="success"
+                              size="sm"
+                            />
+                          </div>
+                          <AppMetric
+                            label="Submissions"
+                            value={128}
+                            size="sm"
+                            reverse
+                          />
+                        </AppCard>
                       </div>
                     </div>
                   </div>
