@@ -10,7 +10,6 @@ import { getFieldKey, isFieldBasedBlock } from "@/lib/utils/formUtils";
 import { validateFormBlock } from "@/lib/utils/formValidationUtils";
 import { DeviceList, DeviceType } from "@/lib/constants/device";
 import { toast } from "@/components/ui/Toast";
-import { switchFormTheme } from "@/lib/utils/domUtils";
 import { FormThemeContainer } from "@/design-system/containers/FormThemeContainer";
 
 interface FormPreviewContentProps {
@@ -41,13 +40,6 @@ export const FormPreviewContent = ({
   const currentDeviceMeta = DeviceList.find(
     (device) => device.label === currentDevice,
   );
-
-  /**
-   * Apply theme when component mounts or theme changes
-   */
-  useEffect(() => {
-    switchFormTheme(form.theme);
-  }, [form.theme]);
 
   /**
    * Cleanup form data and errors when component unmounts to prevent stale data on next preview

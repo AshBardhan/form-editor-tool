@@ -14,12 +14,7 @@ export const AppHeader = async ({ className }: AppHeaderProps) => {
   const session = await auth();
 
   return (
-    <header
-      className={cn(
-        "app-header",
-        className,
-      )}
-    >
+    <header className={cn("app-header", className)}>
       <PageContainer className="flex items-center justify-between">
         <Link href="/forms">
           <HomeIcon size={24} />

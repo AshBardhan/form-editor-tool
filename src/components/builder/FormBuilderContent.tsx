@@ -12,9 +12,8 @@ import {
   useSensor,
   useSensors,
 } from "@dnd-kit/core";
-import { JSX, useState, useEffect, useCallback } from "react";
+import { JSX, useState, useCallback } from "react";
 import { hybridKeyboardCoordinates } from "@/lib/utils/keyboardUtils";
-import { switchFormTheme } from "@/lib/utils/domUtils";
 import {
   useFormConfigStore,
   useUIStateStore,
@@ -202,12 +201,6 @@ export const FormBuilderContent = (): JSX.Element => {
       coordinateGetter: hybridKeyboardCoordinates,
     }),
   );
-
-  // Apply theme to form container
-  useEffect(() => {
-    switchFormTheme(form.theme);
-    return () => switchFormTheme("");
-  }, [form.theme]);
 
   return (
     <div className="flex h-full relative">

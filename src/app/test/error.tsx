@@ -53,7 +53,7 @@ export default function Error({
             </details>
 
             <div className="bg-yellow-50 border border-yellow-200 rounded p-3 mb-4">
-              <AppText variant="p" className="m font-medium">
+              <AppText variant="h6" className="mb-2">
                 Common Issues:
               </AppText>
               <ul className="text-sm text-yellow-700 list-disc list-inside space-y-1">

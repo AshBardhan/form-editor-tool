@@ -14,7 +14,6 @@ import {
 } from "@/lib/utils/formUtils";
 import { validateFormBlock } from "@/lib/utils/formValidationUtils";
 import { useFormDataStore } from "@/lib/stores/formDataStore";
-import { switchFormTheme } from "@/lib/utils/domUtils";
 import { sendAnalyticsEvent } from "@/lib/utils/analytics";
 import { isFormDataValid } from "@/lib/utils/formValidationUtils";
 import { FormThemeContainer } from "@/design-system/containers/FormThemeContainer";
@@ -45,7 +44,6 @@ export function PublicFormContent({ form }: PublicFormContentProps) {
     }
     hasTrackedViewRef.current = true;
     sendAnalyticsEvent(form.id, "view");
-    switchFormTheme(form.theme);
 
     return () => {
       setStatus({ type: "editing" });
