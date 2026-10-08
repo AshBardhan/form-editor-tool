@@ -10,6 +10,7 @@ import { useSearchParams } from "next/navigation";
 import Link from "next/link";
 import { AuthFormCard } from "@/components/auth/AuthFormCard";
 import { AppButton } from "@/design-system/app/AppButton";
+import { AppText } from "@/design-system/app/AppText";
 
 function AuthErrorContent() {
   const searchParams = useSearchParams();
@@ -40,7 +41,9 @@ function AuthErrorContent() {
 
 export default function AuthErrorPage() {
   return (
-    <Suspense fallback={<div className="py-4 text-center">Loading...</div>}>
+    <Suspense
+      fallback={<AppText className="py-4 text-center">Loading...</AppText>}
+    >
       <AuthErrorContent />
     </Suspense>
   );

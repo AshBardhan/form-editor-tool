@@ -3,93 +3,97 @@
  * System configuration and settings
  */
 
+import { AppText } from "@/design-system/app/AppText";
+import { AppMetric } from "@/design-system/app/AppMetric";
+
 export default function AdminSettingsPage() {
   return (
     <div>
       <div className="mb-6">
-        <h2 className="text-2xl font-bold text-gray-900">System Settings</h2>
-        <p className="text-gray-600 mt-1">
+        <AppText variant="h2">System Settings</AppText>
+        <AppText variant="p" className="mt-1 text-app-fg-muted">
           Configure platform settings and integrations
-        </p>
+        </AppText>
       </div>
 
       <div className="space-y-6">
         {/* Authentication Settings */}
         <div className="bg-white rounded-lg border border-gray-200 p-6">
-          <h3 className="text-lg font-semibold text-gray-900 mb-4">
+          <AppText variant="h3" className="mb-4">
             Authentication
-          </h3>
+          </AppText>
           <div className="space-y-4">
             <div className="flex items-center justify-between py-3 border-b border-gray-100">
               <div>
-                <div className="font-medium text-gray-900">
+                <AppText variant="h4" className="font-medium">
                   Email Authentication
-                </div>
-                <div className="text-sm text-gray-500">
+                </AppText>
+                <AppText variant="p">
                   Allow users to sign in with email and password
-                </div>
+                </AppText>
               </div>
-              <div className="text-green-600 font-medium">Enabled</div>
+              <AppText className="font-medium text-app-success">
+                Enabled
+              </AppText>
             </div>
             <div className="flex items-center justify-between py-3 border-b border-gray-100">
               <div>
-                <div className="font-medium text-gray-900">
+                <AppText variant="h4" className="font-medium">
                   Session Duration
-                </div>
-                <div className="text-sm text-gray-500">
-                  How long users stay logged in
-                </div>
+                </AppText>
+                <AppText variant="p">How long users stay logged in</AppText>
               </div>
-              <div className="text-gray-900 font-medium">30 days</div>
+              <AppText className="font-medium text-app-success">
+                30 days
+              </AppText>
             </div>
           </div>
         </div>
 
         {/* Form Settings */}
         <div className="bg-white rounded-lg border border-gray-200 p-6">
-          <h3 className="text-lg font-semibold text-gray-900 mb-4">
+          <AppText variant="h3" className="mb-4">
             Form Settings
-          </h3>
+          </AppText>
           <div className="space-y-4">
             <div className="flex items-center justify-between py-3 border-b border-gray-100">
               <div>
-                <div className="font-medium text-gray-900">
+                <AppText variant="h4" className="font-medium">
                   Public Form Access
-                </div>
-                <div className="text-sm text-gray-500">
+                </AppText>
+                <AppText variant="p">
                   Allow unauthenticated users to fill forms
-                </div>
+                </AppText>
               </div>
-              <div className="text-green-600 font-medium">Enabled</div>
+              <AppText className="font-medium text-app-success">
+                Enabled
+              </AppText>
             </div>
             <div className="flex items-center justify-between py-3 border-b border-gray-100">
               <div>
-                <div className="font-medium text-gray-900">Form Analytics</div>
-                <div className="text-sm text-gray-500">
+                <AppText variant="h4" className="font-medium">
+                  Form Analytics
+                </AppText>
+                <AppText variant="p">
                   Track form views and submission metrics
-                </div>
+                </AppText>
               </div>
-              <div className="text-green-600 font-medium">Enabled</div>
+              <AppText className="font-medium text-app-success">
+                Enabled
+              </AppText>
             </div>
           </div>
         </div>
 
         {/* Database Info */}
         <div className="bg-white rounded-lg border border-gray-200 p-6">
-          <h3 className="text-lg font-semibold text-gray-900 mb-4">Database</h3>
-          <div className="space-y-2">
-            <div className="flex justify-between py-2">
-              <span className="text-gray-600">Provider</span>
-              <span className="font-medium text-gray-900">PostgreSQL</span>
-            </div>
-            <div className="flex justify-between py-2">
-              <span className="text-gray-600">ORM</span>
-              <span className="font-medium text-gray-900">Prisma v7.8.0</span>
-            </div>
-            <div className="flex justify-between py-2">
-              <span className="text-gray-600">Migrations</span>
-              <span className="font-medium text-gray-900">7 applied</span>
-            </div>
+          <AppText variant="h3" className="mb-4">
+            Database
+          </AppText>
+          <div className="flex gap-4">
+            <AppMetric value={"PostgreSQL"} label="Provider" />
+            <AppMetric value={"Prisma v7.8.0"} label="ORM" />
+            <AppMetric value={7} label="Migrations" />
           </div>
         </div>
       </div>

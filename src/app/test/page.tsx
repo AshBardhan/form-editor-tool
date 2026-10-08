@@ -1,5 +1,7 @@
 import prisma from "@/lib/prisma";
 import { notFound } from "next/navigation";
+import { AppText } from "@/design-system/app/AppText";
+import { AppMetric } from "@/design-system/app/AppMetric";
 
 interface Stats {
   users: number;
@@ -41,39 +43,37 @@ export default async function TestPage() {
 
   return (
     <div className="max-w-4xl mx-auto">
-      <h2 className="text-2xl font-bold mb-6">Database Status</h2>
+      <AppText variant="h2" className="mb-6">
+        Database Status
+      </AppText>
 
       {error ? (
         <div className="p-4 bg-red-50 border border-red-200 rounded-lg">
-          <p className="text-red-800 font-semibold">❌ Connection Failed</p>
-          <p className="text-sm text-red-600 mt-1">{error}</p>
+          <AppText variant="p" className="font-semibold text-app-error">
+            Connection Failed
+          </AppText>
+          <AppText variant="p" className="mt-1 text-sm text-app-error">
+            {error}
+          </AppText>
         </div>
       ) : (
         <>
           <div className="p-4 bg-green-50 border border-green-200 rounded-lg mb-6">
-            <p className="text-green-800 font-semibold">
+            <AppText variant="p" className="font-semibold text-app-success">
               Connected Successfully
-            </p>
-            <dl className="mt-2 space-y-1 text-sm text-green-700">
-              <div>
-                <span className="font-medium">Latency:</span> {stats?.latency}ms
-              </div>
-              <div>
-                <span className="font-medium">Version:</span> {stats?.version}
-              </div>
-            </dl>
+            </AppText>
+            <div className="mt-2 grid grid-cols-2 md:grid-cols-4 gap-4">
+              <AppMetric value={stats?.latency || 0} label="Latency" />
+              <AppMetric value={stats?.version || ""} label="Version" />
+            </div>
           </div>
 
-          <h2 className="text-2xl font-bold mb-6">Statistics</h2>
+          <AppText variant="h2" className="mb-6">
+            Statistics
+          </AppText>
           <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-            <div className="p-4 bg-white border rounded-lg shadow-sm">
-              <p className="text-sm text-gray-500 capitalize">Users</p>
-              <p className="text-2xl font-bold text-gray-900">{stats?.users}</p>
-            </div>
-            <div className="p-4 bg-white border rounded-lg shadow-sm">
-              <p className="text-sm text-gray-500 capitalize">Forms</p>
-              <p className="text-2xl font-bold text-gray-900">{stats?.forms}</p>
-            </div>
+            <AppMetric value={stats?.users || 0} label="Users" />
+            <AppMetric value={stats?.forms || 0} label="Forms" />
           </div>
         </>
       )}

@@ -22,7 +22,7 @@ const buttonVariants = cva(
       size: {
         sm: "h-6 px-2 py-0.5 text-xs leading-4 gap-1 [&_svg:not([class*='size-'])]:size-3 has-[>svg]:px-1.5",
         md: "h-8 px-3 py-1 text-sm leading-5 gap-1.5 [&_svg:not([class*='size-'])]:size-3.5 has-[>svg]:px-2.5",
-        lg: "h-12 px-5 py-2.5 text-lg leading-6 gap-2 [&_svg:not([class*='size-'])]:size-4.5 has-[>svg]:px-4",
+        lg: "h-10 px-4 py-2 text-base leading-6 gap-2 [&_svg:not([class*='size-'])]:size-4.5 has-[>svg]:px-4",
       },
     },
     compoundVariants: [
@@ -60,14 +60,14 @@ const buttonVariants = cva(
         variant: "solid",
         color: "secondary",
         className:
-          "bg-app-surface-muted border-app-border-subtle text-app-fg hover:bg-app-border-subtle hover:border-app-border-strong focus-visible:ring-app-border-strong/30 active:opacity-90",
+          "bg-app-surface-muted border-app-border-strong/30 text-app-fg hover:bg-app-border-subtle hover:border-app-border-strong focus-visible:ring-app-border-strong/30 active:opacity-90",
       },
       // Outline + Secondary
       {
         variant: "outline",
         color: "secondary",
         className:
-          "border-app-border-subtle text-app-fg hover:bg-app-surface-muted focus-visible:ring-app-border-strong/30",
+          "border-app-border-strong/30 text-app-fg hover:bg-app-surface-muted focus-visible:ring-app-border-strong",
       },
       // Ghost + Secondary
       {

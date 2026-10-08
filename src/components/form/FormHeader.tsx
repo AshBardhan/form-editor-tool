@@ -209,7 +209,7 @@ export function FormHeader({ form }: FormHeaderProps) {
               onClick={handleOpenPreview}
               disabled={isSubmitting}
             >
-              <Eye className="size-4" />
+              <Eye size={16} />
               Preview
             </AppButton>
           )}
@@ -224,7 +224,7 @@ export function FormHeader({ form }: FormHeaderProps) {
                 : "Publish form to enable public access"
             }
           >
-            <ExternalLink className="size-4" />
+            <ExternalLink size={16} />
             Access
           </AppButton>
 

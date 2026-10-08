@@ -138,7 +138,7 @@ export function FormsHeader({ filter = {} }: FormsHeaderProps) {
             className="gap-2"
             disabled={isCreating}
           >
-            <Plus className="size-5" />
+            <Plus size={20} />
             {isCreating ? "Creating..." : "Create Form"}
           </AppButton>
         </div>

@@ -4,31 +4,36 @@
  */
 
 import Link from "next/link";
+import { AppButton } from "@/design-system/app/AppButton";
+import { AppText } from "@/design-system/app/AppText";
 
 export default function ForbiddenPage() {
   return (
     <div className="min-h-screen flex items-center justify-center bg-gray-50">
       <div className="text-center px-4">
-        <h1 className="text-9xl font-bold text-gray-900">403</h1>
-        <h2 className="text-3xl font-semibold mt-4 text-gray-800">
+        <AppText variant="h1" className="text-9xl">
+          403
+        </AppText>
+        <AppText variant="h2" className="mt-4">
           Access Denied
-        </h2>
-        <p className="text-gray-600 mt-4 max-w-md mx-auto">
+        </AppText>
+        <AppText
+          variant="p"
+          className="mt-4 max-w-md mx-auto text-app-fg-muted"
+        >
           You don't have permission to access this page. Please contact an
           administrator if you believe this is an error.
-        </p>
+        </AppText>
         <div className="mt-8 flex gap-4 justify-center">
-          <Link
-            href="/forms"
-            className="px-6 py-3 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors"
-          >
-            Go to Dashboard
+          <Link href="/forms">
+            <AppButton variant="solid" color="primary">
+              Go to Dashboard
+            </AppButton>
           </Link>
-          <Link
-            href="/"
-            className="px-6 py-3 bg-gray-200 text-gray-800 rounded-lg hover:bg-gray-300 transition-colors"
-          >
-            Go Home
+          <Link href="/">
+            <AppButton variant="outline" color="secondary">
+              Go Home
+            </AppButton>
           </Link>
         </div>
       </div>

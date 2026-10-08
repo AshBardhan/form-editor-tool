@@ -7,6 +7,8 @@ import { redirect } from "next/navigation";
 import { auth } from "@/auth";
 import prisma from "@/lib/prisma";
 import { AdminFormsTable } from "@/components/admin/AdminFormsTable";
+import { AppText } from "@/design-system/app/AppText";
+import { AppMetric } from "@/design-system/app/AppMetric";
 
 async function getForms() {
   const session = await auth();
@@ -57,36 +59,21 @@ export default async function AdminFormsPage() {
   return (
     <div>
       <div className="mb-6">
-        <h2 className="text-2xl font-bold text-gray-900">Forms Management</h2>
-        <p className="text-gray-600 mt-1">
+        <AppText variant="h2">Forms Management</AppText>
+        <AppText variant="p" className="mt-1 text-app-fg-muted">
           Monitor and manage all forms across the platform
-        </p>
+        </AppText>
       </div>
 
       <div className="bg-white rounded-lg border border-gray-200 p-4 mb-6">
         <div className="grid grid-cols-4 gap-4">
-          <div>
-            <div className="text-sm text-gray-600">Total Forms</div>
-            <div className="text-2xl font-bold text-gray-900">
-              {forms.length}
-            </div>
-          </div>
-          <div>
-            <div className="text-sm text-gray-600">Published</div>
-            <div className="text-2xl font-bold text-gray-900">
-              {forms.filter((f) => f.status === "published").length}
-            </div>
-          </div>
-          <div>
-            <div className="text-sm text-gray-600">Total Views</div>
-            <div className="text-2xl font-bold text-gray-900">{totalViews}</div>
-          </div>
-          <div>
-            <div className="text-sm text-gray-600">Total Submissions</div>
-            <div className="text-2xl font-bold text-gray-900">
-              {totalSubmissions}
-            </div>
-          </div>
+          <AppMetric value={forms.length} label="Total Forms" />
+          <AppMetric
+            value={forms.filter((f) => f.status === "published").length}
+            label="Published"
+          />
+          <AppMetric value={totalViews} label="Total Views" />
+          <AppMetric value={totalSubmissions} label="Total Submissions" />
         </div>
       </div>
 

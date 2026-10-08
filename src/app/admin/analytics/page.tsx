@@ -6,6 +6,7 @@
 import { redirect } from "next/navigation";
 import { auth } from "@/auth";
 import prisma from "@/lib/prisma";
+import { AppText } from "@/design-system/app/AppText";
 
 async function getAnalytics() {
   const session = await auth();
@@ -90,10 +91,10 @@ export default async function AdminAnalyticsPage() {
   return (
     <div>
       <div className="mb-6">
-        <h2 className="text-2xl font-bold text-gray-900">Platform Analytics</h2>
-        <p className="text-gray-600 mt-1">
+        <AppText variant="h2">Platform Analytics</AppText>
+        <AppText variant="p" className="mt-1 text-app-fg-muted">
           Overview of platform usage and activity
-        </p>
+        </AppText>
       </div>
 
       {/* Overview Stats */}
@@ -137,21 +138,21 @@ export default async function AdminAnalyticsPage() {
         {/* Recent Forms */}
         <div className="bg-white rounded-lg border border-gray-200">
           <div className="px-6 py-4 border-b border-gray-200">
-            <h3 className="font-semibold text-gray-900">Recent Forms</h3>
+            <AppText variant="h3">Recent Forms</AppText>
           </div>
           <div className="divide-y divide-gray-200">
             {recentActivity.forms.length === 0 ? (
-              <div className="px-6 py-8 text-center text-gray-500">
-                No forms yet
+              <div className="px-6 py-8 text-center">
+                <AppText>No forms yet</AppText>
               </div>
             ) : (
               recentActivity.forms.map((form) => (
                 <div key={form.id} className="px-6 py-4">
-                  <div className="font-medium text-gray-900">{form.title}</div>
-                  <div className="text-sm text-gray-500 mt-1">
+                  <AppText variant="h4">{form.title}</AppText>
+                  <AppText variant="p" className="mt-1">
                     by {form.user.name || form.user.email} •{" "}
                     {new Date(form.createdAt).toLocaleDateString()}
-                  </div>
+                  </AppText>
                 </div>
               ))
             )}
@@ -161,23 +162,21 @@ export default async function AdminAnalyticsPage() {
         {/* Recent Submissions */}
         <div className="bg-white rounded-lg border border-gray-200">
           <div className="px-6 py-4 border-b border-gray-200">
-            <h3 className="font-semibold text-gray-900">Recent Submissions</h3>
+            <AppText variant="h3">Recent Submissions</AppText>
           </div>
           <div className="divide-y divide-gray-200">
             {recentActivity.submissions.length === 0 ? (
-              <div className="px-6 py-8 text-center text-gray-500">
-                No submissions yet
+              <div className="px-6 py-8 text-center">
+                <AppText>No submissions yet</AppText>
               </div>
             ) : (
               recentActivity.submissions.map((submission) => (
                 <div key={submission.id} className="px-6 py-4">
-                  <div className="font-medium text-gray-900">
-                    {submission.form.title}
-                  </div>
-                  <div className="text-sm text-gray-500 mt-1">
+                  <AppText variant="h4">{submission.form.title}</AppText>
+                  <AppText variant="p" className="mt-1">
                     by {submission.form.user.name} •{" "}
                     {new Date(submission.submittedAt).toLocaleDateString()}
-                  </div>
+                  </AppText>
                 </div>
               ))
             )}

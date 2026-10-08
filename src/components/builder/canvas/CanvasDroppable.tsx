@@ -4,6 +4,7 @@ import { FormBlock } from "@/lib/types/form";
 import { CanvasBlock } from "./CanvasBlock";
 import { JSX } from "react";
 import { Widget } from "@/lib/types/widget";
+import { cn } from "@/lib/utils/styleUtils";
 
 interface CanvasDroppableProps {
   item: FormBlock | Widget;
@@ -28,7 +29,12 @@ export const CanvasDroppable = ({
     const label = (item as Widget)?.label;
 
     return Icon && label ? (
-      <div className="p-2 rounded-md border border-[#2d2d2d] bg-[#1e1e1e] hover:bg-[#2f2f2f] text-white flex items-center gap-2">
+      <div
+        className={cn(
+          "p-2 rounded-md flex items-center gap-2 cursor-move",
+          "border border-app-border-subtle bg-app-surface text-app-sidebar-fg",
+        )}
+      >
         <div className="p-1 border border-[#2d2d2d] rounded inline-flex">
           <Icon size={12} />
         </div>

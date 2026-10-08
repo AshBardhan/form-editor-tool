@@ -3,6 +3,7 @@
 import { Moon, Sun } from "lucide-react";
 import { APP_THEME_LABELS } from "@/lib/constants/themes";
 import { useUIStateStore } from "@/lib/stores/UIStateStore";
+import { AppButton } from "@/design-system/app/AppButton";
 
 export function AppThemeSwitcher() {
   const theme = useUIStateStore((state) => state.appTheme);
@@ -11,15 +12,16 @@ export function AppThemeSwitcher() {
   const Icon = theme === "light" ? Moon : Sun;
 
   return (
-    <button
-      type="button"
+    <AppButton
+      variant="ghost"
+      color="secondary"
       aria-label={`Switch to ${APP_THEME_LABELS[nextTheme]} theme`}
       title={`Switch to ${APP_THEME_LABELS[nextTheme]} theme`}
       aria-pressed={theme === "dark"}
-      className="inline-flex size-9 items-center justify-center rounded-md transition-colors hover:bg-black/10 focus-visible:outline-2 focus-visible:outline-offset-2"
+      className="size-9 p-0 hover:bg-black/10"
       onClick={() => setAppTheme(nextTheme)}
     >
       <Icon aria-hidden="true" className="size-4" />
-    </button>
+    </AppButton>
   );
 }

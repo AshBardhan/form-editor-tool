@@ -4,6 +4,7 @@
  */
 
 import Link from "next/link";
+import { AppText } from "@/design-system/app/AppText";
 
 export default function AuthLayout({
   children,
@@ -21,16 +22,19 @@ export default function AuthLayout({
           >
             FormKit
           </Link>
-          <p className="mt-8 text-sm font-medium tracking-wide text-primary uppercase">
+          <AppText className="mt-8 font-medium tracking-wide text-app-brand uppercase">
             Visual form editor
-          </p>
-          <h1 className="mt-3 text-3xl font-bold tracking-tight text-heading sm:text-4xl">
+          </AppText>
+          <AppText variant="h1" className="mt-3 tracking-tight">
             Design forms by dragging blocks, then publish them in minutes
-          </h1>
-          <p className="mt-4 text-base leading-relaxed text-paragraph sm:text-lg">
+          </AppText>
+          <AppText
+            variant="p"
+            className="mt-4 leading-relaxed text-app-fg-muted"
+          >
             Sign in to build on a canvas, preview across devices, and collect
             responses with submissions and analytics in one place.
-          </p>
+          </AppText>
         </div>
 
         <div className="w-full max-w-md justify-self-center md:justify-self-end">

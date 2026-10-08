@@ -7,6 +7,8 @@ import Link from "next/link";
 import { redirect } from "next/navigation";
 import { auth } from "@/auth";
 import { AppThemeContainer } from "@/design-system/containers/AppThemeContainer";
+import { AppText } from "@/design-system/app/AppText";
+import { AppButton } from "@/design-system/app/AppButton";
 import {
   UsersIcon,
   FileTextIcon,
@@ -40,13 +42,12 @@ export default async function AdminLayout({
           <div className="container mx-auto px-4 py-4">
             <div className="flex items-center justify-between">
               <div className="flex items-center gap-4">
-                <Link
-                  href="/forms"
-                  className="text-sm text-gray-600 hover:text-gray-900"
-                >
-                  ← Back to Dashboard
+                <Link href="/forms">
+                  <AppButton variant="link" color="secondary" size="sm">
+                    ← Back to Dashboard
+                  </AppButton>
                 </Link>
-                <h1 className="text-xl font-bold text-gray-900">Admin Panel</h1>
+                <AppText variant="h2">Admin Panel</AppText>
               </div>
               <div className="text-sm text-gray-600">{session.user.email}</div>
             </div>

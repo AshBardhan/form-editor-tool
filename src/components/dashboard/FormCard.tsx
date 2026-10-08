@@ -41,7 +41,7 @@ export function FormCard({
 
   return (
     <Link href={`/forms/${form.slug}`} className="relative group">
-      <AppCard clickable={true} className="h-full space-y-2">
+      <AppCard clickable={true}>
         <div className="flex items-center justify-between gap-3">
           <div className="flex-1 min-w-0 flex gap-3">
             <AppText
@@ -127,33 +127,39 @@ export function FormCard({
         </div>
 
         {/* Metadata Section */}
-        <div className="flex flex-wrap items-center gap-x-4 gap-y-1 text-xs text-gray-500">
+        <div className="flex flex-wrap items-center gap-x-4 gap-y-1 text-gray-500 mt-2">
           {form.isAdmin && form.createdBy && (
             <div className="flex items-center gap-1">
-              <AppText variant="span" className="font-medium">
+              <AppText variant="span" className="!text-xs font-medium">
                 Created by:
               </AppText>
-              <AppText variant="span">{form.createdBy}</AppText>
+              <AppText variant="span" className="!text-xs">
+                {form.createdBy}
+              </AppText>
             </div>
           )}
           <div className="flex items-center gap-1">
-            <AppText variant="span" className="font-medium">
+            <AppText variant="span" className="!text-xs font-medium">
               Created:
             </AppText>
-            <AppText variant="span">{formatDate(form.createdAt)}</AppText>
+            <AppText variant="span" className="!text-xs">
+              {formatDate(form.createdAt)}
+            </AppText>
           </div>
           {form.status === "published" && form.publishedAt && (
             <div className="flex items-center gap-1">
-              <AppText variant="span" className="font-medium">
+              <AppText variant="span" className="!text-xs font-medium">
                 Published:
               </AppText>
-              <AppText variant="span">{formatDate(form.publishedAt)}</AppText>
+              <AppText variant="span" className="!text-xs">
+                {formatDate(form.publishedAt)}
+              </AppText>
             </div>
           )}
         </div>
 
         {form.status !== "draft" && (
-          <div className="flex gap-8">
+          <div className="flex gap-8 mt-4">
             {getFormMetrics(form.metrics).map((metric) => (
               <AppMetric
                 key={metric.key}
@@ -161,7 +167,6 @@ export function FormCard({
                 label={metric.label}
                 reverse={true}
                 value={metric.value}
-                size="sm"
               />
             ))}
           </div>

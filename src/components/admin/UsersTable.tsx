@@ -10,6 +10,7 @@ import { useRouter } from "next/navigation";
 import { AppBadge } from "@/design-system/app/AppBadge";
 import { Modal } from "@/components/ui/Modal";
 import { AppButton } from "@/design-system/app/AppButton";
+import { AppText } from "@/design-system/app/AppText";
 
 interface User {
   id: number;
@@ -155,15 +156,15 @@ export function UsersTable({ users }: UsersTableProps) {
       {/* Delete Confirmation Modal */}
       <Modal open={showDeleteModal} onOpenChange={setShowDeleteModal}>
         <div className="space-y-4">
-          <h3 className="text-lg font-semibold text-gray-900">Delete User</h3>
-          <p className="text-gray-600">
+          <AppText variant="h3">Delete User</AppText>
+          <AppText variant="p" className="text-app-fg-muted">
             Are you sure you want to delete{" "}
-            <strong className="text-gray-900">{selectedUser?.email}</strong>?
-          </p>
-          <p className="text-sm text-red-600">
+            <strong>{selectedUser?.email}</strong>?
+          </AppText>
+          <AppText variant="p" className="text-sm text-app-error">
             This will permanently delete the user and all their forms,
             submissions, and data.
-          </p>
+          </AppText>
           <div className="flex justify-end gap-3">
             <AppButton
               variant="outline"

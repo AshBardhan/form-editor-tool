@@ -5,6 +5,7 @@
 
 import Link from "next/link";
 import { AppButton } from "@/design-system/app/AppButton";
+import { AppText } from "@/design-system/app/AppText";
 
 const highlights = [
   {
@@ -28,7 +29,7 @@ export default function Home() {
   return (
     <div className="min-h-screen overflow-y-auto bg-linear-to-br from-blue-50 to-indigo-100">
       <header className="flex items-center justify-between px-6 py-6 sm:px-10">
-        <p className="text-xl font-bold text-gray-900">FormKit</p>
+        <AppText className="text-xl">FormKit</AppText>
 
         <Link href="/signin">
           <AppButton variant="outline" color="secondary">
@@ -38,17 +39,23 @@ export default function Home() {
       </header>
 
       <main className="mx-auto flex max-w-5xl flex-col items-center px-6 pb-20 pt-10 text-center sm:px-10 sm:pt-16">
-        <p className="mb-4 text-sm font-medium tracking-wide text-primary uppercase">
+        <AppText
+          variant="p"
+          className="mb-4 text-sm font-medium tracking-wide text-app-brand uppercase"
+        >
           Visual form editor
-        </p>
-        <h1 className="max-w-3xl text-4xl font-bold tracking-tight text-heading sm:text-5xl">
+        </AppText>
+        <AppText variant="h1" className="max-w-3xl tracking-tight">
           Design forms by dragging blocks, then publish them in minutes
-        </h1>
-        <p className="mt-5 max-w-2xl text-base leading-relaxed text-paragraph sm:text-lg">
+        </AppText>
+        <AppText
+          variant="p"
+          className="mt-5 max-w-2xl leading-relaxed text-app-fg-muted"
+        >
           FormKit is a Next.js form builder for teams that want a canvas, a live
           preview, and a public share link — plus submissions and analytics once
           responses start coming in.
-        </p>
+        </AppText>
         <div className="mt-8">
           <Link href="/signin">
             <AppButton variant="solid" color="primary" size="lg">
@@ -63,12 +70,13 @@ export default function Home() {
               key={item.title}
               className="rounded-xl border border-white/80 bg-white/80 p-6 shadow-sm"
             >
-              <h2 className="text-lg font-semibold text-heading">
-                {item.title}
-              </h2>
-              <p className="mt-2 text-sm leading-relaxed text-paragraph">
+              <AppText variant="h3">{item.title}</AppText>
+              <AppText
+                variant="p"
+                className="mt-2 text-sm leading-relaxed text-app-fg-muted"
+              >
                 {item.description}
-              </p>
+              </AppText>
             </li>
           ))}
         </ul>

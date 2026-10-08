@@ -1,6 +1,8 @@
 "use client";
 
 import { useEffect } from "react";
+import { AppButton } from "@/design-system/app/AppButton";
+import { AppText } from "@/design-system/app/AppText";
 
 export default function Error({
   error,
@@ -34,12 +36,12 @@ export default function Error({
             </svg>
           </div>
           <div className="ml-3 flex-1">
-            <h3 className="text-lg font-medium text-red-800 mb-2">
+            <AppText variant="h3" className="mb-2 text-app-error">
               Database Connection Failed
-            </h3>
-            <p className="text-sm text-red-700 mb-4">
+            </AppText>
+            <AppText variant="p" className="mb-4 text-sm text-app-error">
               {error.message || "An unexpected error occurred"}
-            </p>
+            </AppText>
 
             <details className="mb-4">
               <summary className="text-sm font-medium text-red-800 cursor-pointer hover:underline">
@@ -51,9 +53,9 @@ export default function Error({
             </details>
 
             <div className="bg-yellow-50 border border-yellow-200 rounded p-3 mb-4">
-              <p className="text-sm text-yellow-800 font-medium mb-2">
+              <AppText variant="p" className="m font-medium">
                 Common Issues:
-              </p>
+              </AppText>
               <ul className="text-sm text-yellow-700 list-disc list-inside space-y-1">
                 <li>PostgreSQL service is not running</li>
                 <li>Incorrect DATABASE_URL in .env file</li>
@@ -63,23 +65,20 @@ export default function Error({
               </ul>
             </div>
 
-            <button
-              onClick={reset}
-              className="px-4 py-2 bg-red-600 text-white rounded hover:bg-red-700 transition-colors"
-            >
+            <AppButton variant="solid" color="negative" onClick={reset}>
               Try Again
-            </button>
+            </AppButton>
           </div>
         </div>
       </div>
 
       <div className="mt-6 p-4 bg-gray-50 border border-gray-200 rounded-lg">
-        <p className="text-sm text-gray-600">
+        <AppText variant="p" className="text-sm text-app-fg-muted">
           <strong>Quick Fix:</strong> Check if PostgreSQL is running:{" "}
           <code className="bg-gray-100 px-2 py-1 rounded">
             sudo systemctl status postgresql
           </code>
-        </p>
+        </AppText>
       </div>
     </>
   );
