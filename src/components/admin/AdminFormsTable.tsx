@@ -6,7 +6,7 @@
  */
 
 import Link from "next/link";
-import { Badge } from "@/components/ui/Badge";
+import { AppBadge } from "@/design-system/app/AppBadge";
 
 interface Form {
   id: string;
@@ -89,7 +89,7 @@ export function AdminFormsTable({ forms }: AdminFormsTableProps) {
                 </div>
               </td>
               <td className="px-6 py-4">
-                <Badge
+                <AppBadge
                   label={form.status}
                   variant={getStatusVariant(form.status)}
                   size="sm"

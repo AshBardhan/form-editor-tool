@@ -15,7 +15,7 @@ import {
   DropdownMenuItem,
   DropdownMenuSeparator,
 } from "@/components/ui/DropdownMenu";
-import { Badge } from "@/components/ui/Badge";
+import { AppBadge } from "@/design-system/app/AppBadge";
 import { AppText } from "@/design-system/app/AppText";
 
 interface UserMenuProps {
@@ -50,7 +50,12 @@ export function UserMenu({ user }: UserMenuProps) {
           <AppText variant="p" className="text-sm text-app-fg-muted truncate">
             {user.email}
           </AppText>
-          <Badge label={user.role} variant="info" size="sm" className="mt-1" />
+          <AppBadge
+            label={user.role}
+            variant="info"
+            size="sm"
+            className="mt-1"
+          />
         </div>
 
         {/* Admin Panel Link */}

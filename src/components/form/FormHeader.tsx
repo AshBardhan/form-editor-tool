@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 import { useRouter, usePathname } from "next/navigation";
-import { Badge } from "@/components/ui/Badge";
+import { AppBadge } from "@/design-system/app/AppBadge";
 import { NavigationTabs } from "@/components/ui/NavigationTabs";
 import { toast } from "@/components/ui/Toast";
 import { ApiResponse } from "@/lib/types/api";
@@ -198,7 +198,7 @@ export function FormHeader({ form }: FormHeaderProps) {
       <div className="flex items-start justify-between gap-4">
         <div className="flex items-center gap-3">
           <AppText variant="h1">{form.title}</AppText>
-          <Badge label={statusLabel} variant={statusVariant} size="sm" />
+          <AppBadge label={statusLabel} variant={statusVariant} size="sm" />
         </div>
 
         <div className="flex items-center gap-4">

@@ -1,8 +1,8 @@
 "use client";
 
-import { Card, CardContent } from "@/components/ui/Card";
+import { AppCard } from "@/design-system/app/AppCard";
 import { AppText } from "@/design-system/app/AppText";
-import Metric from "@/components/ui/Metric";
+import { AppMetric } from "@/design-system/app/AppMetric";
 import { FormAnalyticsMetrics } from "@/lib/types/form";
 
 interface AnalyticsOverviewMetricsProps {
@@ -29,92 +29,83 @@ export function AnalyticsOverviewMetrics({
     submitAttempts > 0 ? (failedSubmissions / submitAttempts) * 100 : 0;
 
   return (
-    <Card>
-      <CardContent className="px-6">
-        <div className="space-y-6">
-          <div className="space-y-2">
-            <AppText variant="h5">Basic Metrics</AppText>
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
-              <Metric
-                direction="column"
-                label="Views"
-                value={views}
-                size="lg"
-              />
-              <Metric
-                direction="column"
-                label="Submissions"
-                value={submissions}
-                size="lg"
-              />
-              <Metric
-                direction="column"
-                label="Conversion Rate"
-                value={`${conversionRate.toFixed(2)}%`}
-                size="lg"
-              />
-            </div>
-          </div>
-          <div className="space-y-2">
-            <AppText variant="h5">Advanced Metrics</AppText>
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
-              <Metric
-                direction="column"
-                label="Starts"
-                value={starts}
-                size="lg"
-              />
-              <Metric
-                direction="column"
-                label="Completions"
-                value={completions}
-                size="lg"
-              />
-              {completionRate > 0 && (
-                <Metric
-                  direction="column"
-                  label="Completion Rate"
-                  value={`${completionRate.toFixed(2)}%`}
-                  size="lg"
-                />
-              )}
-              {submitAttempts > 0 && (
-                <Metric
-                  direction="column"
-                  label="Submit Attempts"
-                  value={submitAttempts}
-                  size="lg"
-                />
-              )}
-              {failedSubmissions > 0 && (
-                <Metric
-                  direction="column"
-                  label="Failed Submissions"
-                  value={failedSubmissions}
-                  size="lg"
-                />
-              )}
-
-              {successRate > 0 && (
-                <Metric
-                  direction="column"
-                  label="Submission Success Rate"
-                  value={`${successRate.toFixed(2)}%`}
-                  size="lg"
-                />
-              )}
-              {errorRate > 0 && (
-                <Metric
-                  direction="column"
-                  label="Submission Error Rate"
-                  value={`${errorRate.toFixed(2)}%`}
-                  size="lg"
-                />
-              )}
-            </div>
-          </div>
+    <AppCard className="space-y-6">
+      <div className="space-y-2">
+        <AppText variant="h5">Basic Metrics</AppText>
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+          <AppMetric direction="column" label="Views" value={views} size="lg" />
+          <AppMetric
+            direction="column"
+            label="Submissions"
+            value={submissions}
+            size="lg"
+          />
+          <AppMetric
+            direction="column"
+            label="Conversion Rate"
+            value={`${conversionRate.toFixed(2)}%`}
+            size="lg"
+          />
         </div>
-      </CardContent>
-    </Card>
+      </div>
+      <div className="space-y-2">
+        <AppText variant="h5">Advanced Metrics</AppText>
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+          <AppMetric
+            direction="column"
+            label="Starts"
+            value={starts}
+            size="lg"
+          />
+          <AppMetric
+            direction="column"
+            label="Completions"
+            value={completions}
+            size="lg"
+          />
+          {completionRate > 0 && (
+            <AppMetric
+              direction="column"
+              label="Completion Rate"
+              value={`${completionRate.toFixed(2)}%`}
+              size="lg"
+            />
+          )}
+          {submitAttempts > 0 && (
+            <AppMetric
+              direction="column"
+              label="Submit Attempts"
+              value={submitAttempts}
+              size="lg"
+            />
+          )}
+          {failedSubmissions > 0 && (
+            <AppMetric
+              direction="column"
+              label="Failed Submissions"
+              value={failedSubmissions}
+              size="lg"
+            />
+          )}
+
+          {successRate > 0 && (
+            <AppMetric
+              direction="column"
+              label="Submission Success Rate"
+              value={`${successRate.toFixed(2)}%`}
+              size="lg"
+            />
+          )}
+          {errorRate > 0 && (
+            <AppMetric
+              direction="column"
+              label="Submission Error Rate"
+              value={`${errorRate.toFixed(2)}%`}
+              size="lg"
+            />
+          )}
+        </div>
+      </div>
+    </AppCard>
   );
 }

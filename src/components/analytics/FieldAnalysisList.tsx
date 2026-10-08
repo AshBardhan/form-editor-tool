@@ -1,10 +1,10 @@
 "use client";
 
 import { useMemo } from "react";
-import { Card, CardContent } from "@/components/ui/Card";
+import { AppCard } from "@/design-system/app/AppCard";
 import { AppText } from "@/design-system/app/AppText";
-import { Badge } from "@/components/ui/Badge";
-import Metric from "@/components/ui/Metric";
+import { AppBadge } from "@/design-system/app/AppBadge";
+import { AppMetric } from "@/design-system/app/AppMetric";
 import { type FormBlock, type FormBlockType } from "@/lib/types/form";
 import {
   type FieldData,
@@ -147,25 +147,21 @@ export function FieldAnalysisList({
 
   return (
     <div className="space-y-6">
-      <Card>
-        <CardContent className="px-6">
-          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-            <Metric
-              label="Total Fields"
-              value={String(summaryMetrics.totalFields)}
-            />
-            <Metric
-              label="Total Responses"
-              value={String(summaryMetrics.totalResponses)}
-            />
-          </div>
-        </CardContent>
-      </Card>
+      <AppCard className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+        <AppMetric
+          label="Total Fields"
+          value={String(summaryMetrics.totalFields)}
+        />
+        <AppMetric
+          label="Total Responses"
+          value={String(summaryMetrics.totalResponses)}
+        />
+      </AppCard>
 
-      <Card>
-        <CardContent className="space-y-4 px-6">
+      <AppCard className="space-y-4">
+        <>
           {fieldAnalysis.length === 0 ? (
-            <AppText variant="p" className="text-sm text-app-fg-muted">
+            <AppText className="text-app-fg-muted">
               No input fields on this form.
             </AppText>
           ) : (
@@ -183,12 +179,12 @@ export function FieldAnalysisList({
                       {field.label}
                     </AppText>
                     <div className="flex flex-wrap gap-2 items-center">
-                      <Badge
+                      <AppBadge
                         label={field.blockType}
                         variant="neutral"
                         size="sm"
                       />
-                      <Badge
+                      <AppBadge
                         label={field.required ? "Required" : "Optional"}
                         variant={field.required ? "success" : "neutral"}
                         size="sm"
@@ -199,12 +195,12 @@ export function FieldAnalysisList({
                   <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
                     <div className="space-y-3">
                       <div className="space-y-1 flex gap-2">
-                        <Metric
+                        <AppMetric
                           className="flex-1"
                           value={field.responded}
                           label="Responses"
                         />
-                        <Metric
+                        <AppMetric
                           className="flex-1"
                           value={field.skipped}
                           label="Skipped"
@@ -240,7 +236,7 @@ export function FieldAnalysisList({
                                   >
                                     {item.label}
                                   </AppText>
-                                  <Badge
+                                  <AppBadge
                                     label={`${item.count} (${item.percentage}%)`}
                                     variant="neutral"
                                     size="sm"
@@ -261,17 +257,14 @@ export function FieldAnalysisList({
                       {isTextBasedFieldBlock(analysis.blockType) && (
                         <>
                           {analysis.data.length > 0 ? (
-                            <ul className="space-y-2 max-h-48 overflow-y-auto rounded border border-border">
+                            <ul className="max-h-48 overflow-y-auto rounded border border-app-border-subtle">
                               {(analysis.data as TextBasedData[]).map(
                                 (value, valueIndex) => (
                                   <li
                                     key={valueIndex}
-                                    className="py-1 px-2 bg-white even:bg-gray-100"
+                                    className="py-1 px-2 bg-app-surface even:bg-app-surface-muted"
                                   >
-                                    <AppText
-                                      variant="p"
-                                      className="text-xs text-app-fg-primary"
-                                    >
+                                    <AppText className="text-xs">
                                       {formatValue(value)}
                                     </AppText>
                                   </li>
@@ -280,7 +273,9 @@ export function FieldAnalysisList({
                             </ul>
                           ) : (
                             <div className="p-4 rounded border border-border">
-                              No response recorded
+                              <AppText className="text-app-fg-muted">
+                                No response recorded
+                              </AppText>
                             </div>
                           )}
                         </>
@@ -291,8 +286,8 @@ export function FieldAnalysisList({
               );
             })
           )}
-        </CardContent>
-      </Card>
+        </>
+      </AppCard>
     </div>
   );
 }

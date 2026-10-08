@@ -7,7 +7,7 @@
 
 import { useState } from "react";
 import { useRouter } from "next/navigation";
-import { Badge } from "@/components/ui/Badge";
+import { AppBadge } from "@/design-system/app/AppBadge";
 import { Modal } from "@/components/ui/Modal";
 import { AppButton } from "@/design-system/app/AppButton";
 
@@ -110,7 +110,7 @@ export function UsersTable({ users }: UsersTableProps) {
                   </div>
                 </td>
                 <td className="px-6 py-4">
-                  <Badge
+                  <AppBadge
                     label={user.role}
                     variant={user.role === "ADMIN" ? "error" : "info"}
                     size="sm"
