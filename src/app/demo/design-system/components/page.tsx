@@ -30,6 +30,7 @@ import { TEXT_VARIANTS, type TextVariant } from "@/design-system/primitives";
 import { AppThemeSwitcher } from "@/components/layout/AppThemeSwitcher";
 import { FormThemeSelector } from "@/components/layout/FormThemeSelector";
 import type { FormTheme } from "@/lib/types/themes";
+import { AppSkeleton } from "@/design-system/app/AppSkeleton";
 
 const SELECT_OPTIONS = [
   { value: "draft", label: "Draft" },
@@ -788,6 +789,21 @@ export default function ComponentsDemo() {
                           />
                         </AppCard>
                       </div>
+                    </div>
+                  </div>
+
+                  {/* Skeleton Component */}
+                  <div>
+                    <h3 className="text-lg font-semibold text-app-fg-heading mb-1">
+                      Skeleton
+                    </h3>
+                    <p className="text-sm text-app-fg-muted mb-4">
+                      Loading state placeholder
+                    </p>
+                    <div className="flex flex-col gap-2">
+                      <AppSkeleton width="70%" height={20} />
+                      <AppSkeleton width={100} height={10} />
+                      <AppSkeleton width={200} height={50} />
                     </div>
                   </div>
                 </div>
