@@ -1,11 +1,6 @@
 "use client";
 
-import {
-  createContext,
-  useContext,
-  useRef,
-  type RefObject,
-} from "react";
+import { createContext, useContext, useRef, type RefObject } from "react";
 import { cn } from "@/lib/utils/styleUtils";
 import {
   MenuRoot,

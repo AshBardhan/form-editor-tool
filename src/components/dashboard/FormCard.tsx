@@ -9,11 +9,11 @@ import { AppBadge } from "@/design-system/app/AppBadge";
 import { AppText } from "@/design-system/app/AppText";
 import { AppButton } from "@/design-system/app/AppButton";
 import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuTrigger,
-} from "@/components/ui/DropdownMenu";
+  AppMenu,
+  AppMenuContent,
+  AppMenuItem,
+  AppMenuTrigger,
+} from "@/design-system/app/AppMenu";
 import { getFormMetrics } from "@/lib/utils/formUtils";
 import { formStatusLabel, formStatusVariant } from "@/lib/constants/form";
 import { formatDate } from "@/lib/utils/dateUtils";
@@ -66,63 +66,66 @@ export function FormCard({
               e.stopPropagation();
             }}
           >
-            <DropdownMenu>
-              <DropdownMenuTrigger asChild>
-                <AppButton
-                  variant="ghost"
-                  color="secondary"
-                  size="sm"
-                  disabled={isSubmitting}
-                  className="h-6 w-6 p-0"
-                  onClick={(e) => {
-                    e.preventDefault();
-                    e.stopPropagation();
-                  }}
-                >
-                  <MoreVertical className="size-4" />
-                  <span className="sr-only">Open form actions</span>
-                </AppButton>
-              </DropdownMenuTrigger>
-              <DropdownMenuContent align="end">
+            <AppMenu>
+              <AppMenuTrigger
+                disabled={isSubmitting}
+                render={
+                  <AppButton
+                    variant="ghost"
+                    color="secondary"
+                    size="sm"
+                    disabled={isSubmitting}
+                    className="h-6 w-6 p-0"
+                    onClick={(e) => {
+                      e.preventDefault();
+                      e.stopPropagation();
+                    }}
+                  />
+                }
+              >
+                <MoreVertical className="size-4" />
+                <span className="sr-only">Open form actions</span>
+              </AppMenuTrigger>
+              <AppMenuContent align="end">
                 {/* Publish option: shown in draft and archived forms */}
                 {(form.status === "draft" || form.status === "archived") && (
-                  <DropdownMenuItem
+                  <AppMenuItem
                     onSelect={(e) => {
                       e.preventDefault();
                       onStatusUpdate(form.id, "published");
                     }}
                   >
-                    <FileUp className="size-4 mr-2" />
+                    <FileUp className="size-4" />
                     Publish
-                  </DropdownMenuItem>
+                  </AppMenuItem>
                 )}
 
                 {/* Archive option: shown in draft and published forms */}
                 {(form.status === "draft" || form.status === "published") && (
-                  <DropdownMenuItem
+                  <AppMenuItem
                     onSelect={(e) => {
                       e.preventDefault();
                       onStatusUpdate(form.id, "archived");
                     }}
                   >
-                    <Archive className="size-4 mr-2" />
+                    <Archive className="size-4" />
                     Archive
-                  </DropdownMenuItem>
+                  </AppMenuItem>
                 )}
 
                 {/* Delete option: always shown */}
-                <DropdownMenuItem
-                  className="text-red-600 dark:text-red-400"
+                <AppMenuItem
+                  className="text-app-error"
                   onSelect={(e) => {
                     e.preventDefault();
                     onDeleteRequest(form);
                   }}
                 >
-                  <Trash2 className="size-4 mr-2" />
+                  <Trash2 className="size-4" />
                   Delete
-                </DropdownMenuItem>
-              </DropdownMenuContent>
-            </DropdownMenu>
+                </AppMenuItem>
+              </AppMenuContent>
+            </AppMenu>
           </div>
         </div>
 

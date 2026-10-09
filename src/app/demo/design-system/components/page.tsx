@@ -14,6 +14,16 @@ import { AppCheckbox } from "@/design-system/app/AppCheckbox";
 import { AppCheckboxGroup } from "@/design-system/app/AppCheckboxGroup";
 import { AppRadioGroup } from "@/design-system/app/AppRadioGroup";
 import { AppSwitch } from "@/design-system/app/AppSwitch";
+import {
+  AppMenu,
+  AppMenuContent,
+  AppMenuGroup,
+  AppMenuGroupLabel,
+  AppMenuItem,
+  AppMenuSeparator,
+  AppMenuTrigger,
+} from "@/design-system/app/AppMenu";
+import { ChevronDown } from "lucide-react";
 import { AppBadge } from "@/design-system/app/AppBadge";
 import { AppMetric } from "@/design-system/app/AppMetric";
 import { AppCard } from "@/design-system/app/AppCard";
@@ -641,6 +651,80 @@ export default function ComponentsDemo() {
                               defaultChecked={size === "md"}
                             />
                           ))}
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+
+                  {/* Menu Component */}
+                  <div>
+                    <h3 className="text-lg font-semibold text-app-fg-heading mb-1">
+                      Menu
+                    </h3>
+                    <p className="text-sm text-app-fg-muted mb-4">
+                      Action menu with a themed trigger, items, groups, and
+                      separators
+                    </p>
+                    <div className="flex flex-col gap-6">
+                      <div>
+                        <h4 className="text-sm font-semibold text-app-fg-heading mb-2">
+                          Basic
+                        </h4>
+                        <AppMenu>
+                          <AppMenuTrigger>
+                            Add to playlist
+                            <ChevronDown />
+                          </AppMenuTrigger>
+                          <AppMenuContent>
+                            <AppMenuItem>Get Up!</AppMenuItem>
+                            <AppMenuItem>Inside Out</AppMenuItem>
+                            <AppMenuItem>Night Beats</AppMenuItem>
+                            <AppMenuSeparator />
+                            <AppMenuItem>New playlist…</AppMenuItem>
+                          </AppMenuContent>
+                        </AppMenu>
+                      </div>
+
+                      <div>
+                        <h4 className="text-sm font-semibold text-app-fg-heading mb-2">
+                          Grouped
+                        </h4>
+                        <AppMenu>
+                          <AppMenuTrigger>Account</AppMenuTrigger>
+                          <AppMenuContent>
+                            <AppMenuGroup>
+                              <AppMenuGroupLabel>My Account</AppMenuGroupLabel>
+                              <AppMenuItem>Profile</AppMenuItem>
+                              <AppMenuItem>Settings</AppMenuItem>
+                              <AppMenuItem disabled>Billing</AppMenuItem>
+                            </AppMenuGroup>
+                            <AppMenuSeparator />
+                            <AppMenuItem className="text-app-error">
+                              Sign out
+                            </AppMenuItem>
+                          </AppMenuContent>
+                        </AppMenu>
+                      </div>
+
+                      <div>
+                        <h4 className="text-sm font-semibold text-app-fg-heading mb-2">
+                          Alignment
+                        </h4>
+                        <div className="flex items-center gap-2 flex-wrap">
+                          <AppMenu>
+                            <AppMenuTrigger>Align start</AppMenuTrigger>
+                            <AppMenuContent align="start">
+                              <AppMenuItem>First action</AppMenuItem>
+                              <AppMenuItem>Second action</AppMenuItem>
+                            </AppMenuContent>
+                          </AppMenu>
+                          <AppMenu>
+                            <AppMenuTrigger>Align end</AppMenuTrigger>
+                            <AppMenuContent align="end">
+                              <AppMenuItem>First action</AppMenuItem>
+                              <AppMenuItem>Second action</AppMenuItem>
+                            </AppMenuContent>
+                          </AppMenu>
                         </div>
                       </div>
                     </div>

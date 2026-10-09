@@ -5,11 +5,11 @@ import { BUTTON_ALIGNMENT_OPTIONS } from "@/lib/constants/buttons";
 import { getFormBlock, getFormBlockProps } from "@/lib/utils/formUtils";
 import { ScrollTextIcon, MoreVertical, Copy, Trash2 } from "lucide-react";
 import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuTrigger,
-} from "@/components/ui/DropdownMenu";
+  AppMenu,
+  AppMenuContent,
+  AppMenuItem,
+  AppMenuTrigger,
+} from "@/design-system/app/AppMenu";
 import { AppButton } from "@/design-system/app/AppButton";
 import { AppLabel } from "@/design-system/app/AppLabel";
 import { AppText } from "@/design-system/app/AppText";
@@ -310,33 +310,36 @@ export const ConfigurationPanel = memo(function ConfigurationPanel({
             {selected ? selectedMeta?.label : "Form"} Config
           </AppText>
           {selected && (
-            <DropdownMenu>
-              <DropdownMenuTrigger asChild>
-                <AppButton
-                  variant="ghost"
-                  color="secondary"
-                  size="md"
-                  className="size-8 p-0"
-                  aria-label="Open menu"
-                >
-                  <MoreVertical />
-                </AppButton>
-              </DropdownMenuTrigger>
-              <DropdownMenuContent align="end">
-                <DropdownMenuItem
+            <AppMenu>
+              <AppMenuTrigger
+                render={
+                  <AppButton
+                    variant="ghost"
+                    color="secondary"
+                    size="md"
+                    className="size-8 p-0"
+                    aria-label="Open menu"
+                  />
+                }
+              >
+                <MoreVertical />
+              </AppMenuTrigger>
+              <AppMenuContent align="end">
+                <AppMenuItem
                   onSelect={() => selected && cloneFormBlock(selected.id)}
                 >
-                  <Copy size={16} className="mr-2" />
+                  <Copy size={16} />
                   Clone
-                </DropdownMenuItem>
-                <DropdownMenuItem
+                </AppMenuItem>
+                <AppMenuItem
+                  className="text-app-error"
                   onSelect={() => selected && onDeleteBlock?.(selected.id)}
                 >
-                  <Trash2 size={16} className="mr-2" />
+                  <Trash2 size={16} />
                   Delete
-                </DropdownMenuItem>
-              </DropdownMenuContent>
-            </DropdownMenu>
+                </AppMenuItem>
+              </AppMenuContent>
+            </AppMenu>
           )}
         </div>
         {selected ? (

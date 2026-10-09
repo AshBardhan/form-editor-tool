@@ -8,11 +8,11 @@ import { toast } from "@/components/ui/Toast";
 import { ApiResponse } from "@/lib/types/api";
 import { FormConfig, FormStatus } from "@/lib/types/form";
 import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuTrigger,
-} from "@/components/ui/DropdownMenu";
+  AppMenu,
+  AppMenuContent,
+  AppMenuItem,
+  AppMenuTrigger,
+} from "@/design-system/app/AppMenu";
 import {
   Modal,
   ModalContent,
@@ -228,59 +228,60 @@ export function FormHeader({ form }: FormHeaderProps) {
             Access
           </AppButton>
 
-          <DropdownMenu>
-            <DropdownMenuTrigger asChild>
-              <AppButton
-                variant="ghost"
-                color="secondary"
-                size="sm"
-                disabled={isSubmitting}
-              >
-                <MoreVertical className="size-4" />
-                <span className="sr-only">Open form actions</span>
-              </AppButton>
-            </DropdownMenuTrigger>
-            <DropdownMenuContent align="end">
+          <AppMenu>
+            <AppMenuTrigger
+              disabled={isSubmitting}
+              render={
+                <AppButton
+                  variant="ghost"
+                  color="secondary"
+                  size="sm"
+                  disabled={isSubmitting}
+                />
+              }
+            >
+              <MoreVertical className="size-4" />
+              <span className="sr-only">Open form actions</span>
+            </AppMenuTrigger>
+            <AppMenuContent align="end">
               {/* Publish option: shown in draft and archived forms */}
               {(form.status === "draft" || form.status === "archived") && (
-                <DropdownMenuItem
+                <AppMenuItem
                   onSelect={() => handleUpdateFormStatus("published")}
                 >
-                  <FileUp className="size-4 mr-2" />
+                  <FileUp className="size-4" />
                   Publish
-                </DropdownMenuItem>
+                </AppMenuItem>
               )}
 
               {/* Archive option: shown in draft and published forms */}
               {(form.status === "draft" || form.status === "published") && (
-                <DropdownMenuItem
+                <AppMenuItem
                   onSelect={() => handleUpdateFormStatus("archived")}
                 >
-                  <Archive className="size-4 mr-2" />
+                  <Archive className="size-4" />
                   Archive
-                </DropdownMenuItem>
+                </AppMenuItem>
               )}
 
               {/* Clear submissions: shown in published and archived forms */}
               {(form.status === "published" || form.status === "archived") && (
-                <DropdownMenuItem
-                  onSelect={() => setIsClearReportConfirmOpen(true)}
-                >
-                  <BrushCleaning className="size-4 mr-2" />
+                <AppMenuItem onSelect={() => setIsClearReportConfirmOpen(true)}>
+                  <BrushCleaning className="size-4" />
                   Clear submissions
-                </DropdownMenuItem>
+                </AppMenuItem>
               )}
 
               {/* Delete option: always shown */}
-              <DropdownMenuItem
-                className="text-red-600 dark:text-red-400"
+              <AppMenuItem
+                className="text-app-error"
                 onSelect={() => setIsDeleteConfirmOpen(true)}
               >
-                <Trash2 className="size-4 mr-2" />
+                <Trash2 className="size-4" />
                 Delete
-              </DropdownMenuItem>
-            </DropdownMenuContent>
-          </DropdownMenu>
+              </AppMenuItem>
+            </AppMenuContent>
+          </AppMenu>
         </div>
       </div>
 
