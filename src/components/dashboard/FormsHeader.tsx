@@ -5,13 +5,7 @@ import { FileText, Plus, Search } from "lucide-react";
 import { AppText } from "@/design-system/app/AppText";
 import { AppButton } from "@/design-system/app/AppButton";
 import { AppInput } from "@/design-system/app/AppInput";
-import {
-  Select,
-  SelectTrigger,
-  SelectItem,
-  SelectContent,
-  SelectValue,
-} from "@/components/ui/Select";
+import { AppSelect } from "@/design-system/app/AppSelect";
 import { useRouter } from "next/navigation";
 import { toast } from "@/components/ui/Toast";
 import { ApiResponse } from "@/lib/types/api";
@@ -104,30 +98,15 @@ export function FormsHeader({ filter = {} }: FormsHeaderProps) {
                   className="pl-9"
                 />
               </div>
-
-              <Select
+              <AppSelect
+                className="w-40"
+                items={FormFilterOptions}
                 value={filter.status}
                 onValueChange={(value) => {
                   filter.onStatusChange?.(value as FormFilterStatus);
                 }}
-              >
-                <SelectTrigger>
-                  <SelectValue>
-                    {
-                      FormFilterOptions.find(
-                        (option) => option.value === filter.status,
-                      )?.label
-                    }
-                  </SelectValue>
-                </SelectTrigger>
-                <SelectContent>
-                  {FormFilterOptions.map((option) => (
-                    <SelectItem key={option.value} value={option.value}>
-                      {option.label}
-                    </SelectItem>
-                  ))}
-                </SelectContent>
-              </Select>
+                placeholder="Select Status"
+              />
             </>
           )}
           <AppButton

@@ -28,7 +28,7 @@ import { AppThemeContainer } from "@/design-system/containers/AppThemeContainer"
 import { FormThemeContainer } from "@/design-system/containers/FormThemeContainer";
 import { TEXT_VARIANTS, type TextVariant } from "@/design-system/primitives";
 import { AppThemeSwitcher } from "@/components/layout/AppThemeSwitcher";
-import { FormThemeSelector } from "@/components/layout/FormThemeSelector";
+import { FORM_THEMES, FORM_THEME_LABELS } from "@/lib/constants/themes";
 import type { FormTheme } from "@/lib/types/themes";
 import { AppSkeleton } from "@/design-system/app/AppSkeleton";
 
@@ -829,9 +829,17 @@ export default function ComponentsDemo() {
                     <span className="text-xs font-semibold text-app-fg-muted">
                       Form Theme
                     </span>
-                    <FormThemeSelector
+                    <AppSelect
+                      className="w-40"
+                      items={FORM_THEMES.map((theme) => ({
+                        value: theme,
+                        label: FORM_THEME_LABELS[theme],
+                      }))}
                       value={formTheme}
-                      onChange={setFormTheme}
+                      onValueChange={(value) => {
+                        if (!value) return;
+                        setFormTheme(value as FormTheme);
+                      }}
                     />
                   </div>
                 </div>
