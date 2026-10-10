@@ -5,7 +5,7 @@
  * These primitives expose data-* attributes for state that derived components
  * can style against. No appearance classes, styles, or visual opinions.
  *
- * Built on Base UI for complex widgets (Button, Checkbox, CheckboxGroup, RadioGroup, Select, Switch, Menu, Toast)
+ * Built on Base UI for complex widgets (Button, Checkbox, CheckboxGroup, RadioGroup, Select, Switch, Menu, Toast, Modal)
  * and native HTML elements for simple controls (Input, TextArea, Label, Text).
  *
  * State Attributes Contract:
@@ -13,7 +13,10 @@
  * - data-invalid: Element has validation error (aria-invalid)
  * - data-checked: Checkbox/radio/switch is checked
  * - data-selected: Select item is selected
- * - data-open: Dropdown/popover is open
+ * - data-open: Dropdown, popover, or dialog is open
+ * - data-popup-open: Popup opened by this trigger is open
+ * - data-starting-style: Enter animation
+ * - data-ending-style: Exit animation
  * - data-required: Label marks required field
  *
  * All primitives forward className and props untouched.
@@ -110,3 +113,25 @@ export {
   useToastManager,
   createToastManager,
 } from "./Toast";
+
+// Modal
+export {
+  ModalRoot,
+  ModalTrigger,
+  ModalPortal,
+  ModalBackdrop,
+  ModalViewport,
+  ModalPopup,
+  ModalTitle,
+  ModalDescription,
+  ModalClose,
+  AlertModalRoot,
+  AlertModalTrigger,
+  AlertModalPortal,
+  AlertModalBackdrop,
+  AlertModalViewport,
+  AlertModalPopup,
+  AlertModalTitle,
+  AlertModalDescription,
+  AlertModalClose,
+} from "./Modal";
