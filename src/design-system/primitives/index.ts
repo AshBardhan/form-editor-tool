@@ -5,7 +5,7 @@
  * These primitives expose data-* attributes for state that derived components
  * can style against. No appearance classes, styles, or visual opinions.
  *
- * Built on Base UI for complex widgets (Button, Checkbox, CheckboxGroup, RadioGroup, Select, Switch, Menu)
+ * Built on Base UI for complex widgets (Button, Checkbox, CheckboxGroup, RadioGroup, Select, Switch, Menu, Toast)
  * and native HTML elements for simple controls (Input, TextArea, Label, Text).
  *
  * State Attributes Contract:
@@ -93,3 +93,20 @@ export {
   MenuGroup,
   MenuGroupLabel,
 } from "./Menu";
+
+// Toast
+export {
+  ToastProvider,
+  ToastPortal,
+  ToastViewport,
+  ToastRoot,
+  ToastContent,
+  ToastTitle,
+  ToastDescription,
+  ToastClose,
+  ToastAction,
+  ToastPositioner,
+  ToastArrow,
+  useToastManager,
+  createToastManager,
+} from "./Toast";
