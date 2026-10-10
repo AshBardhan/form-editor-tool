@@ -10,11 +10,11 @@ interface AppBadgeProps {
 }
 
 const variantClasses = {
-  success: "bg-green-100 text-green-800 border-green-200",
-  warning: "bg-yellow-100 text-yellow-800 border-yellow-200",
-  error: "bg-red-100 text-red-800 border-red-200",
-  info: "bg-blue-100 text-blue-800 border-blue-200",
-  neutral: "bg-gray-200 text-gray-800 border-gray-300",
+  success: "bg-app-success-subtle text-app-success border-app-success",
+  warning: "bg-app-warning-subtle text-app-warning border-app-warning",
+  error: "bg-app-error-subtle text-app-error border-app-error",
+  info: "bg-app-info-subtle text-app-info border-app-info",
+  neutral: "bg-app-surface-muted text-app-fg border-app-border-strong",
 };
 
 const sizeClasses = {
