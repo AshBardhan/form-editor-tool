@@ -8,12 +8,12 @@ import {
   type TableRow,
 } from "@/components/ui/Table";
 import {
-  Modal,
-  ModalContent,
-  ModalDescription,
-  ModalHeader,
-  ModalTitle,
-} from "@/components/ui/Modal";
+  AppModal,
+  AppModalContent,
+  AppModalDescription,
+  AppModalHeader,
+  AppModalTitle,
+} from "@/design-system/app/AppModal";
 import { type FormBlock } from "@/lib/types/form";
 import { type FormSubmissionListItem } from "@/lib/types/analytics";
 import { getFieldBlockLabel } from "@/lib/utils/formUtils";
@@ -86,7 +86,7 @@ export function SubmissionsList({
           setSelectedSubmission(submission ?? null);
         }}
       />
-      <Modal
+      <AppModal
         open={selectedSubmission !== null}
         onOpenChange={(open) => {
           if (!open) {
@@ -94,16 +94,16 @@ export function SubmissionsList({
           }
         }}
       >
-        <ModalContent size="md">
-          <ModalHeader>
-            <ModalTitle>Submission</ModalTitle>
+        <AppModalContent size="md">
+          <AppModalHeader>
+            <AppModalTitle>Submission</AppModalTitle>
             {selectedSubmission && (
-              <ModalDescription>
+              <AppModalDescription>
                 {selectedSubmission.id} ·{" "}
                 {new Date(selectedSubmission.submittedAt).toLocaleString()}
-              </ModalDescription>
+              </AppModalDescription>
             )}
-          </ModalHeader>
+          </AppModalHeader>
           {selectedSubmission && (
             <div className="max-h-[60vh] overflow-y-auto px-6 pb-6">
               <SubmissionDetail
@@ -112,8 +112,8 @@ export function SubmissionsList({
               />
             </div>
           )}
-        </ModalContent>
-      </Modal>
+        </AppModalContent>
+      </AppModal>
     </>
   );
 }

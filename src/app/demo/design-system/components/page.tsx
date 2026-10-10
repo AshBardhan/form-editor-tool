@@ -23,6 +23,16 @@ import {
   AppMenuSeparator,
   AppMenuTrigger,
 } from "@/design-system/app/AppMenu";
+import {
+  AppModal,
+  AppModalClose,
+  AppModalContent,
+  AppModalDescription,
+  AppModalFooter,
+  AppModalHeader,
+  AppModalTitle,
+  AppModalTrigger,
+} from "@/design-system/app/AppModal";
 import { ChevronDown } from "lucide-react";
 import { AppBadge } from "@/design-system/app/AppBadge";
 import { AppMetric } from "@/design-system/app/AppMetric";
@@ -727,6 +737,148 @@ export default function ComponentsDemo() {
                             </AppMenuContent>
                           </AppMenu>
                         </div>
+                      </div>
+                    </div>
+                  </div>
+
+                  {/* Modal Component */}
+                  <div>
+                    <h3 className="text-lg font-semibold text-app-fg-heading mb-1">
+                      Modal
+                    </h3>
+                    <p className="text-sm text-app-fg-muted mb-4">
+                      Dialog for general content, and a confirmation dialog that
+                      stays open until an action is chosen
+                    </p>
+                    <div className="flex flex-col gap-6">
+                      <div>
+                        <h4 className="text-sm font-semibold text-app-fg-heading mb-2">
+                          Dialog
+                        </h4>
+                        <AppModal>
+                          <AppModalTrigger render={<AppButton />}>
+                            Open dialog
+                          </AppModalTrigger>
+                          <AppModalContent>
+                            <AppModalHeader>
+                              <AppModalTitle>Edit profile</AppModalTitle>
+                              <AppModalDescription>
+                                Update how your name appears on published forms.
+                              </AppModalDescription>
+                            </AppModalHeader>
+                            <p className="px-6 pt-4 text-sm text-app-fg-muted">
+                              Outside click and Escape both dismiss this dialog.
+                            </p>
+                            <AppModalFooter>
+                              <AppModalClose
+                                render={
+                                  <AppButton
+                                    variant="outline"
+                                    color="secondary"
+                                  />
+                                }
+                              >
+                                Cancel
+                              </AppModalClose>
+                              <AppModalClose render={<AppButton />}>
+                                Save
+                              </AppModalClose>
+                            </AppModalFooter>
+                          </AppModalContent>
+                        </AppModal>
+                      </div>
+
+                      <div>
+                        <h4 className="text-sm font-semibold text-app-fg-heading mb-2">
+                          Sizes
+                        </h4>
+                        <div className="flex items-center gap-2 flex-wrap">
+                          {(
+                            [
+                              ["sm", "Small"],
+                              ["md", "Medium"],
+                              ["lg", "Large"],
+                            ] as const
+                          ).map(([size, label]) => (
+                            <AppModal key={size}>
+                              <AppModalTrigger
+                                render={
+                                  <AppButton
+                                    variant="outline"
+                                    color="secondary"
+                                  />
+                                }
+                              >
+                                {label}
+                              </AppModalTrigger>
+                              <AppModalContent size={size}>
+                                <AppModalHeader>
+                                  <AppModalTitle>{label} dialog</AppModalTitle>
+                                  <AppModalDescription>
+                                    {size === "sm"
+                                      ? "384px wide."
+                                      : size === "md"
+                                        ? "672px wide."
+                                        : "1152px wide."}
+                                  </AppModalDescription>
+                                </AppModalHeader>
+                                <AppModalFooter>
+                                  <AppModalClose
+                                    render={
+                                      <AppButton
+                                        variant="outline"
+                                        color="secondary"
+                                      />
+                                    }
+                                  >
+                                    Close
+                                  </AppModalClose>
+                                </AppModalFooter>
+                              </AppModalContent>
+                            </AppModal>
+                          ))}
+                        </div>
+                      </div>
+
+                      <div>
+                        <h4 className="text-sm font-semibold text-app-fg-heading mb-2">
+                          Confirmation
+                        </h4>
+                        <AppModal type="alert">
+                          <AppModalTrigger
+                            render={<AppButton color="negative" />}
+                          >
+                            Delete form
+                          </AppModalTrigger>
+                          <AppModalContent size="sm">
+                            <AppModalHeader>
+                              <AppModalTitle>
+                                Delete this form?
+                              </AppModalTitle>
+                              <AppModalDescription>
+                                This action cannot be undone. Submissions and
+                                analytics for this form will be removed.
+                              </AppModalDescription>
+                            </AppModalHeader>
+                            <AppModalFooter>
+                              <AppModalClose
+                                render={
+                                  <AppButton
+                                    variant="outline"
+                                    color="secondary"
+                                  />
+                                }
+                              >
+                                Cancel
+                              </AppModalClose>
+                              <AppModalClose
+                                render={<AppButton color="negative" />}
+                              >
+                                Delete
+                              </AppModalClose>
+                            </AppModalFooter>
+                          </AppModalContent>
+                        </AppModal>
                       </div>
                     </div>
                   </div>

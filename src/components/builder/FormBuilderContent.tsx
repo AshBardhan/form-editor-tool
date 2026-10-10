@@ -28,13 +28,13 @@ import { CanvasForm } from "@/components/builder/canvas/CanvasForm";
 import { WidgetPanel } from "@/components/builder/widgets/WidgetPanel";
 import { ConfigurationPanel } from "@/components/builder/configuration/ConfigurationPanel";
 import {
-  Modal,
-  ModalContent,
-  ModalHeader,
-  ModalTitle,
-  ModalDescription,
-  ModalFooter,
-} from "@/components/ui/Modal";
+  AppModal,
+  AppModalContent,
+  AppModalDescription,
+  AppModalFooter,
+  AppModalHeader,
+  AppModalTitle,
+} from "@/design-system/app/AppModal";
 import { AppButton } from "@/design-system/app/AppButton";
 import { AppText } from "@/design-system/app/AppText";
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/Alert";
@@ -329,24 +329,25 @@ export const FormBuilderContent = (): JSX.Element => {
       )}
 
       {/* Delete Confirmation Modal */}
-      <Modal
+      <AppModal
+        type="alert"
         open={deleteConfirmation.isOpen}
         onOpenChange={(open) => !open && handleCancelDelete()}
       >
-        <ModalContent size="sm">
-          <ModalHeader className="pb-2">
+        <AppModalContent size="sm">
+          <AppModalHeader className="pb-2">
             <div className="flex gap-3">
               <AlertTriangle className="shrink-0 h-6 w-6 text-red-600 dark:text-red-500" />
               <div className="flex-1 flex flex-col gap-2">
-                <ModalTitle>Delete Block</ModalTitle>
-                <ModalDescription>
+                <AppModalTitle>Delete Block</AppModalTitle>
+                <AppModalDescription>
                   Are you sure you want to delete this block? This action cannot
                   be undone.
-                </ModalDescription>
+                </AppModalDescription>
               </div>
             </div>
-          </ModalHeader>
-          <ModalFooter>
+          </AppModalHeader>
+          <AppModalFooter>
             <AppButton
               variant="outline"
               color="secondary"
@@ -361,9 +362,9 @@ export const FormBuilderContent = (): JSX.Element => {
             >
               Delete
             </AppButton>
-          </ModalFooter>
-        </ModalContent>
-      </Modal>
+          </AppModalFooter>
+        </AppModalContent>
+      </AppModal>
     </div>
   );
 };

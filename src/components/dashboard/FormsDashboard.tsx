@@ -9,13 +9,13 @@ import { FormList } from "./FormList";
 import { PageContainer, PageHeader, PageContent } from "@/components/layout";
 import { cn } from "@/lib/utils/styleUtils";
 import {
-  Modal,
-  ModalContent,
-  ModalHeader,
-  ModalTitle,
-  ModalDescription,
-  ModalFooter,
-} from "@/components/ui/Modal";
+  AppModal,
+  AppModalContent,
+  AppModalDescription,
+  AppModalFooter,
+  AppModalHeader,
+  AppModalTitle,
+} from "@/design-system/app/AppModal";
 import { AppText } from "@/design-system/app/AppText";
 import { AppButton } from "@/design-system/app/AppButton";
 import { toast } from "@/design-system/app/AppToast";
@@ -180,24 +180,27 @@ export function FormsDashboard({ forms }: FormsDashboardProps) {
         </PageContainer>
       </PageContent>
 
-      <Modal
+      <AppModal
+        type="alert"
         open={!!formToDelete}
         onOpenChange={(open) => !open && setFormToDelete(null)}
       >
-        <ModalContent size="sm">
-          <ModalHeader className="pb-2">
+        <AppModalContent size="sm">
+          <AppModalHeader className="pb-2">
             <div className="flex gap-3">
               <AlertTriangle className="shrink-0 h-6 w-6 text-red-600 dark:text-red-500" />
               <div className="flex-1 flex flex-col gap-2">
-                <ModalTitle>Delete this form permanently?</ModalTitle>
-                <ModalDescription>
+                <AppModalTitle>
+                  Delete this form permanently?
+                </AppModalTitle>
+                <AppModalDescription>
                   This action cannot be undone. All submissions, field responses
                   and analytics data will be permanently removed.
-                </ModalDescription>
+                </AppModalDescription>
               </div>
             </div>
-          </ModalHeader>
-          <ModalFooter>
+          </AppModalHeader>
+          <AppModalFooter>
             <AppButton
               variant="outline"
               color="secondary"
@@ -216,9 +219,9 @@ export function FormsDashboard({ forms }: FormsDashboardProps) {
             >
               Delete permanently
             </AppButton>
-          </ModalFooter>
-        </ModalContent>
-      </Modal>
+          </AppModalFooter>
+        </AppModalContent>
+      </AppModal>
     </>
   );
 }

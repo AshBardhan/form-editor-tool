@@ -14,13 +14,13 @@ import {
   AppMenuTrigger,
 } from "@/design-system/app/AppMenu";
 import {
-  Modal,
-  ModalContent,
-  ModalDescription,
-  ModalFooter,
-  ModalHeader,
-  ModalTitle,
-} from "@/components/ui/Modal";
+  AppModal,
+  AppModalContent,
+  AppModalDescription,
+  AppModalFooter,
+  AppModalHeader,
+  AppModalTitle,
+} from "@/design-system/app/AppModal";
 import { DeviceSelector } from "@/components/layout/DeviceSelector";
 import { FormPreviewContent } from "@/components/preview";
 import { DeviceType } from "@/lib/constants/device";
@@ -297,36 +297,42 @@ export function FormHeader({ form }: FormHeaderProps) {
         basePath={`/forms/${form.slug}`}
       />
 
-      <Modal open={isPreviewOpen} onOpenChange={setIsPreviewOpen}>
-        <ModalContent size="lg">
-          <ModalHeader className="flex flex-row justify-center items-center gap-4 pb-6">
-            <ModalTitle>Form Preview</ModalTitle>
+      <AppModal open={isPreviewOpen} onOpenChange={setIsPreviewOpen}>
+        <AppModalContent size="lg">
+          <AppModalHeader className="flex flex-row justify-center items-center gap-4 pb-6">
+            <AppModalTitle>Form Preview</AppModalTitle>
             <DeviceSelector
               currentDevice={currentDevice}
               onDeviceChange={setCurrentDevice}
             />
-          </ModalHeader>
+          </AppModalHeader>
           <div className="max-h-[70vh] overflow-y-auto">
             <FormPreviewContent editable={true} currentDevice={currentDevice} />
           </div>
-        </ModalContent>
-      </Modal>
+        </AppModalContent>
+      </AppModal>
 
-      <Modal open={isDeleteConfirmOpen} onOpenChange={setIsDeleteConfirmOpen}>
-        <ModalContent size="sm">
-          <ModalHeader className="pb-2">
+      <AppModal
+        type="alert"
+        open={isDeleteConfirmOpen}
+        onOpenChange={setIsDeleteConfirmOpen}
+      >
+        <AppModalContent size="sm">
+          <AppModalHeader className="pb-2">
             <div className="flex gap-3">
               <AlertTriangle className="shrink-0 h-6 w-6 text-red-600 dark:text-red-500" />
               <div className="flex-1 flex flex-col gap-2">
-                <ModalTitle>Delete this form permanently?</ModalTitle>
-                <ModalDescription>
+                <AppModalTitle>
+                  Delete this form permanently?
+                </AppModalTitle>
+                <AppModalDescription>
                   This action cannot be undone. All submissions, field responses
                   and analytics data will be permanently removed.
-                </ModalDescription>
+                </AppModalDescription>
               </div>
             </div>
-          </ModalHeader>
-          <ModalFooter>
+          </AppModalHeader>
+          <AppModalFooter>
             <AppButton
               variant="outline"
               color="secondary"
@@ -346,29 +352,32 @@ export function FormHeader({ form }: FormHeaderProps) {
             >
               Delete permanently
             </AppButton>
-          </ModalFooter>
-        </ModalContent>
-      </Modal>
+          </AppModalFooter>
+        </AppModalContent>
+      </AppModal>
 
-      <Modal
+      <AppModal
+        type="alert"
         open={isClearReportConfirmOpen}
         onOpenChange={setIsClearReportConfirmOpen}
       >
-        <ModalContent size="sm">
-          <ModalHeader className="pb-2">
+        <AppModalContent size="sm">
+          <AppModalHeader className="pb-2">
             <div className="flex gap-3">
               <AlertTriangle className="shrink-0 h-6 w-6 text-amber-600 dark:text-amber-500" />
               <div className="flex-1 flex flex-col gap-2">
-                <ModalTitle>Clear all submission data?</ModalTitle>
-                <ModalDescription>
+                <AppModalTitle>
+                  Clear all submission data?
+                </AppModalTitle>
+                <AppModalDescription>
                   This will permanently delete all submissions and field
                   responses for this form. The form structure will remain
                   unchanged.
-                </ModalDescription>
+                </AppModalDescription>
               </div>
             </div>
-          </ModalHeader>
-          <ModalFooter>
+          </AppModalHeader>
+          <AppModalFooter>
             <AppButton
               variant="outline"
               color="secondary"
@@ -388,9 +397,9 @@ export function FormHeader({ form }: FormHeaderProps) {
             >
               Clear submissions
             </AppButton>
-          </ModalFooter>
-        </ModalContent>
-      </Modal>
+          </AppModalFooter>
+        </AppModalContent>
+      </AppModal>
     </>
   );
 }

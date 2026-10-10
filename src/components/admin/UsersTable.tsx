@@ -8,9 +8,15 @@
 import { useState } from "react";
 import { useRouter } from "next/navigation";
 import { AppBadge } from "@/design-system/app/AppBadge";
-import { Modal } from "@/components/ui/Modal";
+import {
+  AppModal,
+  AppModalContent,
+  AppModalDescription,
+  AppModalFooter,
+  AppModalHeader,
+  AppModalTitle,
+} from "@/design-system/app/AppModal";
 import { AppButton } from "@/design-system/app/AppButton";
-import { AppText } from "@/design-system/app/AppText";
 
 interface User {
   id: number;
@@ -154,18 +160,24 @@ export function UsersTable({ users }: UsersTableProps) {
       </div>
 
       {/* Delete Confirmation Modal */}
-      <Modal open={showDeleteModal} onOpenChange={setShowDeleteModal}>
-        <div className="space-y-4">
-          <AppText variant="h3">Delete User</AppText>
-          <AppText variant="p" className="text-app-fg-muted">
-            Are you sure you want to delete{" "}
-            <strong>{selectedUser?.email}</strong>?
-          </AppText>
-          <AppText variant="p" className="text-sm text-app-error">
+      <AppModal
+        type="alert"
+        open={showDeleteModal}
+        onOpenChange={setShowDeleteModal}
+      >
+        <AppModalContent size="sm">
+          <AppModalHeader>
+            <AppModalTitle>Delete User</AppModalTitle>
+            <AppModalDescription>
+              Are you sure you want to delete{" "}
+              <strong>{selectedUser?.email}</strong>?
+            </AppModalDescription>
+          </AppModalHeader>
+          <p className="px-6 text-sm text-app-error">
             This will permanently delete the user and all their forms,
             submissions, and data.
-          </AppText>
-          <div className="flex justify-end gap-3">
+          </p>
+          <AppModalFooter>
             <AppButton
               variant="outline"
               color="secondary"
@@ -182,9 +194,9 @@ export function UsersTable({ users }: UsersTableProps) {
             >
               {isDeleting ? "Deleting..." : "Delete User"}
             </AppButton>
-          </div>
-        </div>
-      </Modal>
+          </AppModalFooter>
+        </AppModalContent>
+      </AppModal>
     </>
   );
 }
