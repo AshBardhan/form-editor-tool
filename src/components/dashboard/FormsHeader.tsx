@@ -7,7 +7,7 @@ import { AppButton } from "@/design-system/app/AppButton";
 import { AppInput } from "@/design-system/app/AppInput";
 import { AppSelect } from "@/design-system/app/AppSelect";
 import { useRouter } from "next/navigation";
-import { toast } from "@/components/ui/Toast";
+import { toast } from "@/design-system/app/AppToast";
 import { ApiResponse } from "@/lib/types/api";
 import { FormConfig, FormFilterStatus } from "@/lib/types/form";
 import { FormFilterOptions } from "@/lib/constants/form";
@@ -54,10 +54,11 @@ export function FormsHeader({ filter = {} }: FormsHeaderProps) {
         throw new Error(result.error?.message || "Failed to create form");
       }
 
-      toast.success("Form has been successfully created");
+      toast.success({ title: "Form has been successfully created" });
       router.push(`/forms/${createdSlug}/builder`);
     } catch (error) {
-      toast.error("Failed to create form", {
+      toast.error({
+        title: "Failed to create form",
         description:
           error instanceof Error
             ? error.message

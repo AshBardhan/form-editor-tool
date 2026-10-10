@@ -41,6 +41,7 @@ import { AppThemeSwitcher } from "@/components/layout/AppThemeSwitcher";
 import { FORM_THEMES, FORM_THEME_LABELS } from "@/lib/constants/themes";
 import type { FormTheme } from "@/lib/types/themes";
 import { AppSkeleton } from "@/design-system/app/AppSkeleton";
+import { toast } from "@/design-system/app/AppToast";
 
 const SELECT_OPTIONS = [
   { value: "draft", label: "Draft" },
@@ -726,6 +727,89 @@ export default function ComponentsDemo() {
                             </AppMenuContent>
                           </AppMenu>
                         </div>
+                      </div>
+                    </div>
+                  </div>
+
+                  {/* Toast Component */}
+                  <div>
+                    <h3 className="text-lg font-semibold text-app-fg-heading mb-1">
+                      Toast
+                    </h3>
+                    <p className="text-sm text-app-fg-muted mb-4">
+                      Stacked notifications with success, error, info, and
+                      warning variants
+                    </p>
+                    <div className="flex flex-col gap-6">
+                      <div>
+                        <h4 className="text-sm font-semibold text-app-fg-heading mb-2">
+                          Variants
+                        </h4>
+                        <div className="flex items-center gap-2 flex-wrap">
+                          <AppButton
+                            onClick={() =>
+                              toast.success({
+                                title: "Changes saved",
+                                description: "Your form settings were updated.",
+                              })
+                            }
+                          >
+                            Success
+                          </AppButton>
+                          <AppButton
+                            onClick={() =>
+                              toast.error({
+                                title: "Save failed",
+                                description:
+                                  "We could not update the form. Try again.",
+                              })
+                            }
+                          >
+                            Error
+                          </AppButton>
+                          <AppButton
+                            onClick={() =>
+                              toast.info({
+                                title: "New comment received",
+                                description: "Alex left feedback on this form.",
+                              })
+                            }
+                          >
+                            Info
+                          </AppButton>
+                          <AppButton
+                            onClick={() =>
+                              toast.warning({
+                                title: "Unsaved changes",
+                                description:
+                                  "Leave this page and your edits will be lost.",
+                              })
+                            }
+                          >
+                            Warning
+                          </AppButton>
+                        </div>
+                      </div>
+
+                      <div>
+                        <h4 className="text-sm font-semibold text-app-fg-heading mb-2">
+                          Action
+                        </h4>
+                        <AppButton
+                          onClick={() =>
+                            toast.error({
+                              title: "Failed to delete",
+                              description: "The form could not be removed.",
+                              action: {
+                                label: "Retry",
+                                onClick: () =>
+                                  toast.info({ title: "Retrying..." }),
+                              },
+                            })
+                          }
+                        >
+                          With action
+                        </AppButton>
                       </div>
                     </div>
                   </div>

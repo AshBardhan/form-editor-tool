@@ -18,7 +18,7 @@ import {
 } from "@/components/ui/Modal";
 import { AppText } from "@/design-system/app/AppText";
 import { AppButton } from "@/design-system/app/AppButton";
-import { toast } from "@/components/ui/Toast";
+import { toast } from "@/design-system/app/AppToast";
 import { ApiResponse } from "@/lib/types/api";
 import { FormConfig } from "@/lib/types/form";
 
@@ -80,10 +80,13 @@ export function FormsDashboard({ forms }: FormsDashboardProps) {
         archived: "Form archived",
       };
 
-      toast.success(statusMessages[nextStatus] || "Status updated");
+      toast.success({
+        title: statusMessages[nextStatus] || "Status updated",
+      });
       router.refresh();
     } catch (error) {
-      toast.error("Status update failed", {
+      toast.error({
+        title: "Status update failed",
         description:
           error instanceof Error
             ? error.message
@@ -116,7 +119,8 @@ export function FormsDashboard({ forms }: FormsDashboardProps) {
       }
 
       const deletedCount = result.data?.deletedSubmissions || 0;
-      toast.success("Form permanently deleted", {
+      toast.success({
+        title: "Form permanently deleted",
         description:
           deletedCount > 0
             ? `Deleted form and ${deletedCount} submission${deletedCount > 1 ? "s" : ""}.`
@@ -125,7 +129,8 @@ export function FormsDashboard({ forms }: FormsDashboardProps) {
       setFormToDelete(null);
       router.refresh();
     } catch (error) {
-      toast.error("Delete failed", {
+      toast.error({
+        title: "Delete failed",
         description:
           error instanceof Error
             ? error.message

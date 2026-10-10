@@ -40,7 +40,7 @@ import { AppText } from "@/design-system/app/AppText";
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/Alert";
 import { AlertTriangle } from "lucide-react";
 import { useAutoSave } from "@/lib/hooks/useAutoSave";
-import { toast } from "@/components/ui/Toast";
+import { toast } from "@/design-system/app/AppToast";
 import { ApiResponse } from "@/lib/types/api";
 import { FormThemeContainer } from "@/design-system/containers/FormThemeContainer";
 
@@ -87,7 +87,8 @@ export const FormBuilderContent = (): JSX.Element => {
 
   // Auto-save callback: handles API call and toast notifications
   const handleSave = useCallback(async (data: FormConfig) => {
-    const toastId = toast.info("Saving changes...", {
+    const toastId = toast.info({
+      title: "Saving changes...",
       duration: Infinity,
       dismissible: false,
     });

@@ -1,7 +1,7 @@
 import "./globals.css";
 
 import type { Metadata, Viewport } from "next";
-import { Toaster } from "@/components/ui/Toast";
+import { AppToastProvider } from "@/design-system/app/AppToast";
 import { APP_THEME_STORAGE_KEY } from "@/lib/stores/UIStateStore";
 import { DEFAULT_APP_THEME } from "@/lib/constants/themes";
 
@@ -28,8 +28,7 @@ export default function RootLayout({
         <script dangerouslySetInnerHTML={{ __html: appThemeScript }} />
       </head>
       <body suppressHydrationWarning>
-        {children}
-        <Toaster position="bottom-center" />
+        <AppToastProvider>{children}</AppToastProvider>
       </body>
     </html>
   );

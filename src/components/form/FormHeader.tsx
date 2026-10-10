@@ -4,7 +4,7 @@ import { useState } from "react";
 import { useRouter, usePathname } from "next/navigation";
 import { AppBadge } from "@/design-system/app/AppBadge";
 import { NavigationTabs } from "@/components/ui/NavigationTabs";
-import { toast } from "@/components/ui/Toast";
+import { toast } from "@/design-system/app/AppToast";
 import { ApiResponse } from "@/lib/types/api";
 import { FormConfig, FormStatus } from "@/lib/types/form";
 import {
@@ -98,7 +98,8 @@ export function FormHeader({ form }: FormHeaderProps) {
       }
 
       const deletedCount = result.data?.deletedSubmissions || 0;
-      toast.success("Form permanently deleted", {
+      toast.success({
+        title: "Form permanently deleted",
         description:
           deletedCount > 0
             ? `Deleted form and ${deletedCount} submission${deletedCount > 1 ? "s" : ""}.`
@@ -107,7 +108,8 @@ export function FormHeader({ form }: FormHeaderProps) {
       router.push("/forms");
       router.refresh();
     } catch (error) {
-      toast.error("Delete failed", {
+      toast.error({
+        title: "Delete failed",
         description:
           error instanceof Error
             ? error.message
@@ -135,12 +137,14 @@ export function FormHeader({ form }: FormHeaderProps) {
       }
 
       const deletedCount = result.data?.deletedSubmissions || 0;
-      toast.success("Submissions cleared successfully", {
+      toast.success({
+        title: "Submissions cleared successfully",
         description: `Deleted ${deletedCount} submission${deletedCount !== 1 ? "s" : ""} and all field responses.`,
       });
       router.refresh();
     } catch (error) {
-      toast.error("Clear submissions failed", {
+      toast.error({
+        title: "Clear submissions failed",
         description:
           error instanceof Error
             ? error.message
@@ -153,7 +157,7 @@ export function FormHeader({ form }: FormHeaderProps) {
 
   const handleUpdateFormStatus = async (newStatus: FormStatus) => {
     if (form.status === newStatus) {
-      toast.info("Form status is already set to " + newStatus);
+      toast.info({ title: "Form status is already set to " + newStatus });
       return;
     }
     setIsSubmitting(true);
@@ -175,10 +179,13 @@ export function FormHeader({ form }: FormHeaderProps) {
         archived: "Form archived",
       };
 
-      toast.success(statusMessages[newStatus] || "Status updated");
+      toast.success({
+        title: statusMessages[newStatus] || "Status updated",
+      });
       router.refresh();
     } catch (error) {
-      toast.error("Status update failed", {
+      toast.error({
+        title: "Status update failed",
         description:
           error instanceof Error
             ? error.message

@@ -9,7 +9,7 @@ import { useFormConfigStore, useFormDataStore } from "@/lib/stores";
 import { getFieldKey, isFieldBasedBlock } from "@/lib/utils/formUtils";
 import { validateFormBlock } from "@/lib/utils/formValidationUtils";
 import { DeviceList, DeviceType } from "@/lib/constants/device";
-import { toast } from "@/components/ui/Toast";
+import { toast } from "@/design-system/app/AppToast";
 import { FormThemeContainer } from "@/design-system/containers/FormThemeContainer";
 
 interface FormPreviewContentProps {
@@ -111,7 +111,8 @@ export const FormPreviewContent = ({
         0,
       );
 
-      toast.error("Form validation failed", {
+      toast.error({
+        title: "Form validation failed",
         description: `Please fix ${errorCount} error${errorCount > 1 ? "s" : ""} before submitting.`,
       });
     }
@@ -135,11 +136,13 @@ export const FormPreviewContent = ({
     setBlockErrors({});
 
     try {
-      toast.success("Form submitted successfully!", {
+      toast.success({
+        title: "Form submitted successfully!",
         description: "Your response has been recorded.",
       });
     } catch (error) {
-      toast.error("Submission failed", {
+      toast.error({
+        title: "Submission failed",
         description: "An unexpected error occurred. Please try again.",
       });
       console.error("Form submission error:", error);
@@ -154,7 +157,8 @@ export const FormPreviewContent = ({
     resetFormData();
     setBlockErrors({});
 
-    toast.info("Form reset", {
+    toast.info({
+      title: "Form reset",
       description: "All fields have been cleared.",
     });
   };
