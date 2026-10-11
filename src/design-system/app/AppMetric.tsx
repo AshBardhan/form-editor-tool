@@ -1,6 +1,6 @@
 "use client";
 
-import clsx from "clsx";
+import { cn } from "@/lib/utils/styleUtils";
 
 interface AppMetricProps {
   direction?: "row" | "column";
@@ -40,14 +40,14 @@ export function AppMetric({
 
   return (
     <div
-      className={clsx(
+      className={cn(
         "flex",
         direction === "row" ? "flex-row items-baseline gap-1" : "flex-col",
         className,
       )}
     >
       <div
-        className={clsx(
+        className={cn(
           "text-app-metric-label",
           labelSizeClasses[size],
           reverse && "order-2",
@@ -56,7 +56,7 @@ export function AppMetric({
         {label}
       </div>
       <div
-        className={clsx(
+        className={cn(
           "font-semibold text-app-metric-value leading-none",
           valueSizeClasses[size],
         )}

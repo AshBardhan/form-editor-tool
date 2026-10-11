@@ -37,10 +37,7 @@ export function ModalRoot({ ...props }: BaseDialog.Root.Props) {
   return <BaseDialog.Root data-slot="modal-root" {...props} />;
 }
 
-export function ModalTrigger({
-  disabled,
-  ...props
-}: BaseDialog.Trigger.Props) {
+export function ModalTrigger({ disabled, ...props }: BaseDialog.Trigger.Props) {
   return (
     <BaseDialog.Trigger
       disabled={disabled}

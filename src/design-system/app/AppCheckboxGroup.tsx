@@ -90,13 +90,13 @@ type CheckboxOrientation = NonNullable<
   VariantProps<typeof optionsVariants>["orientation"]
 >;
 
-export type AppCheckboxOption = {
+export interface AppCheckboxOption {
   value: string;
   label: ReactNode;
   disabled?: boolean;
-};
+}
 
-export type AppCheckboxGroupProps = {
+export interface AppCheckboxGroupProps {
   label?: ReactNode;
   options: AppCheckboxOption[];
   value?: string[];
@@ -109,7 +109,7 @@ export type AppCheckboxGroupProps = {
   name?: string;
   className?: string;
   "aria-invalid"?: boolean | "true" | "false";
-};
+}
 
 function isInvalid(ariaInvalid: AppCheckboxGroupProps["aria-invalid"]) {
   return ariaInvalid === true || ariaInvalid === "true";

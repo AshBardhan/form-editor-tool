@@ -150,6 +150,12 @@ const buttonVariants = cva(
   },
 );
 
+export interface AppButtonProps
+  extends Omit<ComponentProps<"button">, "color">,
+    VariantProps<typeof buttonVariants> {
+  className?: string;
+}
+
 export function AppButton({
   className,
   variant,
@@ -159,8 +165,7 @@ export function AppButton({
   children,
   ref,
   ...props
-}: Omit<ComponentProps<"button">, "color"> &
-  VariantProps<typeof buttonVariants>) {
+}: AppButtonProps) {
   const buttonClassName = cn(
     buttonVariants({ variant, size, color, className }),
   );

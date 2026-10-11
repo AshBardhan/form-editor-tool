@@ -89,13 +89,13 @@ type RadioOrientation = NonNullable<
   VariantProps<typeof optionsVariants>["orientation"]
 >;
 
-export type AppRadioOption = {
+export interface AppRadioOption {
   value: string;
   label: ReactNode;
   disabled?: boolean;
-};
+}
 
-export type AppRadioGroupProps = {
+export interface AppRadioGroupProps {
   label?: ReactNode;
   options: AppRadioOption[];
   value?: string;
@@ -108,7 +108,7 @@ export type AppRadioGroupProps = {
   name?: string;
   className?: string;
   "aria-invalid"?: boolean | "true" | "false";
-};
+}
 
 function isInvalid(ariaInvalid: AppRadioGroupProps["aria-invalid"]) {
   return ariaInvalid === true || ariaInvalid === "true";

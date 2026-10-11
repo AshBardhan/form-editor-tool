@@ -1,11 +1,11 @@
 import { cn } from "@/lib/utils/styleUtils";
 import { FormText } from "@/design-system/form/FormText";
 
-export type FormErrorProps = {
+export interface FormErrorProps {
   errors?: string[];
   id?: string;
   className?: string;
-};
+}
 
 export function FormError({ errors = [], id, className }: FormErrorProps) {
   if (errors.length === 0) return null;

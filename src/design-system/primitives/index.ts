@@ -75,10 +75,11 @@ export {
 
 // Label
 export { Label } from "./Label";
+export type { LabelProps } from "./Label";
 
 // Text
 export { Text, TEXT_VARIANTS } from "./Text";
-export type { TextVariant } from "./Text";
+export type { TextProps, TextVariant } from "./Text";
 
 // Switch
 export { Switch, SwitchThumb } from "./Switch";

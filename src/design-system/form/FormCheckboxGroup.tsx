@@ -86,13 +86,13 @@ type CheckboxOrientation = NonNullable<
   VariantProps<typeof optionsVariants>["orientation"]
 >;
 
-export type FormCheckboxOption = {
+export interface FormCheckboxOption {
   value: string;
   label: ReactNode;
   disabled?: boolean;
-};
+}
 
-export type FormCheckboxGroupProps = {
+export interface FormCheckboxGroupProps {
   label?: ReactNode;
   options: FormCheckboxOption[];
   value?: string[];
@@ -107,7 +107,7 @@ export type FormCheckboxGroupProps = {
   tabIndex?: number;
   "aria-invalid"?: boolean | "true" | "false";
   "aria-describedby"?: string;
-};
+}
 
 function isInvalid(ariaInvalid: FormCheckboxGroupProps["aria-invalid"]) {
   return ariaInvalid === true || ariaInvalid === "true";

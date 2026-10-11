@@ -9,6 +9,7 @@ import {
 import { X } from "lucide-react";
 import { Dialog as BaseDialog } from "@base-ui/react/dialog";
 import { AlertDialog as BaseAlertDialog } from "@base-ui/react/alert-dialog";
+import { cva, type VariantProps } from "class-variance-authority";
 import { cn } from "@/lib/utils/styleUtils";
 import {
   AlertModalBackdrop,
@@ -30,7 +31,6 @@ import {
 } from "@/design-system/primitives";
 
 export type AppModalType = "base" | "alert";
-export type AppModalSize = "sm" | "md" | "lg";
 
 const AppModalTypeContext = createContext<AppModalType>("base");
 
@@ -41,14 +41,25 @@ function useAppModalType() {
 const modalBackdropClass =
   "fixed inset-0 z-50 bg-black/50 backdrop-blur-sm transition-opacity duration-150 data-ending-style:opacity-0 data-starting-style:opacity-0";
 
-const modalPopupClass =
-  "fixed top-1/2 left-1/2 z-50 w-[calc(100%-2rem)] -translate-x-1/2 -translate-y-1/2 overflow-hidden rounded-lg border border-app-border-subtle bg-app-surface text-app-fg shadow-lg outline-none transition-[opacity,scale] duration-150 ease-out data-ending-style:scale-95 data-ending-style:opacity-0 data-starting-style:scale-95 data-starting-style:opacity-0";
+const modalPopupVariants = cva(
+  "fixed top-1/2 left-1/2 z-50 w-[calc(100%-2rem)] -translate-x-1/2 -translate-y-1/2 overflow-hidden rounded-lg border border-app-border-subtle bg-app-surface text-app-fg shadow-lg outline-none transition-[opacity,scale] duration-150 ease-out data-ending-style:scale-95 data-ending-style:opacity-0 data-starting-style:scale-95 data-starting-style:opacity-0",
+  {
+    variants: {
+      size: {
+        sm: "max-w-sm",
+        md: "max-w-2xl",
+        lg: "max-w-6xl",
+      },
+    },
+    defaultVariants: {
+      size: "md",
+    },
+  },
+);
 
-const modalSizeClass: Record<AppModalSize, string> = {
-  sm: "max-w-sm",
-  md: "max-w-2xl",
-  lg: "max-w-6xl",
-};
+export type AppModalSize = NonNullable<
+  VariantProps<typeof modalPopupVariants>["size"]
+>;
 
 const modalTriggerClass =
   "inline-flex h-8 cursor-pointer items-center justify-center gap-1.5 rounded-md border border-app-border-strong/30 bg-transparent px-3 text-sm leading-none font-medium whitespace-nowrap text-app-fg select-none outline-none transition-colors hover:bg-app-surface-muted focus-visible:ring-[3px] focus-visible:ring-app-border-strong data-disabled:pointer-events-none data-disabled:opacity-50 data-popup-open:bg-app-surface-muted";
@@ -66,17 +77,17 @@ const modalTitleClass =
 
 const modalDescriptionClass = "text-sm leading-5 text-app-fg-muted";
 
-type AppModalBaseProps = BaseDialog.Root.Props & {
+interface AppModalBaseProps extends BaseDialog.Root.Props {
   /**
    * `base` dismisses on outside press. `alert` keeps the dialog open until an explicit action.
    * @default "base"
    */
   type?: "base";
-};
+}
 
-type AppModalAlertProps = BaseAlertDialog.Root.Props & {
+interface AppModalAlertProps extends BaseAlertDialog.Root.Props {
   type: "alert";
-};
+}
 
 export type AppModalProps = AppModalBaseProps | AppModalAlertProps;
 
@@ -114,7 +125,10 @@ export function AppModalTrigger({
   ...props
 }: AppModalTriggerProps) {
   const type = useAppModalType();
-  const triggerClassName = cn(render ? undefined : modalTriggerClass, className);
+  const triggerClassName = cn(
+    render ? undefined : modalTriggerClass,
+    className,
+  );
 
   if (type === "alert") {
     return (
@@ -137,18 +151,19 @@ export function AppModalTrigger({
   );
 }
 
-export type AppModalContentProps = BaseDialog.Popup.Props & {
-  size?: AppModalSize;
+export interface AppModalContentProps
+  extends BaseDialog.Popup.Props,
+    VariantProps<typeof modalPopupVariants> {
   /** Renders the corner close button. @default true */
   showClose?: boolean;
-};
+}
 
-type ModalSurfaceProps = AppModalContentProps & {
+interface ModalSurfaceProps extends AppModalContentProps {
   Portal: ComponentType<BaseDialog.Portal.Props>;
   Backdrop: ComponentType<BaseDialog.Backdrop.Props>;
   Popup: ComponentType<BaseDialog.Popup.Props>;
   Close: ComponentType<BaseDialog.Close.Props>;
-};
+}
 
 function AppModalSurface({
   Portal,
@@ -163,13 +178,10 @@ function AppModalSurface({
 }: ModalSurfaceProps) {
   return (
     <Portal>
-      <Backdrop
-        data-slot="app-modal-backdrop"
-        className={modalBackdropClass}
-      />
+      <Backdrop data-slot="app-modal-backdrop" className={modalBackdropClass} />
       <Popup
         data-slot="app-modal-popup"
-        className={cn(modalPopupClass, modalSizeClass[size], className)}
+        className={cn(modalPopupVariants({ size, className }))}
         {...props}
       >
         {children}

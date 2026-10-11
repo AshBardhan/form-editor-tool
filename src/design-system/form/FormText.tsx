@@ -1,7 +1,6 @@
-import type { ComponentProps } from "react";
-import { cva, type VariantProps } from "class-variance-authority";
+import { cva } from "class-variance-authority";
 import { cn } from "@/lib/utils/styleUtils";
-import { Text, type TextVariant } from "@/design-system/primitives";
+import { Text, type TextProps } from "@/design-system/primitives";
 
 /**
  * Form text scale. Sizes follow the nearest container (`@sm`, `@5xl`),
@@ -27,14 +26,15 @@ const textVariants = cva("", {
   },
 });
 
+export interface FormTextProps extends TextProps {
+  className?: string;
+}
+
 export function FormText({
   className,
   variant = "div",
   ...props
-}: Omit<ComponentProps<typeof Text>, "variant"> &
-  VariantProps<typeof textVariants> & {
-    variant?: TextVariant;
-  }) {
+}: FormTextProps) {
   return (
     <Text
       variant={variant}

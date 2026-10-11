@@ -1,5 +1,7 @@
 "use client";
 
+import type { LabelHTMLAttributes } from "react";
+
 /**
  * Label Primitive
  *
@@ -10,13 +12,15 @@
  * - data-required: Set when the label marks a required field
  * - data-invalid: Set when the associated control has a validation error
  */
+export interface LabelProps extends LabelHTMLAttributes<HTMLLabelElement> {
+  required?: boolean;
+}
+
 export function Label({
   required,
   "aria-invalid": ariaInvalid,
   ...props
-}: React.LabelHTMLAttributes<HTMLLabelElement> & {
-  required?: boolean;
-}) {
+}: LabelProps) {
   return (
     <label
       aria-invalid={ariaInvalid}

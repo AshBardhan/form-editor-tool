@@ -1,11 +1,9 @@
-import type { ComponentProps, ReactNode } from "react";
+import type { ComponentProps } from "react";
 import type { FormTheme } from "@/lib/types/themes";
 import { cn } from "@/lib/utils/styleUtils";
 
-interface FormThemeContainerProps {
+interface FormThemeContainerProps extends ComponentProps<"div"> {
   theme: FormTheme;
-  className?: string;
-  children: ReactNode;
 }
 
 export function FormThemeContainer({
@@ -13,7 +11,7 @@ export function FormThemeContainer({
   className,
   children,
   ...props
-}: ComponentProps<"div"> & FormThemeContainerProps) {
+}: FormThemeContainerProps) {
   return (
     <div
       data-form-theme={theme}

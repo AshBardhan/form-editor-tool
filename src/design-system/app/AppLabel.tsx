@@ -1,7 +1,6 @@
-import { ComponentProps } from "react";
 import { cva, VariantProps } from "class-variance-authority";
 import { cn } from "@/lib/utils/styleUtils";
-import { Label } from "@/design-system/primitives";
+import { Label, type LabelProps } from "@/design-system/primitives";
 
 const labelVariants = cva(
   "inline-flex items-center font-medium text-app-fg transition-colors peer-disabled:cursor-not-allowed peer-disabled:opacity-70 data-[invalid]:text-app-error",
@@ -19,16 +18,17 @@ const labelVariants = cva(
   },
 );
 
+export interface AppLabelProps
+  extends LabelProps,
+    VariantProps<typeof labelVariants> {}
+
 export function AppLabel({
   className,
   size,
   required,
   children,
   ...props
-}: ComponentProps<"label"> &
-  VariantProps<typeof labelVariants> & {
-    required?: boolean;
-  }) {
+}: AppLabelProps) {
   return (
     <Label
       required={required}

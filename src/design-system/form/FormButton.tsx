@@ -59,6 +59,12 @@ const buttonVariants = cva(
   },
 );
 
+export interface FormButtonProps
+  extends Omit<ComponentProps<"button">, "color">,
+    VariantProps<typeof buttonVariants> {
+  className?: string;
+}
+
 export function FormButton({
   className,
   variant,
@@ -67,7 +73,7 @@ export function FormButton({
   type = "button",
   children,
   ...props
-}: ComponentProps<"button"> & VariantProps<typeof buttonVariants>) {
+}: FormButtonProps) {
   const buttonClassName = cn(
     buttonVariants({ variant, size, color, className }),
   );

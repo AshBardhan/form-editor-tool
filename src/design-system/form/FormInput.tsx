@@ -18,6 +18,10 @@ const inputVariants = cva(
   },
 );
 
+export interface FormInputProps
+  extends ComponentProps<"input">,
+    VariantProps<typeof inputVariants> {}
+
 export function FormInput({
   className,
   inputSize,
@@ -25,7 +29,7 @@ export function FormInput({
   disabled,
   "aria-invalid": ariaInvalid,
   ...props
-}: ComponentProps<"input"> & VariantProps<typeof inputVariants>) {
+}: FormInputProps) {
   const inputClassName = cn(inputVariants({ inputSize, className }), {
     "border-form-error focus-visible:ring-form-error/30 data-[invalid]:border-form-error data-[invalid]:focus-visible:ring-form-error/30":
       ariaInvalid,

@@ -1,6 +1,6 @@
 "use client";
 
-import clsx from "clsx";
+import { cn } from "@/lib/utils/styleUtils";
 
 interface AppSkeletonProps {
   width?: number | string;
@@ -16,7 +16,7 @@ export function AppSkeleton({ width, height, className }: AppSkeletonProps) {
 
   return (
     <div
-      className={clsx(
+      className={cn(
         "w-full bg-app-fg-muted/30 rounded animate-pulse",
         className,
       )}

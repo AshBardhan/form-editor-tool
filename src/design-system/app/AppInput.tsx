@@ -19,6 +19,10 @@ const inputVariants = cva(
   },
 );
 
+export interface AppInputProps
+  extends ComponentProps<"input">,
+    VariantProps<typeof inputVariants> {}
+
 export function AppInput({
   className,
   inputSize,
@@ -26,7 +30,7 @@ export function AppInput({
   disabled,
   "aria-invalid": ariaInvalid,
   ...props
-}: ComponentProps<"input"> & VariantProps<typeof inputVariants>) {
+}: AppInputProps) {
   const inputClassName = cn(inputVariants({ inputSize, className }), {
     "border-app-error focus-visible:ring-app-error/30 data-[invalid]:border-app-error data-[invalid]:focus-visible:ring-app-error/30":
       ariaInvalid,

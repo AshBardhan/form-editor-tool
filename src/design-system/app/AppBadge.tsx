@@ -1,27 +1,34 @@
-import clsx from "clsx";
+import { cva, type VariantProps } from "class-variance-authority";
+import { cn } from "@/lib/utils/styleUtils";
 
-type StatusVariant = "success" | "warning" | "error" | "info" | "neutral";
+const badgeVariants = cva(
+  "inline-flex items-center text-center rounded-full font-medium border",
+  {
+    variants: {
+      variant: {
+        success: "bg-app-success-subtle text-app-success border-app-success",
+        warning: "bg-app-warning-subtle text-app-warning border-app-warning",
+        error: "bg-app-error-subtle text-app-error border-app-error",
+        info: "bg-app-info-subtle text-app-info border-app-info",
+        neutral: "bg-app-surface-muted text-app-fg border-app-border-strong",
+      },
+      size: {
+        sm: "px-1 py-0.5 text-xs sm:px-2 sm:py-0.5",
+        md: "px-2 py-0.5 text-xs sm:px-2.5 sm:py-0.5",
+        lg: "px-3 py-1 text-sm sm:px-3",
+      },
+    },
+    defaultVariants: {
+      variant: "neutral",
+      size: "md",
+    },
+  },
+);
 
-interface AppBadgeProps {
+interface AppBadgeProps extends VariantProps<typeof badgeVariants> {
   label: string;
-  variant?: StatusVariant;
-  size?: "sm" | "md" | "lg";
   className?: string;
 }
-
-const variantClasses = {
-  success: "bg-app-success-subtle text-app-success border-app-success",
-  warning: "bg-app-warning-subtle text-app-warning border-app-warning",
-  error: "bg-app-error-subtle text-app-error border-app-error",
-  info: "bg-app-info-subtle text-app-info border-app-info",
-  neutral: "bg-app-surface-muted text-app-fg border-app-border-strong",
-};
-
-const sizeClasses = {
-  sm: "sm:px-2 sm:py-0.5 px-1 py-0.5 text-xs",
-  md: "sm:px-2.5 sm:py-0.5 px-2 py-0.5 text-xs",
-  lg: "sm:px-3 sm:py-1 px-3 py-1 text-sm",
-};
 
 export function AppBadge({
   label,
@@ -30,14 +37,7 @@ export function AppBadge({
   className,
 }: AppBadgeProps) {
   return (
-    <span
-      className={clsx(
-        "inline-flex items-center text-center rounded-full font-medium border",
-        variantClasses[variant],
-        sizeClasses[size],
-        className,
-      )}
-    >
+    <span className={cn(badgeVariants({ variant, size, className }))}>
       {label}
     </span>
   );

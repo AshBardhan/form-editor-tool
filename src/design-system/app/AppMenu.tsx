@@ -77,12 +77,12 @@ export function AppMenuTrigger({
   );
 }
 
-export type AppMenuContentProps = BaseMenu.Popup.Props & {
+export interface AppMenuContentProps extends BaseMenu.Popup.Props {
   align?: BaseMenu.Positioner.Props["align"];
   side?: BaseMenu.Positioner.Props["side"];
   sideOffset?: BaseMenu.Positioner.Props["sideOffset"];
   alignOffset?: BaseMenu.Positioner.Props["alignOffset"];
-};
+}
 
 /**
  * AppMenuContent - Portaled, positioned menu surface.
@@ -115,13 +115,14 @@ export function AppMenuContent({
   );
 }
 
-export type AppMenuItemProps = BaseMenu.Item.Props & {
+export interface AppMenuItemProps
+  extends Omit<BaseMenu.Item.Props, "onSelect"> {
   /**
    * Called when the item is chosen.
    * Call `preventDefault()` on the event to keep the menu open.
    */
   onSelect?: (event: Event) => void;
-};
+}
 
 /**
  * AppMenuItem - Themed menu action.

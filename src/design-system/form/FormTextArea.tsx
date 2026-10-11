@@ -2,12 +2,14 @@ import { ComponentProps } from "react";
 import { cn } from "@/lib/utils/styleUtils";
 import { TextArea } from "@/design-system/primitives";
 
+export type FormTextAreaProps = ComponentProps<"textarea">;
+
 export function FormTextArea({
   className,
   disabled,
   "aria-invalid": ariaInvalid,
   ...props
-}: ComponentProps<"textarea"> & {}) {
+}: FormTextAreaProps) {
   const textareaClassName = cn(
     "w-full font-medium transition-all outline-none disabled:opacity-50 disabled:cursor-not-allowed placeholder:text-form-field-placeholder",
     "focus-visible:ring-[3px] focus-visible:ring-offset-0 border border-form-field-border bg-form-field text-form-fg rounded-md px-3 py-2 text-sm leading-5 resize-vertical min-h-24",

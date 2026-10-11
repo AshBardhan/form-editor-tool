@@ -1,7 +1,6 @@
-import type { ComponentProps } from "react";
-import { cva, type VariantProps } from "class-variance-authority";
+import { cva } from "class-variance-authority";
 import { cn } from "@/lib/utils/styleUtils";
-import { Text, type TextVariant } from "@/design-system/primitives";
+import { Text, type TextProps } from "@/design-system/primitives";
 
 /**
  * App text scale. Sizes follow the viewport (`sm`, `2xl`).
@@ -26,14 +25,15 @@ const textVariants = cva("", {
   },
 });
 
+export interface AppTextProps extends TextProps {
+  className?: string;
+}
+
 export function AppText({
   className,
   variant = "div",
   ...props
-}: Omit<ComponentProps<typeof Text>, "variant"> &
-  VariantProps<typeof textVariants> & {
-    variant?: TextVariant;
-  }) {
+}: AppTextProps) {
   return (
     <Text
       variant={variant}

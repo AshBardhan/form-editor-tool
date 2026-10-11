@@ -1,4 +1,4 @@
-import { cva } from "class-variance-authority";
+import { cva, type VariantProps } from "class-variance-authority";
 import { cn } from "@/lib/utils/styleUtils";
 import {
   SelectRoot,
@@ -16,20 +16,24 @@ import {
   SelectScrollDownArrow,
 } from "@/design-system/primitives";
 
-export type AppSelectOption = {
+export interface AppSelectOption {
   value: string;
   label?: string;
   disabled?: boolean;
   [field: string]: string | number | boolean | null | undefined;
-};
+}
 
-export type AppSelectProps = {
+type SelectSize = NonNullable<
+  VariantProps<typeof selectTriggerVariants>["size"]
+>;
+
+export interface AppSelectProps {
   items: AppSelectOption[];
   labelKey?: string;
   value?: string | null;
   onValueChange?: (value: string | null) => void;
   placeholder?: string;
-  size?: "sm" | "md" | "lg";
+  size?: SelectSize;
   required?: boolean;
   disabled?: boolean;
   className?: string;
@@ -38,7 +42,7 @@ export type AppSelectProps = {
   tabIndex?: number;
   "aria-invalid"?: boolean | "true" | "false";
   "aria-describedby"?: string;
-};
+}
 
 function isInvalid(ariaInvalid: AppSelectProps["aria-invalid"]) {
   return ariaInvalid === true || ariaInvalid === "true";

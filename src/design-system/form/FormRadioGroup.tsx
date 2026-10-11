@@ -85,13 +85,13 @@ type RadioOrientation = NonNullable<
   VariantProps<typeof optionsVariants>["orientation"]
 >;
 
-export type FormRadioOption = {
+export interface FormRadioOption {
   value: string;
   label: ReactNode;
   disabled?: boolean;
-};
+}
 
-export type FormRadioGroupProps = {
+export interface FormRadioGroupProps {
   label?: ReactNode;
   options: FormRadioOption[];
   value?: string;
@@ -106,7 +106,7 @@ export type FormRadioGroupProps = {
   tabIndex?: number;
   "aria-invalid"?: boolean | "true" | "false";
   "aria-describedby"?: string;
-};
+}
 
 function isInvalid(ariaInvalid: FormRadioGroupProps["aria-invalid"]) {
   return ariaInvalid === true || ariaInvalid === "true";

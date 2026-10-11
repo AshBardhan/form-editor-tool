@@ -53,7 +53,7 @@ const labelVariants = cva(
 
 type CheckboxSize = NonNullable<VariantProps<typeof checkboxVariants>["size"]>;
 
-export type FormCheckboxProps = {
+export interface FormCheckboxProps {
   label?: ReactNode;
   checked?: boolean;
   defaultChecked?: boolean;
@@ -69,7 +69,7 @@ export type FormCheckboxProps = {
   tabIndex?: number;
   "aria-invalid"?: boolean | "true" | "false";
   "aria-describedby"?: string;
-};
+}
 
 function isInvalid(ariaInvalid: FormCheckboxProps["aria-invalid"]) {
   return ariaInvalid === true || ariaInvalid === "true";

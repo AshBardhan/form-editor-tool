@@ -22,12 +22,12 @@ export const TEXT_VARIANTS = [
 
 export type TextVariant = (typeof TEXT_VARIANTS)[number];
 
-export function Text({
-  variant = "div",
-  ...props
-}: HTMLAttributes<HTMLElement> & {
+export interface TextProps extends HTMLAttributes<HTMLElement> {
+  /** Element to render. Derived components reuse this value for their text styles. */
   variant?: TextVariant;
-}) {
+}
+
+export function Text({ variant = "div", ...props }: TextProps) {
   const Component = variant as ElementType;
   return <Component {...props} />;
 }

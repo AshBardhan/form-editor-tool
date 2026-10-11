@@ -71,7 +71,7 @@ const labelVariants = cva(
 
 type SwitchSize = NonNullable<VariantProps<typeof switchVariants>["size"]>;
 
-export type AppSwitchProps = {
+export interface AppSwitchProps {
   label?: ReactNode;
   checked?: boolean;
   defaultChecked?: boolean;
@@ -85,7 +85,7 @@ export type AppSwitchProps = {
   value?: string;
   className?: string;
   "aria-invalid"?: boolean | "true" | "false";
-};
+}
 
 function isInvalid(ariaInvalid: AppSwitchProps["aria-invalid"]) {
   return ariaInvalid === true || ariaInvalid === "true";

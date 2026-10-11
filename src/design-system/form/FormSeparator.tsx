@@ -1,10 +1,10 @@
 import type { HTMLAttributes } from "react";
 import { cn } from "@/lib/utils/styleUtils";
 
-export type FormSeparatorProps = HTMLAttributes<HTMLDivElement> & {
+export interface FormSeparatorProps extends HTMLAttributes<HTMLDivElement> {
   orientation?: "horizontal" | "vertical";
   decorative?: boolean;
-};
+}
 
 export function FormSeparator({
   orientation = "horizontal",

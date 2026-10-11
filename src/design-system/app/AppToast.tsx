@@ -1,6 +1,7 @@
 "use client";
 
 import { type ReactNode } from "react";
+import { cva, type VariantProps } from "class-variance-authority";
 import { AlertTriangle, CheckCircle, Info, X, XCircle } from "lucide-react";
 import { cn } from "@/lib/utils/styleUtils";
 import { Toast as BaseToast } from "@base-ui/react/toast";
@@ -18,13 +19,11 @@ import {
   useToastManager,
 } from "@/design-system/primitives";
 
-export type AppToastVariant = "success" | "error" | "info" | "warning";
-
-export type AppToastData = {
+export interface AppToastData {
   dismissible?: boolean;
-};
+}
 
-export type AppToastOptions = {
+export interface AppToastOptions {
   title: ReactNode;
   description?: ReactNode;
   duration?: number;
@@ -33,21 +32,29 @@ export type AppToastOptions = {
     label: string;
     onClick: () => void;
   };
-};
+}
 
 type AppToastObject = BaseToast.Root.ToastObject<AppToastData>;
 
 export const appToastManager = createToastManager<AppToastData>();
 
-const toastRootClass =
-  "[--gap:0.75rem] [--peek:0.75rem] [--scale:calc(max(0,1-(var(--toast-index)*0.1)))] [--shrink:calc(1-var(--scale))] [--height:var(--toast-frontmost-height,var(--toast-height))] [--offset-y:calc(var(--toast-offset-y)*-1+calc(var(--toast-index)*var(--gap)*-1)+var(--toast-swipe-movement-y))] absolute right-0 bottom-0 left-auto z-[calc(1000-var(--toast-index))] mr-0 w-full origin-bottom [transform:translateX(var(--toast-swipe-movement-x))_translateY(calc(var(--toast-swipe-movement-y)-(var(--toast-index)*var(--peek))-(var(--shrink)*var(--height))))_scale(var(--scale))] select-none after:absolute after:top-full after:left-0 after:h-[calc(var(--gap)+1px)] after:w-full after:content-[''] data-ending-style:opacity-0 data-expanded:[transform:translateX(var(--toast-swipe-movement-x))_translateY(calc(var(--offset-y)))] data-limited:opacity-0 data-starting-style:[transform:translateY(150%)] [&[data-ending-style]:not([data-limited]):not([data-swipe-direction])]:[transform:translateY(150%)] data-ending-style:data-[swipe-direction=down]:[transform:translateY(calc(var(--toast-swipe-movement-y)+150%))] data-expanded:data-ending-style:data-[swipe-direction=down]:[transform:translateY(calc(var(--toast-swipe-movement-y)+150%))] data-ending-style:data-[swipe-direction=left]:[transform:translateX(calc(var(--toast-swipe-movement-x)-150%))_translateY(var(--offset-y))] data-expanded:data-ending-style:data-[swipe-direction=left]:[transform:translateX(calc(var(--toast-swipe-movement-x)-150%))_translateY(var(--offset-y))] data-ending-style:data-[swipe-direction=right]:[transform:translateX(calc(var(--toast-swipe-movement-x)+150%))_translateY(var(--offset-y))] data-expanded:data-ending-style:data-[swipe-direction=right]:[transform:translateX(calc(var(--toast-swipe-movement-x)+150%))_translateY(var(--offset-y))] data-ending-style:data-[swipe-direction=up]:[transform:translateY(calc(var(--toast-swipe-movement-y)-150%))] data-expanded:data-ending-style:data-[swipe-direction=up]:[transform:translateY(calc(var(--toast-swipe-movement-y)-150%))] h-[var(--height)] data-expanded:h-[var(--toast-height)] [transition:transform_0.5s_cubic-bezier(0.22,1,0.36,1),opacity_0.5s,height_0.15s] overflow-hidden rounded-lg border p-0 shadow-lg";
+const toastVariants = cva(
+  "[--gap:0.75rem] [--peek:0.75rem] [--scale:calc(max(0,1-(var(--toast-index)*0.1)))] [--shrink:calc(1-var(--scale))] [--height:var(--toast-frontmost-height,var(--toast-height))] [--offset-y:calc(var(--toast-offset-y)*-1+calc(var(--toast-index)*var(--gap)*-1)+var(--toast-swipe-movement-y))] absolute right-0 bottom-0 left-auto z-[calc(1000-var(--toast-index))] mr-0 w-full origin-bottom [transform:translateX(var(--toast-swipe-movement-x))_translateY(calc(var(--toast-swipe-movement-y)-(var(--toast-index)*var(--peek))-(var(--shrink)*var(--height))))_scale(var(--scale))] select-none after:absolute after:top-full after:left-0 after:h-[calc(var(--gap)+1px)] after:w-full after:content-[''] data-ending-style:opacity-0 data-expanded:[transform:translateX(var(--toast-swipe-movement-x))_translateY(calc(var(--offset-y)))] data-limited:opacity-0 data-starting-style:[transform:translateY(150%)] [&[data-ending-style]:not([data-limited]):not([data-swipe-direction])]:[transform:translateY(150%)] data-ending-style:data-[swipe-direction=down]:[transform:translateY(calc(var(--toast-swipe-movement-y)+150%))] data-expanded:data-ending-style:data-[swipe-direction=down]:[transform:translateY(calc(var(--toast-swipe-movement-y)+150%))] data-ending-style:data-[swipe-direction=left]:[transform:translateX(calc(var(--toast-swipe-movement-x)-150%))_translateY(var(--offset-y))] data-expanded:data-ending-style:data-[swipe-direction=left]:[transform:translateX(calc(var(--toast-swipe-movement-x)-150%))_translateY(var(--offset-y))] data-ending-style:data-[swipe-direction=right]:[transform:translateX(calc(var(--toast-swipe-movement-x)+150%))_translateY(var(--offset-y))] data-expanded:data-ending-style:data-[swipe-direction=right]:[transform:translateX(calc(var(--toast-swipe-movement-x)+150%))_translateY(var(--offset-y))] data-ending-style:data-[swipe-direction=up]:[transform:translateY(calc(var(--toast-swipe-movement-y)-150%))] data-expanded:data-ending-style:data-[swipe-direction=up]:[transform:translateY(calc(var(--toast-swipe-movement-y)-150%))] h-[var(--height)] data-expanded:h-[var(--toast-height)] [transition:transform_0.5s_cubic-bezier(0.22,1,0.36,1),opacity_0.5s,height_0.15s] overflow-hidden rounded-lg border p-0 shadow-lg",
+  {
+    variants: {
+      variant: {
+        success: "border-app-success/50 bg-app-success-subtle text-app-success",
+        error: "border-app-error/50 bg-app-error-subtle text-app-error",
+        info: "border-app-info/50 bg-app-info-subtle text-app-info",
+        warning: "border-app-warning/50 bg-app-warning-subtle text-app-warning",
+      },
+    },
+  },
+);
 
-const toastVariantClass: Record<AppToastVariant, string> = {
-  success: "border-app-success/50 bg-app-success-subtle text-app-success",
-  error: "border-app-error/50 bg-app-error-subtle text-app-error",
-  info: "border-app-info/50 bg-app-info-subtle text-app-info",
-  warning: "border-app-warning/50 bg-app-warning-subtle text-app-warning",
-};
+export type AppToastVariant = NonNullable<
+  VariantProps<typeof toastVariants>["variant"]
+>;
 
 const toastContentClass =
   "flex items-start gap-3 overflow-hidden p-4 transition-opacity duration-[250ms] ease-[cubic-bezier(0.22,1,0.36,1)] data-behind:opacity-0 data-expanded:opacity-100";
@@ -224,9 +231,9 @@ function AppToastList() {
   return toasts.map((item) => <AppToast key={item.id} toast={item} />);
 }
 
-export type AppToastProps = BaseToast.Root.Props & {
+export interface AppToastProps extends Omit<BaseToast.Root.Props, "toast"> {
   toast: AppToastObject;
-};
+}
 
 /**
  * AppToast - Themed toast item with success, error, info, and warning variants.
@@ -244,7 +251,7 @@ export function AppToast({
       toast={toastItem}
       swipeDirection={dismissible ? ["down", "right"] : []}
       data-slot="app-toast"
-      className={cn(toastRootClass, toastVariantClass[variant], className)}
+      className={cn(toastVariants({ variant, className }))}
       {...props}
     >
       <AppToastContent>
