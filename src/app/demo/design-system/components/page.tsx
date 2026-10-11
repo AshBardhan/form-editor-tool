@@ -852,9 +852,7 @@ export default function ComponentsDemo() {
                           </AppModalTrigger>
                           <AppModalContent size="sm">
                             <AppModalHeader>
-                              <AppModalTitle>
-                                Delete this form?
-                              </AppModalTitle>
+                              <AppModalTitle>Delete this form?</AppModalTitle>
                               <AppModalDescription>
                                 This action cannot be undone. Submissions and
                                 analytics for this form will be removed.

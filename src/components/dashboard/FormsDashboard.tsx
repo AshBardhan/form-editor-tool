@@ -190,9 +190,7 @@ export function FormsDashboard({ forms }: FormsDashboardProps) {
             <div className="flex gap-3">
               <AlertTriangle className="shrink-0 h-6 w-6 text-red-600 dark:text-red-500" />
               <div className="flex-1 flex flex-col gap-2">
-                <AppModalTitle>
-                  Delete this form permanently?
-                </AppModalTitle>
+                <AppModalTitle>Delete this form permanently?</AppModalTitle>
                 <AppModalDescription>
                   This action cannot be undone. All submissions, field responses
                   and analytics data will be permanently removed.

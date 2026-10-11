@@ -322,9 +322,7 @@ export function FormHeader({ form }: FormHeaderProps) {
             <div className="flex gap-3">
               <AlertTriangle className="shrink-0 h-6 w-6 text-red-600 dark:text-red-500" />
               <div className="flex-1 flex flex-col gap-2">
-                <AppModalTitle>
-                  Delete this form permanently?
-                </AppModalTitle>
+                <AppModalTitle>Delete this form permanently?</AppModalTitle>
                 <AppModalDescription>
                   This action cannot be undone. All submissions, field responses
                   and analytics data will be permanently removed.
@@ -366,9 +364,7 @@ export function FormHeader({ form }: FormHeaderProps) {
             <div className="flex gap-3">
               <AlertTriangle className="shrink-0 h-6 w-6 text-amber-600 dark:text-amber-500" />
               <div className="flex-1 flex flex-col gap-2">
-                <AppModalTitle>
-                  Clear all submission data?
-                </AppModalTitle>
+                <AppModalTitle>Clear all submission data?</AppModalTitle>
                 <AppModalDescription>
                   This will permanently delete all submissions and field
                   responses for this form. The form structure will remain
