@@ -3,9 +3,10 @@
 import { useState, FormEvent } from "react";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
-import { FormField } from "@/components/ui/FormField";
 import { AppText } from "@/design-system/app/AppText";
 import { AppButton } from "@/design-system/app/AppButton";
+import { AppInput } from "@/design-system/app/AppInput";
+import { AppLabel } from "@/design-system/app/AppLabel";
 
 export function SignUpForm() {
   const router = useRouter();
@@ -71,47 +72,69 @@ export function SignUpForm() {
         </div>
       )}
 
-      <FormField
-        type="text"
-        label="Full Name"
-        placeholder="John Doe"
-        value={formData.name}
-        onChange={(e) => setFormData({ ...formData, name: e.target.value })}
-        required
-        autoComplete="name"
-      />
+      <div className="flex flex-col gap-2">
+        <AppLabel htmlFor="name" required>
+          Full Name
+        </AppLabel>
+        <AppInput
+          id="name"
+          type="text"
+          placeholder="John Doe"
+          value={formData.name}
+          onChange={(e) => setFormData({ ...formData, name: e.target.value })}
+          required
+          autoComplete="name"
+        />
+      </div>
 
-      <FormField
-        type="email"
-        label="Email"
-        placeholder="you@example.com"
-        value={formData.email}
-        onChange={(e) => setFormData({ ...formData, email: e.target.value })}
-        required
-        autoComplete="email"
-      />
+      <div className="flex flex-col gap-2">
+        <AppLabel htmlFor="email" required>
+          Email
+        </AppLabel>
+        <AppInput
+          id="email"
+          type="email"
+          placeholder="you@example.com"
+          value={formData.email}
+          onChange={(e) => setFormData({ ...formData, email: e.target.value })}
+          required
+          autoComplete="email"
+        />
+      </div>
 
-      <FormField
-        type="password"
-        label="Password"
-        placeholder="••••••••"
-        value={formData.password}
-        onChange={(e) => setFormData({ ...formData, password: e.target.value })}
-        required
-        autoComplete="new-password"
-      />
+      <div className="flex flex-col gap-2">
+        <AppLabel htmlFor="password" required>
+          Password
+        </AppLabel>
+        <AppInput
+          id="password"
+          type="password"
+          placeholder="••••••••"
+          value={formData.password}
+          onChange={(e) =>
+            setFormData({ ...formData, password: e.target.value })
+          }
+          required
+          autoComplete="new-password"
+        />
+      </div>
 
-      <FormField
-        type="password"
-        label="Confirm Password"
-        placeholder="••••••••"
-        value={formData.confirmPassword}
-        onChange={(e) =>
-          setFormData({ ...formData, confirmPassword: e.target.value })
-        }
-        required
-        autoComplete="new-password"
-      />
+      <div className="flex flex-col gap-2">
+        <AppLabel htmlFor="confirm-password" required>
+          Confirm Password
+        </AppLabel>
+        <AppInput
+          id="confirm-password"
+          type="password"
+          placeholder="••••••••"
+          value={formData.confirmPassword}
+          onChange={(e) =>
+            setFormData({ ...formData, confirmPassword: e.target.value })
+          }
+          required
+          autoComplete="new-password"
+        />
+      </div>
 
       <AppButton
         variant="solid"

@@ -6,7 +6,8 @@ import Link from "next/link";
 import { useRouter, useSearchParams } from "next/navigation";
 import { AppText } from "@/design-system/app/AppText";
 import { AppButton } from "@/design-system/app/AppButton";
-import { FormField } from "@/components/ui/FormField";
+import { AppInput } from "@/design-system/app/AppInput";
+import { AppLabel } from "@/design-system/app/AppLabel";
 
 export function SignInForm() {
   const router = useRouter();
@@ -65,25 +66,35 @@ export function SignInForm() {
         </div>
       )}
 
-      <FormField
-        type="email"
-        label="Email"
-        placeholder="you@example.com"
-        value={email}
-        onChange={(e) => setEmail(e.target.value)}
-        required
-        autoComplete="email"
-      />
+      <div className="flex flex-col gap-2">
+        <AppLabel htmlFor="email" required>
+          Email
+        </AppLabel>
+        <AppInput
+          id="email"
+          type="email"
+          placeholder="you@example.com"
+          value={email}
+          onChange={(e) => setEmail(e.target.value)}
+          required
+          autoComplete="email"
+        />
+      </div>
 
-      <FormField
-        type="password"
-        label="Password"
-        placeholder="••••••••"
-        value={password}
-        onChange={(e) => setPassword(e.target.value)}
-        required
-        autoComplete="current-password"
-      />
+      <div className="flex flex-col gap-2">
+        <AppLabel htmlFor="password" required>
+          Password
+        </AppLabel>
+        <AppInput
+          id="password"
+          type="password"
+          placeholder="••••••••"
+          value={password}
+          onChange={(e) => setPassword(e.target.value)}
+          required
+          autoComplete="current-password"
+        />
+      </div>
 
       <AppButton
         variant="solid"
