@@ -22,7 +22,7 @@ import {
   TextareaDemo,
   ToastDemo,
 } from "@/components/demos";
-import { Separator } from "@/components/ui/Separator";
+import { AppSeparator } from "@/design-system/app/AppSeparator";
 
 /**
  * Main Demo Page - Showcases all UI primitive components
@@ -115,126 +115,126 @@ export default function DemoPage() {
               <ButtonDemo />
             </section>
 
-            <Separator className="my-16" />
+            <AppSeparator className="my-16" />
 
             {/* Input Demo */}
             <section id="input" className="scroll-mt-8">
               <InputDemo />
             </section>
 
-            <Separator className="my-16" />
+            <AppSeparator className="my-16" />
 
             {/* Textarea Demo */}
             <section id="textarea" className="scroll-mt-8">
               <TextareaDemo />
             </section>
 
-            <Separator className="my-16" />
+            <AppSeparator className="my-16" />
 
             {/* Checkbox Demo */}
             <section id="checkbox" className="scroll-mt-8">
               <CheckboxDemo />
             </section>
 
-            <Separator className="my-16" />
+            <AppSeparator className="my-16" />
 
             {/* Switch Demo */}
             <section id="switch" className="scroll-mt-8">
               <SwitchDemo />
             </section>
 
-            <Separator className="my-16" />
+            <AppSeparator className="my-16" />
 
             {/* Table Demo */}
             <section id="table" className="scroll-mt-8">
               <TableDemo />
             </section>
 
-            <Separator className="my-16" />
+            <AppSeparator className="my-16" />
 
             {/* RadioGroup Demo */}
             <section id="radiogroup" className="scroll-mt-8">
               <RadioGroupDemo />
             </section>
 
-            <Separator className="my-16" />
+            <AppSeparator className="my-16" />
 
             {/* Select Demo */}
             <section id="select" className="scroll-mt-8">
               <SelectDemo />
             </section>
 
-            <Separator className="my-16" />
+            <AppSeparator className="my-16" />
 
             {/* DropdownMenu Demo */}
             <section id="dropdownmenu" className="scroll-mt-8">
               <DropdownMenuDemo />
             </section>
 
-            <Separator className="my-16" />
+            <AppSeparator className="my-16" />
 
             {/* InputOTP Demo */}
             <section id="inputotp" className="scroll-mt-8">
               <InputOTPDemo />
             </section>
 
-            <Separator className="my-16" />
+            <AppSeparator className="my-16" />
 
             {/* Modal Demo */}
             <section id="modal" className="scroll-mt-8">
               <ModalDemo />
             </section>
 
-            <Separator className="my-16" />
+            <AppSeparator className="my-16" />
 
             {/* Badge Demo */}
             <section id="badge" className="scroll-mt-8">
               <BadgeDemo />
             </section>
 
-            <Separator className="my-16" />
+            <AppSeparator className="my-16" />
 
             {/* Avatar Demo */}
             <section id="avatar" className="scroll-mt-8">
               <AvatarDemo />
             </section>
 
-            <Separator className="my-16" />
+            <AppSeparator className="my-16" />
 
             {/* Card Demo */}
             <section id="card" className="scroll-mt-8">
               <CardDemo />
             </section>
 
-            <Separator className="my-16" />
+            <AppSeparator className="my-16" />
 
             {/* Text Demo */}
             <section id="text" className="scroll-mt-8">
               <TextDemo />
             </section>
 
-            <Separator className="my-16" />
+            <AppSeparator className="my-16" />
 
             {/* Metric Demo */}
             <section id="metric" className="scroll-mt-8">
               <MetricDemo />
             </section>
 
-            <Separator className="my-16" />
+            <AppSeparator className="my-16" />
 
             {/* Skeleton Demo */}
             <section id="skeleton" className="scroll-mt-8">
               <SkeletonDemo />
             </section>
 
-            <Separator className="my-16" />
+            <AppSeparator className="my-16" />
 
             {/* Alert Demo */}
             <section id="alert" className="scroll-mt-8">
               <AlertDemo />
             </section>
 
-            <Separator className="my-16" />
+            <AppSeparator className="my-16" />
 
             {/* Toast Demo */}
             <section id="toast" className="scroll-mt-8">
