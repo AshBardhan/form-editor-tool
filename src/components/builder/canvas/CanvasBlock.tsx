@@ -94,10 +94,10 @@ export const CanvasBlock = ({
       data-slot="block"
       data-id={block.id}
       className={cn(
-        "relative border transition outline-none focus:ring-2 focus:ring-blue-400 dark:focus:ring-gray-200 border-transparent",
+        "relative transition outline-none focus:ring-2",
         {
-          "border-destructive min-h-10 bg-destructive/5": isInvalid,
-          "border-blue-500 dark:border-gray-300": isSelected && !isInvalid,
+          "ring-2 ring-form-error min-h-10 bg-form-error-subtle": isInvalid,
+          "ring-2 ring-form-brand": isSelected && !isInvalid,
         },
       )}
       onMouseEnter={() => {
@@ -130,7 +130,7 @@ export const CanvasBlock = ({
     >
       {/* Form Block Overlay highlighted on mouse hover and 'Tab' keyboard navigation */}
       {isHovered && (
-        <div className="absolute inset-0 bg-blue-200/30 dark:bg-white/30 transition-colors pointer-events-none" />
+        <div className="absolute inset-0 ring-2 ring-form-brand/30 bg-form-brand-subtle/80 transition-colors pointer-events-none" />
       )}
 
       {/* Form Block Content */}
@@ -148,21 +148,20 @@ export const CanvasBlock = ({
           <div
             {...listeners}
             aria-label="Reorder block"
-            className="absolute inset-0 cursor-grab text-gray-500 dark:text-gray-100 hover:text-black dark:hover:text-white transition-colors flex items-center justify-center"
+            className="absolute inset-0 cursor-grab text-form-fg-muted hover:text-form-fg transition-colors flex items-center justify-center"
             title="Reorder Block"
           >
             <SeparatorHorizontalIcon size={24} />
           </div>
 
-          <div className="absolute top-1/2 -translate-y-1/2 right-2 @sm:right-4 flex gap-1 z-1">
+          <div className="absolute top-1/2 -translate-y-1/2 right-2 @sm:right-4 flex gap-2 z-1">
             {/* Clone Block Button */}
             {!isInvalid && (
               <AppButton
                 variant="ghost"
                 color="secondary"
-                size="sm"
                 tabIndex={-1}
-                className="size-8 rounded-full border-transparent bg-transparent p-0 shadow-none text-form-fg-muted hover:border-transparent hover:bg-form-surface-muted hover:text-form-fg"
+                className="rounded-full border-transparent bg-transparent p-1 shadow-none text-form-fg-muted hover:border-transparent hover:bg-form-surface-muted hover:text-form-fg"
                 onClick={(e) => {
                   e.stopPropagation();
                   cloneBlock(block.id);
@@ -170,16 +169,15 @@ export const CanvasBlock = ({
                 title="Duplicate Block"
                 aria-label="Duplicate block"
               >
-                <CopyIcon />
+                <CopyIcon size={20} />
               </AppButton>
             )}
             {/* Remove Block Button */}
             <AppButton
               variant="ghost"
               color="secondary"
-              size="sm"
               tabIndex={-1}
-              className="size-8 rounded-full border-transparent bg-transparent p-0 shadow-none text-form-fg-muted hover:border-transparent hover:bg-form-surface-muted hover:text-form-fg"
+              className="rounded-full border-transparent bg-transparent p-1 shadow-none text-form-fg-muted hover:border-transparent hover:bg-form-surface-muted hover:text-form-fg"
               onClick={(e) => {
                 e.stopPropagation();
                 onDeleteBlock?.(block.id);
@@ -187,7 +185,7 @@ export const CanvasBlock = ({
               title="Delete Block"
               aria-label="Delete block"
             >
-              <TrashIcon />
+              <TrashIcon size={20} />
             </AppButton>
           </div>
         </div>

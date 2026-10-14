@@ -10,16 +10,16 @@ function BarChart({ value, maxValue, size = "md", label }: BarChartProps) {
 
   return (
     <div className="flex items-center space-x-2">
-      <div className={`relative w-full bg-gray-200 rounded ${height}`}>
+      <div className={`relative w-full bg-app-surface-muted rounded ${height}`}>
         <div
-          className="absolute top-0 left-0 h-full bg-blue-500 rounded"
+          className="absolute top-0 left-0 h-full bg-app-brand rounded"
           style={{
             width: `${maxValue > 0 ? Math.min((value / maxValue) * 100, 100) : 0}%`,
           }}
         />
       </div>
       {label && (
-        <span className="text-sm font-medium text-gray-700">{label}</span>
+        <span className="text-sm font-medium text-app-fg">{label}</span>
       )}
     </div>
   );

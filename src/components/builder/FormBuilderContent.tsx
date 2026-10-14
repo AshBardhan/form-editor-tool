@@ -337,7 +337,7 @@ export const FormBuilderContent = (): JSX.Element => {
         <AppModalContent size="sm">
           <AppModalHeader className="pb-2">
             <div className="flex gap-3">
-              <AlertTriangle className="shrink-0 h-6 w-6 text-red-600 dark:text-red-500" />
+              <AlertTriangle className="shrink-0 h-6 w-6 text-app-error" />
               <div className="flex-1 flex flex-col gap-2">
                 <AppModalTitle>Delete Block</AppModalTitle>
                 <AppModalDescription>

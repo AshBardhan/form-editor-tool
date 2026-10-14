@@ -224,7 +224,7 @@ export function FieldAnalysisList({
                         </AppText>
 
                         {isChoiceBasedFieldBlock(analysis.blockType) && (
-                          <div className="space-y-3 p-3 bg-muted/30 rounded border border-border">
+                          <div className="space-y-3 p-3 bg-muted/30 rounded border border-app-border-subtle">
                             {(analysis.data as ChoiceBasedData[]).map(
                               (item, itemIndex) => (
                                 <div key={itemIndex} className="space-y-1">

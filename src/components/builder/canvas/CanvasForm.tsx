@@ -22,7 +22,7 @@ interface CanvasFormProps {
  * Drop Placeholder Content
  */
 const DropPlaceholder = (): JSX.Element => (
-  <div className="h-10 bg-blue-200/50 dark:bg-white/50 border border-dashed border-blue-500 dark:border-gray-300 transition-colors" />
+  <div className="h-10 bg-form-brand-subtle border border-dashed border-form-brand transition-colors" />
 );
 
 /**
