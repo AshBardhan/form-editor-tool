@@ -5,6 +5,7 @@
     --app-backdrop: #fafafa;
     --app-surface: #ffffff;
     --app-surface-muted: #eaeaea;
+    --app-surface-strong: #cdcdcd;
     --app-fg: #1e293b;
     --app-fg-muted: #64748b;
     --app-fg-heading: #0f172a;
@@ -51,6 +52,7 @@
     --app-backdrop: #1f2532;
     --app-surface: #111827;
     --app-surface-muted: #1f2937;
+    --app-surface-strong: #334155;
     --app-fg: #e5e7eb;
     --app-fg-muted: #a1aab8;
     --app-fg-heading: #f8fafc;
@@ -95,6 +97,7 @@
   --color-app-backdrop: var(--app-backdrop);
   --color-app-surface: var(--app-surface);
   --color-app-surface-muted: var(--app-surface-muted);
+  --color-app-surface-strong: var(--app-surface-strong);
   --color-app-fg: var(--app-fg);
   --color-app-fg-muted: var(--app-fg-muted);
   --color-app-fg-heading: var(--app-fg-heading);

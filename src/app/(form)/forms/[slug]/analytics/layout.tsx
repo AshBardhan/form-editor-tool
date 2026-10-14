@@ -1,6 +1,6 @@
 import { PageContainer } from "@/components/layout";
-import { NavigationTabs } from "@/components/ui/NavigationTabs";
-import { RefreshPageButton } from "@/components/ui/RefreshPageButton";
+import { AppNavigationTabs } from "@/design-system/app/AppNavigationTabs";
+import { RefreshPageButton } from "@/components/form/RefreshPageButton";
 import { AppText } from "@/design-system/app/AppText";
 
 interface FormAnalyticsLayoutProps {
@@ -23,7 +23,7 @@ export default async function FormAnalyticsLayout({
           </AppText>
           <RefreshPageButton label="Refresh analytics" />
         </div>
-        <NavigationTabs
+        <AppNavigationTabs
           items={[
             { label: "Overview", path: "overview" },
             { label: "Fields", path: "fields" },

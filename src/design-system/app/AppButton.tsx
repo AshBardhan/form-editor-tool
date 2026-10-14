@@ -31,7 +31,7 @@ const buttonVariants = cva(
         variant: "solid",
         color: "primary",
         className:
-          "bg-app-brand border-app-brand text-white hover:bg-app-brand-hover hover:border-app-brand-hover focus-visible:ring-app-brand/30 active:opacity-90",
+          "bg-app-brand border-app-brand text-app-fg-on-brand hover:bg-app-brand-hover hover:border-app-brand-hover focus-visible:ring-app-brand/30 active:opacity-90",
       },
       // Outline + Primary
       {
@@ -89,7 +89,7 @@ const buttonVariants = cva(
         variant: "solid",
         color: "positive",
         className:
-          "bg-app-success border-app-success text-white hover:opacity-90 focus-visible:ring-app-success/30 active:opacity-80",
+          "bg-app-success border-app-success text-app-fg-on-brand hover:opacity-90 focus-visible:ring-app-success/30 active:opacity-80",
       },
       // Outline + Positive
       {
@@ -118,7 +118,7 @@ const buttonVariants = cva(
         variant: "solid",
         color: "negative",
         className:
-          "bg-app-error border-app-error text-white hover:opacity-90 focus-visible:ring-app-error/30 active:opacity-80",
+          "bg-app-error border-app-error text-app-fg-on-brand hover:opacity-90 focus-visible:ring-app-error/30 active:opacity-80",
       },
       // Outline + Negative
       {

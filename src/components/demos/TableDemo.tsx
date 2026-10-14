@@ -1,6 +1,6 @@
 "use client";
 
-import { Table } from "@/components/ui/Table";
+import { AppTable } from "@/design-system/app/AppTable";
 
 const tableData = {
   columns: [
@@ -93,7 +93,7 @@ export function TableDemo() {
           </p>
         </div>
 
-        <Table data={tableData} rowKey="submissionId" />
+        <AppTable data={tableData} rowKey="submissionId" />
       </section>
 
       <section>

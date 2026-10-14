@@ -3,7 +3,7 @@
 import { useState } from "react";
 import { useRouter, usePathname } from "next/navigation";
 import { AppBadge } from "@/design-system/app/AppBadge";
-import { NavigationTabs } from "@/components/ui/NavigationTabs";
+import { AppNavigationTabs } from "@/design-system/app/AppNavigationTabs";
 import { toast } from "@/design-system/app/AppToast";
 import { ApiResponse } from "@/lib/types/api";
 import { FormConfig, FormStatus } from "@/lib/types/form";
@@ -292,7 +292,7 @@ export function FormHeader({ form }: FormHeaderProps) {
         </div>
       </div>
 
-      <NavigationTabs
+      <AppNavigationTabs
         items={formNavigationPaths}
         basePath={`/forms/${form.slug}`}
       />
@@ -320,7 +320,7 @@ export function FormHeader({ form }: FormHeaderProps) {
         <AppModalContent size="sm">
           <AppModalHeader className="pb-2">
             <div className="flex gap-3">
-              <AlertTriangle className="shrink-0 h-6 w-6 text-red-600 dark:text-red-500" />
+              <AlertTriangle className="shrink-0 h-6 w-6 text-app-error" />
               <div className="flex-1 flex flex-col gap-2">
                 <AppModalTitle>Delete this form permanently?</AppModalTitle>
                 <AppModalDescription>
@@ -362,7 +362,7 @@ export function FormHeader({ form }: FormHeaderProps) {
         <AppModalContent size="sm">
           <AppModalHeader className="pb-2">
             <div className="flex gap-3">
-              <AlertTriangle className="shrink-0 h-6 w-6 text-amber-600 dark:text-amber-500" />
+              <AlertTriangle className="shrink-0 h-6 w-6 text-app-warning" />
               <div className="flex-1 flex flex-col gap-2">
                 <AppModalTitle>Clear all submission data?</AppModalTitle>
                 <AppModalDescription>

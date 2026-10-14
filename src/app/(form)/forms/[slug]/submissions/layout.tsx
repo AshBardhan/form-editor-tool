@@ -1,5 +1,5 @@
 import { PageContainer } from "@/components/layout";
-import { RefreshPageButton } from "@/components/ui/RefreshPageButton";
+import { RefreshPageButton } from "@/components/form/RefreshPageButton";
 import { AppText } from "@/design-system/app/AppText";
 
 interface FormSubmissionsLayoutProps {

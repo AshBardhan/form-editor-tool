@@ -64,10 +64,10 @@ const toastTitleClass = "text-sm font-semibold leading-5";
 const toastDescriptionClass = "text-sm leading-5 opacity-90";
 
 const toastCloseClass =
-  "absolute right-2 top-2 inline-flex size-6 shrink-0 items-center justify-center rounded-md text-current/50 outline-none transition-colors hover:bg-black/5 hover:text-current focus-visible:ring-[3px] focus-visible:ring-current/30";
+  "absolute right-2 top-2 inline-flex size-6 shrink-0 items-center justify-center rounded-md text-current/50 outline-none transition-colors hover:bg-app-surface-muted hover:text-current focus-visible:ring-[3px] focus-visible:ring-current/30";
 
 const toastActionClass =
-  "mt-2 inline-flex h-8 shrink-0 items-center justify-center rounded-md border border-current/30 bg-transparent px-3 text-sm font-medium outline-none transition-colors hover:bg-black/5 focus-visible:ring-[3px] focus-visible:ring-current/30";
+  "mt-2 inline-flex h-8 shrink-0 items-center justify-center rounded-md border border-current/30 bg-transparent px-3 text-sm font-medium outline-none transition-colors hover:bg-app-surface-muted focus-visible:ring-[3px] focus-visible:ring-current/30";
 
 const toastViewportClass =
   "fixed bottom-6 left-1/2 z-[60] w-[calc(100vw-2rem)] -translate-x-1/2 outline-none sm:bottom-8 sm:w-[22.5rem]";

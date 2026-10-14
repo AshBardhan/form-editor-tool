@@ -39,7 +39,7 @@ function useAppModalType() {
 }
 
 const modalBackdropClass =
-  "fixed inset-0 z-50 bg-black/50 backdrop-blur-sm transition-opacity duration-150 data-ending-style:opacity-0 data-starting-style:opacity-0";
+  "fixed inset-0 z-50 bg-app-overlay backdrop-blur-sm transition-opacity duration-150 data-ending-style:opacity-0 data-starting-style:opacity-0";
 
 const modalPopupVariants = cva(
   "fixed top-1/2 left-1/2 z-50 w-[calc(100%-2rem)] -translate-x-1/2 -translate-y-1/2 overflow-hidden rounded-lg border border-app-border-subtle bg-app-surface text-app-fg shadow-lg outline-none transition-[opacity,scale] duration-150 ease-out data-ending-style:scale-95 data-ending-style:opacity-0 data-starting-style:scale-95 data-starting-style:opacity-0",
@@ -67,10 +67,11 @@ const modalTriggerClass =
 const modalCloseClass =
   "absolute top-4 right-4 z-10 inline-flex size-8 items-center justify-center rounded-md text-app-fg-muted outline-none transition-colors hover:bg-app-surface-muted hover:text-app-fg focus-visible:ring-[3px] focus-visible:ring-app-brand/30";
 
-const modalHeaderClass = "flex flex-col gap-1.5 px-6 pt-6";
+const modalHeaderClass =
+  "flex flex-col gap-1.5 p-6 border-b border-app-border-subtle";
 
 const modalFooterClass =
-  "flex flex-col-reverse gap-2 px-6 pt-4 pb-6 sm:flex-row sm:justify-end";
+  "flex flex-col-reverse gap-2 p-6 sm:flex-row sm:justify-end border-t border-app-border-subtle";
 
 const modalTitleClass =
   "text-xl font-semibold leading-none tracking-tight text-app-fg-heading";
@@ -187,7 +188,7 @@ function AppModalSurface({
         {children}
         {showClose ? (
           <Close data-slot="app-modal-close" className={modalCloseClass}>
-            <X className="size-4" />
+            <X size={12} />
             <span className="sr-only">Close</span>
           </Close>
         ) : null}

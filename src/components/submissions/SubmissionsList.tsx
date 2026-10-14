@@ -2,11 +2,11 @@
 
 import { useMemo, useState } from "react";
 import {
-  Table,
-  type TableColumn,
-  type TableData,
-  type TableRow,
-} from "@/components/ui/Table";
+  AppTable,
+  type AppTableColumn,
+  type AppTableData,
+  type AppTableRow,
+} from "@/design-system/app/AppTable";
 import {
   AppModal,
   AppModalContent,
@@ -24,7 +24,7 @@ interface SubmissionsListProps {
   submissions: FormSubmissionListItem[];
 }
 
-type SubmissionsTableRow = TableRow & {
+type SubmissionsTableRow = AppTableRow & {
   submissionId: string;
 };
 
@@ -35,14 +35,14 @@ export function SubmissionsList({
   const [selectedSubmission, setSelectedSubmission] =
     useState<FormSubmissionListItem | null>(null);
 
-  const tableData = useMemo<TableData<SubmissionsTableRow>>(() => {
-    const fieldColumns: TableColumn[] = fieldBlocks.map((block) => ({
+  const tableData = useMemo<AppTableData<SubmissionsTableRow>>(() => {
+    const fieldColumns: AppTableColumn[] = fieldBlocks.map((block) => ({
       id: block.id,
       label: getFieldBlockLabel(block),
       sortable: true,
     }));
 
-    const columns: TableColumn[] = [
+    const columns: AppTableColumn[] = [
       {
         id: "submissionId",
         label: "ID",
@@ -76,23 +76,23 @@ export function SubmissionsList({
 
   return (
     <>
-      <Table
+      <AppTable
         data={tableData}
         rowKey="submissionId"
-        onRowClick={(row) => {
-          const submission = submissions.find(
-            (item) => item.id === row.submissionId,
-          );
-          setSelectedSubmission(submission ?? null);
-        }}
+        isRowClickable={true}
+        onRowClick={(row) =>
+          setSelectedSubmission(
+            submissions.find(
+              (submission) => submission.id === row.submissionId,
+            ) ?? null,
+          )
+        }
       />
       <AppModal
         open={selectedSubmission !== null}
-        onOpenChange={(open) => {
-          if (!open) {
-            setSelectedSubmission(null);
-          }
-        }}
+        onOpenChange={(open) =>
+          setSelectedSubmission(open ? selectedSubmission : null)
+        }
       >
         <AppModalContent size="md">
           <AppModalHeader>
