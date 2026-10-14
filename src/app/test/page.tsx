@@ -48,7 +48,7 @@ export default async function TestPage() {
       </AppText>
 
       {error ? (
-        <div className="p-4 bg-red-50 border border-red-200 rounded-lg">
+        <div className="p-4 bg-app-error-subtle border border-app-error rounded-lg">
           <AppText variant="p" className="font-semibold text-app-error">
             Connection Failed
           </AppText>
@@ -58,7 +58,7 @@ export default async function TestPage() {
         </div>
       ) : (
         <>
-          <div className="p-4 bg-green-50 border border-green-200 rounded-lg mb-6">
+          <div className="p-4 bg-app-success-subtle border border-app-success rounded-lg mb-6">
             <AppText variant="p" className="font-semibold text-app-success">
               Connected Successfully
             </AppText>

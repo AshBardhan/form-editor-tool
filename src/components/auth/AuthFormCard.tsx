@@ -16,7 +16,7 @@ export function AuthFormCard({
   children,
 }: AuthFormCardProps) {
   return (
-    <div className="rounded-xl bg-white p-8 shadow-lg">
+    <div className="rounded-xl bg-app-surface p-8 shadow-lg">
       <div className="mb-8">
         <AppText variant="h2">{title}</AppText>
         <AppText variant="p" className="mt-2 text-app-fg-muted">

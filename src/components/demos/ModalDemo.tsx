@@ -229,7 +229,7 @@ export function ModalDemo() {
               </ModalDescription>
             </ModalHeader>
             <div className="px-6 py-4 max-h-[60vh] overflow-y-auto">
-              <div className="prose prose-sm dark:prose-invert">
+              <div className="prose prose-sm">
                 <p>
                   Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed
                   do eiusmod tempor incididunt ut labore et dolore magna aliqua.

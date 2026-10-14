@@ -9,7 +9,7 @@ import { AppText } from "@/design-system/app/AppText";
 
 export default function ForbiddenPage() {
   return (
-    <div className="min-h-screen flex items-center justify-center bg-gray-50">
+    <div className="min-h-screen flex items-center justify-center bg-app-surface-subtle">
       <div className="text-center px-4">
         <AppText variant="h1" className="text-9xl">
           403

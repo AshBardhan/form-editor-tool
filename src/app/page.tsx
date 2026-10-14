@@ -68,7 +68,7 @@ export default function Home() {
           {highlights.map((item) => (
             <li
               key={item.title}
-              className="rounded-xl border border-white/80 bg-white/80 p-6 shadow-sm"
+              className="rounded-xl border border-app-border-subtle bg-app-surface p-6 shadow-sm"
             >
               <AppText variant="h3">{item.title}</AppText>
               <AppText

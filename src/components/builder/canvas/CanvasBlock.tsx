@@ -93,13 +93,10 @@ export const CanvasBlock = ({
       role="button"
       data-slot="block"
       data-id={block.id}
-      className={cn(
-        "relative transition outline-none focus:ring-2",
-        {
-          "ring-2 ring-form-error min-h-10 bg-form-error-subtle": isInvalid,
-          "ring-2 ring-form-brand": isSelected && !isInvalid,
-        },
-      )}
+      className={cn("relative transition outline-none focus:ring-2", {
+        "ring-2 ring-form-error min-h-10 bg-form-error-subtle": isInvalid,
+        "ring-2 ring-form-brand": isSelected && !isInvalid,
+      })}
       onMouseEnter={() => {
         if (!isDragging) {
           hoverBlock(block.id);
@@ -130,7 +127,7 @@ export const CanvasBlock = ({
     >
       {/* Form Block Overlay highlighted on mouse hover and 'Tab' keyboard navigation */}
       {isHovered && (
-        <div className="absolute inset-0 ring-2 ring-form-brand/30 bg-form-brand-subtle/80 transition-colors pointer-events-none" />
+        <div className="absolute inset-0 ring-2 ring-form-brand bg-form-brand-subtle/80 transition-colors pointer-events-none" />
       )}
 
       {/* Form Block Content */}

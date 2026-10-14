@@ -67,11 +67,10 @@ const modalTriggerClass =
 const modalCloseClass =
   "absolute top-4 right-4 z-10 inline-flex size-8 items-center justify-center rounded-md text-app-fg-muted outline-none transition-colors hover:bg-app-surface-muted hover:text-app-fg focus-visible:ring-[3px] focus-visible:ring-app-brand/30";
 
-const modalHeaderClass =
-  "flex flex-col gap-1.5 p-6 border-b border-app-border-subtle";
+const modalHeaderClass = "flex flex-col gap-1.5 p-6";
 
 const modalFooterClass =
-  "flex flex-col-reverse gap-2 p-6 sm:flex-row sm:justify-end border-t border-app-border-subtle";
+  "flex flex-col-reverse gap-2 p-6 sm:flex-row sm:justify-end";
 
 const modalTitleClass =
   "text-xl font-semibold leading-none tracking-tight text-app-fg-heading";
