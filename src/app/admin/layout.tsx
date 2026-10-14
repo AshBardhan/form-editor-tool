@@ -36,9 +36,9 @@ export default async function AdminLayout({
 
   return (
     <AppThemeContainer>
-      <div className="min-h-screen bg-gray-50">
+      <div className="min-h-screen bg-app-surface-subtle">
         {/* Header */}
-        <header className="bg-white border-b border-gray-200">
+        <header className="bg-app-surface border-b border-app-border-subtle">
           <div className="container mx-auto px-4 py-4">
             <div className="flex items-center justify-between">
               <div className="flex items-center gap-4">
@@ -49,7 +49,9 @@ export default async function AdminLayout({
                 </Link>
                 <AppText variant="h2">Admin Panel</AppText>
               </div>
-              <div className="text-sm text-gray-600">{session.user.email}</div>
+              <div className="text-sm text-app-fg-muted">
+                {session.user.email}
+              </div>
             </div>
           </div>
         </header>
@@ -65,7 +67,7 @@ export default async function AdminLayout({
                     <Link
                       key={item.href}
                       href={item.href}
-                      className="flex items-center gap-3 px-4 py-3 text-gray-700 hover:bg-gray-100 rounded-lg transition-colors"
+                      className="flex items-center gap-3 px-4 py-3 text-app-fg hover:bg-app-surface-muted rounded-lg transition-colors"
                     >
                       <Icon size={20} />
                       {item.label}

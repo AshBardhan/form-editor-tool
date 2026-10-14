@@ -5,6 +5,8 @@
 
 import { AppText } from "@/design-system/app/AppText";
 import { AppMetric } from "@/design-system/app/AppMetric";
+import { AppCard } from "@/design-system/app/AppCard";
+import { AppSeparator } from "@/design-system/app/AppSeparator";
 
 export default function AdminSettingsPage() {
   return (
@@ -18,17 +20,17 @@ export default function AdminSettingsPage() {
 
       <div className="space-y-6">
         {/* Authentication Settings */}
-        <div className="bg-white rounded-lg border border-gray-200 p-6">
+        <AppCard>
           <AppText variant="h3" className="mb-4">
             Authentication
           </AppText>
           <div className="space-y-4">
-            <div className="flex items-center justify-between py-3 border-b border-gray-100">
+            <div className="flex items-center justify-between py-3">
               <div>
-                <AppText variant="h4" className="font-medium">
+                <AppText variant="h5" className="font-medium">
                   Email Authentication
                 </AppText>
-                <AppText variant="p">
+                <AppText variant="p" className="!text-xs text-app-fg-muted">
                   Allow users to sign in with email and password
                 </AppText>
               </div>
@@ -36,32 +38,35 @@ export default function AdminSettingsPage() {
                 Enabled
               </AppText>
             </div>
-            <div className="flex items-center justify-between py-3 border-b border-gray-100">
+            <AppSeparator />
+            <div className="flex items-center justify-between py-3">
               <div>
-                <AppText variant="h4" className="font-medium">
+                <AppText variant="h5" className="font-medium">
                   Session Duration
                 </AppText>
-                <AppText variant="p">How long users stay logged in</AppText>
+                <AppText variant="p" className="!text-xs text-app-fg-muted">
+                  How long users stay logged in
+                </AppText>
               </div>
               <AppText className="font-medium text-app-success">
                 30 days
               </AppText>
             </div>
           </div>
-        </div>
+        </AppCard>
 
         {/* Form Settings */}
-        <div className="bg-white rounded-lg border border-gray-200 p-6">
+        <AppCard>
           <AppText variant="h3" className="mb-4">
             Form Settings
           </AppText>
           <div className="space-y-4">
-            <div className="flex items-center justify-between py-3 border-b border-gray-100">
+            <div className="flex items-center justify-between py-3">
               <div>
-                <AppText variant="h4" className="font-medium">
+                <AppText variant="h5" className="font-medium">
                   Public Form Access
                 </AppText>
-                <AppText variant="p">
+                <AppText variant="p" className="!text-xs text-app-fg-muted">
                   Allow unauthenticated users to fill forms
                 </AppText>
               </div>
@@ -69,12 +74,13 @@ export default function AdminSettingsPage() {
                 Enabled
               </AppText>
             </div>
-            <div className="flex items-center justify-between py-3 border-b border-gray-100">
+            <AppSeparator />
+            <div className="flex items-center justify-between py-3">
               <div>
-                <AppText variant="h4" className="font-medium">
+                <AppText variant="h5" className="font-medium">
                   Form Analytics
                 </AppText>
-                <AppText variant="p">
+                <AppText variant="p" className="!text-xs text-app-fg-muted">
                   Track form views and submission metrics
                 </AppText>
               </div>
@@ -83,19 +89,19 @@ export default function AdminSettingsPage() {
               </AppText>
             </div>
           </div>
-        </div>
+        </AppCard>
 
         {/* Database Info */}
-        <div className="bg-white rounded-lg border border-gray-200 p-6">
+        <AppCard>
           <AppText variant="h3" className="mb-4">
             Database
           </AppText>
-          <div className="flex gap-4">
+          <div className="grid grid-cols-3 gap-2">
             <AppMetric value={"PostgreSQL"} label="Provider" />
             <AppMetric value={"Prisma v7.8.0"} label="ORM" />
             <AppMetric value={7} label="Migrations" />
           </div>
-        </div>
+        </AppCard>
       </div>
     </div>
   );

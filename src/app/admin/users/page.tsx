@@ -9,6 +9,7 @@ import prisma from "@/lib/prisma";
 import { UsersTable } from "@/components/admin/UsersTable";
 import { AppText } from "@/design-system/app/AppText";
 import { AppMetric } from "@/design-system/app/AppMetric";
+import { AppCard } from "@/design-system/app/AppCard";
 
 async function getUsers() {
   const session = await auth();
@@ -42,7 +43,7 @@ export default async function AdminUsersPage() {
   const users = await getUsers();
 
   return (
-    <div>
+    <>
       <div className="mb-6">
         <AppText variant="h2">User Management</AppText>
         <AppText variant="p" className="mt-1 text-app-fg-muted">
@@ -50,8 +51,8 @@ export default async function AdminUsersPage() {
         </AppText>
       </div>
 
-      <div className="bg-white rounded-lg border border-gray-200 p-4 mb-6">
-        <div className="grid grid-cols-3 gap-4">
+      <AppCard className="mb-6">
+        <div className="flex items-center justify-between gap-4">
           <AppMetric value={users.length} label="Total Users" />
           <AppMetric
             value={users.filter((u) => u.role === "ADMIN").length}
@@ -62,9 +63,9 @@ export default async function AdminUsersPage() {
             label="Clients"
           />
         </div>
-      </div>
+      </AppCard>
 
       <UsersTable users={users} />
-    </div>
+    </>
   );
 }

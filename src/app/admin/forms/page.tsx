@@ -9,6 +9,7 @@ import prisma from "@/lib/prisma";
 import { AdminFormsTable } from "@/components/admin/AdminFormsTable";
 import { AppText } from "@/design-system/app/AppText";
 import { AppMetric } from "@/design-system/app/AppMetric";
+import { AppCard } from "@/design-system/app/AppCard";
 
 async function getForms() {
   const session = await auth();
@@ -57,7 +58,7 @@ export default async function AdminFormsPage() {
   );
 
   return (
-    <div>
+    <>
       <div className="mb-6">
         <AppText variant="h2">Forms Management</AppText>
         <AppText variant="p" className="mt-1 text-app-fg-muted">
@@ -65,8 +66,8 @@ export default async function AdminFormsPage() {
         </AppText>
       </div>
 
-      <div className="bg-white rounded-lg border border-gray-200 p-4 mb-6">
-        <div className="grid grid-cols-4 gap-4">
+      <AppCard className="mb-6">
+        <div className="flex items-center justify-between gap-4">
           <AppMetric value={forms.length} label="Total Forms" />
           <AppMetric
             value={forms.filter((f) => f.status === "published").length}
@@ -75,9 +76,9 @@ export default async function AdminFormsPage() {
           <AppMetric value={totalViews} label="Total Views" />
           <AppMetric value={totalSubmissions} label="Total Submissions" />
         </div>
-      </div>
+      </AppCard>
 
       <AdminFormsTable forms={forms} />
-    </div>
+    </>
   );
 }
