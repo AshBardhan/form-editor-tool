@@ -11,30 +11,34 @@ export enum DeviceType {
 }
 
 /**
- * Interface representing a device with a label, icon and size.
+ * Interface representing a device with a label, value, icon and size.
  */
 export interface Device {
-  label: DeviceType;
+  label: string;
+  value: DeviceType;
   icon: LucideIcon;
   size: number;
 }
 
 /**
- * A list of devices with their corresponding labels, icons and sizes.
+ * A list of devices with their corresponding labels, values, icons and sizes.
  */
 export const DeviceList: Device[] = [
   {
-    label: DeviceType.DESKTOP,
+    label: "Desktop",
+    value: DeviceType.DESKTOP,
     icon: Monitor,
     size: 1440,
   },
   {
-    label: DeviceType.TABLET,
+    label: "Tablet",
+    value: DeviceType.TABLET,
     icon: Tablet,
     size: 1024,
   },
   {
-    label: DeviceType.MOBILE,
+    label: "Mobile",
+    value: DeviceType.MOBILE,
     icon: Smartphone,
     size: 375,
   },

@@ -33,7 +33,16 @@ import {
   AppModalTitle,
   AppModalTrigger,
 } from "@/design-system/app/AppModal";
-import { ChevronDown } from "lucide-react";
+import {
+  AlignCenter,
+  AlignLeft,
+  AlignRight,
+  ChevronDown,
+  Monitor,
+  Smartphone,
+  Tablet,
+} from "lucide-react";
+import { AppToggleGroup } from "@/design-system/app/AppToggleGroup";
 import { AppBadge } from "@/design-system/app/AppBadge";
 import { AppMetric } from "@/design-system/app/AppMetric";
 import { AppCard } from "@/design-system/app/AppCard";
@@ -71,6 +80,18 @@ const STATUS_OPTIONS = [
   { value: "review", label: "In review" },
   { value: "published", label: "Published" },
   { value: "archived", label: "Archived", disabled: true },
+];
+
+const ALIGNMENT_TOGGLE_OPTIONS = [
+  { value: "left", label: "Align left", icon: AlignLeft },
+  { value: "center", label: "Align center", icon: AlignCenter },
+  { value: "right", label: "Align right", icon: AlignRight },
+];
+
+const DEVICE_TOGGLE_OPTIONS = [
+  { value: "desktop", label: "Desktop", icon: Monitor },
+  { value: "tablet", label: "Tablet", icon: Tablet },
+  { value: "mobile", label: "Mobile", icon: Smartphone },
 ];
 
 const APP_SELECT_SIZES = ["sm", "md", "lg"] as const;
@@ -135,6 +156,8 @@ export default function ComponentsDemo() {
   ]);
   const [appRadioValue, setAppRadioValue] = useState("review");
   const [appSwitchChecked, setAppSwitchChecked] = useState(true);
+  const [appAlignmentToggle, setAppAlignmentToggle] = useState("left");
+  const [appDeviceToggle, setAppDeviceToggle] = useState("desktop");
   const [formCheckboxChecked, setFormCheckboxChecked] = useState(true);
   const [formCheckboxValues, setFormCheckboxValues] = useState<string[]>([
     "email",
@@ -663,6 +686,39 @@ export default function ComponentsDemo() {
                             />
                           ))}
                         </div>
+                      </div>
+                    </div>
+                  </div>
+
+                  {/* Toggle Group Component */}
+                  <div>
+                    <h3 className="text-lg font-semibold text-app-fg-heading mb-1">
+                      Toggle Group
+                    </h3>
+                    <p className="text-sm text-app-fg-muted mb-4">
+                      Exclusive icon toggle group for a single selected value
+                    </p>
+                    <div className="flex flex-col gap-6">
+                      <div>
+                        <h4 className="text-sm font-semibold text-app-fg-heading mb-2">
+                          Alignment
+                        </h4>
+                        <AppToggleGroup
+                          value={appAlignmentToggle}
+                          onValueChange={setAppAlignmentToggle}
+                          options={ALIGNMENT_TOGGLE_OPTIONS}
+                        />
+                      </div>
+
+                      <div>
+                        <h4 className="text-sm font-semibold text-app-fg-heading mb-2">
+                          Device
+                        </h4>
+                        <AppToggleGroup
+                          value={appDeviceToggle}
+                          onValueChange={setAppDeviceToggle}
+                          options={DEVICE_TOGGLE_OPTIONS}
+                        />
                       </div>
                     </div>
                   </div>

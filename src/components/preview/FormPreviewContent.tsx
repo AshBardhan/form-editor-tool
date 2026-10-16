@@ -38,7 +38,7 @@ export const FormPreviewContent = ({
   const [hasSubmitted, setHasSubmitted] = useState(false);
 
   const currentDeviceMeta = DeviceList.find(
-    (device) => device.label === currentDevice,
+    (device) => device.value === currentDevice,
   );
 
   /**

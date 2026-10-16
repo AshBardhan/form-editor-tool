@@ -21,9 +21,9 @@ import {
   AppModalHeader,
   AppModalTitle,
 } from "@/design-system/app/AppModal";
-import { DeviceSelector } from "@/components/layout/DeviceSelector";
 import { FormPreviewContent } from "@/components/preview";
-import { DeviceType } from "@/lib/constants/device";
+import { DeviceList, DeviceType } from "@/lib/constants/device";
+import { AppToggleGroup } from "@/design-system/app/AppToggleGroup";
 import {
   AlertTriangle,
   Archive,
@@ -301,9 +301,16 @@ export function FormHeader({ form }: FormHeaderProps) {
         <AppModalContent size="lg">
           <AppModalHeader className="flex flex-row justify-center items-center gap-4 pb-6">
             <AppModalTitle>Form Preview</AppModalTitle>
-            <DeviceSelector
-              currentDevice={currentDevice}
-              onDeviceChange={setCurrentDevice}
+            <AppToggleGroup
+              value={currentDevice}
+              onValueChange={(nextDevice) =>
+                setCurrentDevice(nextDevice as DeviceType)
+              }
+              options={DeviceList.map((device) => ({
+                label: device.label,
+                value: device.value,
+                icon: device.icon,
+              }))}
             />
           </AppModalHeader>
           <div className="max-h-[70vh] overflow-y-auto">
