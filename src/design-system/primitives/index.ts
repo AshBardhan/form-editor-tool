@@ -5,13 +5,14 @@
  * These primitives expose data-* attributes for state that derived components
  * can style against. No appearance classes, styles, or visual opinions.
  *
- * Built on Base UI for complex widgets (Button, Checkbox, CheckboxGroup, RadioGroup, Select, Switch, Menu, Toast, Modal)
+ * Built on Base UI for complex widgets (Button, Checkbox, CheckboxGroup, RadioGroup, ToggleGroup, Select, Switch, Menu, Toast, Modal)
  * and native HTML elements for simple controls (Input, TextArea, Label, Text).
  *
  * State Attributes Contract:
  * - data-disabled: Element is disabled
  * - data-invalid: Element has validation error (aria-invalid)
  * - data-checked: Checkbox/radio/switch is checked
+ * - data-pressed: Toggle is pressed
  * - data-selected: Select item is selected
  * - data-open: Dropdown, popover, or dialog is open
  * - data-popup-open: Popup opened by this trigger is open
@@ -49,6 +50,9 @@ export { CheckboxGroup } from "./CheckboxGroup";
 
 // Radio Group
 export { RadioGroup, RadioGroupItem, RadioGroupIndicator } from "./RadioGroup";
+
+// Toggle Group
+export { ToggleGroup, Toggle } from "./ToggleGroup";
 
 // Text Area
 export { TextArea } from "./TextArea";
