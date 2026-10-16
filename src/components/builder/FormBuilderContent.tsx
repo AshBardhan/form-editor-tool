@@ -37,7 +37,7 @@ import {
 } from "@/design-system/app/AppModal";
 import { AppButton } from "@/design-system/app/AppButton";
 import { AppText } from "@/design-system/app/AppText";
-import { Alert, AlertDescription, AlertTitle } from "@/components/ui/Alert";
+import { AppAlert } from "@/design-system/app/AppAlert";
 import { AlertTriangle } from "lucide-react";
 import { useAutoSave } from "@/lib/hooks/useAutoSave";
 import { toast } from "@/design-system/app/AppToast";
@@ -275,16 +275,13 @@ export const FormBuilderContent = (): JSX.Element => {
             >
               <PageContainer>
                 {showPublishedSubmissionsWarning && (
-                  <Alert variant="warning" className="mb-6">
-                    <AlertTriangle className="size-4" />
-                    <AlertTitle>Editing a published form</AlertTitle>
-                    <AlertDescription>
-                      This form already has submissions. Adding, removing, or
-                      changing input fields (including type or options) may
-                      alter field responses. Submission records and analytics
-                      metrics stay the same.
-                    </AlertDescription>
-                  </Alert>
+                  <AppAlert
+                    variant="warning"
+                    className="mb-6"
+                    icon={<AlertTriangle />}
+                    heading="Editing a published form"
+                    description="This form already has submissions. Adding, removing, or changing input fields (including type or options) may alter field responses. Submission records and analytics metrics stay the same."
+                  />
                 )}
                 <CanvasForm
                   overId={dragState.overId}
