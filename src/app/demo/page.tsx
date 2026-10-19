@@ -43,10 +43,12 @@ import { AppSelect } from "@/design-system/app/AppSelect";
 import { FormThemeContainer } from "@/design-system/containers/FormThemeContainer";
 import {
   APP_THEME_LABELS,
+  DEFAULT_FORM_THEME,
   FORM_THEMES,
   FORM_THEME_LABELS,
 } from "@/lib/constants/themes";
 import type { FormTheme } from "@/lib/types/themes";
+import { isFormTheme } from "@/lib/utils/themeUtils";
 import { PageContainer, PageContent, PageHeader } from "@/components/layout";
 import { useUIStateStore } from "@/lib/stores/UIStateStore";
 
@@ -61,7 +63,7 @@ import { useUIStateStore } from "@/lib/stores/UIStateStore";
  * and applied through FormThemeContainer.
  */
 export default function ComponentsDemo() {
-  const [formTheme, setFormTheme] = useState<FormTheme>("light");
+  const [formTheme, setFormTheme] = useState<FormTheme>(DEFAULT_FORM_THEME);
   const appTheme = useUIStateStore((state) => state.appTheme);
 
   return (
@@ -155,8 +157,8 @@ export default function ComponentsDemo() {
                       }))}
                       value={formTheme}
                       onValueChange={(value) => {
-                        if (!value) return;
-                        setFormTheme(value as FormTheme);
+                        if (!isFormTheme(value)) return;
+                        setFormTheme(value);
                       }}
                     />
                   </div>

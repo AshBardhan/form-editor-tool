@@ -1,6 +1,5 @@
 "use client";
 
-import { THEME_OPTIONS } from "@/lib/constants/theme";
 import { BUTTON_ALIGNMENT_OPTIONS } from "@/lib/constants/buttons";
 import { getFormBlock, getFormBlockProps } from "@/lib/utils/formUtils";
 import { ScrollTextIcon, MoreVertical, Copy, Trash2 } from "lucide-react";
@@ -31,6 +30,8 @@ import {
 } from "@/lib/stores";
 import { AnimatePresence, motion } from "motion/react";
 import { visibleContentVariants } from "@/lib/constants/styles";
+import { FORM_THEME_LABELS, FORM_THEMES } from "@/lib/constants/themes";
+import { FormTheme } from "@/lib/types/themes";
 
 /**
  * Configuration Panel (Right Sidebar)
@@ -52,6 +53,7 @@ export const ConfigurationPanel = memo(function ConfigurationPanel({
   const updateFormConfig = useFormConfigStore(
     (state) => state.updateFormConfig,
   );
+  const updateFormTheme = useFormConfigStore((state) => state.updateFormTheme);
   const updateFormActions = useFormConfigStore(
     (state) => state.updateFormActions,
   );
@@ -69,15 +71,6 @@ export const ConfigurationPanel = memo(function ConfigurationPanel({
   const schema = selectedMeta?.schema;
 
   const [errors, setErrors] = useState<Record<string, string[]>>({});
-
-  /**
-   * Handles theme change for the form.
-   *
-   * @param {string} value - The selected theme value.
-   */
-  const onThemeChange = (value: string) => {
-    updateFormConfig("theme", value);
-  };
 
   /**
    * Validates the properties of the selected block against its schema.
@@ -386,10 +379,11 @@ export const ConfigurationPanel = memo(function ConfigurationPanel({
                 <SelectConfig
                   id="form-theme"
                   value={formTheme}
-                  options={Object.entries(THEME_OPTIONS).map(
-                    ([value, label]) => ({ value, label }),
-                  )}
-                  onChange={onThemeChange}
+                  options={FORM_THEMES.map((theme) => ({
+                    value: theme,
+                    label: FORM_THEME_LABELS[theme],
+                  }))}
+                  onChange={(value) => updateFormTheme(value as FormTheme)}
                 />
               </div>
             </div>

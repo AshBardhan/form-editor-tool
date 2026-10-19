@@ -240,12 +240,12 @@ export const FormBuilderContent = (): JSX.Element => {
         {/* Drag Placeholder Overlay */}
         <DragOverlay>
           {dragState.activeItem && (
-            <div className={form.theme}>
+            <FormThemeContainer isEmpty={true} theme={form.theme}>
               <CanvasDroppable
                 item={dragState.activeItem}
                 source={dragState.source}
               />
-            </div>
+            </FormThemeContainer>
           )}
         </DragOverlay>
 

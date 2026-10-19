@@ -16,6 +16,7 @@ import {
   FormSubmissionsListData,
 } from "@/lib/types/analytics";
 import { isFieldBasedBlock } from "@/lib/utils/formUtils";
+import { resolveFormTheme } from "@/lib/utils/themeUtils";
 
 const FORM_BUILDER_CACHE_TAG = "form-builder";
 const FORM_META_CACHE_TAG = "form-meta";
@@ -113,7 +114,7 @@ const getFormBuilderDataCached = cache(
       slug: form.slug,
       title: form.title,
       description: form.description ?? undefined,
-      theme: form.theme,
+      theme: resolveFormTheme(form.theme),
       status: form.status,
       submissionCount: form._count.submissions,
       actions: {
@@ -320,7 +321,7 @@ const getPublicFormDataCached = cache(
       slug: form.slug,
       title: form.title,
       description: form.description ?? undefined,
-      theme: form.theme,
+      theme: resolveFormTheme(form.theme),
       status: form.status,
       actions: {
         submitLabel: form.submitLabel,

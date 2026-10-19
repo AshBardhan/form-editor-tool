@@ -488,7 +488,7 @@ export const mockPrisma: MockPrismaClient = {
         slug: args.data.slug || newFormId,
         title: args.data.title || "New Form",
         description: args.data.description || null,
-        theme: args.data.theme || "default",
+        theme: args.data.theme || "light",
         status: args.data.status || "draft",
         userId: args.data.userId,
         createdAt: new Date(),

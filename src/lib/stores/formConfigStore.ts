@@ -8,11 +8,14 @@ import {
 import { nanoid } from "nanoid";
 import { create } from "zustand";
 import { getDefaultProps, generateUniqueKey } from "@/lib/utils/formUtils";
+import { DEFAULT_FORM_THEME } from "@/lib/constants/themes";
+import type { FormTheme } from "@/lib/types/themes";
 
 interface FormConfigState {
   formConfig: FormConfig;
   setFormConfig: (data: FormConfig) => void;
   updateFormConfig: (key: string, value: string) => void;
+  updateFormTheme: (theme: FormTheme) => void;
   updateFormActions: <K extends keyof FormActions>(
     key: K,
     value: FormActions[K],
@@ -32,7 +35,7 @@ const initialFormConfig: FormConfig = {
   id: undefined, // No ID for new forms
   slug: "untitled-form",
   title: "Untitled Form",
-  theme: "light",
+  theme: DEFAULT_FORM_THEME,
   status: "draft",
   blocks: [],
   actions: {
@@ -61,6 +64,14 @@ export const useFormConfigStore = create<FormConfigState>()((set, get) => ({
       formConfig: {
         ...state.formConfig,
         [key]: value,
+      },
+    }));
+  },
+  updateFormTheme: (theme) => {
+    set((state) => ({
+      formConfig: {
+        ...state.formConfig,
+        theme,
       },
     }));
   },
