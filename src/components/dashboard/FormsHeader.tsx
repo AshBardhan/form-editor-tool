@@ -11,6 +11,7 @@ import { toast } from "@/design-system/app/AppToast";
 import { ApiResponse } from "@/lib/types/api";
 import { FormConfig, FormFilterStatus } from "@/lib/types/form";
 import { FormFilterOptions } from "@/lib/constants/form";
+import { DEFAULT_FORM_THEME } from "@/lib/constants/themes";
 
 interface FormFilter {
   search?: string;
@@ -41,7 +42,7 @@ export function FormsHeader({ filter = {} }: FormsHeaderProps) {
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
           title: "New Form",
-          theme: "light",
+          theme: DEFAULT_FORM_THEME,
         }),
       });
 

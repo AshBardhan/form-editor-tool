@@ -1,3 +1,5 @@
+import type { FormTheme } from "@/lib/types/themes";
+
 export type TextBlockType = "heading" | "paragraph" | "separator";
 export type InputBlockType =
   | "text"
@@ -34,8 +36,6 @@ export type FormStatus = "draft" | "published" | "archived";
 export type FormFilterStatus = "all" | FormStatus;
 
 export type FormBlockOrientation = "horizontal" | "vertical";
-
-export type FormTheme = "light" | "dark";
 
 /**
  * A single response to a form field from a submission
