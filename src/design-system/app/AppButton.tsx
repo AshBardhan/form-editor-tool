@@ -151,31 +151,35 @@ const buttonVariants = cva(
 );
 
 export interface AppButtonProps
-  extends Omit<ComponentProps<"button">, "color">,
-    VariantProps<typeof buttonVariants> {
-  className?: string;
-}
+  extends Omit<ComponentProps<typeof Button>, "color">,
+    VariantProps<typeof buttonVariants> {}
 
+/**
+ * App chrome button. Pass `render={<Link href="…" />}` to compose a single
+ * styled anchor instead of nesting a button inside a link.
+ */
 export function AppButton({
   className,
   variant,
   size,
   color,
   type = "button",
+  render,
   children,
-  ref,
   ...props
 }: AppButtonProps) {
-  const buttonClassName = cn(
-    buttonVariants({ variant, size, color, className }),
-  );
+  const isNativeButton = !render;
+  const nativeButtonProps = isNativeButton
+    ? { type: type ?? "button" }
+    : { role: "button" };
 
   return (
     <Button
-      ref={ref}
-      type={type}
       data-slot="app-button"
-      className={buttonClassName}
+      className={cn(buttonVariants({ variant, size, color, className }))}
+      render={render}
+      nativeButton={isNativeButton}
+      {...nativeButtonProps}
       {...props}
     >
       {children}

@@ -9,7 +9,7 @@ import { AppText } from "@/design-system/app/AppText";
 
 export default function ForbiddenPage() {
   return (
-    <div className="min-h-screen flex items-center justify-center bg-app-surface-subtle">
+    <div className="min-h-screen flex items-center justify-center bg-app-surface-muted">
       <div className="text-center px-4">
         <AppText variant="h1" className="text-9xl">
           403
@@ -25,16 +25,20 @@ export default function ForbiddenPage() {
           administrator if you believe this is an error.
         </AppText>
         <div className="mt-8 flex gap-4 justify-center">
-          <Link href="/forms">
-            <AppButton variant="solid" color="primary">
-              Go to Dashboard
-            </AppButton>
-          </Link>
-          <Link href="/">
-            <AppButton variant="outline" color="secondary">
-              Go Home
-            </AppButton>
-          </Link>
+          <AppButton
+            render={<Link href="/forms" />}
+            variant="solid"
+            color="primary"
+          >
+            Go to Dashboard
+          </AppButton>
+          <AppButton
+            render={<Link href="/" />}
+            variant="outline"
+            color="secondary"
+          >
+            Go Home
+          </AppButton>
         </div>
       </div>
     </div>

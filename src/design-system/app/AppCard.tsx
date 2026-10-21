@@ -18,7 +18,7 @@ export function AppCard({
       className={cn(
         "block p-6 bg-app-surface border border-app-border-subtle rounded-lg shadow transition-colors duration-200",
         clickable &&
-          "hover:bg-app-surface-hover hover:shadow-md cursor-pointer",
+          "hover:bg-app-surface-muted/50 hover:border-app-border-strong hover:shadow-md cursor-pointer",
         className,
       )}
       {...props}

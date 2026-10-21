@@ -59,8 +59,8 @@ export function SignInForm() {
   return (
     <form onSubmit={handleSubmit} className="space-y-6">
       {error && (
-        <div className="bg-app-surface-negative border border-app-border-negative px-4 py-3 rounded-lg">
-          <AppText variant="p" className="text-sm text-app-fg-negative">
+        <div className="bg-app-error-subtle border border-app-error px-4 py-3 rounded-lg">
+          <AppText variant="p" className="text-sm text-app-error">
             {error}
           </AppText>
         </div>
@@ -108,11 +108,13 @@ export function SignInForm() {
 
       <div className="text-center text-sm text-app-fg-muted">
         Don't have an account?{" "}
-        <Link href="/signup">
-          <AppButton variant="link" color="secondary">
-            Sign up
-          </AppButton>
-        </Link>
+        <AppButton
+          render={<Link href="/signup" />}
+          variant="link"
+          color="secondary"
+        >
+          Sign up
+        </AppButton>
       </div>
     </form>
   );

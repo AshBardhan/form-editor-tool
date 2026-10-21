@@ -82,11 +82,14 @@ export function AdminFormsTable({ forms }: AdminFormsTableProps) {
               {new Date(form.createdAt).toLocaleDateString()}
             </td>
             <td className="px-4 py-3 text-right">
-              <Link href={`/forms/${form.slug}/builder`}>
-                <AppButton variant="outline" color="primary" size="sm">
-                  View
-                </AppButton>
-              </Link>
+              <AppButton
+                render={<Link href={`/forms/${form.slug}/builder`} />}
+                variant="outline"
+                color="primary"
+                size="sm"
+              >
+                View
+              </AppButton>
             </td>
           </tr>
         ))}

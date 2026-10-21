@@ -32,7 +32,9 @@ export function DemoSection({
         {title}
       </h3>
       {description ? (
-        <p className={cn("text-sm mb-4", descriptionClass[scope])}>{description}</p>
+        <p className={cn("text-sm mb-4", descriptionClass[scope])}>
+          {description}
+        </p>
       ) : null}
       {children}
     </section>

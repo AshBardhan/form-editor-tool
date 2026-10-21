@@ -11,11 +11,13 @@ export default function NotFound() {
         <AppText className="text-app-fg-muted">
           The form you're looking for is no longer available.
         </AppText>
-        <Link href="/forms">
-          <AppButton variant="outline" color="secondary">
-            Back to Dashboard
-          </AppButton>
-        </Link>
+        <AppButton
+          render={<Link href="/forms" />}
+          variant="outline"
+          color="secondary"
+        >
+          Back to Dashboard
+        </AppButton>
       </AppCard>
     </div>
   );

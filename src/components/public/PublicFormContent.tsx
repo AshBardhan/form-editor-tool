@@ -255,11 +255,13 @@ export function PublicFormContent({ form }: PublicFormContentProps) {
                   >
                     Submit another
                   </FormButton>
-                  <Link href="/forms">
-                    <FormButton variant="outline" color="secondary">
-                      Go Home
-                    </FormButton>
-                  </Link>
+                  <FormButton
+                    render={<Link href="/forms" />}
+                    variant="outline"
+                    color="secondary"
+                  >
+                    Go Home
+                  </FormButton>
                 </div>
               </div>
             )}
@@ -275,11 +277,13 @@ export function PublicFormContent({ form }: PublicFormContentProps) {
                   >
                     Retry
                   </FormButton>
-                  <Link href="/forms">
-                    <FormButton variant="outline" color="secondary">
-                      Go Home
-                    </FormButton>
-                  </Link>
+                  <FormButton
+                    render={<Link href="/forms" />}
+                    variant="outline"
+                    color="secondary"
+                  >
+                    Go Home
+                  </FormButton>
                 </div>
               </div>
             )}

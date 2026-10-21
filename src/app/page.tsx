@@ -31,11 +31,13 @@ export default function Home() {
       <header className="flex items-center justify-between px-6 py-6 sm:px-10">
         <AppText className="text-xl">FormKit</AppText>
 
-        <Link href="/signin">
-          <AppButton variant="outline" color="secondary">
-            Sign in
-          </AppButton>
-        </Link>
+        <AppButton
+          render={<Link href="/signin" />}
+          variant="outline"
+          color="secondary"
+        >
+          Sign in
+        </AppButton>
       </header>
 
       <main className="mx-auto flex max-w-5xl flex-col items-center px-6 pb-20 pt-10 text-center sm:px-10 sm:pt-16">
@@ -57,11 +59,14 @@ export default function Home() {
           responses start coming in.
         </AppText>
         <div className="mt-8">
-          <Link href="/signin">
-            <AppButton variant="solid" color="primary" size="lg">
-              Get started
-            </AppButton>
-          </Link>
+          <AppButton
+            render={<Link href="/signin" />}
+            variant="solid"
+            color="primary"
+            size="lg"
+          >
+            Get started
+          </AppButton>
         </div>
 
         <ul className="mt-16 grid w-full gap-4 text-left sm:grid-cols-3">

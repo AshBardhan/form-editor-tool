@@ -60,29 +60,29 @@ const buttonVariants = cva(
 );
 
 export interface FormButtonProps
-  extends Omit<ComponentProps<"button">, "color">,
-    VariantProps<typeof buttonVariants> {
-  className?: string;
-}
+  extends Omit<ComponentProps<typeof Button>, "color">,
+    VariantProps<typeof buttonVariants> {}
 
+/**
+ * Form-surface button. Pass `render={<Link href="…" />}` to compose a single
+ * styled anchor instead of nesting a button inside a link.
+ */
 export function FormButton({
   className,
   variant,
   size,
   color,
-  type = "button",
+  type,
+  render,
   children,
   ...props
 }: FormButtonProps) {
-  const buttonClassName = cn(
-    buttonVariants({ variant, size, color, className }),
-  );
-
   return (
     <Button
-      type={type}
       data-slot="form-button"
-      className={buttonClassName}
+      className={cn(buttonVariants({ variant, size, color, className }))}
+      render={render}
+      {...(render ? {} : { type: type ?? "button" })}
       {...props}
     >
       {children}

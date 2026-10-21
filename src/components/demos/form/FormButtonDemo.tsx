@@ -1,3 +1,4 @@
+import Link from "next/link";
 import { FormButton } from "@/design-system/form/FormButton";
 import { DemoBlock, DemoSection } from "@/components/demos/DemoSection";
 
@@ -40,6 +41,16 @@ export function FormButtonDemo() {
               Large
             </FormButton>
           </div>
+        </DemoBlock>
+
+        <DemoBlock scope="form" title="As link">
+          <FormButton
+            render={<Link href="/demo" />}
+            variant="outline"
+            color="secondary"
+          >
+            Go to demo
+          </FormButton>
         </DemoBlock>
       </div>
     </DemoSection>

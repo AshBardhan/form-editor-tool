@@ -35,7 +35,7 @@ export const CanvasDroppable = ({
           "border border-app-border-subtle bg-app-surface text-app-sidebar-fg",
         )}
       >
-        <div className="p-1 border border-[#2d2d2d] rounded inline-flex">
+        <div className="p-1 border border-app-sidebar-border rounded inline-flex">
           <Icon size={12} />
         </div>
         <span className="text-xs font-medium">{label}</span>
@@ -43,10 +43,5 @@ export const CanvasDroppable = ({
     ) : null;
   }
 
-  // Wrap canvas block with container query context to maintain proper responsive sizing
-  return (
-    <div className="@container">
-      <CanvasBlock isGhostMode={true} block={item as FormBlock} />
-    </div>
-  );
+  return <CanvasBlock isGhostMode={true} block={item as FormBlock} />;
 };

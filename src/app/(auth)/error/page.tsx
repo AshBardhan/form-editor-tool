@@ -30,11 +30,14 @@ function AuthErrorContent() {
 
   return (
     <AuthFormCard title="Authentication error" description={errorMessage}>
-      <Link href="/signin">
-        <AppButton variant="outline" color="secondary" className="w-full">
-          Try again
-        </AppButton>
-      </Link>
+      <AppButton
+        render={<Link href="/signin" />}
+        variant="outline"
+        color="secondary"
+        className="w-full"
+      >
+        Try again
+      </AppButton>
     </AuthFormCard>
   );
 }

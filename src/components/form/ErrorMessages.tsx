@@ -27,11 +27,7 @@ export const ErrorMessages = ({ errors }: ErrorMessagesProps) => {
   return (
     <div className="space-y-1">
       {errors.map((error, index) => (
-        <AppText
-          key={index}
-          variant="p"
-          className="text-xs text-app-fg-negative"
-        >
+        <AppText key={index} variant="p" className="text-xs text-app-error">
           {error}
         </AppText>
       ))}

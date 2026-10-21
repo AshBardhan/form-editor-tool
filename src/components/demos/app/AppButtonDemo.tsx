@@ -1,3 +1,4 @@
+import Link from "next/link";
 import { AppButton } from "@/design-system/app/AppButton";
 import { DemoBlock, DemoSection } from "@/components/demos/DemoSection";
 
@@ -53,6 +54,25 @@ export function AppButtonDemo() {
             </AppButton>
             <AppButton variant="solid" color="primary" size="lg">
               Large
+            </AppButton>
+          </div>
+        </DemoBlock>
+
+        <DemoBlock scope="app" title="As link">
+          <div className="flex items-center gap-2 flex-wrap">
+            <AppButton
+              render={<Link href="/demo" />}
+              variant="solid"
+              color="primary"
+            >
+              Solid link
+            </AppButton>
+            <AppButton
+              render={<Link href="/demo" />}
+              variant="link"
+              color="secondary"
+            >
+              Text link
             </AppButton>
           </div>
         </DemoBlock>

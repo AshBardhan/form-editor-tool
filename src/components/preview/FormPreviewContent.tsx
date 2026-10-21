@@ -207,7 +207,7 @@ export const FormPreviewContent = ({
   };
 
   return (
-    <FormThemeContainer theme={form.theme} className="justify-start">
+    <FormThemeContainer theme={form.theme} className="justify-start min-h-auto">
       <div
         className="form-content"
         style={{ maxWidth: `${currentDeviceMeta?.size}px` }}

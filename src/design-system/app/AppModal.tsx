@@ -65,7 +65,7 @@ const modalTriggerClass =
   "inline-flex h-8 cursor-pointer items-center justify-center gap-1.5 rounded-md border border-app-border-strong/30 bg-transparent px-3 text-sm leading-none font-medium whitespace-nowrap text-app-fg select-none outline-none transition-colors hover:bg-app-surface-muted focus-visible:ring-[3px] focus-visible:ring-app-border-strong data-disabled:pointer-events-none data-disabled:opacity-50 data-popup-open:bg-app-surface-muted";
 
 const modalCloseClass =
-  "absolute top-4 right-4 z-10 inline-flex size-8 items-center justify-center rounded-md text-app-fg-muted outline-none transition-colors hover:bg-app-surface-muted hover:text-app-fg focus-visible:ring-[3px] focus-visible:ring-app-brand/30";
+  "absolute top-4 right-4 z-10 p-1 inline-flex items-center justify-center rounded-md text-app-fg-muted outline-none transition-colors hover:bg-app-surface-muted hover:text-app-fg focus-visible:ring-[3px] focus-visible:ring-app-brand/30";
 
 const modalHeaderClass = "flex flex-col gap-1.5 p-6";
 
@@ -187,7 +187,7 @@ function AppModalSurface({
         {children}
         {showClose ? (
           <Close data-slot="app-modal-close" className={modalCloseClass}>
-            <X size={12} />
+            <X size={18} />
             <span className="sr-only">Close</span>
           </Close>
         ) : null}

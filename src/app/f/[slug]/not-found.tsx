@@ -15,11 +15,13 @@ export default function PublicFormNotFound() {
           </FormText>
         </div>
 
-        <Link href="/forms" className="inline-flex">
-          <FormButton variant="solid" color="primary">
-            Go to Dashboard
-          </FormButton>
-        </Link>
+        <FormButton
+          render={<Link href="/forms" />}
+          variant="solid"
+          color="primary"
+        >
+          Go to Dashboard
+        </FormButton>
       </div>
     </FormThemeContainer>
   );

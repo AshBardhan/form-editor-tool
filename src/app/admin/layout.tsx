@@ -36,17 +36,20 @@ export default async function AdminLayout({
 
   return (
     <AppThemeContainer>
-      <div className="min-h-screen bg-app-surface-subtle">
+      <div className="min-h-screen bg-app-surface-muted">
         {/* Header */}
         <header className="bg-app-surface border-b border-app-border-subtle">
           <div className="container mx-auto px-4 py-4">
             <div className="flex items-center justify-between">
               <div className="flex items-center gap-4">
-                <Link href="/forms">
-                  <AppButton variant="link" color="secondary" size="sm">
-                    ← Back to Dashboard
-                  </AppButton>
-                </Link>
+                <AppButton
+                  render={<Link href="/forms" />}
+                  variant="link"
+                  color="secondary"
+                  size="sm"
+                >
+                  ← Back to Dashboard
+                </AppButton>
                 <AppText variant="h2">Admin Panel</AppText>
               </div>
               <div className="text-sm text-app-fg-muted">

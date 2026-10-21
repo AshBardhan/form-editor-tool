@@ -18,7 +18,7 @@ export default function Error({
 
   return (
     <>
-      <div className="bg-error-subtle border border-error rounded-lg p-6">
+      <div className="bg-app-error-subtle border border-app-error rounded-lg p-6">
         <div className="flex items-start">
           <div className="shrink-0">
             <svg
@@ -72,7 +72,7 @@ export default function Error({
         </div>
       </div>
 
-      <div className="mt-6 p-4 bg-app-surface-subtle border border-app-border-subtle rounded-lg">
+      <div className="mt-6 p-4 bg-app-surface-muted border border-app-border-subtle rounded-lg">
         <AppText variant="p" className="text-sm text-app-fg-muted">
           <strong>Quick Fix:</strong> Check if PostgreSQL is running:{" "}
           <code className="bg-app-surface-muted px-2 py-1 rounded">

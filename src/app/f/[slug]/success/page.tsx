@@ -15,11 +15,14 @@ export default function SubmissionSuccessPage() {
           </FormText>
         </div>
 
-        <Link href="/forms" className="block">
-          <FormButton variant="solid" color="primary" className="w-full">
-            Back to Dashboard
-          </FormButton>
-        </Link>
+        <FormButton
+          render={<Link href="/forms" />}
+          variant="solid"
+          color="primary"
+          className="w-full"
+        >
+          Back to Dashboard
+        </FormButton>
       </div>
     </FormThemeContainer>
   );

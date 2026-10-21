@@ -1,12 +1,12 @@
 @layer components {
   .form-container {
     @apply bg-form-backdrop px-6 py-4 min-h-screen overflow-y-auto flex flex-col items-center justify-center;
-    /* Enable container queries for child elements */
-    @apply @container;
   }
 
   .form-content {
-    @apply bg-form-surface max-w-7xl border border-form-border-subtle shadow-form-shadow shadow-md w-full transition-[max-width,colors] duration-300 rounded-lg relative;
+    @apply bg-form-surface max-w-7xl border border-form-border-subtle shadow-(--form-shadow) w-full transition-[max-width,colors] duration-300 rounded-lg relative;
+    /* Enable container queries for child elements */
+    @apply @container;
     /* Mobile-first responsive padding using container queries */
     @apply py-4 @sm:py-6 @5xl:py-8;
   }
