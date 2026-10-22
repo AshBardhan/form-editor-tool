@@ -30,7 +30,6 @@ export default function Home() {
     <div className="min-h-screen overflow-y-auto bg-linear-to-br from-blue-50 to-indigo-100">
       <header className="flex items-center justify-between px-6 py-6 sm:px-10">
         <AppText className="text-xl">FormKit</AppText>
-
         <AppButton
           render={<Link href="/signin" />}
           variant="outline"
@@ -41,10 +40,7 @@ export default function Home() {
       </header>
 
       <main className="mx-auto flex max-w-5xl flex-col items-center px-6 pb-20 pt-10 text-center sm:px-10 sm:pt-16">
-        <AppText
-          variant="p"
-          className="mb-4 text-sm font-medium tracking-wide text-app-brand uppercase"
-        >
+        <AppText className="mb-4 text-sm font-medium tracking-wide text-app-brand uppercase">
           Visual form editor
         </AppText>
         <AppText variant="h1" className="max-w-3xl tracking-tight">
@@ -58,6 +54,7 @@ export default function Home() {
           preview, and a public share link — plus submissions and analytics once
           responses start coming in.
         </AppText>
+
         <div className="mt-8">
           <AppButton
             render={<Link href="/signin" />}
