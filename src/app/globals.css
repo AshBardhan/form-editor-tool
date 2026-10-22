@@ -2,7 +2,6 @@
 
 @import "../styles/base.css";
 @import "../styles/primitives.css";
-@import "../styles/palette.css";
 @import "../styles/theme/app.css";
 @import "../styles/theme/form.css";
 @import "../styles/components/app.css";
