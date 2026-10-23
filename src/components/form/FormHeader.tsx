@@ -242,12 +242,11 @@ export function FormHeader({ form }: FormHeaderProps) {
                 <AppButton
                   variant="ghost"
                   color="secondary"
-                  size="sm"
                   disabled={isSubmitting}
                 />
               }
             >
-              <MoreVertical className="size-4" />
+              <MoreVertical size={20} />
               <span className="sr-only">Open form actions</span>
             </AppMenuTrigger>
             <AppMenuContent align="end">

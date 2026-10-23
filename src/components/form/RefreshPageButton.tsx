@@ -28,7 +28,7 @@ export function RefreshPageButton({ label }: RefreshPageButtonProps) {
       aria-label={label}
       title={label}
     >
-      <RefreshCwIcon className={isPending ? "animate-spin" : ""} />
+      <RefreshCwIcon size={20} className={isPending ? "animate-spin" : ""} />
     </AppButton>
   );
 }

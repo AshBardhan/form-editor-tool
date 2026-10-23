@@ -18,10 +18,9 @@ export function AppThemeSwitcher() {
       aria-label={`Switch to ${APP_THEME_LABELS[nextTheme]} theme`}
       title={`Switch to ${APP_THEME_LABELS[nextTheme]} theme`}
       aria-pressed={theme === "dark"}
-      className="size-9 p-0 hover:bg-black/10"
       onClick={() => setAppTheme(nextTheme)}
     >
-      <Icon aria-hidden="true" className="size-4" />
+      <Icon aria-hidden="true" size={24} />
     </AppButton>
   );
 }

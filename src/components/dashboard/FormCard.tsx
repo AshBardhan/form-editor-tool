@@ -75,7 +75,6 @@ export function FormCard({
                     color="secondary"
                     size="sm"
                     disabled={isSubmitting}
-                    className="h-6 w-6 p-0"
                     onClick={(e) => {
                       e.preventDefault();
                       e.stopPropagation();
@@ -83,7 +82,7 @@ export function FormCard({
                   />
                 }
               >
-                <MoreVertical className="size-4" />
+                <MoreVertical size={16} />
                 <span className="sr-only">Open form actions</span>
               </AppMenuTrigger>
               <AppMenuContent align="end">

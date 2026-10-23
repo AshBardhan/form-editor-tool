@@ -18,6 +18,7 @@ import {
 } from "@/design-system/app/AppMenu";
 import { AppBadge } from "@/design-system/app/AppBadge";
 import { AppText } from "@/design-system/app/AppText";
+import { AppButton } from "@/design-system/app/AppButton";
 
 interface UserMenuProps {
   user: {
@@ -37,14 +38,15 @@ export function UserMenu({ user }: UserMenuProps) {
     <AppMenu>
       <AppMenuTrigger
         render={
-          <button
-            type="button"
-            className="flex items-center gap-2 hover:opacity-80 transition-opacity"
+          <AppButton
+            variant="ghost"
+            color="secondary"
             aria-label="User menu"
+            title="User menu"
           />
         }
       >
-        <CircleUserIcon size={20} />
+        <CircleUserIcon aria-hidden="true" size={24} />
       </AppMenuTrigger>
 
       <AppMenuContent align="end" className="w-64">

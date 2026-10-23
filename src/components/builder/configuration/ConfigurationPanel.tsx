@@ -15,7 +15,11 @@ import { AppText } from "@/design-system/app/AppText";
 import { JSX, useEffect, useState, useMemo, memo, useCallback } from "react";
 import z from "zod";
 import { FormBlock } from "@/lib/types/form";
-import type { ButtonAlignment, FormBlockPropTemplate, FormBlockValueType } from "@/lib/types/form";
+import type {
+  ButtonAlignment,
+  FormBlockPropTemplate,
+  FormBlockValueType,
+} from "@/lib/types/form";
 import {
   InputConfig,
   LongTextConfig,
@@ -237,7 +241,13 @@ export const ConfigurationPanel = memo(function ConfigurationPanel({
             options={prop.options ?? []}
             aria-invalid={shouldShowError}
             aria-describedby={describedBy}
-            onChange={(value) => updateFormBlock(selected.id, prop.key, value as FormBlockValueType)}
+            onChange={(value) =>
+              updateFormBlock(
+                selected.id,
+                prop.key,
+                value as FormBlockValueType,
+              )
+            }
           />
         );
         break;
@@ -309,13 +319,12 @@ export const ConfigurationPanel = memo(function ConfigurationPanel({
                   <AppButton
                     variant="ghost"
                     color="secondary"
-                    size="md"
-                    className="size-8 p-0"
+                    size="sm"
                     aria-label="Open menu"
                   />
                 }
               >
-                <MoreVertical />
+                <MoreVertical size={16} />
               </AppMenuTrigger>
               <AppMenuContent align="end">
                 <AppMenuItem
