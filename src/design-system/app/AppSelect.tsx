@@ -17,7 +17,7 @@ import {
 } from "@/design-system/primitives";
 
 export interface AppSelectOption {
-  value: string;
+  value: string | number;
   label?: string;
   disabled?: boolean;
   [field: string]: string | number | boolean | null | undefined;
@@ -30,8 +30,8 @@ type SelectSize = NonNullable<
 export interface AppSelectProps {
   items: AppSelectOption[];
   labelKey?: string;
-  value?: string | null;
-  onValueChange?: (value: string | null) => void;
+  value?: string | number | null;
+  onValueChange?: (value: string | number | null) => void;
   placeholder?: string;
   size?: SelectSize;
   required?: boolean;
@@ -92,7 +92,7 @@ function optionLabel(item: AppSelectOption, labelKey: string) {
   return item.label ?? item.value;
 }
 
-function toSelectValue(value: string | null) {
+function toSelectValue(value: string | number | null) {
   return value === "" ? null : value;
 }
 
@@ -100,7 +100,7 @@ export function AppSelect({
   items,
   labelKey = "label",
   value,
-  onValueChange,
+  onValueChange = () => {},
   placeholder = "Choose option",
   size = "md",
   required = false,
@@ -123,9 +123,7 @@ export function AppSelect({
     <SelectRoot
       items={options}
       {...(value !== undefined ? { value: toSelectValue(value) } : {})}
-      onValueChange={(next) => {
-        onValueChange?.(typeof next === "string" ? next : null);
-      }}
+      onValueChange={onValueChange}
       required={required}
       disabled={disabled}
       name={name}

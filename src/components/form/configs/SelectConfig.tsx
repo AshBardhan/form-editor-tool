@@ -2,12 +2,12 @@ import { AppSelect } from "@/design-system/app/AppSelect";
 
 interface SelectConfigProps {
   id: string;
-  value: string;
-  options: { value: string; label: string }[];
+  value: string | number;
+  options: { value: string | number; label: string }[];
   disabled?: boolean;
   "aria-invalid"?: boolean;
   "aria-describedby"?: string;
-  onChange: (val: string) => void;
+  onChange: (value: string | number | null) => void;
 }
 
 /**
@@ -34,7 +34,7 @@ export const SelectConfig = ({
       disabled={disabled}
       aria-invalid={ariaInvalid}
       aria-describedby={ariaDescribedBy}
-      onValueChange={(next) => onChange(next ?? "")}
+      onValueChange={onChange}
     />
   );
 };

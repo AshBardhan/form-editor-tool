@@ -3,7 +3,7 @@
  * Using existing FormBlock type from src/lib/types/form.ts
  */
 
-export const seedBlocks: Record<string, any[]> = {
+export const seedBlocks: Record<string, unknown[]> = {
   "seed-form-001": [
     // Customer Satisfaction Survey
     {

@@ -78,7 +78,7 @@ export interface FormBlockPropTemplate {
   maxLength?: number;
 
   // For choice-based blocks
-  options?: { value: string; label: string }[];
+  options?: { value: string | number; label: string }[];
 
   // Optional UI/UX-based blocks
   placeholder?: string;

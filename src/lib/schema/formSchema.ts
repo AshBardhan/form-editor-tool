@@ -1,5 +1,6 @@
 import { z } from "zod";
 import { DEFAULT_FORM_THEME, FORM_THEMES } from "@/lib/constants/themes";
+import { FormBlockType } from "@/lib/types/form";
 
 /**
  * Creates a Zod schema for a required string with a custom label.
@@ -21,13 +22,15 @@ const nonNegativeOptionalNumber = nonNegativeNumber.optional();
 /**
  * A collection of Zod schemas for different form block types.
  */
-export const formBlockSchemas: Record<string, z.ZodSchema> = {
+export const formBlockSchemas: Record<FormBlockType, z.ZodSchema> = {
   heading: z.object({
     text: requiredString("Heading text"),
     level: z
       .number()
-      .min(1, "Only h1-h6 are allowed")
-      .max(6, "Only h1-h6 are allowed"),
+      .refine((value) => value >= 1 && value <= 6, {
+        message: "Only levels from h1 to h6 are allowed",
+      })
+      .default(1),
   }),
 
   paragraph: z.object({
@@ -139,12 +142,6 @@ export const formBlockSchemas: Record<string, z.ZodSchema> = {
     spacing: nonNegativeNumber,
     divider: z.boolean(),
   }),
-
-  button: z.object({
-    title: requiredString("Title"),
-    level: z.enum(["primary", "secondary"]),
-    position: z.enum(["left", "center", "right"]),
-  }),
 };
 
 const nonEmptyString = z.string().trim().min(1);
@@ -175,7 +172,7 @@ const formBlockInputSchema = z
     props: z.record(z.string(), z.unknown()).default({}),
   })
   .superRefine((block, ctx) => {
-    const blockSchema = formBlockSchemas[block.type];
+    const blockSchema = formBlockSchemas[block.type as FormBlockType];
     if (!blockSchema) {
       ctx.addIssue({
         code: z.ZodIssueCode.custom,

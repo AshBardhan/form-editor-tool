@@ -15,7 +15,7 @@ import { AppText } from "@/design-system/app/AppText";
 import { JSX, useEffect, useState, useMemo, memo, useCallback } from "react";
 import z from "zod";
 import { FormBlock } from "@/lib/types/form";
-import type { ButtonAlignment, FormBlockPropTemplate } from "@/lib/types/form";
+import type { ButtonAlignment, FormBlockPropTemplate, FormBlockValueType } from "@/lib/types/form";
 import {
   InputConfig,
   LongTextConfig,
@@ -237,7 +237,7 @@ export const ConfigurationPanel = memo(function ConfigurationPanel({
             options={prop.options ?? []}
             aria-invalid={shouldShowError}
             aria-describedby={describedBy}
-            onChange={(value) => updateFormBlock(selected.id, prop.key, value)}
+            onChange={(value) => updateFormBlock(selected.id, prop.key, value as FormBlockValueType)}
           />
         );
         break;
