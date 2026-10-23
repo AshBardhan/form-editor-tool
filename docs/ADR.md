@@ -6,11 +6,12 @@
 - **React 19**: Modern UI development library for reusable components with latest features.
 - **TypeScript**: Ensures strong typing for props, state and domain models, reducing runtime errors.
 - **Zustand**: Lightweight state management alternative to `Redux` with simplicity and ease of use.
-- **TailwindCSS v4**: Utility-first styling with theme tokens, responsive support and container queries.
+- **TailwindCSS v4**: Utility-first styling with `@theme inline` tokens, responsive support and container queries.
+- **@base-ui/react**: Unstyled primitive behavior (focus, keyboard, ARIA, portals) for Select, Menu, Modal, Toast, and related widgets.
 - **@dnd-kit**: Modern drag-and-drop toolkit for React with accessibility features.
 - **Zod**: Type-safe client-side validation with schema-based approach for both builder and preview modes.
-- **Motion**: Modern animation library for drag-and-drop, toast notifications and UI feedback.
-- **Class Variance Authority (CVA)**: Manage component variants and styling combinations in a type-safe and reusable way
+- **Motion**: Animation library for drag-and-drop, layout transitions and UI feedback.
+- **Class Variance Authority (CVA)**: Manage derived-component variants (`variant`, `size`, `color`) in a type-safe way
 - **Lucide React**: Lightweight, modern SVG icon library for clean, scalable icons.
 - **Prisma ORM**: Type-safe database ORM with auto-generated client and migration system for PostgreSQL.
 - **PostgreSQL**: Robust relational database for data persistence with ACID compliance.
@@ -23,23 +24,38 @@
 ### State Management
 
 - **Zustand Stores**: 4 separate stores for different concerns
-  - `formDataStore` - Form blocks and data
-  - `formConfigStore` - Form metadata (title, theme)
-  - `UIStateStore` - UI state (device mode, sidebar visibility)
+  - `formDataStore` - Respondent field values in preview/public
+  - `formConfigStore` - Form metadata, blocks, actions; `updateFormTheme` for the persisted form theme id
+  - `UIStateStore` - Block selection, sidebar collapse, hydrated app theme (`light` / `dark`)
   - `formBlockValidationStore` - Validation errors per block
 - **Selector Pattern**: Used throughout to minimize re-renders
 - **Immutable Updates**: State updates follow immutability patterns
 - **Initialization Logic**: Smart defaults for form fields (e.g., first option for required selects)
 
+### Design System & Theming
+
+Two independent surfaces must not bleed into each other. Scoping is DOM nesting plus CSS custom properties, not a React theme context.
+
+- **App theme** (`light` | `dark`) — product chrome on opted-in routes (dashboard, form workspace, admin, `/demo`). A route opts in by rendering `AppThemeContainer` (`[data-app-scope]`). Preference lives in `localStorage`; a pre-paint script on `<html>` sets `data-app-theme` to avoid flash. Unscoped routes (`/`, auth, `/f/[slug]`) stay on default app tokens.
+- **Form theme** (`light` | `dark` | `forest` | `beach` | `frost` | `fire`) — authored form content only (builder canvas, preview, public form). `FormThemeContainer` sets `data-form-theme` and `form-container`. Unknown ids fall back via `resolveFormTheme` to `DEFAULT_FORM_THEME`. Persisted as `Form.theme` (`enum PredefinedFormTheme`); the builder picker is `FormThemeSelector`.
+- **Namespaced tokens** — app themes define `--app-*`; form themes define `--form-*`. `@theme inline` maps each namespace to utilities (`bg-app-surface`, `bg-form-surface`). A missing form variable does not inherit the app theme. No `dark:` utilities.
+- **Token tiers** — Tier 1 (semantic color) and Tier 2 (font, radius, shadow) are per-theme in `src/styles/theme/{app,form}.css`. Tier 3 (spacing, motion, z-index, focus ring) is global in `src/styles/primitives.css` and cannot be shadowed by a theme.
+- **Layers**
+  - **Primitives** (`src/design-system/primitives/`) — behavior and a11y only. Complex widgets wrap Base UI (`Select`, `Menu`, `Modal`, `Toast`, …). Simple controls wrap native elements. Zero appearance classes.
+  - **Derived app** (`src/design-system/app/`, `App*`) — chrome and config UI; `bg-app-*` / `text-app-*`.
+  - **Derived form** (`src/design-system/form/`, `Form*`) — canvas, preview, public fields and actions; `bg-form-*` / `text-form-*`.
+- **Composition** — Base UI `render` is the slot API. Navigation CTAs use `AppButton` / `FormButton` with `render={<Link href="…" />}` so the host is a single `<a>`. Do not nest a button inside `Link`.
+- **Custom / user-authored form themes** are deferred (`docs/IMPROVEMENTS.md`). When added, they overlay inline `--form-*` on `FormThemeContainer` while `Form.theme` remains the CSS base. Do not add `"custom"` to `PredefinedFormTheme`.
+
 ### Component Architecture
 
-- **Composition over Inheritance**: Components built using composition patterns
-- **Separation of Concerns**: Clear separation between presentational and container components
+- **Composition over Inheritance**: Derived components wrap primitives; they never re-implement keyboard or ARIA behavior
+- **Paired surfaces**: App chrome uses `App*`; authored form content uses `Form*`. There is no shared unprefixed `bg-surface` component
+- **Separation of Concerns**: Presentational vs container; theme scope vs widget behavior
 - **Single Responsibility**: Each component has a focused responsibility
-- **Reusability**: UI primitives shared across the application
-- **Container Queries**: Component-level responsive design for better flexibility
-- **Error Boundaries**: Proper error handling and display with dedicated ErrorMessages component
-- **Toast System**: Non-blocking notifications for user feedback with Motion animations
+- **Container Queries**: Form typography (`FormText`) scales with `.form-container` (`@sm`, `@5xl`); app typography (`AppText`) scales with the viewport
+- **Field validation**: Inline errors via `FormError` on public/preview/builder blocks
+- **Toast System**: `AppToast` on Base UI, provided once from the root layout (`AppToastProvider`)
 - **Route Groups**: Next.js route groups for logical organization
   - `(dashboard)/` - Dashboard-related pages
   - `(form)/` - Form management pages (builder, analytics, submissions)
@@ -51,7 +67,7 @@
 - **Mobile-First Approach**: Forms adapt from mobile to desktop seamlessly
 - **Device Preview**: Toggle between desktop, tablet and mobile views in builder
 - **Flexible Layouts**: Form blocks adjust based on container width, not viewport
-- **Typography Scaling**: Text sizes adapt to different container sizes (@sm, @md, @lg breakpoints)
+- **Typography Scaling**: Form text uses container breakpoints (from `@sm` to `@5xl`); app text uses viewport breakpoints (from `sm` to `2xl`)
 
 ### Validation Strategy
 
@@ -118,7 +134,7 @@
   - **FormFieldResponse**: Individual field responses linked to submissions
 - **Enum Types**: Database-level validation for consistency
   - **UserRole**: `CLIENT` (form creator), `ADMIN` (platform admin)
-  - **FormTheme**: `light`, `dark`
+  - **FormTheme**: Predefined themes - `light`, `dark`, `frost`, `forest`, `fire`, `beach`
   - **FormStatus**: `draft` (editing), `published` (accepting responses), `archived` (inactive)
 - **Analytics Tracking**: Built-in counters for form engagement metrics
   - `views`: Total public page visits

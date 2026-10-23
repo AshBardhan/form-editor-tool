@@ -6,5 +6,3 @@
 @import "../styles/theme/form.css";
 @import "../styles/components/app.css";
 @import "../styles/components/form.css";
-
-@custom-variant dark (&:where(.dark, .dark *));
