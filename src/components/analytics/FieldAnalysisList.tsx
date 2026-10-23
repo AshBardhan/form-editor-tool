@@ -174,9 +174,7 @@ export function FieldAnalysisList({
                 <Fragment key={field.blockId}>
                   <div className="space-y-6">
                     <div className="space-y-2">
-                      <AppText variant="h4" className="text-app-fg-primary">
-                        {field.label}
-                      </AppText>
+                      <AppText variant="h4">{field.label}</AppText>
                       <div className="flex flex-wrap gap-2 items-center">
                         <AppBadge
                           label={field.blockType}
@@ -216,12 +214,7 @@ export function FieldAnalysisList({
                       </div>
 
                       <div className="space-y-3">
-                        <AppText
-                          variant="p"
-                          className="text-sm font-medium text-app-fg-primary"
-                        >
-                          Responses
-                        </AppText>
+                        <AppText variant="h5">Responses</AppText>
 
                         {isChoiceBasedFieldBlock(analysis.blockType) && (
                           <div className="space-y-3 p-3 bg-muted/30 rounded border border-app-border-subtle">
@@ -229,12 +222,7 @@ export function FieldAnalysisList({
                               (item, itemIndex) => (
                                 <div key={itemIndex} className="space-y-1">
                                   <div className="flex justify-between items-center">
-                                    <AppText
-                                      variant="p"
-                                      className="text-sm font-medium text-app-fg-primary"
-                                    >
-                                      {item.label}
-                                    </AppText>
+                                    <AppText>{item.label}</AppText>
                                     <AppBadge
                                       label={`${item.count} (${item.percentage}%)`}
                                       variant="neutral"

@@ -53,12 +53,7 @@ export function SubmissionDetail({
             className={`space-y-2 ${!isLast && "border-b border-border pb-4"}`}
           >
             <AppText variant="h5">{getFieldBlockLabel(block)}</AppText>
-            <AppText
-              variant="p"
-              className={
-                isSkipped ? "text-app-fg-muted" : "text-app-fg-primary"
-              }
-            >
+            <AppText className={isSkipped ? "text-app-fg-muted" : ""}>
               {formatResponseValue(value)}
             </AppText>
           </div>

@@ -43,5 +43,9 @@ export const CanvasDroppable = ({
     ) : null;
   }
 
-  return <CanvasBlock isGhostMode={true} block={item as FormBlock} />;
+  return (
+    <div className="@container">
+      <CanvasBlock isGhostMode={true} block={item as FormBlock} />
+    </div>
+  );
 };

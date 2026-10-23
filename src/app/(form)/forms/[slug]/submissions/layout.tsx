@@ -13,9 +13,7 @@ export default function FormSubmissionsLayout({
     <PageContainer className="py-8">
       <div className="space-y-6">
         <div className="flex items-center justify-between">
-          <AppText variant="h3" className="text-app-fg-primary">
-            Submissions
-          </AppText>
+          <AppText variant="h3">Submissions</AppText>
           <RefreshPageButton label="Refresh submissions" />
         </div>
         {children}

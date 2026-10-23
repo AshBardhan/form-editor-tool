@@ -6,6 +6,7 @@
 import Link from "next/link";
 import { AppButton } from "@/design-system/app/AppButton";
 import { AppText } from "@/design-system/app/AppText";
+import { AppCard } from "@/design-system/app/AppCard";
 
 const highlights = [
   {
@@ -27,7 +28,7 @@ const highlights = [
 
 export default function Home() {
   return (
-    <div className="min-h-screen overflow-y-auto bg-linear-to-br from-blue-50 to-indigo-100">
+    <div className="min-h-screen overflow-y-auto bg-gradient-to-br from-blue-50 to-indigo-100">
       <header className="flex items-center justify-between px-6 py-6 sm:px-10">
         <AppText className="text-xl">FormKit</AppText>
         <AppButton
@@ -66,22 +67,19 @@ export default function Home() {
           </AppButton>
         </div>
 
-        <ul className="mt-16 grid w-full gap-4 text-left sm:grid-cols-3">
+        <div className="mt-16 grid gap-3 md:grid-cols-3">
           {highlights.map((item) => (
-            <li
-              key={item.title}
-              className="rounded-xl border border-app-border-subtle bg-app-surface p-6 shadow-sm"
-            >
-              <AppText variant="h3">{item.title}</AppText>
+            <AppCard className="text-left" key={item.title}>
+              <AppText variant="h4">{item.title}</AppText>
               <AppText
                 variant="p"
                 className="mt-2 text-sm leading-relaxed text-app-fg-muted"
               >
                 {item.description}
               </AppText>
-            </li>
+            </AppCard>
           ))}
-        </ul>
+        </div>
       </main>
     </div>
   );

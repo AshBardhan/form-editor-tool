@@ -18,9 +18,7 @@ export default async function FormAnalyticsLayout({
     <PageContainer className="py-8">
       <div className="space-y-6">
         <div className="flex items-center justify-between">
-          <AppText variant="h3" className="text-app-fg-primary">
-            Analytics
-          </AppText>
+          <AppText variant="h3">Analytics</AppText>
           <RefreshPageButton label="Refresh analytics" />
         </div>
         <AppNavigationTabs
