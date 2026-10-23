@@ -5,7 +5,7 @@ import { useSortable } from "@dnd-kit/sortable";
 import { CSS } from "@dnd-kit/utilities";
 import { CopyIcon, SeparatorHorizontalIcon, TrashIcon } from "lucide-react";
 import { widgetBlockRenderers } from "@/components/form/blocks";
-import { Button } from "@/components/ui/Button";
+import { AppButton } from "@/design-system/app/AppButton";
 import { CSSProperties, JSX } from "react";
 import {
   useFormBlockValidationStore,
@@ -93,13 +93,10 @@ export const CanvasBlock = ({
       role="button"
       data-slot="block"
       data-id={block.id}
-      className={cn(
-        "relative border transition outline-none focus:ring-2 focus:ring-blue-400 dark:focus:ring-gray-200 border-transparent",
-        {
-          "border-destructive min-h-10 bg-destructive/5": isInvalid,
-          "border-blue-500 dark:border-gray-300": isSelected && !isInvalid,
-        },
-      )}
+      className={cn("relative transition outline-none focus:ring-2", {
+        "ring-2 ring-form-error min-h-10 bg-form-error-subtle": isInvalid,
+        "ring-2 ring-form-brand": isSelected && !isInvalid,
+      })}
       onMouseEnter={() => {
         if (!isDragging) {
           hoverBlock(block.id);
@@ -130,7 +127,7 @@ export const CanvasBlock = ({
     >
       {/* Form Block Overlay highlighted on mouse hover and 'Tab' keyboard navigation */}
       {isHovered && (
-        <div className="absolute inset-0 bg-blue-200/30 dark:bg-white/30 transition-colors pointer-events-none" />
+        <div className="absolute inset-0 ring-2 ring-form-brand bg-form-brand-subtle/80 transition-colors pointer-events-none" />
       )}
 
       {/* Form Block Content */}
@@ -148,41 +145,45 @@ export const CanvasBlock = ({
           <div
             {...listeners}
             aria-label="Reorder block"
-            className="absolute inset-0 cursor-grab text-gray-500 dark:text-gray-100 hover:text-black dark:hover:text-white transition-colors flex items-center justify-center"
+            className="absolute inset-0 cursor-grab text-form-fg-muted hover:text-form-fg transition-colors flex items-center justify-center"
             title="Reorder Block"
           >
             <SeparatorHorizontalIcon size={24} />
           </div>
 
-          <div className="absolute top-1/2 -translate-y-1/2 right-2 @sm:right-4 flex gap-1 z-1">
+          <div className="absolute top-1/2 -translate-y-1/2 right-2 @sm:right-4 flex gap-2 z-1">
             {/* Clone Block Button */}
             {!isInvalid && (
-              <Button
+              <AppButton
                 variant="ghost"
+                color="secondary"
                 tabIndex={-1}
-                className="cursor-pointer rounded-full p-1.5 text-gray-500 dark:text-gray-300 hover:text-black dark:hover:text-white hover:bg-black/10 dark:hover:bg-white/10 transition-colors"
+                className="rounded-full border-transparent bg-transparent p-1 shadow-none text-form-fg-muted hover:border-transparent hover:bg-form-surface-muted hover:text-form-fg"
                 onClick={(e) => {
                   e.stopPropagation();
                   cloneBlock(block.id);
                 }}
                 title="Duplicate Block"
+                aria-label="Duplicate block"
               >
-                <CopyIcon size={14} />
-              </Button>
+                <CopyIcon size={20} />
+              </AppButton>
             )}
             {/* Remove Block Button */}
-            <Button
+            <AppButton
               variant="ghost"
+              color="secondary"
               tabIndex={-1}
-              className="cursor-pointer rounded-full p-1.5 text-gray-500 dark:text-gray-300 hover:text-black dark:hover:text-white hover:bg-black/10 dark:hover:bg-white/10 transition-colors"
+              className="rounded-full border-transparent bg-transparent p-1 shadow-none text-form-fg-muted hover:border-transparent hover:bg-form-surface-muted hover:text-form-fg"
               onClick={(e) => {
                 e.stopPropagation();
                 onDeleteBlock?.(block.id);
               }}
               title="Delete Block"
+              aria-label="Delete block"
             >
-              <TrashIcon size={16} />
-            </Button>
+              <TrashIcon size={20} />
+            </AppButton>
           </div>
         </div>
       )}

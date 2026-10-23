@@ -1,6 +1,6 @@
 import { PageContainer } from "@/components/layout";
-import { RefreshPageButton } from "@/components/ui/RefreshPageButton";
-import Text from "@/components/ui/Text";
+import { RefreshPageButton } from "@/components/form/RefreshPageButton";
+import { AppText } from "@/design-system/app/AppText";
 
 interface FormSubmissionsLayoutProps {
   children: React.ReactNode;
@@ -13,9 +13,7 @@ export default function FormSubmissionsLayout({
     <PageContainer className="py-8">
       <div className="space-y-6">
         <div className="flex items-center justify-between">
-          <Text variant="h3" className="text-foreground">
-            Submissions
-          </Text>
+          <AppText variant="h3">Submissions</AppText>
           <RefreshPageButton label="Refresh submissions" />
         </div>
         {children}

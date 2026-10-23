@@ -1,5 +1,8 @@
 "use client";
 
+import { AppButton } from "@/design-system/app/AppButton";
+import { AppText } from "@/design-system/app/AppText";
+
 export default function Error({
   error,
   reset,
@@ -9,9 +12,11 @@ export default function Error({
 }) {
   return (
     <div className="empty-content flex-col gap-3">
-      <h2 className="text-lg font-semibold">Unable to load form</h2>
-      <p className="text-sm">{error.message}</p>
-      <button onClick={reset}>Try Again</button>
+      <AppText variant="h2">Unable to load form</AppText>
+      <AppText variant="p">{error.message}</AppText>
+      <AppButton variant="solid" color="primary" onClick={reset}>
+        Try Again
+      </AppButton>
     </div>
   );
 }

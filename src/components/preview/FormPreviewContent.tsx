@@ -2,15 +2,15 @@
 
 import React, { JSX, useState, useEffect } from "react";
 import { FormBlock, FormBlockValueType } from "@/lib/types/form";
-import Text from "@/components/ui/Text";
+import { FormText } from "@/design-system/form/FormText";
 import { widgetBlockRenderers } from "@/components/form/blocks";
 import { FormActionGroup } from "@/components/form/FormActionGroup";
 import { useFormConfigStore, useFormDataStore } from "@/lib/stores";
 import { getFieldKey, isFieldBasedBlock } from "@/lib/utils/formUtils";
 import { validateFormBlock } from "@/lib/utils/formValidationUtils";
 import { DeviceList, DeviceType } from "@/lib/constants/device";
-import { toast } from "@/components/ui/Toast";
-import { switchFormTheme } from "@/lib/utils/domUtils";
+import { toast } from "@/design-system/app/AppToast";
+import { FormThemeContainer } from "@/design-system/containers/FormThemeContainer";
 
 interface FormPreviewContentProps {
   editable?: boolean;
@@ -38,15 +38,8 @@ export const FormPreviewContent = ({
   const [hasSubmitted, setHasSubmitted] = useState(false);
 
   const currentDeviceMeta = DeviceList.find(
-    (device) => device.label === currentDevice,
+    (device) => device.value === currentDevice,
   );
-
-  /**
-   * Apply theme when component mounts or theme changes
-   */
-  useEffect(() => {
-    switchFormTheme(form.theme);
-  }, [form.theme]);
 
   /**
    * Cleanup form data and errors when component unmounts to prevent stale data on next preview
@@ -118,7 +111,8 @@ export const FormPreviewContent = ({
         0,
       );
 
-      toast.error("Form validation failed", {
+      toast.error({
+        title: "Form validation failed",
         description: `Please fix ${errorCount} error${errorCount > 1 ? "s" : ""} before submitting.`,
       });
     }
@@ -142,11 +136,13 @@ export const FormPreviewContent = ({
     setBlockErrors({});
 
     try {
-      toast.success("Form submitted successfully!", {
+      toast.success({
+        title: "Form submitted successfully!",
         description: "Your response has been recorded.",
       });
     } catch (error) {
-      toast.error("Submission failed", {
+      toast.error({
+        title: "Submission failed",
         description: "An unexpected error occurred. Please try again.",
       });
       console.error("Form submission error:", error);
@@ -161,7 +157,8 @@ export const FormPreviewContent = ({
     resetFormData();
     setBlockErrors({});
 
-    toast.info("Form reset", {
+    toast.info({
+      title: "Form reset",
       description: "All fields have been cleared.",
     });
   };
@@ -210,17 +207,17 @@ export const FormPreviewContent = ({
   };
 
   return (
-    <div
-      className="form-container"
-      style={{ maxWidth: `${currentDeviceMeta?.size}px` }}
-    >
-      <div className="form-content">
+    <FormThemeContainer theme={form.theme} className="justify-start min-h-auto">
+      <div
+        className="form-content"
+        style={{ maxWidth: `${currentDeviceMeta?.size}px` }}
+      >
         {form.blocks.length === 0 ? (
-          <div className="h-full text-gray-500 dark:text-white transition-colors flex flex-col items-center justify-center">
-            <Text variant="h3">Empty form</Text>
-            <Text variant="p" className="text-sm">
+          <div className="h-full flex flex-col items-center justify-center">
+            <FormText variant="h3">Empty form</FormText>
+            <FormText variant="p" className="text-sm @sm:text-sm @5xl:text-sm">
               Please add widgets from the form builder.
-            </Text>
+            </FormText>
           </div>
         ) : (
           <form onSubmit={handleSubmit} onReset={handleReset} noValidate>
@@ -229,6 +226,6 @@ export const FormPreviewContent = ({
           </form>
         )}
       </div>
-    </div>
+    </FormThemeContainer>
   );
 };

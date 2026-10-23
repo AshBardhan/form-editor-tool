@@ -1,10 +1,10 @@
 "use client";
 
-import { useMemo } from "react";
-import { Card, CardContent } from "@/components/ui/Card";
-import Text from "@/components/ui/Text";
-import { Badge } from "@/components/ui/Badge";
-import Metric from "@/components/ui/Metric";
+import { Fragment, useMemo } from "react";
+import { AppCard } from "@/design-system/app/AppCard";
+import { AppText } from "@/design-system/app/AppText";
+import { AppBadge } from "@/design-system/app/AppBadge";
+import { AppMetric } from "@/design-system/app/AppMetric";
 import { type FormBlock, type FormBlockType } from "@/lib/types/form";
 import {
   type FieldData,
@@ -16,6 +16,7 @@ import {
   isTextBasedFieldBlock,
 } from "@/lib/utils/formUtils";
 import { BarChart } from "@/components/charts/Bar";
+import { AppSeparator } from "@/design-system/app/AppSeparator";
 
 interface FieldAnalysisListProps {
   fieldBlocks: FormBlock[];
@@ -147,146 +148,137 @@ export function FieldAnalysisList({
 
   return (
     <div className="space-y-6">
-      <Card>
-        <CardContent className="px-6">
-          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-            <Metric
-              label="Total Fields"
-              value={String(summaryMetrics.totalFields)}
-            />
-            <Metric
-              label="Total Responses"
-              value={String(summaryMetrics.totalResponses)}
-            />
-          </div>
-        </CardContent>
-      </Card>
+      <AppCard className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+        <AppMetric
+          label="Total Fields"
+          value={String(summaryMetrics.totalFields)}
+        />
+        <AppMetric
+          label="Total Responses"
+          value={String(summaryMetrics.totalResponses)}
+        />
+      </AppCard>
 
-      <Card>
-        <CardContent className="space-y-4 px-6">
+      <AppCard className="space-y-4">
+        <>
           {fieldAnalysis.length === 0 ? (
-            <Text className="text-muted-foreground">
+            <AppText className="text-app-fg-muted">
               No input fields on this form.
-            </Text>
+            </AppText>
           ) : (
             fieldAnalysis.map((field, index, arr) => {
               const isLast = index === arr.length - 1;
               const analysis = analyzeField(field);
 
               return (
-                <div
-                  className={`space-y-6 ${!isLast && "border-b border-border pb-6"}`}
-                  key={field.blockId}
-                >
-                  <div className="space-y-2">
-                    <Text variant="h4" className="text-foreground">
-                      {field.label}
-                    </Text>
-                    <div className="flex flex-wrap gap-2 items-center">
-                      <Badge
-                        label={field.blockType}
-                        variant="neutral"
-                        size="sm"
-                      />
-                      <Badge
-                        label={field.required ? "Required" : "Optional"}
-                        variant={field.required ? "success" : "neutral"}
-                        size="sm"
-                      />
-                    </div>
-                  </div>
-
-                  <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-                    <div className="space-y-3">
-                      <div className="space-y-1 flex gap-2">
-                        <Metric
-                          className="flex-1"
-                          value={field.responded}
-                          label="Responses"
+                <Fragment key={field.blockId}>
+                  <div className="space-y-6">
+                    <div className="space-y-2">
+                      <AppText variant="h4">{field.label}</AppText>
+                      <div className="flex flex-wrap gap-2 items-center">
+                        <AppBadge
+                          label={field.blockType}
+                          variant="neutral"
+                          size="sm"
                         />
-                        <Metric
-                          className="flex-1"
-                          value={field.skipped}
-                          label="Skipped"
-                        />
-                      </div>
-
-                      <div className="space-y-1">
-                        <BarChart
-                          value={field.responded}
-                          maxValue={field.responded + field.skipped}
-                          size="lg"
+                        <AppBadge
+                          label={field.required ? "Required" : "Optional"}
+                          variant={field.required ? "success" : "neutral"}
+                          size="sm"
                         />
                       </div>
                     </div>
 
-                    <div className="space-y-3">
-                      <Text
-                        variant="p"
-                        className="text-sm font-medium text-foreground"
-                      >
-                        Responses
-                      </Text>
+                    <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+                      <div className="space-y-3">
+                        <div className="space-y-1 flex gap-2">
+                          <AppMetric
+                            className="flex-1"
+                            value={field.responded}
+                            label="Responses"
+                          />
+                          <AppMetric
+                            className="flex-1"
+                            value={field.skipped}
+                            label="Skipped"
+                          />
+                        </div>
 
-                      {isChoiceBasedFieldBlock(analysis.blockType) && (
-                        <div className="space-y-3 p-3 bg-muted/30 rounded border border-border">
-                          {(analysis.data as ChoiceBasedData[]).map(
-                            (item, itemIndex) => (
-                              <div key={itemIndex} className="space-y-1">
-                                <div className="flex justify-between items-center">
-                                  <Text className="font-medium text-foreground text-sm">
-                                    {item.label}
-                                  </Text>
-                                  <Badge
-                                    label={`${item.count} (${item.percentage}%)`}
-                                    variant="neutral"
+                        <div className="space-y-1">
+                          <BarChart
+                            value={field.responded}
+                            maxValue={field.responded + field.skipped}
+                            size="lg"
+                          />
+                        </div>
+                      </div>
+
+                      <div className="space-y-3">
+                        <AppText variant="h5">Responses</AppText>
+
+                        {isChoiceBasedFieldBlock(analysis.blockType) && (
+                          <div className="space-y-3 p-3 bg-muted/30 rounded border border-app-border-subtle">
+                            {(analysis.data as ChoiceBasedData[]).map(
+                              (item, itemIndex) => (
+                                <div key={itemIndex} className="space-y-1">
+                                  <div className="flex justify-between items-center">
+                                    <AppText>{item.label}</AppText>
+                                    <AppBadge
+                                      label={`${item.count} (${item.percentage}%)`}
+                                      variant="neutral"
+                                      size="sm"
+                                    />
+                                  </div>
+
+                                  <BarChart
+                                    value={item.count}
+                                    maxValue={field.responses.length}
                                     size="sm"
                                   />
                                 </div>
+                              ),
+                            )}
+                          </div>
+                        )}
 
-                                <BarChart
-                                  value={item.count}
-                                  maxValue={field.responses.length}
-                                  size="sm"
-                                />
+                        {isTextBasedFieldBlock(analysis.blockType) && (
+                          <>
+                            {analysis.data.length > 0 ? (
+                              <ul className="max-h-48 overflow-y-auto rounded border border-app-border-subtle">
+                                {(analysis.data as TextBasedData[]).map(
+                                  (value, valueIndex) => (
+                                    <li
+                                      key={valueIndex}
+                                      className="py-1 px-2 bg-app-surface even:bg-app-surface-muted"
+                                    >
+                                      <AppText className="text-xs">
+                                        {formatValue(value)}
+                                      </AppText>
+                                    </li>
+                                  ),
+                                )}
+                              </ul>
+                            ) : (
+                              <div className="p-4 rounded border border-border">
+                                <AppText className="text-app-fg-muted">
+                                  No response recorded
+                                </AppText>
                               </div>
-                            ),
-                          )}
-                        </div>
-                      )}
-
-                      {isTextBasedFieldBlock(analysis.blockType) && (
-                        <>
-                          {analysis.data.length > 0 ? (
-                            <ul className="space-y-2 max-h-48 overflow-y-auto rounded border border-border">
-                              {(analysis.data as TextBasedData[]).map(
-                                (value, valueIndex) => (
-                                  <li
-                                    key={valueIndex}
-                                    className="py-1 px-2 bg-white even:bg-gray-100"
-                                  >
-                                    <Text className="text-xs text-foreground">
-                                      {formatValue(value)}
-                                    </Text>
-                                  </li>
-                                ),
-                              )}
-                            </ul>
-                          ) : (
-                            <div className="p-4 rounded border border-border">
-                              No response recorded
-                            </div>
-                          )}
-                        </>
-                      )}
+                            )}
+                          </>
+                        )}
+                      </div>
                     </div>
                   </div>
-                </div>
+                  {!isLast && (
+                    <AppSeparator className="my-6" orientation="horizontal" />
+                  )}
+                </Fragment>
               );
             })
           )}
-        </CardContent>
-      </Card>
+        </>
+      </AppCard>
     </div>
   );
 }

@@ -1,6 +1,6 @@
 import { notFound } from "next/navigation";
-import Text from "@/components/ui/Text";
-import { Card } from "@/components/ui/Card";
+import { AppText } from "@/design-system/app/AppText";
+import { AppCard } from "@/design-system/app/AppCard";
 import { AnalyticsOverviewMetrics } from "@/components/analytics/AnalyticsOverviewMetrics";
 import { getFormAnalyticsOverviewData } from "@/lib/queries/forms";
 
@@ -21,11 +21,11 @@ export default async function AnalyticsOverviewPage({
   }
 
   return (
-    <Card className="text-center py-20">
-      <Text variant="h5">No Data Recorded</Text>
-      <Text className="text-muted-foreground">
+    <AppCard className="text-center py-20">
+      <AppText variant="h5">No Data Recorded</AppText>
+      <AppText variant="p" className="text-sm text-app-fg-muted">
         The results will be shown once the form is viewed.
-      </Text>
-    </Card>
+      </AppText>
+    </AppCard>
   );
 }

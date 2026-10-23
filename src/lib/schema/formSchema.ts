@@ -1,4 +1,5 @@
 import { z } from "zod";
+import { DEFAULT_FORM_THEME, FORM_THEMES } from "@/lib/constants/themes";
 
 /**
  * Creates a Zod schema for a required string with a custom label.
@@ -147,7 +148,7 @@ export const formBlockSchemas: Record<string, z.ZodSchema> = {
 };
 
 const nonEmptyString = z.string().trim().min(1);
-const formThemeSchema = z.enum(["light", "dark"]);
+const formThemeSchema = z.enum(FORM_THEMES);
 const formStatusSchema = z.enum(["draft", "published", "archived"]);
 
 /**
@@ -198,7 +199,7 @@ const formBlockInputSchema = z
 
 export const CreateFormSchema = z.object({
   title: nonEmptyString,
-  theme: formThemeSchema.default("light"),
+  theme: formThemeSchema.default(DEFAULT_FORM_THEME),
   description: z.string().optional().nullable(),
   slug: z.string().optional().nullable(),
 });

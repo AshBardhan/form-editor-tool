@@ -4,9 +4,10 @@ import { FormEvent, useMemo, useState } from "react";
 import { signIn } from "next-auth/react";
 import Link from "next/link";
 import { useRouter, useSearchParams } from "next/navigation";
-
-import { Button } from "@/components/ui/Button";
-import { FormField } from "@/components/ui/FormField";
+import { AppText } from "@/design-system/app/AppText";
+import { AppButton } from "@/design-system/app/AppButton";
+import { AppInput } from "@/design-system/app/AppInput";
+import { AppLabel } from "@/design-system/app/AppLabel";
 
 export function SignInForm() {
   const router = useRouter();
@@ -58,43 +59,62 @@ export function SignInForm() {
   return (
     <form onSubmit={handleSubmit} className="space-y-6">
       {error && (
-        <div className="rounded-lg border border-red-200 bg-red-50 px-4 py-3 text-sm text-red-700">
-          {error}
+        <div className="bg-app-error-subtle border border-app-error px-4 py-3 rounded-lg">
+          <AppText variant="p" className="text-sm text-app-error">
+            {error}
+          </AppText>
         </div>
       )}
 
-      <FormField
-        type="email"
-        label="Email"
-        placeholder="you@example.com"
-        value={email}
-        onChange={(e) => setEmail(e.target.value)}
-        required
-        autoComplete="email"
-      />
+      <div className="flex flex-col gap-2">
+        <AppLabel htmlFor="email" required>
+          Email
+        </AppLabel>
+        <AppInput
+          id="email"
+          type="email"
+          placeholder="you@example.com"
+          value={email}
+          onChange={(e) => setEmail(e.target.value)}
+          required
+          autoComplete="email"
+        />
+      </div>
 
-      <FormField
-        type="password"
-        label="Password"
-        placeholder="••••••••"
-        value={password}
-        onChange={(e) => setPassword(e.target.value)}
-        required
-        autoComplete="current-password"
-      />
+      <div className="flex flex-col gap-2">
+        <AppLabel htmlFor="password" required>
+          Password
+        </AppLabel>
+        <AppInput
+          id="password"
+          type="password"
+          placeholder="••••••••"
+          value={password}
+          onChange={(e) => setPassword(e.target.value)}
+          required
+          autoComplete="current-password"
+        />
+      </div>
 
-      <Button type="submit" className="w-full" disabled={isLoading}>
+      <AppButton
+        variant="solid"
+        color="primary"
+        type="submit"
+        className="w-full"
+        disabled={isLoading}
+      >
         {isLoading ? "Signing in..." : "Sign In"}
-      </Button>
+      </AppButton>
 
-      <div className="text-center text-sm text-gray-600">
+      <div className="text-center text-sm text-app-fg-muted">
         Don't have an account?{" "}
-        <Link
-          href="/signup"
-          className="font-medium text-blue-600 hover:underline"
+        <AppButton
+          render={<Link href="/signup" />}
+          variant="link"
+          color="secondary"
         >
           Sign up
-        </Link>
+        </AppButton>
       </div>
     </form>
   );

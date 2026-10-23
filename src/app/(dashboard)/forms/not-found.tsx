@@ -1,5 +1,6 @@
 import { PageContainer, PageContent, PageHeader } from "@/components/layout";
 import { FormsHeader } from "@/components/dashboard";
+import { AppText } from "@/design-system/app/AppText";
 
 export default function NotFound() {
   return (
@@ -12,8 +13,8 @@ export default function NotFound() {
       <PageContent>
         <PageContainer className="py-8 h-full">
           <div className="empty-content flex-col gap-2">
-            <h2 className="text-lg font-semibold">Unable to load forms</h2>
-            <p className="text-sm">Please try again later.</p>
+            <AppText variant="h2">Unable to load forms</AppText>
+            <AppText variant="p">Please try again later.</AppText>
           </div>
         </PageContainer>
       </PageContent>

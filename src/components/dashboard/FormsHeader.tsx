@@ -2,21 +2,16 @@
 
 import { useState } from "react";
 import { FileText, Plus, Search } from "lucide-react";
-import Text from "@/components/ui/Text";
-import { Button } from "@/components/ui/Button";
-import { Input } from "@/components/ui/Input";
-import {
-  Select,
-  SelectTrigger,
-  SelectItem,
-  SelectContent,
-  SelectValue,
-} from "@/components/ui/Select";
+import { AppText } from "@/design-system/app/AppText";
+import { AppButton } from "@/design-system/app/AppButton";
+import { AppInput } from "@/design-system/app/AppInput";
+import { AppSelect } from "@/design-system/app/AppSelect";
 import { useRouter } from "next/navigation";
-import { toast } from "@/components/ui/Toast";
+import { toast } from "@/design-system/app/AppToast";
 import { ApiResponse } from "@/lib/types/api";
 import { FormConfig, FormFilterStatus } from "@/lib/types/form";
 import { FormFilterOptions } from "@/lib/constants/form";
+import { DEFAULT_FORM_THEME } from "@/lib/constants/themes";
 
 interface FormFilter {
   search?: string;
@@ -47,7 +42,7 @@ export function FormsHeader({ filter = {} }: FormsHeaderProps) {
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
           title: "New Form",
-          theme: "light",
+          theme: DEFAULT_FORM_THEME,
         }),
       });
 
@@ -60,10 +55,11 @@ export function FormsHeader({ filter = {} }: FormsHeaderProps) {
         throw new Error(result.error?.message || "Failed to create form");
       }
 
-      toast.success("Form has been successfully created");
+      toast.success({ title: "Form has been successfully created" });
       router.push(`/forms/${createdSlug}/builder`);
     } catch (error) {
-      toast.error("Failed to create form", {
+      toast.error({
+        title: "Failed to create form",
         description:
           error instanceof Error
             ? error.message
@@ -78,14 +74,14 @@ export function FormsHeader({ filter = {} }: FormsHeaderProps) {
     <>
       <div className="flex items-center justify-between">
         <div className="flex items-center gap-3">
-          <div className="p-3 bg-primary/10 rounded-lg">
-            <FileText className="size-6 sm:size-10 text-primary" />
+          <div className="p-3 bg-app-brand-subtle rounded-lg">
+            <FileText className="size-6 sm:size-10 text-app-brand" />
           </div>
           <div>
-            <Text variant="h1" className="mb-0.5 sm:mb-1">
+            <AppText variant="h1" className="mb-0.5 sm:mb-1">
               FormKit
-            </Text>
-            <Text variant="p">Create and manage your forms</Text>
+            </AppText>
+            <AppText variant="p">Create and manage your forms</AppText>
           </div>
         </div>
 
@@ -93,8 +89,8 @@ export function FormsHeader({ filter = {} }: FormsHeaderProps) {
           {filter && (
             <>
               <div className="relative flex-1 max-w-md">
-                <Search className="absolute left-3 top-1/2 -translate-y-1/2 size-4 text-muted-foreground" />
-                <Input
+                <Search className="absolute left-3 top-1/2 -translate-y-1/2 size-4 text-app-fg-muted" />
+                <AppInput
                   type="text"
                   placeholder="Search forms..."
                   value={filter.search}
@@ -104,41 +100,28 @@ export function FormsHeader({ filter = {} }: FormsHeaderProps) {
                   className="pl-9"
                 />
               </div>
-
-              <Select
+              <AppSelect
+                className="w-40"
+                items={FormFilterOptions}
                 value={filter.status}
                 onValueChange={(value) => {
                   filter.onStatusChange?.(value as FormFilterStatus);
                 }}
-              >
-                <SelectTrigger>
-                  <SelectValue>
-                    {
-                      FormFilterOptions.find(
-                        (option) => option.value === filter.status,
-                      )?.label
-                    }
-                  </SelectValue>
-                </SelectTrigger>
-                <SelectContent>
-                  {FormFilterOptions.map((option) => (
-                    <SelectItem key={option.value} value={option.value}>
-                      {option.label}
-                    </SelectItem>
-                  ))}
-                </SelectContent>
-              </Select>
+                placeholder="Select Status"
+              />
             </>
           )}
-          <Button
+          <AppButton
+            variant="solid"
+            color="primary"
             onClick={handleCreateNewForm}
             size="lg"
             className="gap-2"
             disabled={isCreating}
           >
-            <Plus className="size-5" />
+            <Plus size={20} />
             {isCreating ? "Creating..." : "Create Form"}
-          </Button>
+          </AppButton>
         </div>
       </div>
     </>

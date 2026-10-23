@@ -1,10 +1,13 @@
-import { Input } from "@/components/ui/Input";
+import { AppInput } from "@/design-system/app/AppInput";
 
 interface InputConfigProps {
   type?: "text" | "number";
   id: string;
   value: string | number;
   className?: string;
+  disabled?: boolean;
+  "aria-invalid"?: boolean;
+  "aria-describedby"?: string;
   onChange: (val: string | number) => void;
 }
 
@@ -20,14 +23,20 @@ export const InputConfig = ({
   id,
   value,
   className,
+  disabled,
+  "aria-invalid": ariaInvalid,
+  "aria-describedby": ariaDescribedBy,
   onChange,
 }: InputConfigProps) => {
   return (
-    <Input
+    <AppInput
       id={id}
       type={type}
       value={value}
       className={className}
+      disabled={disabled}
+      aria-invalid={ariaInvalid}
+      aria-describedby={ariaDescribedBy}
       onChange={(e) =>
         onChange(
           type === "number"

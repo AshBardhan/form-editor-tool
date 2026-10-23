@@ -1,5 +1,6 @@
 import { getPropValue } from "@/lib/utils/formUtils";
 import { FormBlock } from "@/lib/types/form";
+import { FormText } from "@/design-system/form/FormText";
 import { JSX } from "react";
 
 interface ParagraphBlockProps {
@@ -14,9 +15,11 @@ interface ParagraphBlockProps {
  * @returns {JSX.Element} The rendered component.
  */
 export const ParagraphBlock = ({ block }: ParagraphBlockProps): JSX.Element => {
+  const text = getPropValue(block, "text");
+
   return (
-    <div className="form-block text-paragraph dark:text-white transition-colors">
-      <p className="text-sm @sm:text-base">{getPropValue(block, "text")}</p>
+    <div className="form-block flex flex-col">
+      <FormText variant="p">{text}</FormText>
     </div>
   );
 };

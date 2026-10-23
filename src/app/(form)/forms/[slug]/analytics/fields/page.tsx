@@ -1,6 +1,6 @@
 import { notFound } from "next/navigation";
-import Text from "@/components/ui/Text";
-import { Card } from "@/components/ui/Card";
+import { AppText } from "@/design-system/app/AppText";
+import { AppCard } from "@/design-system/app/AppCard";
 import { FieldAnalysisList } from "@/components/analytics/FieldAnalysisList";
 import { getFormFieldAnalysisData } from "@/lib/queries/forms";
 
@@ -19,12 +19,12 @@ export default async function AnalyticsFieldsPage({
   return (
     <>
       {data.submissionCount === 0 ? (
-        <Card className="text-center py-20">
-          <Text variant="h5">No Data Recorded</Text>
-          <Text className="text-muted-foreground">
+        <AppCard className="text-center py-20">
+          <AppText variant="h5">No Data Recorded</AppText>
+          <AppText variant="p" className="text-sm text-app-fg-muted">
             Share your form to start collecting submissions.
-          </Text>
-        </Card>
+          </AppText>
+        </AppCard>
       ) : (
         <FieldAnalysisList
           fieldBlocks={data.fieldBlocks}

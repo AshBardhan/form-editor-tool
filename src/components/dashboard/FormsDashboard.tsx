@@ -6,19 +6,19 @@ import { AlertTriangle } from "lucide-react";
 import { DashboardForm, FormStatus } from "@/lib/types/form";
 import { FormsHeader } from "./FormsHeader";
 import { FormList } from "./FormList";
-import Text from "@/components/ui/Text";
 import { PageContainer, PageHeader, PageContent } from "@/components/layout";
 import { cn } from "@/lib/utils/styleUtils";
 import {
-  Modal,
-  ModalContent,
-  ModalHeader,
-  ModalTitle,
-  ModalDescription,
-  ModalFooter,
-} from "@/components/ui/Modal";
-import { Button } from "@/components/ui/Button";
-import { toast } from "@/components/ui/Toast";
+  AppModal,
+  AppModalContent,
+  AppModalDescription,
+  AppModalFooter,
+  AppModalHeader,
+  AppModalTitle,
+} from "@/design-system/app/AppModal";
+import { AppText } from "@/design-system/app/AppText";
+import { AppButton } from "@/design-system/app/AppButton";
+import { toast } from "@/design-system/app/AppToast";
 import { ApiResponse } from "@/lib/types/api";
 import { FormConfig } from "@/lib/types/form";
 
@@ -80,10 +80,13 @@ export function FormsDashboard({ forms }: FormsDashboardProps) {
         archived: "Form archived",
       };
 
-      toast.success(statusMessages[nextStatus] || "Status updated");
+      toast.success({
+        title: statusMessages[nextStatus] || "Status updated",
+      });
       router.refresh();
     } catch (error) {
-      toast.error("Status update failed", {
+      toast.error({
+        title: "Status update failed",
         description:
           error instanceof Error
             ? error.message
@@ -116,7 +119,8 @@ export function FormsDashboard({ forms }: FormsDashboardProps) {
       }
 
       const deletedCount = result.data?.deletedSubmissions || 0;
-      toast.success("Form permanently deleted", {
+      toast.success({
+        title: "Form permanently deleted",
         description:
           deletedCount > 0
             ? `Deleted form and ${deletedCount} submission${deletedCount > 1 ? "s" : ""}.`
@@ -125,7 +129,8 @@ export function FormsDashboard({ forms }: FormsDashboardProps) {
       setFormToDelete(null);
       router.refresh();
     } catch (error) {
-      toast.error("Delete failed", {
+      toast.error({
+        title: "Delete failed",
         description:
           error instanceof Error
             ? error.message
@@ -159,10 +164,10 @@ export function FormsDashboard({ forms }: FormsDashboardProps) {
         >
           {forms.length === 0 ? (
             <div className="empty-content flex-col gap-2">
-              <Text variant="h4">No forms yet</Text>
-              <Text variant="p" className="text-sm text-muted-foreground">
+              <AppText variant="h4">No forms yet</AppText>
+              <AppText variant="p" className="text-sm text-app-fg-muted">
                 Create your first form to get started.
-              </Text>
+              </AppText>
             </div>
           ) : (
             <FormList
@@ -175,43 +180,46 @@ export function FormsDashboard({ forms }: FormsDashboardProps) {
         </PageContainer>
       </PageContent>
 
-      <Modal
+      <AppModal
+        type="alert"
         open={!!formToDelete}
         onOpenChange={(open) => !open && setFormToDelete(null)}
       >
-        <ModalContent size="sm">
-          <ModalHeader className="pb-2">
+        <AppModalContent size="sm">
+          <AppModalHeader className="pb-2">
             <div className="flex gap-3">
-              <AlertTriangle className="shrink-0 h-6 w-6 text-red-600 dark:text-red-500" />
+              <AlertTriangle className="shrink-0 h-6 w-6 text-app-error" />
               <div className="flex-1 flex flex-col gap-2">
-                <ModalTitle>Delete this form permanently?</ModalTitle>
-                <ModalDescription>
+                <AppModalTitle>Delete this form permanently?</AppModalTitle>
+                <AppModalDescription>
                   This action cannot be undone. All submissions, field responses
                   and analytics data will be permanently removed.
-                </ModalDescription>
+                </AppModalDescription>
               </div>
             </div>
-          </ModalHeader>
-          <ModalFooter>
-            <Button
+          </AppModalHeader>
+          <AppModalFooter>
+            <AppButton
               variant="outline"
+              color="secondary"
               onClick={() => setFormToDelete(null)}
               disabled={isSubmitting}
             >
               Cancel
-            </Button>
-            <Button
-              variant="destructive"
+            </AppButton>
+            <AppButton
+              variant="solid"
+              color="negative"
               onClick={() => {
                 handleDelete();
               }}
               disabled={isSubmitting}
             >
               Delete permanently
-            </Button>
-          </ModalFooter>
-        </ModalContent>
-      </Modal>
+            </AppButton>
+          </AppModalFooter>
+        </AppModalContent>
+      </AppModal>
     </>
   );
 }

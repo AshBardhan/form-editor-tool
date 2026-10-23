@@ -1,6 +1,8 @@
 "use client";
 
 import { useEffect } from "react";
+import { AppButton } from "@/design-system/app/AppButton";
+import { AppText } from "@/design-system/app/AppText";
 
 export default function Error({
   error,
@@ -16,11 +18,11 @@ export default function Error({
 
   return (
     <>
-      <div className="bg-red-50 border border-red-200 rounded-lg p-6">
+      <div className="bg-app-error-subtle border border-app-error rounded-lg p-6">
         <div className="flex items-start">
           <div className="shrink-0">
             <svg
-              className="h-6 w-6 text-red-400"
+              className="h-6 w-6 text-app-error"
               fill="none"
               viewBox="0 0 24 24"
               stroke="currentColor"
@@ -34,27 +36,27 @@ export default function Error({
             </svg>
           </div>
           <div className="ml-3 flex-1">
-            <h3 className="text-lg font-medium text-red-800 mb-2">
+            <AppText variant="h3" className="mb-2 text-app-error">
               Database Connection Failed
-            </h3>
-            <p className="text-sm text-red-700 mb-4">
+            </AppText>
+            <AppText variant="p" className="mb-4 text-sm text-app-error">
               {error.message || "An unexpected error occurred"}
-            </p>
+            </AppText>
 
             <details className="mb-4">
-              <summary className="text-sm font-medium text-red-800 cursor-pointer hover:underline">
+              <summary className="text-sm font-medium text-app-error cursor-pointer hover:underline">
                 Technical Details
               </summary>
-              <pre className="mt-2 text-xs text-red-600 bg-red-100 p-3 rounded overflow-x-auto">
+              <pre className="mt-2 text-xs text-app-error bg-app-error-subtle p-3 rounded overflow-x-auto">
                 {error.stack}
               </pre>
             </details>
 
-            <div className="bg-yellow-50 border border-yellow-200 rounded p-3 mb-4">
-              <p className="text-sm text-yellow-800 font-medium mb-2">
+            <div className="bg-warning-subtle border border-warning rounded p-3 mb-4">
+              <AppText variant="h6" className="mb-2">
                 Common Issues:
-              </p>
-              <ul className="text-sm text-yellow-700 list-disc list-inside space-y-1">
+              </AppText>
+              <ul className="text-sm text-warning list-disc list-inside space-y-1">
                 <li>PostgreSQL service is not running</li>
                 <li>Incorrect DATABASE_URL in .env file</li>
                 <li>Database credentials are wrong</li>
@@ -63,23 +65,20 @@ export default function Error({
               </ul>
             </div>
 
-            <button
-              onClick={reset}
-              className="px-4 py-2 bg-red-600 text-white rounded hover:bg-red-700 transition-colors"
-            >
+            <AppButton variant="solid" color="negative" onClick={reset}>
               Try Again
-            </button>
+            </AppButton>
           </div>
         </div>
       </div>
 
-      <div className="mt-6 p-4 bg-gray-50 border border-gray-200 rounded-lg">
-        <p className="text-sm text-gray-600">
+      <div className="mt-6 p-4 bg-app-surface-muted border border-app-border-subtle rounded-lg">
+        <AppText variant="p" className="text-sm text-app-fg-muted">
           <strong>Quick Fix:</strong> Check if PostgreSQL is running:{" "}
-          <code className="bg-gray-100 px-2 py-1 rounded">
+          <code className="bg-app-surface-muted px-2 py-1 rounded">
             sudo systemctl status postgresql
           </code>
-        </p>
+        </AppText>
       </div>
     </>
   );

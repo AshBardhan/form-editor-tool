@@ -9,14 +9,15 @@ import Link from "next/link";
 import { CircleUserIcon, LogOutIcon, ShieldIcon } from "lucide-react";
 import { signOut } from "next-auth/react";
 import {
-  DropdownMenu,
-  DropdownMenuTrigger,
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuSeparator,
-} from "@/components/ui/DropdownMenu";
-import Text from "@/components/ui/Text";
-import { Badge } from "@/components/ui/Badge";
+  AppMenu,
+  AppMenuContent,
+  AppMenuItem,
+  AppMenuLinkItem,
+  AppMenuSeparator,
+  AppMenuTrigger,
+} from "@/design-system/app/AppMenu";
+import { AppBadge } from "@/design-system/app/AppBadge";
+import { AppText } from "@/design-system/app/AppText";
 
 interface UserMenuProps {
   user: {
@@ -33,49 +34,53 @@ export function UserMenu({ user }: UserMenuProps) {
   };
 
   return (
-    <DropdownMenu>
-      <DropdownMenuTrigger
-        className="flex items-center gap-2 hover:opacity-80 transition-opacity"
-        aria-label="User menu"
+    <AppMenu>
+      <AppMenuTrigger
+        render={
+          <button
+            type="button"
+            className="flex items-center gap-2 hover:opacity-80 transition-opacity"
+            aria-label="User menu"
+          />
+        }
       >
         <CircleUserIcon size={20} />
-      </DropdownMenuTrigger>
+      </AppMenuTrigger>
 
-      <DropdownMenuContent align="end" className="w-64">
+      <AppMenuContent align="end" className="w-64">
         {/* User Info */}
-        <div className="px-2 py-3 border-b border-gray-100">
-          <Text className="font-medium text-gray-900 truncate">
+        <div className="px-4 py-3 border-b border-app-border-subtle">
+          <AppText variant="h6" className="truncate">
             {user.name || "User"}
-          </Text>
-          <Text className="text-xs text-gray-500 truncate">{user.email}</Text>
-          <Badge label={user.role} variant="info" size="sm" className="mt-1" />
+          </AppText>
+          <AppText variant="p" className="text-sm text-app-fg-muted truncate">
+            {user.email}
+          </AppText>
+          <AppBadge
+            label={user.role}
+            variant="info"
+            size="sm"
+            className="mt-1"
+          />
         </div>
 
         {/* Admin Panel Link */}
         {user.role === "ADMIN" && (
           <>
-            <DropdownMenuItem>
-              <Link
-                href="/admin/users"
-                className="flex items-center gap-2 w-full"
-              >
-                <ShieldIcon size={16} />
-                Admin Panel
-              </Link>
-            </DropdownMenuItem>
-            <DropdownMenuSeparator />
+            <AppMenuLinkItem render={<Link href="/admin/users" />}>
+              <ShieldIcon size={16} />
+              Admin Panel
+            </AppMenuLinkItem>
+            <AppMenuSeparator />
           </>
         )}
 
         {/* Sign Out */}
-        <DropdownMenuItem
-          onSelect={handleSignOut}
-          className="flex items-center gap-2 text-red-600 hover:bg-red-50 focus:bg-red-50"
-        >
+        <AppMenuItem onSelect={handleSignOut} className="text-app-error">
           <LogOutIcon size={16} />
           Sign Out
-        </DropdownMenuItem>
-      </DropdownMenuContent>
-    </DropdownMenu>
+        </AppMenuItem>
+      </AppMenuContent>
+    </AppMenu>
   );
 }

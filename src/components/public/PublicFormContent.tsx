@@ -2,8 +2,8 @@
 
 import React, { useEffect, useRef, useState } from "react";
 import Link from "next/link";
-import Text from "@/components/ui/Text";
-import { Button } from "@/components/ui/Button";
+import { FormButton } from "@/design-system/form/FormButton";
+import { FormText } from "@/design-system/form/FormText";
 import { FormBlock, FormBlockValueType, FormConfig } from "@/lib/types/form";
 import { widgetBlockRenderers } from "@/components/form/blocks";
 import { FormActionGroup } from "@/components/form/FormActionGroup";
@@ -14,9 +14,9 @@ import {
 } from "@/lib/utils/formUtils";
 import { validateFormBlock } from "@/lib/utils/formValidationUtils";
 import { useFormDataStore } from "@/lib/stores/formDataStore";
-import { switchFormTheme } from "@/lib/utils/domUtils";
 import { sendAnalyticsEvent } from "@/lib/utils/analytics";
 import { isFormDataValid } from "@/lib/utils/formValidationUtils";
+import { FormThemeContainer } from "@/design-system/containers/FormThemeContainer";
 
 interface PublicFormContentProps {
   form: FormConfig;
@@ -44,7 +44,6 @@ export function PublicFormContent({ form }: PublicFormContentProps) {
     }
     hasTrackedViewRef.current = true;
     sendAnalyticsEvent(form.id, "view");
-    switchFormTheme(form.theme);
 
     return () => {
       setStatus({ type: "editing" });
@@ -220,68 +219,77 @@ export function PublicFormContent({ form }: PublicFormContentProps) {
   };
 
   return (
-    <div
-      className="bg-gray-200 px-6 py-4 h-screen overflow-y-auto"
-      data-theme={form.theme}
-    >
-      <div className="max-w-7xl form-container">
-        {/* Form */}
-        <div className="form-content relative">
-          {status.type === "submitting" && (
-            <div className="form-overlay  rounded-lg">
-              <Text>Submitting form...</Text>
-            </div>
-          )}
-          {/* Form Blocks */}
-          {form.blocks.length === 0 ? (
-            <div className="h-full text-gray-500 dark:text-white transition-colors flex flex-col items-center justify-center">
-              <Text variant="h3">Empty form</Text>
-              <Text variant="p" className="text-sm">
-                Please add widgets from the form builder.
-              </Text>
-            </div>
-          ) : (
-            <>
-              {(status.type === "editing" || status.type === "submitting") && (
-                <form onSubmit={handleSubmit} onReset={handleReset} noValidate>
-                  {form.blocks.map((block) => renderFormBlock(block))}
-                  <FormActionGroup actions={form.actions} />
-                </form>
-              )}
-              {status.type === "submitted" && (
-                <div className="p-4 text-center">
-                  <Text variant="h3" className="dark:text-white">
-                    Thank you!
-                  </Text>
-                  <Text variant="p" className="dark:text-white">
-                    {status.message}
-                  </Text>
-                  <div className="flex gap-3 justify-center mt-4">
-                    <Button onClick={handleSubmitAnotherResponse}>
-                      Submit another
-                    </Button>
-                    <Link href="/forms">
-                      <Button variant="outline">Go Home</Button>
-                    </Link>
-                  </div>
+    <FormThemeContainer theme={form.theme}>
+      {/* Form */}
+      <div className="form-content">
+        {status.type === "submitting" && (
+          <div className="form-overlay">
+            <FormText>Submitting form...</FormText>
+          </div>
+        )}
+        {/* Form Blocks */}
+        {form.blocks.length === 0 ? (
+          <div className="h-full flex flex-col items-center justify-center">
+            <FormText variant="h3">Empty form</FormText>
+            <FormText variant="p" className="text-sm @sm:text-sm @5xl:text-sm">
+              Please add widgets from the form builder.
+            </FormText>
+          </div>
+        ) : (
+          <>
+            {(status.type === "editing" || status.type === "submitting") && (
+              <form onSubmit={handleSubmit} onReset={handleReset} noValidate>
+                {form.blocks.map((block) => renderFormBlock(block))}
+                <FormActionGroup actions={form.actions} />
+              </form>
+            )}
+            {status.type === "submitted" && (
+              <div className="p-4 text-center">
+                <FormText variant="h3">Thank you!</FormText>
+                <FormText variant="p">{status.message}</FormText>
+                <div className="flex gap-3 justify-center mt-4">
+                  <FormButton
+                    variant="solid"
+                    color="primary"
+                    onClick={handleSubmitAnotherResponse}
+                  >
+                    Submit another
+                  </FormButton>
+                  <FormButton
+                    render={<Link href="/forms" />}
+                    variant="outline"
+                    color="secondary"
+                  >
+                    Go Home
+                  </FormButton>
                 </div>
-              )}
-              {status.type === "failed" && (
-                <div className="p-4 text-center">
-                  <Text variant="h3">Error</Text>
-                  <p>{status.message}</p>
-                  <div className="flex gap-3 justify-center mt-4">
-                    <Button onClick={retryFormAfterFailure}>Retry</Button>
-                    <Link href="/forms">
-                      <Button variant="outline">Go Home</Button>
-                    </Link>
-                  </div>
+              </div>
+            )}
+            {status.type === "failed" && (
+              <div className="p-4 text-center">
+                <FormText variant="h3">Error</FormText>
+                <FormText variant="p">{status.message}</FormText>
+                <div className="flex gap-3 justify-center mt-4">
+                  <FormButton
+                    variant="solid"
+                    color="primary"
+                    onClick={retryFormAfterFailure}
+                  >
+                    Retry
+                  </FormButton>
+                  <FormButton
+                    render={<Link href="/forms" />}
+                    variant="outline"
+                    color="secondary"
+                  >
+                    Go Home
+                  </FormButton>
                 </div>
-              )}
-            </>
-          )}
-        </div>
+              </div>
+            )}
+          </>
+        )}
       </div>
-    </div>
+    </FormThemeContainer>
   );
 }

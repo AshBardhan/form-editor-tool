@@ -1,24 +1,24 @@
 import Link from "next/link";
-import { Button } from "@/components/ui/Button";
-import { Card, CardContent } from "@/components/ui/Card";
-import Text from "@/components/ui/Text";
+import { AppButton } from "@/design-system/app/AppButton";
+import { AppText } from "@/design-system/app/AppText";
+import { AppCard } from "@/design-system/app/AppCard";
 
 export default function NotFound() {
   return (
     <div className="empty-content">
-      <Card>
-        <CardContent className="text-center space-y-4 max-w-md">
-          <Text variant="h4">Form Not Found</Text>
-          <Text className="text-muted-foreground">
-            The form you're looking for is no longer available.
-          </Text>
-          <Link href="/forms">
-            <Button variant="secondary" size="sm">
-              Back to Dashboard
-            </Button>
-          </Link>
-        </CardContent>
-      </Card>
+      <AppCard className="text-center space-y-4 max-w-md">
+        <AppText variant="h4">Form Not Found</AppText>
+        <AppText className="text-app-fg-muted">
+          The form you're looking for is no longer available.
+        </AppText>
+        <AppButton
+          render={<Link href="/forms" />}
+          variant="outline"
+          color="secondary"
+        >
+          Back to Dashboard
+        </AppButton>
+      </AppCard>
     </div>
   );
 }

@@ -1,8 +1,8 @@
-import { getPropValue, toKebabCase } from "@/lib/utils/formUtils";
+import { getFieldKey, getPropValue } from "@/lib/utils/formUtils";
 import { FormBlock, FormBlockOrientation } from "@/lib/types/form";
-import { Checkbox } from "@/components/ui/Checkbox";
-import { Label } from "@/components/ui/Label";
-import { ErrorMessages } from "@/components/form/ErrorMessages";
+import { FormCheckbox } from "@/design-system/form/FormCheckbox";
+import { FormCheckboxGroup } from "@/design-system/form/FormCheckboxGroup";
+import { FormError } from "@/design-system/form/FormError";
 import { JSX } from "react";
 
 interface CheckboxBlockProps {
@@ -29,86 +29,62 @@ export const CheckboxBlock = ({
   errors = [],
 }: CheckboxBlockProps): JSX.Element => {
   const label = getPropValue(block, "label");
-  const required = getPropValue(block, "required") || false;
+  const required = Boolean(getPropValue(block, "required"));
+  const grouped = Boolean(getPropValue(block, "grouped"));
   const options = (getPropValue(block, "options") ?? []) as string[];
   const orientation = (getPropValue(block, "orientation") ??
     "vertical") as FormBlockOrientation;
-
-  // Group mode: has options array
-  const isGroup = options.length > 0;
+  const fieldName = getFieldKey(block);
+  const errorId = `checkbox-${block.id}-error`;
+  const invalid = errors.length > 0;
+  const isGroup = grouped || options.length > 0;
 
   if (isGroup) {
     const rawDefaultValue = getPropValue(block, "value");
     const defaultValue = Array.isArray(rawDefaultValue) ? rawDefaultValue : [];
     const controlledValue = Array.isArray(value) ? value : defaultValue;
 
-    const handleCheckboxChange = (option: string, checked: boolean) => {
-      const newValue = checked
-        ? [...controlledValue, option]
-        : controlledValue.filter((v) => v !== option);
-      onChange?.(newValue);
-    };
-
     return (
       <div className="form-block flex flex-col gap-3 @sm:gap-4">
-        {label && (
-          <Label>
-            {label}
-            {required && <span className="text-red-500 ml-1">*</span>}
-          </Label>
-        )}
-        <div
-          role="group"
-          data-slot="checkbox-group"
-          className={
-            orientation === "horizontal"
-              ? "flex flex-row flex-wrap gap-x-5 gap-y-3"
-              : "flex flex-col gap-3"
-          }
-        >
-          {options.map((option: string) => {
-            const optionId = `checkbox-${block.id}-${toKebabCase(option)}`;
-            return (
-              <div key={option} className="flex items-center gap-2">
-                <Checkbox
-                  disabled={!editable}
-                  checked={controlledValue.includes(option)}
-                  id={optionId}
-                  tabIndex={editable ? 0 : -1}
-                  onChange={(e) =>
-                    handleCheckboxChange(option, e.target.checked)
-                  }
-                />
-                <Label htmlFor={optionId}>{option}</Label>
-              </div>
-            );
-          })}
-        </div>
-        <ErrorMessages errors={errors} />
+        <FormCheckboxGroup
+          label={label || undefined}
+          name={fieldName}
+          options={options.map((option) => ({
+            value: option,
+            label: option,
+          }))}
+          value={controlledValue}
+          orientation={orientation}
+          required={required}
+          disabled={!editable}
+          tabIndex={editable ? 0 : -1}
+          aria-invalid={invalid || undefined}
+          aria-describedby={invalid ? errorId : undefined}
+          onValueChange={(next) => onChange?.(next)}
+        />
+        <FormError id={errorId} errors={errors} />
       </div>
     );
   }
 
-  // Single mode: no options (current behavior)
   const defaultValue = Boolean(getPropValue(block, "value"));
   const controlledValue = (value as boolean | undefined) ?? defaultValue;
 
   return (
     <div className="form-block flex flex-col gap-1.5 @sm:gap-2">
-      <div className="flex gap-2 items-center">
-        <Checkbox
-          disabled={!editable}
-          checked={controlledValue}
-          id={`checkbox-${block.id}`}
-          tabIndex={editable ? 0 : -1}
-          onChange={(e) => onChange?.(e.target.checked)}
-        />
-        <Label htmlFor={`checkbox-${block.id}`}>
-          {label}
-          {required && <span className="text-red-500 ml-1">*</span>}
-        </Label>
-      </div>
-      <ErrorMessages errors={errors} />
+      <FormCheckbox
+        id={`checkbox-${block.id}`}
+        name={fieldName}
+        label={label || undefined}
+        checked={controlledValue}
+        required={required}
+        disabled={!editable}
+        tabIndex={editable ? 0 : -1}
+        aria-invalid={invalid || undefined}
+        aria-describedby={invalid ? errorId : undefined}
+        onCheckedChange={(checked) => onChange?.(checked)}
+      />
+      <FormError id={errorId} errors={errors} />
     </div>
   );
 };

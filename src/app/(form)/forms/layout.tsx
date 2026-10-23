@@ -1,5 +1,6 @@
 import { AppHeader } from "@/components/layout/AppHeader";
 import { AppContent } from "@/components/layout";
+import { AppThemeContainer } from "@/design-system/containers/AppThemeContainer";
 
 interface LayoutProps {
   children: React.ReactNode;
@@ -11,9 +12,9 @@ interface LayoutProps {
  */
 export default function FormLayout({ children }: LayoutProps) {
   return (
-    <>
+    <AppThemeContainer>
       <AppHeader />
       <AppContent>{children}</AppContent>
-    </>
+    </AppThemeContainer>
   );
 }

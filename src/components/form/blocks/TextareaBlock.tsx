@@ -1,8 +1,8 @@
-import { getPropValue } from "@/lib/utils/formUtils";
+import { getFieldKey, getPropValue } from "@/lib/utils/formUtils";
 import { FormBlock } from "@/lib/types/form";
-import { Label } from "@/components/ui/Label";
-import { ErrorMessages } from "@/components/form/ErrorMessages";
-import { Textarea } from "@/components/ui/Textarea";
+import { FormLabel } from "@/design-system/form/FormLabel";
+import { FormTextArea } from "@/design-system/form/FormTextArea";
+import { FormError } from "@/design-system/form/FormError";
 import { JSX } from "react";
 
 interface TextareaBlockProps {
@@ -28,32 +28,46 @@ export const TextareaBlock = ({
   errors = [],
 }: TextareaBlockProps): JSX.Element => {
   const label = getPropValue(block, "label");
-  const required = getPropValue(block, "required") || false;
-  const placeholder = String(getPropValue(block, "placeholder"));
+  const required = Boolean(getPropValue(block, "required"));
+  const placeholder = String(getPropValue(block, "placeholder") ?? "");
   const rows = Number(getPropValue(block, "rows") || 3);
   const defaultValue = getPropValue(block, "value") as string | undefined;
   const controlledValue = value ?? defaultValue ?? "";
+  const fieldName = getFieldKey(block);
+  const textareaId = `textarea-${block.id}`;
+  const errorId = `${textareaId}-error`;
+  const invalid = errors.length > 0;
+  const maxLengthProp = getPropValue(block, "maxLength");
+  const maxLength =
+    typeof maxLengthProp === "number" ? maxLengthProp : undefined;
 
   return (
     <div className="form-block flex flex-col gap-1.5 @sm:gap-2">
-      {label && (
-        <Label htmlFor={`textarea-${block.id}`}>
+      {label ? (
+        <FormLabel
+          htmlFor={textareaId}
+          required={required}
+          aria-invalid={invalid}
+        >
           {label}
-          {required && <span className="text-red-500 ml-1">*</span>}
-        </Label>
-      )}
-      <Textarea
-        id={`textarea-${block.id}`}
+        </FormLabel>
+      ) : null}
+      <FormTextArea
+        id={textareaId}
+        name={fieldName}
         className="resize-y"
         disabled={!editable}
         tabIndex={editable ? 0 : -1}
         value={controlledValue}
         placeholder={placeholder}
-        required={Boolean(required)}
+        required={required}
         rows={rows}
+        maxLength={maxLength}
+        aria-invalid={invalid || undefined}
+        aria-describedby={invalid ? errorId : undefined}
         onChange={(e) => onChange?.(e.target.value)}
       />
-      <ErrorMessages errors={errors} />
+      <FormError id={errorId} errors={errors} />
     </div>
   );
 };

@@ -14,7 +14,7 @@ export const PageContainer = ({
   ...props
 }: PageContainerProps) => {
   return (
-    <div className={cn("max-w-7xl mx-auto px-4", className)} {...props}>
+    <div className={cn("w-full max-w-7xl mx-auto px-4", className)} {...props}>
       {children}
     </div>
   );

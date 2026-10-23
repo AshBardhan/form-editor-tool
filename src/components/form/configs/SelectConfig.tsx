@@ -1,15 +1,12 @@
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "@/components/ui/Select";
+import { AppSelect } from "@/design-system/app/AppSelect";
 
 interface SelectConfigProps {
   id: string;
   value: string;
   options: { value: string; label: string }[];
+  disabled?: boolean;
+  "aria-invalid"?: boolean;
+  "aria-describedby"?: string;
   onChange: (val: string) => void;
 }
 
@@ -24,25 +21,20 @@ export const SelectConfig = ({
   id,
   value,
   options,
+  disabled,
+  "aria-invalid": ariaInvalid,
+  "aria-describedby": ariaDescribedBy,
   onChange,
 }: SelectConfigProps) => {
   return (
-    <Select value={value} onValueChange={onChange}>
-      <SelectTrigger
-        id={id}
-        className="w-full focus-visible:ring-0 focus-visible:shadow-none!"
-      >
-        <SelectValue>
-          {options?.find((opt) => opt.value === value)?.label ?? value}
-        </SelectValue>
-      </SelectTrigger>
-      <SelectContent>
-        {options?.map((option) => (
-          <SelectItem key={option.value} value={option.value}>
-            {option.label}
-          </SelectItem>
-        ))}
-      </SelectContent>
-    </Select>
+    <AppSelect
+      id={id}
+      items={options}
+      value={value}
+      disabled={disabled}
+      aria-invalid={ariaInvalid}
+      aria-describedby={ariaDescribedBy}
+      onValueChange={(next) => onChange(next ?? "")}
+    />
   );
 };

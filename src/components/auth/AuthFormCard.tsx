@@ -2,6 +2,8 @@
  * Shared white card wrapping sign-in / sign-up forms.
  */
 
+import { AppText } from "@/design-system/app/AppText";
+
 interface AuthFormCardProps {
   title: string;
   description: string;
@@ -14,10 +16,12 @@ export function AuthFormCard({
   children,
 }: AuthFormCardProps) {
   return (
-    <div className="rounded-xl bg-white p-8 shadow-lg">
+    <div className="rounded-xl bg-app-surface p-8 shadow-lg">
       <div className="mb-8">
-        <h2 className="text-2xl font-bold text-gray-900">{title}</h2>
-        <p className="mt-2 text-gray-600">{description}</p>
+        <AppText variant="h2">{title}</AppText>
+        <AppText variant="p" className="mt-2 text-app-fg-muted">
+          {description}
+        </AppText>
       </div>
       {children}
     </div>

@@ -6,13 +6,17 @@
  */
 
 import Link from "next/link";
-import { Badge } from "@/components/ui/Badge";
+import { AppBadge } from "@/design-system/app/AppBadge";
+import { AppText } from "@/design-system/app/AppText";
+import { AppButton } from "@/design-system/app/AppButton";
+import { formStatusLabel, formStatusVariant } from "@/lib/constants/form";
+import { FormStatus } from "@/lib/types/form";
 
 interface Form {
   id: string;
   title: string;
   slug: string;
-  status: string;
+  status: FormStatus;
   views: number;
   starts: number;
   completions: number;
@@ -33,91 +37,63 @@ interface AdminFormsTableProps {
 }
 
 export function AdminFormsTable({ forms }: AdminFormsTableProps) {
-  const getStatusVariant = (status: string) => {
-    switch (status) {
-      case "published":
-        return "success";
-      case "draft":
-        return "neutral";
-      case "archived":
-        return "info";
-      default:
-        return "neutral";
-    }
-  };
-
   return (
-    <div className="bg-white rounded-lg border border-gray-200 overflow-hidden">
-      <table className="w-full">
-        <thead className="bg-gray-50 border-b border-gray-200">
-          <tr>
-            <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">
-              Form
-            </th>
-            <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">
-              Owner
-            </th>
-            <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">
-              Status
-            </th>
-            <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">
-              Metrics
-            </th>
-            <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">
-              Created
-            </th>
-            <th className="px-6 py-3 text-right text-xs font-medium text-gray-500 uppercase">
-              Actions
-            </th>
+    <table className="w-full rounded-lg border border-app-border-subtle overflow-hidden">
+      <thead className="border-b border-app-border-subtle bg-app-field-placeholder text-app-field/80 text-xs font-semibold uppercase">
+        <tr>
+          <th className="px-4 py-3 text-left">Form</th>
+          <th className="px-4 py-3 text-left">Owner</th>
+          <th className="px-4 py-3 text-left">Status</th>
+          <th className="px-4 py-3 text-left">Views</th>
+          <th className="px-4 py-3 text-left">Submissions</th>
+          <th className="px-4 py-3 text-left">Created</th>
+          <th className="px-4 py-3 text-right">Actions</th>
+        </tr>
+      </thead>
+      <tbody>
+        {forms.map((form) => (
+          <tr
+            key={form.id}
+            className="bg-app-surface even:bg-app-surface-muted hover:bg-app-surface-strong text-xs"
+          >
+            <td className="px-4 py-3">
+              <AppText variant="h6">{form.title}</AppText>
+              <AppText className="!text-xs text-app-fg-muted">
+                /{form.slug}
+              </AppText>
+            </td>
+            <td className="px-4 py-3">
+              <AppText variant="h6">{form.user.name || "—"}</AppText>
+              <AppText className="!text-xs text-app-fg-muted">
+                {form.user.email}
+              </AppText>
+            </td>
+            <td className="px-4 py-3">
+              <AppBadge
+                label={formStatusLabel[form.status] ?? "Draft"}
+                variant={formStatusVariant[form.status] ?? "neutral"}
+                size="sm"
+              />
+            </td>
+
+            <td className="px-4 py-3">{form.views ?? 0}</td>
+            <td className="px-4 py-3">{form._count.submissions ?? 0}</td>
+            <td className="px-4 py-3">
+              {new Date(form.createdAt).toLocaleDateString()}
+            </td>
+            <td className="px-4 py-3 text-right">
+              <AppButton
+                render={<Link href={`/forms/${form.slug}/builder`} />}
+                variant="outline"
+                color="primary"
+                size="sm"
+              >
+                View
+              </AppButton>
+            </td>
           </tr>
-        </thead>
-        <tbody className="divide-y divide-gray-200">
-          {forms.map((form) => (
-            <tr key={form.id} className="hover:bg-gray-50">
-              <td className="px-6 py-4">
-                <div>
-                  <div className="font-medium text-gray-900">{form.title}</div>
-                  <div className="text-sm text-gray-500">/{form.slug}</div>
-                </div>
-              </td>
-              <td className="px-6 py-4">
-                <div>
-                  <div className="text-sm font-medium text-gray-900">
-                    {form.user.name || "—"}
-                  </div>
-                  <div className="text-xs text-gray-500">{form.user.email}</div>
-                </div>
-              </td>
-              <td className="px-6 py-4">
-                <Badge
-                  label={form.status}
-                  variant={getStatusVariant(form.status)}
-                  size="sm"
-                />
-              </td>
-              <td className="px-6 py-4">
-                <div className="text-sm text-gray-900">
-                  <div>{form.views} views</div>
-                  <div className="text-gray-500">
-                    {form._count.submissions} submissions
-                  </div>
-                </div>
-              </td>
-              <td className="px-6 py-4 text-sm text-gray-500">
-                {new Date(form.createdAt).toLocaleDateString()}
-              </td>
-              <td className="px-6 py-4 text-right">
-                <Link
-                  href={`/forms/${form.slug}/builder`}
-                  className="text-sm text-blue-600 hover:text-blue-700 font-medium"
-                >
-                  View
-                </Link>
-              </td>
-            </tr>
-          ))}
-        </tbody>
-      </table>
-    </div>
+        ))}
+      </tbody>
+    </table>
   );
 }

@@ -3,8 +3,10 @@
 import { useState, FormEvent } from "react";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
-import { Button } from "@/components/ui/Button";
-import { FormField } from "@/components/ui/FormField";
+import { AppText } from "@/design-system/app/AppText";
+import { AppButton } from "@/design-system/app/AppButton";
+import { AppInput } from "@/design-system/app/AppInput";
+import { AppLabel } from "@/design-system/app/AppLabel";
 
 export function SignUpForm() {
   const router = useRouter();
@@ -63,65 +65,96 @@ export function SignUpForm() {
   return (
     <form onSubmit={handleSubmit} className="space-y-6">
       {error && (
-        <div className="bg-red-50 border border-red-200 text-red-700 px-4 py-3 rounded-lg text-sm">
-          {error}
+        <div className="bg-app-error-subtle border border-app-error px-4 py-3 rounded-lg">
+          <AppText variant="p" className="text-sm text-app-error">
+            {error}
+          </AppText>
         </div>
       )}
 
-      <FormField
-        type="text"
-        label="Full Name"
-        placeholder="John Doe"
-        value={formData.name}
-        onChange={(e) => setFormData({ ...formData, name: e.target.value })}
-        required
-        autoComplete="name"
-      />
+      <div className="flex flex-col gap-2">
+        <AppLabel htmlFor="name" required>
+          Full Name
+        </AppLabel>
+        <AppInput
+          id="name"
+          type="text"
+          placeholder="John Doe"
+          value={formData.name}
+          onChange={(e) => setFormData({ ...formData, name: e.target.value })}
+          required
+          autoComplete="name"
+        />
+      </div>
 
-      <FormField
-        type="email"
-        label="Email"
-        placeholder="you@example.com"
-        value={formData.email}
-        onChange={(e) => setFormData({ ...formData, email: e.target.value })}
-        required
-        autoComplete="email"
-      />
+      <div className="flex flex-col gap-2">
+        <AppLabel htmlFor="email" required>
+          Email
+        </AppLabel>
+        <AppInput
+          id="email"
+          type="email"
+          placeholder="you@example.com"
+          value={formData.email}
+          onChange={(e) => setFormData({ ...formData, email: e.target.value })}
+          required
+          autoComplete="email"
+        />
+      </div>
 
-      <FormField
-        type="password"
-        label="Password"
-        placeholder="••••••••"
-        value={formData.password}
-        onChange={(e) => setFormData({ ...formData, password: e.target.value })}
-        required
-        autoComplete="new-password"
-      />
+      <div className="flex flex-col gap-2">
+        <AppLabel htmlFor="password" required>
+          Password
+        </AppLabel>
+        <AppInput
+          id="password"
+          type="password"
+          placeholder="••••••••"
+          value={formData.password}
+          onChange={(e) =>
+            setFormData({ ...formData, password: e.target.value })
+          }
+          required
+          autoComplete="new-password"
+        />
+      </div>
 
-      <FormField
-        type="password"
-        label="Confirm Password"
-        placeholder="••••••••"
-        value={formData.confirmPassword}
-        onChange={(e) =>
-          setFormData({ ...formData, confirmPassword: e.target.value })
-        }
-        required
-        autoComplete="new-password"
-      />
+      <div className="flex flex-col gap-2">
+        <AppLabel htmlFor="confirm-password" required>
+          Confirm Password
+        </AppLabel>
+        <AppInput
+          id="confirm-password"
+          type="password"
+          placeholder="••••••••"
+          value={formData.confirmPassword}
+          onChange={(e) =>
+            setFormData({ ...formData, confirmPassword: e.target.value })
+          }
+          required
+          autoComplete="new-password"
+        />
+      </div>
 
-      <Button type="submit" className="w-full" disabled={isLoading}>
+      <AppButton
+        variant="solid"
+        color="primary"
+        type="submit"
+        className="w-full"
+        disabled={isLoading}
+      >
         {isLoading ? "Creating account..." : "Sign Up"}
-      </Button>
+      </AppButton>
 
-      <div className="text-center text-sm text-gray-600">
+      <div className="text-center text-sm text-app-fg-muted">
         Already have an account?{" "}
-        <Link
-          href="/signin"
-          className="text-blue-600 hover:underline font-medium"
+        <AppButton
+          render={<Link href="/signin" />}
+          variant="link"
+          color="secondary"
         >
           Sign in
-        </Link>
+        </AppButton>
       </div>
     </form>
   );

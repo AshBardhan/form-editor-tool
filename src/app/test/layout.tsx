@@ -1,3 +1,5 @@
+import { AppText } from "@/design-system/app/AppText";
+
 export default function TestLayout({
   children,
 }: {
@@ -6,7 +8,9 @@ export default function TestLayout({
   return (
     <div className="container mx-auto p-8">
       <div className="max-w-4xl mx-auto">
-        <h1 className="text-3xl font-bold mb-6">Database Connection Test</h1>
+        <AppText variant="h1" className="mb-6">
+          Database Connection Test
+        </AppText>
         {children}
       </div>
     </div>

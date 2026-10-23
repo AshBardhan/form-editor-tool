@@ -1,9 +1,9 @@
-import { getPropValue } from "@/lib/utils/formUtils";
+import { getFieldKey, getPropValue } from "@/lib/utils/formUtils";
 import { FormBlock } from "@/lib/types/form";
-import { Label } from "@/components/ui/Label";
-import { ErrorMessages } from "@/components/form/ErrorMessages";
-import { Input } from "@/components/ui/Input";
-import { JSX } from "react";
+import { FormLabel } from "@/design-system/form/FormLabel";
+import { FormInput } from "@/design-system/form/FormInput";
+import { FormError } from "@/design-system/form/FormError";
+import { ChangeEvent, JSX } from "react";
 
 interface InputBlockProps {
   block: FormBlock;
@@ -11,6 +11,10 @@ interface InputBlockProps {
   value?: string | number;
   onChange?: (value: string | number) => void;
   errors?: string[];
+}
+
+function optionalNumber(value: unknown): number | undefined {
+  return typeof value === "number" ? value : undefined;
 }
 
 /**
@@ -28,36 +32,52 @@ export const InputBlock = ({
   errors = [],
 }: InputBlockProps): JSX.Element => {
   const label = getPropValue(block, "label");
-  const required = getPropValue(block, "required") || false;
-  const placeholder = String(getPropValue(block, "placeholder"));
+  const required = Boolean(getPropValue(block, "required"));
+  const placeholder = String(getPropValue(block, "placeholder") ?? "");
   const defaultValue = getPropValue(block, "value") as string | undefined;
   const controlledValue = value ?? defaultValue ?? "";
+  const fieldName = getFieldKey(block);
+  const inputId = `input-${block.id}`;
+  const errorId = `${inputId}-error`;
+  const invalid = errors.length > 0;
+  const minLength = optionalNumber(getPropValue(block, "minLength"));
+  const maxLength = optionalNumber(getPropValue(block, "maxLength"));
+  const min = optionalNumber(getPropValue(block, "min"));
+  const max = optionalNumber(getPropValue(block, "max"));
+  const step = optionalNumber(getPropValue(block, "step"));
 
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const value =
+  const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
+    const nextValue =
       block.type === "number" ? e.target.valueAsNumber : e.target.value;
-    onChange?.(value);
+    onChange?.(nextValue);
   };
 
   return (
     <div className="form-block flex flex-col gap-1.5 @sm:gap-2">
-      {label && (
-        <Label htmlFor={`input-${block.id}`}>
+      {label ? (
+        <FormLabel htmlFor={inputId} required={required} aria-invalid={invalid}>
           {label}
-          {required && <span className="text-red-500 ml-1">*</span>}
-        </Label>
-      )}
-      <Input
-        id={`input-${block.id}`}
+        </FormLabel>
+      ) : null}
+      <FormInput
+        id={inputId}
+        name={fieldName}
         type={block.type}
         value={controlledValue}
         disabled={!editable}
         tabIndex={editable ? 0 : -1}
-        required={Boolean(required)}
+        required={required}
         placeholder={placeholder}
+        minLength={minLength}
+        maxLength={maxLength}
+        min={min}
+        max={max}
+        step={step}
+        aria-invalid={invalid || undefined}
+        aria-describedby={invalid ? errorId : undefined}
         onChange={handleChange}
       />
-      <ErrorMessages errors={errors} />
+      <FormError id={errorId} errors={errors} />
     </div>
   );
 };

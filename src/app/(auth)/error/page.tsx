@@ -9,7 +9,8 @@ import { Suspense } from "react";
 import { useSearchParams } from "next/navigation";
 import Link from "next/link";
 import { AuthFormCard } from "@/components/auth/AuthFormCard";
-import { Button } from "@/components/ui/Button";
+import { AppButton } from "@/design-system/app/AppButton";
+import { AppText } from "@/design-system/app/AppText";
 
 function AuthErrorContent() {
   const searchParams = useSearchParams();
@@ -29,16 +30,23 @@ function AuthErrorContent() {
 
   return (
     <AuthFormCard title="Authentication error" description={errorMessage}>
-      <Button asChild className="w-full">
-        <Link href="/signin">Try again</Link>
-      </Button>
+      <AppButton
+        render={<Link href="/signin" />}
+        variant="outline"
+        color="secondary"
+        className="w-full"
+      >
+        Try again
+      </AppButton>
     </AuthFormCard>
   );
 }
 
 export default function AuthErrorPage() {
   return (
-    <Suspense fallback={<div className="py-4 text-center">Loading...</div>}>
+    <Suspense
+      fallback={<AppText className="py-4 text-center">Loading...</AppText>}
+    >
       <AuthErrorContent />
     </Suspense>
   );

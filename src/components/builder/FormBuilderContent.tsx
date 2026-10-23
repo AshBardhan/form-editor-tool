@@ -12,9 +12,8 @@ import {
   useSensor,
   useSensors,
 } from "@dnd-kit/core";
-import { JSX, useState, useEffect, useCallback } from "react";
+import { JSX, useState, useCallback } from "react";
 import { hybridKeyboardCoordinates } from "@/lib/utils/keyboardUtils";
-import { switchFormTheme } from "@/lib/utils/domUtils";
 import {
   useFormConfigStore,
   useUIStateStore,
@@ -29,19 +28,21 @@ import { CanvasForm } from "@/components/builder/canvas/CanvasForm";
 import { WidgetPanel } from "@/components/builder/widgets/WidgetPanel";
 import { ConfigurationPanel } from "@/components/builder/configuration/ConfigurationPanel";
 import {
-  Modal,
-  ModalContent,
-  ModalHeader,
-  ModalTitle,
-  ModalDescription,
-  ModalFooter,
-} from "@/components/ui/Modal";
-import { Button } from "@/components/ui/Button";
-import { Alert, AlertDescription, AlertTitle } from "@/components/ui/Alert";
+  AppModal,
+  AppModalContent,
+  AppModalDescription,
+  AppModalFooter,
+  AppModalHeader,
+  AppModalTitle,
+} from "@/design-system/app/AppModal";
+import { AppButton } from "@/design-system/app/AppButton";
+import { AppText } from "@/design-system/app/AppText";
+import { AppAlert } from "@/design-system/app/AppAlert";
 import { AlertTriangle } from "lucide-react";
 import { useAutoSave } from "@/lib/hooks/useAutoSave";
-import { toast } from "@/components/ui/Toast";
+import { toast } from "@/design-system/app/AppToast";
 import { ApiResponse } from "@/lib/types/api";
+import { FormThemeContainer } from "@/design-system/containers/FormThemeContainer";
 
 interface DragState {
   overId: string | null;
@@ -86,7 +87,8 @@ export const FormBuilderContent = (): JSX.Element => {
 
   // Auto-save callback: handles API call and toast notifications
   const handleSave = useCallback(async (data: FormConfig) => {
-    const toastId = toast.info("Saving changes...", {
+    const toastId = toast.info({
+      title: "Saving changes...",
       duration: Infinity,
       dismissible: false,
     });
@@ -201,12 +203,6 @@ export const FormBuilderContent = (): JSX.Element => {
     }),
   );
 
-  // Apply theme to form container
-  useEffect(() => {
-    switchFormTheme(form.theme);
-    return () => switchFormTheme("");
-  }, [form.theme]);
-
   return (
     <div className="flex h-full relative">
       {/* Drag Context Container */}
@@ -244,12 +240,12 @@ export const FormBuilderContent = (): JSX.Element => {
         {/* Drag Placeholder Overlay */}
         <DragOverlay>
           {dragState.activeItem && (
-            <div className={form.theme}>
+            <FormThemeContainer isEmpty={true} theme={form.theme}>
               <CanvasDroppable
                 item={dragState.activeItem}
                 source={dragState.source}
               />
-            </div>
+            </FormThemeContainer>
           )}
         </DragOverlay>
 
@@ -264,37 +260,37 @@ export const FormBuilderContent = (): JSX.Element => {
 
         {/* Main Content Area with Canvas and Save/Cancel Action Buttons */}
         <MainContent className="flex flex-col">
-          <div className="flex-1 py-10 overflow-y-auto">
-            <PageContainer
-              className="px-6 min-w-md"
-              onClickCapture={(e) => {
-                const target = e.target as HTMLElement;
-                if (!target.closest("[data-slot='block']")) {
-                  selectFormBlock(null);
-                }
-              }}
+          <div
+            className="flex-1 overflow-y-auto"
+            onClickCapture={(e) => {
+              const target = e.target as HTMLElement;
+              if (!target.closest("[data-slot='block']")) {
+                selectFormBlock(null);
+              }
+            }}
+          >
+            <FormThemeContainer
+              theme={form.theme}
+              className="min-w-md min-h-auto h-full px-6 py-10 justify-start"
             >
-              {showPublishedSubmissionsWarning && (
-                <Alert variant="warning" className="mb-6">
-                  <AlertTriangle className="size-4" />
-                  <AlertTitle>Editing a published form</AlertTitle>
-                  <AlertDescription>
-                    This form already has submissions. Adding, removing, or
-                    changing input fields (including type or options) may alter
-                    field responses. Submission records and analytics metrics
-                    stay the same. Missing answers show as "-".
-                  </AlertDescription>
-                </Alert>
-              )}
-              <div className="form-container">
+              <PageContainer>
+                {showPublishedSubmissionsWarning && (
+                  <AppAlert
+                    variant="warning"
+                    className="mb-6"
+                    icon={<AlertTriangle />}
+                    heading="Editing a published form"
+                    description="This form already has submissions. Adding, removing, or changing input fields (including type or options) may alter field responses. Submission records and analytics metrics stay the same."
+                  />
+                )}
                 <CanvasForm
                   overId={dragState.overId}
                   activeDragItem={dragState.activeItem as FormBlock}
                   dragSource={dragState.source}
                   onDeleteBlock={handleDeleteRequest}
                 />
-              </div>
-            </PageContainer>
+              </PageContainer>
+            </FormThemeContainer>
           </div>
         </MainContent>
 
@@ -310,45 +306,62 @@ export const FormBuilderContent = (): JSX.Element => {
 
       {/* Uneditable Form Overlay */}
       {!isFormEditable && (
-        <div className="absolute inset-0 bg-white/20 z-30 cursor-not-allowed flex items-center justify-center">
-          <div className="bg-white p-6 rounded-lg shadow-lg max-w-md text-center">
-            <h3 className="text-lg font-semibold mb-2">Form Uneditable</h3>
-            <p className="text-sm text-gray-600 dark:text-gray-400">
+        <div className="absolute inset-0 bg-app-overlay z-30 cursor-not-allowed flex items-center justify-center">
+          <div className="bg-app-surface border border-app-border-subtle p-6 rounded-lg shadow-lg max-w-md text-center">
+            <AppText
+              variant="h3"
+              className="mb-2 text-lg sm:text-lg 2xl:text-lg"
+            >
+              Form Uneditable
+            </AppText>
+            <AppText
+              variant="p"
+              className="text-sm text-app-fg-muted sm:text-sm 2xl:text-sm"
+            >
               This form is archived and cannot be edited. Restore it to
               &apos;published&apos; status to make changes.
-            </p>
+            </AppText>
           </div>
         </div>
       )}
 
       {/* Delete Confirmation Modal */}
-      <Modal
+      <AppModal
+        type="alert"
         open={deleteConfirmation.isOpen}
         onOpenChange={(open) => !open && handleCancelDelete()}
       >
-        <ModalContent size="sm">
-          <ModalHeader className="pb-2">
+        <AppModalContent size="sm">
+          <AppModalHeader className="pb-2">
             <div className="flex gap-3">
-              <AlertTriangle className="shrink-0 h-6 w-6 text-red-600 dark:text-red-500" />
+              <AlertTriangle className="shrink-0 h-6 w-6 text-app-error" />
               <div className="flex-1 flex flex-col gap-2">
-                <ModalTitle>Delete Block</ModalTitle>
-                <ModalDescription>
+                <AppModalTitle>Delete Block</AppModalTitle>
+                <AppModalDescription>
                   Are you sure you want to delete this block? This action cannot
                   be undone.
-                </ModalDescription>
+                </AppModalDescription>
               </div>
             </div>
-          </ModalHeader>
-          <ModalFooter>
-            <Button variant="outline" onClick={handleCancelDelete}>
+          </AppModalHeader>
+          <AppModalFooter>
+            <AppButton
+              variant="outline"
+              color="secondary"
+              onClick={handleCancelDelete}
+            >
               Cancel
-            </Button>
-            <Button variant="destructive" onClick={handleConfirmDelete}>
+            </AppButton>
+            <AppButton
+              variant="solid"
+              color="negative"
+              onClick={handleConfirmDelete}
+            >
               Delete
-            </Button>
-          </ModalFooter>
-        </ModalContent>
-      </Modal>
+            </AppButton>
+          </AppModalFooter>
+        </AppModalContent>
+      </AppModal>
     </div>
   );
 };

@@ -6,6 +6,9 @@
 import { redirect } from "next/navigation";
 import { auth } from "@/auth";
 import prisma from "@/lib/prisma";
+import { AppText } from "@/design-system/app/AppText";
+import { AppCard } from "@/design-system/app/AppCard";
+import { AppMetric } from "@/design-system/app/AppMetric";
 
 async function getAnalytics() {
   const session = await auth();
@@ -90,99 +93,94 @@ export default async function AdminAnalyticsPage() {
   return (
     <div>
       <div className="mb-6">
-        <h2 className="text-2xl font-bold text-gray-900">Platform Analytics</h2>
-        <p className="text-gray-600 mt-1">
+        <AppText variant="h2">Platform Analytics</AppText>
+        <AppText variant="p" className="mt-1 text-app-fg-muted">
           Overview of platform usage and activity
-        </p>
+        </AppText>
       </div>
 
       {/* Overview Stats */}
-      <div className="grid grid-cols-3 gap-6 mb-8">
-        <div className="bg-white rounded-lg border border-gray-200 p-6">
-          <div className="text-sm text-gray-600 mb-1">Total Users</div>
-          <div className="text-3xl font-bold text-gray-900">
-            {overview.totalUsers}
+      <div className="grid md:grid-cols-3 grid-cols-1 gap-6 mb-8">
+        <AppCard>
+          <div className="grid grid-cols-3 gap-2">
+            <AppMetric label="Total Users" value={overview.totalUsers} />
+            <AppMetric label="Clients" value={overview.clientCount} />
+            <AppMetric label="Admins" value={overview.adminCount} />
           </div>
-          <div className="text-sm text-gray-500 mt-2">
-            {overview.clientCount} clients, {overview.adminCount} admins
-          </div>
-        </div>
+        </AppCard>
 
-        <div className="bg-white rounded-lg border border-gray-200 p-6">
-          <div className="text-sm text-gray-600 mb-1">Total Forms</div>
-          <div className="text-3xl font-bold text-gray-900">
-            {overview.totalForms}
+        <AppCard>
+          <div className="grid grid-cols-2 gap-2">
+            <AppMetric label="Total Forms" value={overview.totalForms} />
+            <AppMetric label="Published" value={overview.publishedForms} />
           </div>
-          <div className="text-sm text-gray-500 mt-2">
-            {overview.publishedForms} published
-          </div>
-        </div>
+        </AppCard>
 
-        <div className="bg-white rounded-lg border border-gray-200 p-6">
-          <div className="text-sm text-gray-600 mb-1">Total Submissions</div>
-          <div className="text-3xl font-bold text-gray-900">
-            {overview.totalSubmissions}
+        <AppCard>
+          <div className="grid grid-cols-2 gap-2">
+            <AppMetric
+              label="Total Submissions"
+              value={overview.totalSubmissions}
+            />
+            <AppMetric
+              label="Avg Submissions per Form"
+              value={
+                overview.totalForms > 0
+                  ? (overview.totalSubmissions / overview.totalForms).toFixed(1)
+                  : 0
+              }
+            />
           </div>
-          <div className="text-sm text-gray-500 mt-2">
-            {overview.totalForms > 0
-              ? (overview.totalSubmissions / overview.totalForms).toFixed(1)
-              : 0}{" "}
-            avg per form
-          </div>
-        </div>
+        </AppCard>
       </div>
 
       {/* Recent Activity */}
       <div className="grid grid-cols-2 gap-6">
         {/* Recent Forms */}
-        <div className="bg-white rounded-lg border border-gray-200">
-          <div className="px-6 py-4 border-b border-gray-200">
-            <h3 className="font-semibold text-gray-900">Recent Forms</h3>
-          </div>
-          <div className="divide-y divide-gray-200">
+        <AppCard>
+          <AppText variant="h3">Recent Forms</AppText>
+          <div className="divide-y divide-app-border-subtle">
             {recentActivity.forms.length === 0 ? (
-              <div className="px-6 py-8 text-center text-gray-500">
-                No forms yet
+              <div className="py-4 text-center">
+                <AppText className="text-app-fg-muted">No forms yet</AppText>
               </div>
             ) : (
               recentActivity.forms.map((form) => (
-                <div key={form.id} className="px-6 py-4">
-                  <div className="font-medium text-gray-900">{form.title}</div>
-                  <div className="text-sm text-gray-500 mt-1">
+                <div key={form.id} className="py-4 space-y-1">
+                  <AppText variant="h5">{form.title}</AppText>
+                  <AppText variant="p" className="!text-xs text-app-fg-muted">
                     by {form.user.name || form.user.email} •{" "}
                     {new Date(form.createdAt).toLocaleDateString()}
-                  </div>
+                  </AppText>
                 </div>
               ))
             )}
           </div>
-        </div>
+        </AppCard>
 
         {/* Recent Submissions */}
-        <div className="bg-white rounded-lg border border-gray-200">
-          <div className="px-6 py-4 border-b border-gray-200">
-            <h3 className="font-semibold text-gray-900">Recent Submissions</h3>
-          </div>
-          <div className="divide-y divide-gray-200">
+        <AppCard>
+          <AppText variant="h3">Recent Submissions</AppText>
+          <div className="divide-y divide-app-border-subtle">
             {recentActivity.submissions.length === 0 ? (
-              <div className="px-6 py-8 text-center text-gray-500">
-                No submissions yet
+              <div className="py-4 text-center">
+                <AppText className="text-app-fg-muted">
+                  No submissions yet
+                </AppText>
               </div>
             ) : (
               recentActivity.submissions.map((submission) => (
-                <div key={submission.id} className="px-6 py-4">
-                  <div className="font-medium text-gray-900">
-                    {submission.form.title}
-                  </div>
-                  <div className="text-sm text-gray-500 mt-1">
+                <div key={submission.id} className="py-4 space-y-1">
+                  <AppText variant="h5">{submission.form.title}</AppText>
+                  <AppText variant="p" className="!text-xs text-app-fg-muted">
                     by {submission.form.user.name} •{" "}
                     {new Date(submission.submittedAt).toLocaleDateString()}
-                  </div>
+                  </AppText>
                 </div>
               ))
             )}
           </div>
-        </div>
+        </AppCard>
       </div>
     </div>
   );

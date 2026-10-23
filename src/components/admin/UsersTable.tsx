@@ -7,9 +7,17 @@
 
 import { useState } from "react";
 import { useRouter } from "next/navigation";
-import { Badge } from "@/components/ui/Badge";
-import { Button } from "@/components/ui/Button";
-import { Modal } from "@/components/ui/Modal";
+import { AppBadge } from "@/design-system/app/AppBadge";
+import {
+  AppModal,
+  AppModalContent,
+  AppModalDescription,
+  AppModalFooter,
+  AppModalHeader,
+  AppModalTitle,
+} from "@/design-system/app/AppModal";
+import { AppButton } from "@/design-system/app/AppButton";
+import { AppText } from "@/design-system/app/AppText";
 
 interface User {
   id: number;
@@ -74,114 +82,107 @@ export function UsersTable({ users }: UsersTableProps) {
 
   return (
     <>
-      <div className="bg-white rounded-lg border border-gray-200 overflow-hidden">
-        <table className="w-full">
-          <thead className="bg-gray-50 border-b border-gray-200">
-            <tr>
-              <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">
-                User
-              </th>
-              <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">
-                Role
-              </th>
-              <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">
-                Forms
-              </th>
-              <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">
-                Sessions
-              </th>
-              <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">
-                Joined
-              </th>
-              <th className="px-6 py-3 text-right text-xs font-medium text-gray-500 uppercase">
-                Actions
-              </th>
-            </tr>
-          </thead>
-          <tbody className="divide-y divide-gray-200">
-            {users.map((user) => (
-              <tr key={user.id} className="hover:bg-gray-50">
-                <td className="px-6 py-4">
-                  <div>
-                    <div className="font-medium text-gray-900">
-                      {user.name || "—"}
-                    </div>
-                    <div className="text-sm text-gray-500">{user.email}</div>
-                  </div>
-                </td>
-                <td className="px-6 py-4">
-                  <Badge
-                    label={user.role}
-                    variant={user.role === "ADMIN" ? "error" : "info"}
+      <table className="w-full rounded-lg border border-app-border-subtle overflow-hidden">
+        <thead className="border-b border-app-border-subtle bg-app-field-placeholder text-app-field/80 text-xs font-semibold uppercase">
+          <tr>
+            <th className="px-4 py-3 text-left">User</th>
+            <th className="px-4 py-3 text-left">Role</th>
+            <th className="px-4 py-3 text-left">Forms</th>
+            <th className="px-4 py-3 text-left">Sessions</th>
+            <th className="px-4 py-3 text-left">Joined</th>
+            <th className="px-4 py-3 text-right">Actions</th>
+          </tr>
+        </thead>
+        <tbody>
+          {users.map((user) => (
+            <tr
+              key={user.id}
+              className="bg-app-surface even:bg-app-surface-muted hover:bg-app-surface-strong text-xs"
+            >
+              <td className="px-4 py-3">
+                <AppText variant="h6">{user.name || "—"}</AppText>
+                <AppText className="!text-xs text-app-fg-muted">
+                  {user.email}
+                </AppText>
+              </td>
+              <td className="px-4 py-3">
+                <AppBadge
+                  label={user.role}
+                  variant={user.role === "ADMIN" ? "error" : "info"}
+                  size="sm"
+                />
+              </td>
+              <td className="px-4 py-3">{user._count.forms ?? 0}</td>
+              <td className="px-4 py-3">{user._count.sessions ?? 0}</td>
+              <td className="px-4 py-3">
+                {new Date(user.createdAt).toLocaleDateString()}
+              </td>
+              <td className="px-4 py-3 text-right">
+                <div className="flex items-center gap-2 justify-end">
+                  <AppButton
+                    variant="outline"
+                    color="secondary"
                     size="sm"
-                  />
-                </td>
-                <td className="px-6 py-4 text-sm text-gray-900">
-                  {user._count.forms}
-                </td>
-                <td className="px-6 py-4 text-sm text-gray-900">
-                  {user._count.sessions}
-                </td>
-                <td className="px-6 py-4 text-sm text-gray-500">
-                  {new Date(user.createdAt).toLocaleDateString()}
-                </td>
-                <td className="px-6 py-4 text-right">
-                  <div className="flex gap-2 justify-end">
-                    <Button
-                      size="sm"
-                      variant="outline"
-                      onClick={() => handleToggleRole(user)}
-                    >
-                      {user.role === "ADMIN" ? "Demote" : "Promote"}
-                    </Button>
-                    <Button
-                      size="sm"
-                      variant="destructive"
-                      onClick={() => {
-                        setSelectedUser(user);
-                        setShowDeleteModal(true);
-                      }}
-                    >
-                      Delete
-                    </Button>
-                  </div>
-                </td>
-              </tr>
-            ))}
-          </tbody>
-        </table>
-      </div>
+                    onClick={() => handleToggleRole(user)}
+                  >
+                    {user.role === "ADMIN" ? "Demote" : "Promote"}
+                  </AppButton>
+                  <AppButton
+                    variant="solid"
+                    color="negative"
+                    size="sm"
+                    onClick={() => {
+                      setSelectedUser(user);
+                      setShowDeleteModal(true);
+                    }}
+                  >
+                    Delete
+                  </AppButton>
+                </div>
+              </td>
+            </tr>
+          ))}
+        </tbody>
+      </table>
 
       {/* Delete Confirmation Modal */}
-      <Modal open={showDeleteModal} onOpenChange={setShowDeleteModal}>
-        <div className="space-y-4">
-          <h3 className="text-lg font-semibold text-gray-900">Delete User</h3>
-          <p className="text-gray-600">
-            Are you sure you want to delete{" "}
-            <strong className="text-gray-900">{selectedUser?.email}</strong>?
-          </p>
-          <p className="text-sm text-red-600">
+      <AppModal
+        type="alert"
+        open={showDeleteModal}
+        onOpenChange={setShowDeleteModal}
+      >
+        <AppModalContent size="sm">
+          <AppModalHeader>
+            <AppModalTitle>Delete User</AppModalTitle>
+            <AppModalDescription>
+              Are you sure you want to delete{" "}
+              <strong>{selectedUser?.email}</strong>?
+            </AppModalDescription>
+          </AppModalHeader>
+          <p className="p-6 text-sm text-app-error">
             This will permanently delete the user and all their forms,
             submissions, and data.
           </p>
-          <div className="flex justify-end gap-3">
-            <Button
+          <AppModalFooter>
+            <AppButton
               variant="outline"
+              color="secondary"
               onClick={() => setShowDeleteModal(false)}
               disabled={isDeleting}
             >
               Cancel
-            </Button>
-            <Button
-              variant="destructive"
+            </AppButton>
+            <AppButton
+              variant="solid"
+              color="negative"
               onClick={handleDelete}
               disabled={isDeleting}
             >
               {isDeleting ? "Deleting..." : "Delete User"}
-            </Button>
-          </div>
-        </div>
-      </Modal>
+            </AppButton>
+          </AppModalFooter>
+        </AppModalContent>
+      </AppModal>
     </>
   );
 }

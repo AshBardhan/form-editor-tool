@@ -15,9 +15,17 @@ enum UserRole {
   ADMIN // Platform admin (Phase 2)
 }
 
-enum FormTheme {
+// ========================================
+// PREDEFINED FORM THEMES
+// ========================================
+
+enum PredefinedFormTheme {
   light
   dark
+  frost
+  forest
+  fire
+  beach
 }
 
 enum FormStatus {
@@ -109,8 +117,10 @@ model Form {
   id          String     @id @default(cuid()) // Unique CUID for form identification
   title       String // Form title shown to creator and respondents
   description String? // Optional form description/instructions
-  theme       FormTheme  @default(light) // Visual theme (light/dark mode)
+  theme       PredefinedFormTheme @default(light) // Built-in CSS form theme id
   status      FormStatus @default(draft) // Lifecycle state (draft = editing, published = accepting responses)
+ 
+ // Analytics
   views       Int        @default(0) // Total public page visits for response rate calculations
   starts      Int        @default(0) // Sessions that started filling at least one field
   completions Int        @default(0) // Sessions that reached all required fields filled

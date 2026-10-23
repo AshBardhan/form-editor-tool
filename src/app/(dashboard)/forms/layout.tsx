@@ -1,6 +1,7 @@
 import { JSX } from "react";
 import { AppHeader } from "@/components/layout/AppHeader";
 import { AppContent } from "@/components/layout";
+import { AppThemeContainer } from "@/design-system/containers/AppThemeContainer";
 
 /**
  * Forms Dashboard Layout
@@ -15,9 +16,9 @@ export default function FormsLayout({
   children: React.ReactNode;
 }>): JSX.Element {
   return (
-    <>
+    <AppThemeContainer>
       <AppHeader />
       <AppContent>{children}</AppContent>
-    </>
+    </AppThemeContainer>
   );
 }
