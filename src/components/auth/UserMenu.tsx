@@ -69,7 +69,7 @@ export function UserMenu({ user }: UserMenuProps) {
         {/* Admin Panel Link */}
         {user.role === "ADMIN" && (
           <>
-            <AppMenuLinkItem render={<Link href="/admin/users" />}>
+            <AppMenuLinkItem render={<Link href="/admin" />}>
               <ShieldIcon size={16} />
               Admin Panel
             </AppMenuLinkItem>

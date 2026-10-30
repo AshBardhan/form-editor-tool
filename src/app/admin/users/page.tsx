@@ -45,7 +45,7 @@ export default async function AdminUsersPage() {
   return (
     <>
       <div className="mb-6">
-        <AppText variant="h2">User Management</AppText>
+        <AppText variant="h3">User Management</AppText>
         <AppText variant="p" className="mt-1 text-app-fg-muted">
           Manage users, roles, and permissions
         </AppText>

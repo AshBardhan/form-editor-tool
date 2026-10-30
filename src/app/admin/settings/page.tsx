@@ -12,7 +12,7 @@ export default function AdminSettingsPage() {
   return (
     <div>
       <div className="mb-6">
-        <AppText variant="h2">System Settings</AppText>
+        <AppText variant="h3">System Settings</AppText>
         <AppText variant="p" className="mt-1 text-app-fg-muted">
           Configure platform settings and integrations
         </AppText>

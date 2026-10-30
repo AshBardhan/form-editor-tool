@@ -93,7 +93,7 @@ export default async function AdminAnalyticsPage() {
   return (
     <div>
       <div className="mb-6">
-        <AppText variant="h2">Platform Analytics</AppText>
+        <AppText variant="h3">Platform Analytics</AppText>
         <AppText variant="p" className="mt-1 text-app-fg-muted">
           Overview of platform usage and activity
         </AppText>

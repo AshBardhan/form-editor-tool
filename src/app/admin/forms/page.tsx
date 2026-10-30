@@ -60,7 +60,7 @@ export default async function AdminFormsPage() {
   return (
     <>
       <div className="mb-6">
-        <AppText variant="h2">Forms Management</AppText>
+        <AppText variant="h3">Forms Management</AppText>
         <AppText variant="p" className="mt-1 text-app-fg-muted">
           Monitor and manage all forms across the platform
         </AppText>
