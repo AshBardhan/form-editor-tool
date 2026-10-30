@@ -57,6 +57,7 @@ Two independent surfaces must not bleed into each other. Scoping is DOM nesting 
 - **Field validation**: Inline errors via `FormError` on public/preview/builder blocks
 - **Toast System**: `AppToast` on Base UI, provided once from the root layout (`AppToastProvider`)
 - **Route Groups**: Next.js route groups for logical organization
+  - `(auth)/` - Sign in, sign up and auth error pages
   - `(dashboard)/` - Dashboard-related pages
   - `(form)/` - Form management pages (builder, analytics, submissions)
   - Enables shared layouts without affecting URL structure
@@ -90,9 +91,9 @@ Two independent surfaces must not bleed into each other. Scoping is DOM nesting 
 ### Authentication & Authorization
 
 - **NextAuth.js Integration**: Production-ready authentication system
-  - Multiple providers: Credentials (email/password), Google OAuth, GitHub OAuth
+  - Credentials provider (email/password) only; Google and GitHub OAuth are planned (`docs/IMPROVEMENTS.md`). The schema's `Account` table is already in place for them
   - JWT-based sessions for stateless authentication
-  - Secure session management with automatic token refresh
+  - Split config: `auth.config.ts` is Edge-safe and used by middleware; `auth.ts` adds the Prisma adapter and credentials provider in the Node runtime
   - Built-in CSRF protection and secure cookie handling
 - **Role-Based Access Control (RBAC)**: Fine-grained permission system
   - **CLIENT Role**: Form creators with full control over their own workspace
@@ -101,17 +102,17 @@ Two independent surfaces must not bleed into each other. Scoping is DOM nesting 
     - Manage own profile
   - **ADMIN Role**: Platform administrators with superuser capabilities
     - All CLIENT permissions plus system-wide access
-    - View/manage all users and forms
-    - User impersonation for customer support
+    - View all users and forms, change user roles, delete users
     - Platform-wide analytics and system configuration
+    - User impersonation is reserved as a permission (`user:impersonate`) but not implemented yet (`docs/IMPROVEMENTS.md`)
 - **Permission System**: Granular permission checks
-  - Permission definitions: `form:read:own`, `form:read:all`, `user:impersonate`, etc.
+  - Permission definitions: `form:read:own`, `form:read:all`, `user:impersonate`, etc. (`src/lib/permissions/`)
   - Role-permission mapping for consistent authorization
-  - Helper functions: `requireAuthSession()`, `requireAdmin()`, `requireOwnership()`
-- **Route Protection**: Middleware-based access control
-  - Public routes: `/f/[slug]` (published forms)
-  - Protected routes: `/forms/*` (requires authentication)
-  - Admin routes: `/admin/*` (requires ADMIN role)
+  - Helper functions: `requireAuthSession()`, `requireAdmin()`, `requireOwnership()`, `requirePermission()` (`src/lib/utils/authUtils.ts`)
+- **Route Protection**: Middleware-based, default-deny access control
+  - Public routes: `/`, `/signin`, `/signup`, `/error`, `/forbidden`, `/f/[slug]` (`PUBLIC_ROUTES`)
+  - Every other route requires authentication; unauthenticated users are redirected to `/signin` with a `callbackUrl`
+  - Admin routes: `/admin/*` and `/api/admin/*` require the ADMIN role; others are redirected to `/forbidden`
   - API route guards with ownership validation
 - **Security Best Practices**:
   - Password hashing with bcryptjs (12 rounds)
@@ -134,7 +135,7 @@ Two independent surfaces must not bleed into each other. Scoping is DOM nesting 
   - **FormFieldResponse**: Individual field responses linked to submissions
 - **Enum Types**: Database-level validation for consistency
   - **UserRole**: `CLIENT` (form creator), `ADMIN` (platform admin)
-  - **FormTheme**: Predefined themes - `light`, `dark`, `frost`, `forest`, `fire`, `beach`
+  - **PredefinedFormTheme**: Predefined themes - `light`, `dark`, `frost`, `forest`, `fire`, `beach`
   - **FormStatus**: `draft` (editing), `published` (accepting responses), `archived` (inactive)
 - **Analytics Tracking**: Built-in counters for form engagement metrics
   - `views`: Total public page visits

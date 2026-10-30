@@ -11,7 +11,8 @@ The application is crafted using `Next.js` and `React` to build scalable and reu
 - **Form Preview**: Fully functional preview modal with submission handling and multi-device responsive views.
 - **Public Form Access**: Renders published form which records user's interaction and field response.
 - **Form Submissions and Analytics**: Anonymous submissions with funnel metrics, field-level response analysis, and a per-submission detail view.
-- **UI Component Library**: Reusable primitive components with interactive demos and documentation.
+- **Authentication and Roles**: Email/password sign-in with NextAuth.js, CLIENT and ADMIN roles, and an admin area for managing users and forms.
+- **UI Component Library**: Design system of primitives with `App*` and `Form*` derived components, separate app and form themes, and interactive demos.
 - **Database Integration**: RESTful API with PostgreSQL and Prisma for forms CRUD actions, publishing, submissions and analytics.
 
 ## Routing Summary
@@ -20,10 +21,14 @@ The application is crafted using `Next.js` and `React` to build scalable and reu
 
 | Route | Description |
 | ----- | ----------- |
-| `/` | Dashboard with form grid and creation button (via `/forms`) |
-| `/demo` | Interactive showcase of 15+ UI primitives with code examples |
+| `/` | Public landing page with sign-in call to action |
+| `/signin` | Sign in with email and password |
+| `/signup` | Create a new account (CLIENT role) |
+| `/error` | Authentication error page |
+| `/forbidden` | Shown when a non-admin user opens an admin route |
+| `/demo` | Interactive showcase of the `App*` and `Form*` design-system components |
 | `/forms` | Dashboard page listing all forms with statistics |
-| `/forms/[slug]` | Form page with navigation to builder, analytics, and submissions |
+| `/forms/[slug]` | Redirects to the form builder |
 | `/forms/[slug]/builder` | Form builder interface for creating and editing forms |
 | `/forms/[slug]/analytics` | Redirects to analytics overview |
 | `/forms/[slug]/analytics/overview` | Funnel metrics and reserved trends slot |
@@ -32,6 +37,13 @@ The application is crafted using `Next.js` and `React` to build scalable and reu
 | `/f/[slug]` | Public form view for respondents to fill and submit |
 | `/f/[slug]/success` | Form submission success confirmation page |
 | `/test` | Database connectivity test with statistics and health check links |
+| `/admin` | Redirects to admin users (ADMIN role only) |
+| `/admin/users` | List all users, change roles, and delete users |
+| `/admin/forms` | List forms across all users with user and status filters |
+| `/admin/analytics` | Platform-wide statistics |
+| `/admin/settings` | System configuration and settings |
+
+All routes except `/`, the auth pages and `/f/[slug]` require a signed-in user; the middleware redirects anyone else to `/signin`.
 
 ### API Routes
 
@@ -40,8 +52,14 @@ The application is crafted using `Next.js` and `React` to build scalable and reu
 | `/api/forms` | **GET**: List all forms with filtering and pagination<br>**POST**: Create new draft form |
 | `/api/forms/[id]` | **GET**: Retrieve form with ordered blocks<br>**PATCH**: Automatically update form metadata and blocks<br>**DELETE**: Delete form with cascade |
 | `/api/forms/[id]/status` | **PATCH**: Publish/unpublish/archive form with status updates |
-| `/api/forms/[id]/submissions` | **GET**: Retrieve all submissions with pagination<br>**POST**: Submit form response with field values |
+| `/api/forms/[id]/submissions` | **GET**: Retrieve all submissions with pagination<br>**POST**: Submit form response with field values<br>**DELETE**: Clear all submissions and reset submission counters |
 | `/api/forms/[id]/analytics` | **GET**: Comprehensive analytics (submissions over time, completion rates, field value distribution) |
+| `/api/auth/[...nextauth]` | NextAuth.js handlers (sign in, sign out, session) |
+| `/api/auth/signup` | **POST**: Register a new user with a hashed password |
+| `/api/admin/users` | **GET**: List all users with their stats (ADMIN) |
+| `/api/admin/users/[id]` | **PATCH**: Change a user's role<br>**DELETE**: Delete a user (ADMIN) |
+| `/api/admin/forms` | **GET**: List forms filtered by user and status (ADMIN) |
+| `/api/admin/analytics` | **GET**: Platform-wide statistics (ADMIN) |
 
 ## File Structure
 
@@ -53,6 +71,7 @@ form-editor-tool/
 │  └─ seed/                          # Database seeding script and sample data
 ├─ src/
 │  ├─ app/                           # App-router directory
+│  │  ├─ (auth)/                     # Sign in, sign up and auth error pages
 │  │  ├─ (dashboard)/                # Route group for dashboard
 │  │  │  └─ forms/                   # Dashboard forms list
 │  │  ├─ (form)/                     # Route group for form management
@@ -60,18 +79,24 @@ form-editor-tool/
 │  │  │     ├─ builder/              # Form builder interface
 │  │  │     ├─ analytics/            # Funnel metrics and field analysis
 │  │  │     └─ submissions/          # Submission list and detail
+│  │  ├─ admin/                      # Admin area (users, forms, analytics, settings)
 │  │  ├─ api/                        # API routes
+│  │  │  ├─ admin/                   # Admin-only endpoints
+│  │  │  ├─ auth/                    # NextAuth handlers and signup
 │  │  │  └─ forms/                   # Forms-based API
 │  │  │     ├─ route.ts              # Form-dashboard endpoints
 │  │  │     └─ [id]/                 # Form-specific endpoints
 │  │  ├─ demo/                       # UI components showcase
 │  │  ├─ f/                          # Public forms directory
 │  │  │  └─ [slug]/                  # Public form route
+│  │  ├─ forbidden/                  # Access denied page
 │  │  ├─ test/                       # Database test page
-│  │  ├─ page.tsx                    # Main dashboard page (redirects to /forms)
+│  │  ├─ page.tsx                    # Public landing page
 │  │  ├─ layout.tsx                  # Root layout
 │  │  └─ globals.css                 # Global styles
 │  ├─ components/
+│  │  ├─ admin/                      # Admin users and forms tables
+│  │  ├─ auth/                       # Sign in/up forms and user menu
 │  │  ├─ builder/                    # Form builder
 │  │  │  ├─ canvas/                  # Drag-drop canvas
 │  │  │  ├─ configuration/           # Property editor
@@ -86,21 +111,32 @@ form-editor-tool/
 │  │  ├─ preview/                    # Form preview components
 │  │  ├─ public/                     # Public form components
 │  │  ├─ analytics/                  # Analytics overview and field analysis
-│  │  ├─ submissions/                # Submission list and detail
-│  │  └─ ui/                         # Primitive UI components
+│  │  └─ submissions/                # Submission list and detail
+│  ├─ design-system/
+│  │  ├─ primitives/                 # Behavior and a11y only (Base UI / native wrappers)
+│  │  ├─ app/                        # App* components for product chrome
+│  │  ├─ form/                       # Form* components for authored form content
+│  │  └─ containers/                 # AppThemeContainer and FormThemeContainer
 │  ├─ lib/
-│  │  ├─ constants/                  # App constants (themes, styles, templates)
+│  │  ├─ cache/                      # Form caching helpers
+│  │  ├─ constants/                  # App constants (themes, styles, templates, routes)
 │  │  ├─ errors/                     # Error handling utilities
 │  │  ├─ hooks/                      # Custom React hooks
+│  │  ├─ permissions/                # Role-permission definitions and guards
 │  │  ├─ queries/                    # Prisma queries
 │  │  ├─ schema/                     # Zod validation schemas
 │  │  ├─ stores/                     # Zustand state management
 │  │  ├─ types/                      # TypeScript type definitions
 │  │  ├─ utils/                      # Utility functions
 │  │  └─ prisma.ts                   # Prisma Client singleton (mock/real)
-│  └─ mocks/
-│     ├─ data/                       # Sample data for offline development
-│     └─ mockPrisma.ts               # Mock Prisma client
+│  ├─ mocks/
+│  │  ├─ data/                       # Sample data for offline development
+│  │  └─ mockPrisma.ts               # Mock Prisma client
+│  ├─ styles/                        # Theme tokens and component CSS
+│  ├─ types/                         # Module augmentation (NextAuth session types)
+│  ├─ auth.ts                        # NextAuth setup (Node runtime, credentials provider)
+│  ├─ auth.config.ts                 # Edge-safe auth config used by middleware
+│  └─ middleware.ts                  # Route protection (default-deny, admin guard)
 ├─ docs/                             # Documentation
 │  ├─ ADR.md                         # Architecture Decision Records
 │  ├─ DATABASE_SETUP.md              # Database setup guide
