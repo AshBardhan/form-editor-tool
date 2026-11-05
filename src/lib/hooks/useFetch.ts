@@ -25,7 +25,7 @@ export function useFetch<T>(url: string) {
       setLoading(true);
       try {
         const res = await fetch(url);
-        if (!res.ok) throw new Error("Unable to fetch data");
+        if (!res.ok) throw new Error("Unable to load data. Please try again.");
         const json = (await res.json()) as T;
         if (isMounted) {
           setData(json);

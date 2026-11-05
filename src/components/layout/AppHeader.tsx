@@ -29,7 +29,7 @@ export const AppHeader = async ({ className }: AppHeaderProps) => {
               href="/signin"
               className="text-sm font-medium hover:opacity-80 transition-opacity"
             >
-              Sign In
+              Sign in
             </Link>
           )}
         </div>

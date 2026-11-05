@@ -22,9 +22,9 @@ export default async function AnalyticsOverviewPage({
 
   return (
     <AppCard className="text-center py-20">
-      <AppText variant="h5">No Data Recorded</AppText>
+      <AppText variant="h5">No activity yet</AppText>
       <AppText variant="p" className="text-sm text-app-fg-muted">
-        The results will be shown once the form is viewed.
+        Metrics will appear once your form receives its first view.
       </AppText>
     </AppCard>
   );

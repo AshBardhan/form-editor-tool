@@ -12,11 +12,11 @@ import { ValidationError } from "@/lib/errors";
 
 const SignupSchema = z.object({
   name: z.string().min(1, "Name is required"),
-  email: z.string().email("Invalid email address"),
+  email: z.string().email("Please enter a valid email address"),
   password: z
     .string()
     .min(8, "Password must be at least 8 characters")
-    .max(100, "Password is too long"),
+    .max(100, "Password must be 100 characters or fewer"),
 });
 
 export async function POST(request: NextRequest) {
@@ -38,7 +38,7 @@ export async function POST(request: NextRequest) {
     });
 
     if (existingUser) {
-      throw new ValidationError("Email already registered");
+      throw new ValidationError("An account with this email already exists");
     }
 
     // Hash password

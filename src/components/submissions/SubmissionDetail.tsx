@@ -35,7 +35,7 @@ export function SubmissionDetail({
   if (fieldBlocks.length === 0) {
     return (
       <AppText variant="p" className="text-sm text-app-fg-muted">
-        No input fields on this form.
+        This form has no input fields.
       </AppText>
     );
   }

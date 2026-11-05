@@ -17,11 +17,11 @@ function AuthErrorContent() {
   const error = searchParams.get("error");
 
   const errorMessages: Record<string, string> = {
-    Configuration: "There is a problem with the server configuration.",
-    AccessDenied: "You do not have permission to sign in.",
+    Configuration: "Sign-in is temporarily unavailable due to a server configuration issue. Please try again later.",
+    AccessDenied: "Your account does not have permission to sign in.",
     Verification:
-      "The verification token has expired or has already been used.",
-    Default: "An error occurred during authentication.",
+      "This verification link has expired or has already been used.",
+    Default: "We were unable to sign you in. Please try again.",
   };
 
   const errorMessage = error
@@ -36,7 +36,7 @@ function AuthErrorContent() {
         color="secondary"
         className="w-full"
       >
-        Try again
+        Back to sign in
       </AppButton>
     </AuthFormCard>
   );

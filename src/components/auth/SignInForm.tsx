@@ -103,7 +103,7 @@ export function SignInForm() {
         className="w-full"
         disabled={isLoading}
       >
-        {isLoading ? "Signing in..." : "Sign In"}
+        {isLoading ? "Signing in..." : "Sign in"}
       </AppButton>
 
       <div className="text-center text-sm text-app-fg-muted">

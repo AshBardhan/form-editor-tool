@@ -103,7 +103,7 @@ export const FormBuilderContent = (): JSX.Element => {
       const result = (await response.json()) as ApiResponse<FormConfig>;
 
       if (!response.ok || !result.success) {
-        throw new Error(result.error?.message ?? "Failed to save form.");
+        throw new Error(result.error?.message ?? "Unable to save the form.");
       }
 
       toast.update(toastId, {
@@ -115,8 +115,8 @@ export const FormBuilderContent = (): JSX.Element => {
     } catch (err) {
       toast.update(toastId, {
         type: "error",
-        title: "Failed to save",
-        description: err instanceof Error ? err.message : "Unknown error",
+        title: "Unable to save changes",
+        description: err instanceof Error ? err.message : "An unexpected error occurred. Please try again.",
         duration: 5000,
         dismissible: true,
       });
@@ -280,7 +280,7 @@ export const FormBuilderContent = (): JSX.Element => {
                     className="mb-6"
                     icon={<AlertTriangle />}
                     heading="Editing a published form"
-                    description="This form already has submissions. Adding, removing, or changing input fields (including type or options) may alter field responses. Submission records and analytics metrics stay the same."
+                    description="This form has existing submissions. Adding, removing, or modifying input fields (including their type or options) may alter existing field responses. Submission records and analytics metrics will remain unchanged."
                   />
                 )}
                 <CanvasForm
@@ -312,14 +312,14 @@ export const FormBuilderContent = (): JSX.Element => {
               variant="h3"
               className="mb-2 text-lg sm:text-lg 2xl:text-lg"
             >
-              Form Uneditable
+              Form is read-only
             </AppText>
             <AppText
               variant="p"
               className="text-sm text-app-fg-muted sm:text-sm 2xl:text-sm"
             >
-              This form is archived and cannot be edited. Restore it to
-              &apos;published&apos; status to make changes.
+              Archived forms cannot be edited. Publish this form again to make
+              changes.
             </AppText>
           </div>
         </div>
@@ -336,10 +336,10 @@ export const FormBuilderContent = (): JSX.Element => {
             <div className="flex gap-3">
               <AlertTriangle className="shrink-0 h-6 w-6 text-app-error" />
               <div className="flex-1 flex flex-col gap-2">
-                <AppModalTitle>Delete Block</AppModalTitle>
+                <AppModalTitle>Delete block?</AppModalTitle>
                 <AppModalDescription>
-                  Are you sure you want to delete this block? This action cannot
-                  be undone.
+                  This block will be removed from the form. This action cannot be
+                  undone.
                 </AppModalDescription>
               </div>
             </div>

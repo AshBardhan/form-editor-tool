@@ -45,7 +45,7 @@ export default function AdminSettingsPage() {
                   Session Duration
                 </AppText>
                 <AppText variant="p" className="!text-xs text-app-fg-muted">
-                  How long users stay logged in
+                  How long users remain signed in
                 </AppText>
               </div>
               <AppText className="font-medium text-app-success">
@@ -67,7 +67,7 @@ export default function AdminSettingsPage() {
                   Public Form Access
                 </AppText>
                 <AppText variant="p" className="!text-xs text-app-fg-muted">
-                  Allow unauthenticated users to fill forms
+                  Allow anyone with the link to submit published forms
                 </AppText>
               </div>
               <AppText className="font-medium text-app-success">

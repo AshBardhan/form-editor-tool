@@ -310,7 +310,7 @@ export const ConfigurationPanel = memo(function ConfigurationPanel({
             className="flex items-center gap-2 text-sm font-semibold sm:text-sm 2xl:text-sm"
           >
             {Icon && <Icon size={20} />}
-            {selected ? selectedMeta?.label : "Form"} Config
+            {selected ? selectedMeta?.label : "Form"} Settings
           </AppText>
           {selected && (
             <AppMenu>
@@ -320,7 +320,7 @@ export const ConfigurationPanel = memo(function ConfigurationPanel({
                     variant="ghost"
                     color="secondary"
                     size="sm"
-                    aria-label="Open menu"
+                    aria-label="Block actions"
                   />
                 }
               >
@@ -331,7 +331,7 @@ export const ConfigurationPanel = memo(function ConfigurationPanel({
                   onSelect={() => selected && cloneFormBlock(selected.id)}
                 >
                   <Copy size={16} />
-                  Clone
+                  Duplicate
                 </AppMenuItem>
                 <AppMenuItem
                   className="text-app-error"
@@ -402,7 +402,7 @@ export const ConfigurationPanel = memo(function ConfigurationPanel({
                 variant="h4"
                 className="text-sm font-semibold sm:text-sm 2xl:text-sm"
               >
-                Action Group
+                Form Action Buttons
               </AppText>
 
               <div className="flex flex-col gap-2">
@@ -411,7 +411,7 @@ export const ConfigurationPanel = memo(function ConfigurationPanel({
                   size="sm"
                   className="font-semibold"
                 >
-                  Submit Label
+                  Submit Button Label
                 </AppLabel>
                 <InputConfig
                   id="form-actions-submit-label"
@@ -428,7 +428,7 @@ export const ConfigurationPanel = memo(function ConfigurationPanel({
                   size="sm"
                   className="font-semibold"
                 >
-                  Reset Label
+                  Reset Button Label
                 </AppLabel>
                 <InputConfig
                   id="form-actions-reset-label"
@@ -460,7 +460,7 @@ export const ConfigurationPanel = memo(function ConfigurationPanel({
 
               <CheckboxConfig
                 id="form-actions-reverse"
-                label="Reverse order"
+                label="Reverse button order"
                 value={formActions.reverse}
                 onChange={(value) => updateFormActions("reverse", value)}
               />

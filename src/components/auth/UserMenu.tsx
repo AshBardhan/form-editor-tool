@@ -80,7 +80,7 @@ export function UserMenu({ user }: UserMenuProps) {
         {/* Sign Out */}
         <AppMenuItem onSelect={handleSignOut} className="text-app-error">
           <LogOutIcon size={16} />
-          Sign Out
+          Sign out
         </AppMenuItem>
       </AppMenuContent>
     </AppMenu>

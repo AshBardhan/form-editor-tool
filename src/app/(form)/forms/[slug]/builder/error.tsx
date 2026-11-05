@@ -15,7 +15,7 @@ export default function Error({
       <AppText variant="h2">Unable to load form</AppText>
       <AppText variant="p">{error.message}</AppText>
       <AppButton variant="solid" color="primary" onClick={reset}>
-        Try Again
+        Try again
       </AppButton>
     </div>
   );

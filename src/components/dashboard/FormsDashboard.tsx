@@ -86,11 +86,11 @@ export function FormsDashboard({ forms }: FormsDashboardProps) {
       router.refresh();
     } catch (error) {
       toast.error({
-        title: "Status update failed",
+        title: "Unable to update status",
         description:
           error instanceof Error
             ? error.message
-            : "We could not update status. Please try again.",
+            : "We could not update the form status. Please try again.",
       });
     } finally {
       setIsSubmitting(false);
@@ -114,23 +114,23 @@ export function FormsDashboard({ forms }: FormsDashboardProps) {
       }>;
       if (!response.ok || !result.success) {
         throw new Error(
-          result.error?.message || "Unable to delete form right now.",
+          result.error?.message || "Unable to delete the form. Please try again.",
         );
       }
 
       const deletedCount = result.data?.deletedSubmissions || 0;
       toast.success({
-        title: "Form permanently deleted",
+        title: "Form deleted",
         description:
           deletedCount > 0
-            ? `Deleted form and ${deletedCount} submission${deletedCount > 1 ? "s" : ""}.`
-            : "The form has been removed.",
+            ? `The form and ${deletedCount} submission${deletedCount > 1 ? "s" : ""} have been permanently deleted.`
+            : "The form has been permanently deleted.",
       });
       setFormToDelete(null);
       router.refresh();
     } catch (error) {
       toast.error({
-        title: "Delete failed",
+        title: "Unable to delete form",
         description:
           error instanceof Error
             ? error.message
@@ -192,7 +192,7 @@ export function FormsDashboard({ forms }: FormsDashboardProps) {
               <div className="flex-1 flex flex-col gap-2">
                 <AppModalTitle>Delete this form permanently?</AppModalTitle>
                 <AppModalDescription>
-                  This action cannot be undone. All submissions, field responses
+                  This action cannot be undone. All submissions, field responses,
                   and analytics data will be permanently removed.
                 </AppModalDescription>
               </div>

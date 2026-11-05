@@ -9,8 +9,8 @@ import { SignUpForm } from "@/components/auth/SignUpForm";
 export default function SignUpPage() {
   return (
     <AuthFormCard
-      title="Create account"
-      description="Start building forms today"
+      title="Create an account"
+      description="Start building and publishing forms today"
     >
       <SignUpForm />
     </AuthFormCard>

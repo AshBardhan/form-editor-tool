@@ -52,18 +52,18 @@ export function FormsHeader({ filter = {} }: FormsHeaderProps) {
       const createdSlug = result.data?.slug || slugFromLocation;
 
       if (!response.ok || !result.success || !createdSlug) {
-        throw new Error(result.error?.message || "Failed to create form");
+        throw new Error(result.error?.message || "Unable to create form");
       }
 
-      toast.success({ title: "Form has been successfully created" });
+      toast.success({ title: "Form created" });
       router.push(`/forms/${createdSlug}/builder`);
     } catch (error) {
       toast.error({
-        title: "Failed to create form",
+        title: "Unable to create form",
         description:
           error instanceof Error
             ? error.message
-            : "Unable to create form right now.",
+            : "Something went wrong. Please try again.",
       });
     } finally {
       setIsCreating(false);
@@ -107,7 +107,7 @@ export function FormsHeader({ filter = {} }: FormsHeaderProps) {
                 onValueChange={(value) => {
                   filter.onStatusChange?.(value as FormFilterStatus);
                 }}
-                placeholder="Select Status"
+                placeholder="Filter by status"
               />
             </>
           )}
@@ -120,7 +120,7 @@ export function FormsHeader({ filter = {} }: FormsHeaderProps) {
             disabled={isCreating}
           >
             <Plus size={20} />
-            {isCreating ? "Creating..." : "Create Form"}
+            {isCreating ? "Creating..." : "Create form"}
           </AppButton>
         </div>
       </div>

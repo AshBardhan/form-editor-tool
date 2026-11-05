@@ -20,9 +20,9 @@ export default async function AnalyticsFieldsPage({
     <>
       {data.submissionCount === 0 ? (
         <AppCard className="text-center py-20">
-          <AppText variant="h5">No Data Recorded</AppText>
+          <AppText variant="h5">No responses yet</AppText>
           <AppText variant="p" className="text-sm text-app-fg-muted">
-            Share your form to start collecting submissions.
+            Share your form to start collecting responses.
           </AppText>
         </AppCard>
       ) : (

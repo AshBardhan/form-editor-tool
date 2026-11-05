@@ -163,7 +163,7 @@ export function FieldAnalysisList({
         <>
           {fieldAnalysis.length === 0 ? (
             <AppText className="text-app-fg-muted">
-              No input fields on this form.
+              This form has no input fields.
             </AppText>
           ) : (
             fieldAnalysis.map((field, index, arr) => {

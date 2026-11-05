@@ -146,7 +146,7 @@ export const CanvasBlock = ({
             {...listeners}
             aria-label="Reorder block"
             className="absolute inset-0 cursor-grab text-form-fg-muted hover:text-form-fg transition-colors flex items-center justify-center"
-            title="Reorder Block"
+            title="Drag to reorder"
           >
             <SeparatorHorizontalIcon size={24} />
           </div>
@@ -163,7 +163,7 @@ export const CanvasBlock = ({
                   e.stopPropagation();
                   cloneBlock(block.id);
                 }}
-                title="Duplicate Block"
+                title="Duplicate block"
                 aria-label="Duplicate block"
               >
                 <CopyIcon size={20} />
@@ -179,7 +179,7 @@ export const CanvasBlock = ({
                 e.stopPropagation();
                 onDeleteBlock?.(block.id);
               }}
-              title="Delete Block"
+              title="Delete block"
               aria-label="Delete block"
             >
               <TrashIcon size={20} />

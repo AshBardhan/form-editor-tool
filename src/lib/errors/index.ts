@@ -14,25 +14,25 @@ export class NotFoundError extends ApiError {
 }
 
 export class ValidationError extends ApiError {
-  constructor(message = "Validation Error") {
+  constructor(message = "The request is invalid") {
     super(message, 400);
   }
 }
 
 export class UnauthorizedError extends ApiError {
-  constructor(message = "Unauthorized Access") {
+  constructor(message = "Please sign in to continue") {
     super(message, 401);
   }
 }
 
 export class ForbiddenError extends ApiError {
-  constructor(message = "Forbidden Access") {
+  constructor(message = "You do not have permission to perform this action") {
     super(message, 403);
   }
 }
 
 export class InternalServerError extends ApiError {
-  constructor(message = "Internal Server Error") {
+  constructor(message = "An unexpected error occurred") {
     super(message, 500);
   }
 }

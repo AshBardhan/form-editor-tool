@@ -96,7 +96,7 @@ export function SubmissionsList({
       >
         <AppModalContent size="md">
           <AppModalHeader>
-            <AppModalTitle>Submission</AppModalTitle>
+            <AppModalTitle>Submission details</AppModalTitle>
             {selectedSubmission && (
               <AppModalDescription>
                 {selectedSubmission.id} ·{" "}

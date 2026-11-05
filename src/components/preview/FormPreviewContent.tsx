@@ -112,8 +112,8 @@ export const FormPreviewContent = ({
       );
 
       toast.error({
-        title: "Form validation failed",
-        description: `Please fix ${errorCount} error${errorCount > 1 ? "s" : ""} before submitting.`,
+        title: "Some fields need attention",
+        description: `Please resolve ${errorCount} error${errorCount > 1 ? "s" : ""} before submitting.`,
       });
     }
 
@@ -137,8 +137,8 @@ export const FormPreviewContent = ({
 
     try {
       toast.success({
-        title: "Form submitted successfully!",
-        description: "Your response has been recorded.",
+        title: "Preview submitted",
+        description: "All fields passed validation. Responses are not saved in preview mode.",
       });
     } catch (error) {
       toast.error({
@@ -214,9 +214,9 @@ export const FormPreviewContent = ({
       >
         {form.blocks.length === 0 ? (
           <div className="h-full flex flex-col items-center justify-center">
-            <FormText variant="h3">Empty form</FormText>
+            <FormText variant="h3">This form is empty</FormText>
             <FormText variant="p" className="text-sm @sm:text-sm @5xl:text-sm">
-              Please add widgets from the form builder.
+              Add widgets in the builder to preview your form.
             </FormText>
           </div>
         ) : (

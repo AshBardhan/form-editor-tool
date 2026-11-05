@@ -153,15 +153,15 @@ export function UsersTable({ users }: UsersTableProps) {
       >
         <AppModalContent size="sm">
           <AppModalHeader>
-            <AppModalTitle>Delete User</AppModalTitle>
+            <AppModalTitle>Delete user?</AppModalTitle>
             <AppModalDescription>
               Are you sure you want to delete{" "}
               <strong>{selectedUser?.email}</strong>?
             </AppModalDescription>
           </AppModalHeader>
           <p className="p-6 text-sm text-app-error">
-            This will permanently delete the user and all their forms,
-            submissions, and data.
+            This will permanently delete the user along with their forms,
+            submissions, and associated data. This action cannot be undone.
           </p>
           <AppModalFooter>
             <AppButton
@@ -178,7 +178,7 @@ export function UsersTable({ users }: UsersTableProps) {
               onClick={handleDelete}
               disabled={isDeleting}
             >
-              {isDeleting ? "Deleting..." : "Delete User"}
+              {isDeleting ? "Deleting..." : "Delete user"}
             </AppButton>
           </AppModalFooter>
         </AppModalContent>

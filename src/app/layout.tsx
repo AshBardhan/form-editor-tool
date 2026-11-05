@@ -8,8 +8,8 @@ import { DEFAULT_APP_THEME } from "@/lib/constants/themes";
 const appThemeScript = `(function(){try{var t=localStorage.getItem(${JSON.stringify(APP_THEME_STORAGE_KEY)});if(t!=="light"&&t!=="dark")t=${JSON.stringify(DEFAULT_APP_THEME)};document.documentElement.dataset.appTheme=t;}catch(e){}})();`;
 
 export const metadata: Metadata = {
-  title: "FormKit - A Visual DnD Form Builder",
-  description: "A visual drag and drop form builder created in Next.js",
+  title: "FormKit — Visual Form Builder",
+  description: "Build, publish, and analyze forms with a visual drag-and-drop editor.",
 };
 
 export const viewport: Viewport = {

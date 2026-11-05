@@ -62,7 +62,7 @@ export async function POST(
     });
 
     if (result.count === 0) {
-      throw new NotFoundError("Form not found or not published");
+      throw new NotFoundError("This form is not currently accepting responses");
     }
 
     revalidateFormAnalyticsCache();

@@ -95,7 +95,7 @@ export const WidgetPanel = memo(function WidgetPanel(): JSX.Element {
           <AppInput
             type="text"
             name="search"
-            placeholder="Search Widgets..."
+            placeholder="Search widgets..."
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
             className="pr-9"
@@ -118,7 +118,7 @@ export const WidgetPanel = memo(function WidgetPanel(): JSX.Element {
               variant="p"
               className="text-xs text-center pt-4 sm:text-xs 2xl:text-xs"
             >
-              No widgets found
+              No matching widgets
             </AppText>
           )}
         </div>

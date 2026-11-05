@@ -16,7 +16,7 @@ const optionalString = z.string().optional();
 const optionalNumber = z.number().optional();
 const nonNegativeNumber = z
   .number()
-  .min(0, "A non-negative number is required");
+  .min(0, "Value must be zero or greater");
 const nonNegativeOptionalNumber = nonNegativeNumber.optional();
 
 /**
@@ -28,7 +28,7 @@ export const formBlockSchemas: Record<FormBlockType, z.ZodSchema> = {
     level: z
       .number()
       .refine((value) => value >= 1 && value <= 6, {
-        message: "Only levels from h1 to h6 are allowed",
+        message: "Heading level must be between H1 and H6",
       })
       .default(1),
   }),
@@ -89,7 +89,7 @@ export const formBlockSchemas: Record<FormBlockType, z.ZodSchema> = {
         data.minLength <= data.maxLength,
       {
         path: ["maxLength"],
-        message: "Max length must be greater than or equal to min length",
+        message: "Maximum length must be greater than or equal to minimum length",
       },
     ),
 

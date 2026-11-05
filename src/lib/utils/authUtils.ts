@@ -19,7 +19,7 @@ export async function requireAuthSession(): Promise<Session> {
   const session = await auth();
 
   if (!session || !session.user) {
-    throw new UnauthorizedError("Authentication required");
+    throw new UnauthorizedError("Please sign in to continue");
   }
 
   return session;
@@ -31,7 +31,7 @@ export async function requireAuthSession(): Promise<Session> {
  */
 export function requireRole(session: Session, role: UserRole): void {
   if (session.user.role !== role) {
-    throw new ForbiddenError(`${role} role required`);
+    throw new ForbiddenError(`This action requires ${role} privileges`);
   }
 }
 
@@ -52,7 +52,7 @@ export function requirePermission(
   permission: Permission,
 ): void {
   if (!hasPermission(session.user.role, permission)) {
-    throw new ForbiddenError("Insufficient permissions");
+    throw new ForbiddenError("You do not have permission to perform this action");
   }
 }
 
@@ -67,6 +67,6 @@ export function requireOwnership(
   const currentUserId = parseInt(session.user.id);
 
   if (currentUserId !== resourceUserId && session.user.role !== "ADMIN") {
-    throw new ForbiddenError("Access denied");
+    throw new ForbiddenError("You do not have access to this resource");
   }
 }

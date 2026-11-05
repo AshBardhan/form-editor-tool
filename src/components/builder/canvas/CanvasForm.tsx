@@ -30,9 +30,9 @@ const DropPlaceholder = (): JSX.Element => (
  */
 const DropZeroState = (): JSX.Element => (
   <div className="h-full flex flex-col items-center justify-center">
-    <FormText variant="h3">Empty form</FormText>
+    <FormText variant="h3">This form is empty</FormText>
     <FormText variant="p" className="text-sm @sm:text-sm @5xl:text-sm">
-      Please drop widgets to create form.
+      Drag widgets from the left panel to start building your form.
     </FormText>
   </div>
 );

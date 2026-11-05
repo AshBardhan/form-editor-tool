@@ -50,13 +50,13 @@ export function SignUpForm() {
       const data = await response.json();
 
       if (!response.ok) {
-        throw new Error(data.error?.message || "Signup failed");
+        throw new Error(data.error?.message || "Unable to create your account");
       }
 
       // Redirect to signin with success message
       router.push("/signin?registered=true");
     } catch (err) {
-      setError(err instanceof Error ? err.message : "An error occurred");
+      setError(err instanceof Error ? err.message : "An unexpected error occurred. Please try again.");
     } finally {
       setIsLoading(false);
     }
@@ -74,7 +74,7 @@ export function SignUpForm() {
 
       <div className="flex flex-col gap-2">
         <AppLabel htmlFor="name" required>
-          Full Name
+          Full name
         </AppLabel>
         <AppInput
           id="name"
@@ -121,7 +121,7 @@ export function SignUpForm() {
 
       <div className="flex flex-col gap-2">
         <AppLabel htmlFor="confirm-password" required>
-          Confirm Password
+          Confirm password
         </AppLabel>
         <AppInput
           id="confirm-password"
@@ -143,7 +143,7 @@ export function SignUpForm() {
         className="w-full"
         disabled={isLoading}
       >
-        {isLoading ? "Creating account..." : "Sign Up"}
+        {isLoading ? "Creating account..." : "Create account"}
       </AppButton>
 
       <div className="text-center text-sm text-app-fg-muted">

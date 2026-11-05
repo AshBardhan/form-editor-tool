@@ -26,14 +26,14 @@ export default function AuthLayout({
             Visual form editor
           </AppText>
           <AppText variant="h1" className="mt-3 tracking-tight">
-            Design forms by dragging blocks, then publish them in minutes
+            Build forms visually and publish them in minutes
           </AppText>
           <AppText
             variant="p"
             className="mt-4 leading-relaxed text-app-fg-muted"
           >
-            Sign in to build on a canvas, preview across devices, and collect
-            responses with submissions and analytics in one place.
+            Sign in to design forms on a visual canvas, preview them across
+            devices, and manage submissions and analytics in one place.
           </AppText>
         </div>
 

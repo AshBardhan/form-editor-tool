@@ -93,23 +93,23 @@ export function FormHeader({ form }: FormHeaderProps) {
       }>;
       if (!response.ok || !result.success) {
         throw new Error(
-          result.error?.message || "Unable to delete form right now.",
+          result.error?.message || "Unable to delete the form. Please try again.",
         );
       }
 
       const deletedCount = result.data?.deletedSubmissions || 0;
       toast.success({
-        title: "Form permanently deleted",
+        title: "Form deleted",
         description:
           deletedCount > 0
-            ? `Deleted form and ${deletedCount} submission${deletedCount > 1 ? "s" : ""}.`
-            : "The form has been removed.",
+            ? `The form and ${deletedCount} submission${deletedCount > 1 ? "s" : ""} have been permanently deleted.`
+            : "The form has been permanently deleted.",
       });
       router.push("/forms");
       router.refresh();
     } catch (error) {
       toast.error({
-        title: "Delete failed",
+        title: "Unable to delete form",
         description:
           error instanceof Error
             ? error.message
@@ -132,19 +132,19 @@ export function FormHeader({ form }: FormHeaderProps) {
       }>;
       if (!response.ok || !result.success) {
         throw new Error(
-          result.error?.message || "Unable to clear submissions right now.",
+          result.error?.message || "Unable to clear submissions. Please try again.",
         );
       }
 
       const deletedCount = result.data?.deletedSubmissions || 0;
       toast.success({
-        title: "Submissions cleared successfully",
-        description: `Deleted ${deletedCount} submission${deletedCount !== 1 ? "s" : ""} and all field responses.`,
+        title: "Submissions cleared",
+        description: `${deletedCount} submission${deletedCount !== 1 ? "s" : ""} and all related field responses have been permanently deleted.`,
       });
       router.refresh();
     } catch (error) {
       toast.error({
-        title: "Clear submissions failed",
+        title: "Unable to clear submissions",
         description:
           error instanceof Error
             ? error.message
@@ -157,7 +157,7 @@ export function FormHeader({ form }: FormHeaderProps) {
 
   const handleUpdateFormStatus = async (newStatus: FormStatus) => {
     if (form.status === newStatus) {
-      toast.info({ title: "Form status is already set to " + newStatus });
+      toast.info({ title: `This form is already ${formStatusLabel[newStatus].toLowerCase()}.` });
       return;
     }
     setIsSubmitting(true);
@@ -185,11 +185,11 @@ export function FormHeader({ form }: FormHeaderProps) {
       router.refresh();
     } catch (error) {
       toast.error({
-        title: "Status update failed",
+        title: "Unable to update status",
         description:
           error instanceof Error
             ? error.message
-            : "We could not update status. Please try again.",
+            : "We could not update the form status. Please try again.",
       });
     } finally {
       setIsSubmitting(false);
@@ -228,11 +228,11 @@ export function FormHeader({ form }: FormHeaderProps) {
             title={
               form.status === "published"
                 ? "Open public form"
-                : "Publish form to enable public access"
+                : "Publish this form to make it publicly accessible"
             }
           >
             <ExternalLink size={16} />
-            Access
+            View live
           </AppButton>
 
           <AppMenu>
@@ -299,7 +299,7 @@ export function FormHeader({ form }: FormHeaderProps) {
       <AppModal open={isPreviewOpen} onOpenChange={setIsPreviewOpen}>
         <AppModalContent size="lg">
           <AppModalHeader className="flex flex-row justify-center items-center gap-4 pb-6">
-            <AppModalTitle>Form Preview</AppModalTitle>
+            <AppModalTitle>Form preview</AppModalTitle>
             <AppToggleGroup
               value={currentDevice}
               onValueChange={(nextDevice) =>
@@ -330,7 +330,7 @@ export function FormHeader({ form }: FormHeaderProps) {
               <div className="flex-1 flex flex-col gap-2">
                 <AppModalTitle>Delete this form permanently?</AppModalTitle>
                 <AppModalDescription>
-                  This action cannot be undone. All submissions, field responses
+                  This action cannot be undone. All submissions, field responses,
                   and analytics data will be permanently removed.
                 </AppModalDescription>
               </div>

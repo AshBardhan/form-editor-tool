@@ -41,7 +41,7 @@ export default async function AdminLayout({ children }: AdminLayoutProps) {
       <AppContent>
         <PageHeader className="pb-0">
           <PageContainer className="flex flex-col gap-4">
-            <AppText variant="h1">Admin Settings</AppText>
+            <AppText variant="h1">Admin Panel</AppText>
             <AppNavigationTabs items={adminNavigationPaths} basePath="/admin" />
           </PageContainer>
         </PageHeader>

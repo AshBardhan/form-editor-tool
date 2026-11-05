@@ -6,7 +6,7 @@ export default function Loading() {
     <div className="empty-content gap-4">
       <LoaderCircleIcon className="size-10 animate-spin" />
       <AppText variant="span" className="text-2xl">
-        Loading Form...
+        Loading form...
       </AppText>
     </div>
   );

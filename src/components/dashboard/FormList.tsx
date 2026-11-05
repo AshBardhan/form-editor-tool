@@ -30,7 +30,7 @@ export function FormList({
       <div className="empty-content flex-col gap-2">
         <AppText variant="h4">No forms found</AppText>
         <AppText variant="p" className="text-sm text-app-fg-muted">
-          Try adjusting your search or filter to find what you're looking for.
+          Try a different search term or status filter.
         </AppText>
       </div>
     );

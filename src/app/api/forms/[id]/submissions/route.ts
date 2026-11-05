@@ -59,7 +59,7 @@ export async function POST(
     });
 
     if (!form) {
-      throw new NotFoundError("Form not found or not published");
+      throw new NotFoundError("This form is not currently accepting responses");
     }
 
     // Validate that all blockIds belong to this form
@@ -69,7 +69,7 @@ export async function POST(
     );
 
     if (invalidBlocks.length > 0) {
-      throw new ValidationError("Invalid block IDs in submission");
+      throw new ValidationError("This form has changed since it was loaded. Please refresh the page and try again.");
     }
 
     // Create submission with responses

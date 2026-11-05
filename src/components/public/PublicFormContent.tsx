@@ -178,13 +178,13 @@ export function PublicFormContent({ form }: PublicFormContentProps) {
 
       if (!response.ok) {
         const result = await response.json();
-        throw new Error(result.error?.message || "Failed to submit form");
+        throw new Error(result.error?.message || "Unable to submit your response");
       }
 
       resetFormData();
       setBlockErrors({});
 
-      setStatus({ type: "submitted", message: "Form submitted successfully!" });
+      setStatus({ type: "submitted", message: "Your response has been submitted." });
     } catch (error) {
       console.error("Submission error:", error);
 
@@ -193,7 +193,7 @@ export function PublicFormContent({ form }: PublicFormContentProps) {
         message:
           error instanceof Error
             ? error.message
-            : "Failed to submit form. Please try again.",
+            : "We could not submit your response. Please try again.",
       });
     }
   };
@@ -224,15 +224,15 @@ export function PublicFormContent({ form }: PublicFormContentProps) {
       <div className="form-content">
         {status.type === "submitting" && (
           <div className="form-overlay">
-            <FormText>Submitting form...</FormText>
+            <FormText>Submitting your response...</FormText>
           </div>
         )}
         {/* Form Blocks */}
         {form.blocks.length === 0 ? (
           <div className="h-full flex flex-col items-center justify-center">
-            <FormText variant="h3">Empty form</FormText>
+            <FormText variant="h3">Form unavailable</FormText>
             <FormText variant="p" className="text-sm @sm:text-sm @5xl:text-sm">
-              Please add widgets from the form builder.
+              This form has no content yet. Please check back later.
             </FormText>
           </div>
         ) : (
@@ -245,7 +245,7 @@ export function PublicFormContent({ form }: PublicFormContentProps) {
             )}
             {status.type === "submitted" && (
               <div className="p-4 text-center">
-                <FormText variant="h3">Thank you!</FormText>
+                <FormText variant="h3">Thank you</FormText>
                 <FormText variant="p">{status.message}</FormText>
                 <div className="flex gap-3 justify-center mt-4">
                   <FormButton
@@ -253,7 +253,7 @@ export function PublicFormContent({ form }: PublicFormContentProps) {
                     color="primary"
                     onClick={handleSubmitAnotherResponse}
                   >
-                    Submit another
+                    Submit another response
                   </FormButton>
                   <FormButton
                     render={<Link href="/forms" />}
@@ -267,7 +267,7 @@ export function PublicFormContent({ form }: PublicFormContentProps) {
             )}
             {status.type === "failed" && (
               <div className="p-4 text-center">
-                <FormText variant="h3">Error</FormText>
+                <FormText variant="h3">Submission failed</FormText>
                 <FormText variant="p">{status.message}</FormText>
                 <div className="flex gap-3 justify-center mt-4">
                   <FormButton
@@ -275,7 +275,7 @@ export function PublicFormContent({ form }: PublicFormContentProps) {
                     color="primary"
                     onClick={retryFormAfterFailure}
                   >
-                    Retry
+                    Try again
                   </FormButton>
                   <FormButton
                     render={<Link href="/forms" />}

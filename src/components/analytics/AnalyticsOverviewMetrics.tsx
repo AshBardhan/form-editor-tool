@@ -31,7 +31,7 @@ export function AnalyticsOverviewMetrics({
   return (
     <AppCard className="space-y-6">
       <div className="space-y-2">
-        <AppText variant="h5">Basic Metrics</AppText>
+        <AppText variant="h5">Key Metrics</AppText>
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
           <AppMetric direction="column" label="Views" value={views} size="lg" />
           <AppMetric
@@ -49,7 +49,7 @@ export function AnalyticsOverviewMetrics({
         </div>
       </div>
       <div className="space-y-2">
-        <AppText variant="h5">Advanced Metrics</AppText>
+        <AppText variant="h5">Detailed Metrics</AppText>
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
           <AppMetric
             direction="column"
@@ -74,7 +74,7 @@ export function AnalyticsOverviewMetrics({
           {submitAttempts > 0 && (
             <AppMetric
               direction="column"
-              label="Submit Attempts"
+              label="Submission Attempts"
               value={submitAttempts}
               size="lg"
             />

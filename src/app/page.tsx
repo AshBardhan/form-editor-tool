@@ -12,17 +12,17 @@ const highlights = [
   {
     title: "Drag-and-drop builder",
     description:
-      "Assemble forms from configurable widgets and reorder blocks until the layout feels right.",
+      "Assemble forms from configurable widgets and arrange blocks to get the layout exactly right.",
   },
   {
-    title: "Publish and collect",
+    title: "Publish and collect responses",
     description:
-      "Share a public link, capture responses, and keep drafts, published, and archived forms in one place.",
+      "Share a public link, capture responses, and manage draft, published, and archived forms in one place.",
   },
   {
-    title: "See what people answer",
+    title: "Understand your results",
     description:
-      "Review submissions, funnel metrics, and field-level analytics without leaving the editor.",
+      "Review submissions, conversion metrics, and field-level analytics without leaving the editor.",
   },
 ];
 
@@ -45,15 +45,15 @@ export default function Home() {
           Visual form editor
         </AppText>
         <AppText variant="h1" className="max-w-3xl tracking-tight">
-          Design forms by dragging blocks, then publish them in minutes
+          Build forms visually and publish them in minutes
         </AppText>
         <AppText
           variant="p"
           className="mt-5 max-w-2xl leading-relaxed text-app-fg-muted"
         >
-          FormKit is a Next.js form builder for teams that want a canvas, a live
-          preview, and a public share link — plus submissions and analytics once
-          responses start coming in.
+          FormKit gives your team a drag-and-drop canvas, live preview, and
+          shareable public links — with built-in submission management and
+          analytics as responses arrive.
         </AppText>
 
         <div className="mt-8">

@@ -116,7 +116,7 @@ export async function PATCH(
       });
 
       if (duplicateForm) {
-        throw new ValidationError("Slug already exists");
+        throw new ValidationError("This URL slug is already in use");
       }
     }
 
