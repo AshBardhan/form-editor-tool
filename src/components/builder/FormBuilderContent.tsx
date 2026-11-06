@@ -116,7 +116,10 @@ export const FormBuilderContent = (): JSX.Element => {
       toast.update(toastId, {
         type: "error",
         title: "Unable to save changes",
-        description: err instanceof Error ? err.message : "An unexpected error occurred. Please try again.",
+        description:
+          err instanceof Error
+            ? err.message
+            : "An unexpected error occurred. Please try again.",
         duration: 5000,
         dismissible: true,
       });
@@ -338,8 +341,8 @@ export const FormBuilderContent = (): JSX.Element => {
               <div className="flex-1 flex flex-col gap-2">
                 <AppModalTitle>Delete block?</AppModalTitle>
                 <AppModalDescription>
-                  This block will be removed from the form. This action cannot be
-                  undone.
+                  This block will be removed from the form. This action cannot
+                  be undone.
                 </AppModalDescription>
               </div>
             </div>

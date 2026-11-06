@@ -35,7 +35,9 @@ async function generateUniqueFormIdentity(baseTitle: string, baseSlug: string) {
     suffix += 1;
   }
 
-  throw new InternalServerError("Unable to create a form with a unique name. Please try again.");
+  throw new InternalServerError(
+    "Unable to create a form with a unique name. Please try again.",
+  );
 }
 
 /**

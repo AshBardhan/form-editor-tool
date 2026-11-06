@@ -93,7 +93,8 @@ export function FormHeader({ form }: FormHeaderProps) {
       }>;
       if (!response.ok || !result.success) {
         throw new Error(
-          result.error?.message || "Unable to delete the form. Please try again.",
+          result.error?.message ||
+            "Unable to delete the form. Please try again.",
         );
       }
 
@@ -132,7 +133,8 @@ export function FormHeader({ form }: FormHeaderProps) {
       }>;
       if (!response.ok || !result.success) {
         throw new Error(
-          result.error?.message || "Unable to clear submissions. Please try again.",
+          result.error?.message ||
+            "Unable to clear submissions. Please try again.",
         );
       }
 
@@ -157,7 +159,9 @@ export function FormHeader({ form }: FormHeaderProps) {
 
   const handleUpdateFormStatus = async (newStatus: FormStatus) => {
     if (form.status === newStatus) {
-      toast.info({ title: `This form is already ${formStatusLabel[newStatus].toLowerCase()}.` });
+      toast.info({
+        title: `This form is already ${formStatusLabel[newStatus].toLowerCase()}.`,
+      });
       return;
     }
     setIsSubmitting(true);
@@ -330,8 +334,8 @@ export function FormHeader({ form }: FormHeaderProps) {
               <div className="flex-1 flex flex-col gap-2">
                 <AppModalTitle>Delete this form permanently?</AppModalTitle>
                 <AppModalDescription>
-                  This action cannot be undone. All submissions, field responses,
-                  and analytics data will be permanently removed.
+                  This action cannot be undone. All submissions, field
+                  responses, and analytics data will be permanently removed.
                 </AppModalDescription>
               </div>
             </div>

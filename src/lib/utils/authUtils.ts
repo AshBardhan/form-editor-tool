@@ -52,7 +52,9 @@ export function requirePermission(
   permission: Permission,
 ): void {
   if (!hasPermission(session.user.role, permission)) {
-    throw new ForbiddenError("You do not have permission to perform this action");
+    throw new ForbiddenError(
+      "You do not have permission to perform this action",
+    );
   }
 }
 

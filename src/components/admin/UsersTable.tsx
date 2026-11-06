@@ -83,7 +83,7 @@ export function UsersTable({ users }: UsersTableProps) {
   return (
     <>
       <table className="w-full rounded-lg border border-app-border-subtle overflow-hidden">
-        <thead className="border-b border-app-border-subtle bg-app-field-placeholder text-app-field/80 text-xs font-semibold uppercase">
+        <thead className="border-b border-app-border-subtle bg-app-field-placeholder text-app-field/80 text-xs font-medium uppercase">
           <tr>
             <th className="px-4 py-3 text-left">User</th>
             <th className="px-4 py-3 text-left">Role</th>
@@ -97,7 +97,7 @@ export function UsersTable({ users }: UsersTableProps) {
           {users.map((user) => (
             <tr
               key={user.id}
-              className="bg-app-surface even:bg-app-surface-muted hover:bg-app-surface-strong text-xs"
+              className="bg-app-surface even:bg-app-surface-muted text-xs"
             >
               <td className="px-4 py-3">
                 <AppText variant="h6">{user.name || "—"}</AppText>

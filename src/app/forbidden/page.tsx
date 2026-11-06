@@ -15,14 +15,14 @@ export default function ForbiddenPage() {
           403
         </AppText>
         <AppText variant="h2" className="mt-4">
-          Access Denied
+          Access denied
         </AppText>
         <AppText
           variant="p"
           className="mt-4 max-w-md mx-auto text-app-fg-muted"
         >
-          You don't have permission to access this page. Please contact an
-          administrator if you believe this is an error.
+          You do not have permission to view this page. If you believe this is a
+          mistake, please contact your administrator.
         </AppText>
         <div className="mt-8 flex gap-4 justify-center">
           <AppButton
@@ -30,14 +30,14 @@ export default function ForbiddenPage() {
             variant="solid"
             color="primary"
           >
-            Go to Dashboard
+            Go to dashboard
           </AppButton>
           <AppButton
             render={<Link href="/" />}
             variant="outline"
             color="secondary"
           >
-            Go Home
+            Go to home page
           </AppButton>
         </div>
       </div>

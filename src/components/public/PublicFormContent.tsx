@@ -178,13 +178,18 @@ export function PublicFormContent({ form }: PublicFormContentProps) {
 
       if (!response.ok) {
         const result = await response.json();
-        throw new Error(result.error?.message || "Unable to submit your response");
+        throw new Error(
+          result.error?.message || "Unable to submit your response",
+        );
       }
 
       resetFormData();
       setBlockErrors({});
 
-      setStatus({ type: "submitted", message: "Your response has been submitted." });
+      setStatus({
+        type: "submitted",
+        message: "Your response has been submitted.",
+      });
     } catch (error) {
       console.error("Submission error:", error);
 

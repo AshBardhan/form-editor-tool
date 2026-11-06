@@ -114,7 +114,8 @@ export function FormsDashboard({ forms }: FormsDashboardProps) {
       }>;
       if (!response.ok || !result.success) {
         throw new Error(
-          result.error?.message || "Unable to delete the form. Please try again.",
+          result.error?.message ||
+            "Unable to delete the form. Please try again.",
         );
       }
 
@@ -192,8 +193,8 @@ export function FormsDashboard({ forms }: FormsDashboardProps) {
               <div className="flex-1 flex flex-col gap-2">
                 <AppModalTitle>Delete this form permanently?</AppModalTitle>
                 <AppModalDescription>
-                  This action cannot be undone. All submissions, field responses,
-                  and analytics data will be permanently removed.
+                  This action cannot be undone. All submissions, field
+                  responses, and analytics data will be permanently removed.
                 </AppModalDescription>
               </div>
             </div>

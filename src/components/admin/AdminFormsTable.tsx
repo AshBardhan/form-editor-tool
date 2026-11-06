@@ -39,7 +39,7 @@ interface AdminFormsTableProps {
 export function AdminFormsTable({ forms }: AdminFormsTableProps) {
   return (
     <table className="w-full rounded-lg border border-app-border-subtle overflow-hidden">
-      <thead className="border-b border-app-border-subtle bg-app-field-placeholder text-app-field/80 text-xs font-semibold uppercase">
+      <thead className="border-b border-app-border-subtle bg-app-field-placeholder text-app-field/80 text-xs font-medium uppercase">
         <tr>
           <th className="px-4 py-3 text-left">Form</th>
           <th className="px-4 py-3 text-left">Owner</th>

@@ -9,7 +9,8 @@ const appThemeScript = `(function(){try{var t=localStorage.getItem(${JSON.string
 
 export const metadata: Metadata = {
   title: "FormKit — Visual Form Builder",
-  description: "Build, publish, and analyze forms with a visual drag-and-drop editor.",
+  description:
+    "Build, publish, and analyze forms with a visual drag-and-drop editor.",
 };
 
 export const viewport: Viewport = {

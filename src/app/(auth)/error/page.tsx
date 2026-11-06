@@ -17,7 +17,8 @@ function AuthErrorContent() {
   const error = searchParams.get("error");
 
   const errorMessages: Record<string, string> = {
-    Configuration: "Sign-in is temporarily unavailable due to a server configuration issue. Please try again later.",
+    Configuration:
+      "Sign-in is temporarily unavailable due to a server configuration issue. Please try again later.",
     AccessDenied: "Your account does not have permission to sign in.",
     Verification:
       "This verification link has expired or has already been used.",

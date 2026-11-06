@@ -155,7 +155,7 @@ export function AppTable<TRow extends AppTableRow>({
                     aria-sort={getAriaSortLabel(column)}
                     aria-label={`Sort by ${column.label}`}
                     className={cn(
-                      "border-b border-app-border-subtle bg-app-field-placeholder text-app-field/80 px-4 py-3 text-left font-semibold whitespace-nowrap",
+                      "border-b border-app-border-subtle bg-app-field-placeholder text-app-field/80 px-4 py-3 text-left font-medium whitespace-nowrap",
                       column.sticky &&
                         "sticky left-0 z-20 border-r border-app-border-subtle",
                       column.headerClassName,

@@ -15,7 +15,12 @@ export async function apiHandler(fn: () => Promise<NextResponse>) {
     console.error(error);
 
     return NextResponse.json(
-      { success: false, error: { message: "An unexpected error occurred. Please try again later." } },
+      {
+        success: false,
+        error: {
+          message: "An unexpected error occurred. Please try again later.",
+        },
+      },
       { status: 500 },
     );
   }

@@ -14,9 +14,7 @@ const requiredString = (label = "This block") =>
 /** Zod schemas for primitive data types. */
 const optionalString = z.string().optional();
 const optionalNumber = z.number().optional();
-const nonNegativeNumber = z
-  .number()
-  .min(0, "Value must be zero or greater");
+const nonNegativeNumber = z.number().min(0, "Value must be zero or greater");
 const nonNegativeOptionalNumber = nonNegativeNumber.optional();
 
 /**
@@ -89,7 +87,8 @@ export const formBlockSchemas: Record<FormBlockType, z.ZodSchema> = {
         data.minLength <= data.maxLength,
       {
         path: ["maxLength"],
-        message: "Maximum length must be greater than or equal to minimum length",
+        message:
+          "Maximum length must be greater than or equal to minimum length",
       },
     ),
 

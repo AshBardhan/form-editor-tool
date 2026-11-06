@@ -69,7 +69,9 @@ export async function POST(
     );
 
     if (invalidBlocks.length > 0) {
-      throw new ValidationError("This form has changed since it was loaded. Please refresh the page and try again.");
+      throw new ValidationError(
+        "This form has changed since it was loaded. Please refresh the page and try again.",
+      );
     }
 
     // Create submission with responses

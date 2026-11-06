@@ -138,7 +138,8 @@ export const FormPreviewContent = ({
     try {
       toast.success({
         title: "Preview submitted",
-        description: "All fields passed validation. Responses are not saved in preview mode.",
+        description:
+          "All fields passed validation. Responses are not saved in preview mode.",
       });
     } catch (error) {
       toast.error({

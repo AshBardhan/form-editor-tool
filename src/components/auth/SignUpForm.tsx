@@ -56,7 +56,11 @@ export function SignUpForm() {
       // Redirect to signin with success message
       router.push("/signin?registered=true");
     } catch (err) {
-      setError(err instanceof Error ? err.message : "An unexpected error occurred. Please try again.");
+      setError(
+        err instanceof Error
+          ? err.message
+          : "An unexpected error occurred. Please try again.",
+      );
     } finally {
       setIsLoading(false);
     }
